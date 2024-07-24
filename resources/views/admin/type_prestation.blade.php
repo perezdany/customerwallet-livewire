@@ -8,7 +8,8 @@
 
   $all =  $typeprestationcontroller-> GetAll();
 
-  //dd($all);
+              
+            
 @endphp
 
 @section('content')
@@ -81,9 +82,9 @@
                 <div class="box-body">
 
                   <div class="form-group">
-                      <label>Le titre du SUIVI</label>
+                      <label>Type</label>
                       <input type="text" onkeyup='this.value=this.value.toUpperCase()' maxlength="30"
-                       class="form-control input-lg" name="libele" placeholder="SONE SHOT"/>
+                       class="form-control input-lg" name="libele" placeholder="ONE SHOT"/>
                   </div>  
                 
 
@@ -95,6 +96,51 @@
                 </div>
               </form>
             </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+      
+        
+        
+
+        <div class="col-md-6">
+          @if(isset($id_edit))
+            
+              <div class="box box-aeneas">
+              <div class="box-header with-border">
+                <h3 class="box-title">MODIFIER UN TYPE </h3><br>(*) champ obligatoire
+              </div>
+              @php
+                $retrive =  $typeprestationcontroller->GetById($id_edit)
+              @endphp
+              <!-- form start -->
+              <form role="form" method="post" action="edit_typeprest">
+                @csrf
+                <div class="box-body">
+                  @foreach($retrive as $retrive)
+                  <input type="text" value="{{$retrive->id}}" style="display:none;" name="id_type_prestation">
+                   <div class="form-group">
+                      <label>Type:</label>
+                      <input type="text" onkeyup='this.value=this.value.toUpperCase()' maxlength="30"
+                       class="form-control input-lg" name="libele" value="{{$retrive->libele}}"/>
+                    </div>  
+                  @endforeach
+
+                 
+                
+
+                </div>
+                <!-- /.box-body -->
+
+                <div class="box-footer">
+                  <button type="submit" class="btn btn-primary">VALIDER</button>
+                </div>
+              </form>
+            </div>
+          @endif
+            
         </div>
     </div>
 		

@@ -16,6 +16,7 @@ use App\Http\Controllers\InterlocuteurController;
 use App\Http\Controllers\Calculator;
 use App\Http\Controllers\TypePrestationController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\FactureController;
 
 
 /*
@@ -226,6 +227,14 @@ Route::middleware(['auth:web'])->group(function(){
     //PAYER
     Route::post('do_paiement', [PaiementController::class, 'DoPaiement']);
 
+    //EDITER UN PAIEMENT
+    Route::post('edit_paiement_form', [PaiementController::class, 'EditPaiementForm']);
+
+    Route::post('edit_paiement', [PaiementController::class, 'EditPaiement']);
+
+    //AFFICHER LES PAIEMENTS DE LA FACTURES
+    Route::post('paiement_by_facture', [PaiementController::class, 'PaiementByFacture']);
+
     //INTERLOCUTEURS
     Route::get('interlocuteurs', function(){
         return view('admin/interlocuteurs');
@@ -234,6 +243,9 @@ Route::middleware(['auth:web'])->group(function(){
     //MODIFIER INTERLOCUTEUR
     Route::post('edit_interlocuteur_form', [InterlocuteurController::class, 'EditInterlocForm']);
     Route::post('edit_interlocuteur', [InterlocuteurController::class, 'EditInterlocuteur']);
+
+    //AFFICHER LES INTERLOCUTEURS D'UNE ENTREPRISE 
+    Route::post('display_by_id_entreprise', [InterlocuteurController::class, 'DisplayByIdEntreprise']);
 
     //LES GRAPHES 
 
@@ -257,12 +269,40 @@ Route::middleware(['auth:web'])->group(function(){
     //AJOUTER UN TYPE DE PRESTATION
     Route::post('add_type_prestation', [TypePrestationController::class, 'AddTypePrestation']);
 
+    //MODIFIER UN TYPE DE PRESTAION 
+    Route::post('edit_typeprest_form', [TypePrestationController::class, 'EditTypePrestationForm']);
+
+    Route::post('edit_typeprest', [TypePrestationController::class, 'EditTypePrestation']);
+
+    //FACTURE
+   
+    //AFFICHER TOUTES LES FACTURES
+    Route::get('facture', function(){
+        return view('admin/factures');
+    });
+
+    //AFFICHER LES FACTURES DE LA PRESTATION
+    Route::post('display_facture', [FactureController::class, 'FactureByPrestation']);
+
+    //AJOUTER UNE FACTURE
+    Route::post('add_facture', [FactureController::class, 'AddFacture']);
+
+    //MODIFIER UNE FACTURE
+    Route::post('edit_facture_form', [FactureController::class, 'EditFactureForm']);
+    Route::post('edit_facture', [FactureController::class, 'EditFacture']);
+
     //LES ROLES D'UTILISATEURS
     Route::get('roles', function(){
         return view('admin/roles');
     });
     
+    //AJOUTER ROLE
     Route::post('add_role', [RoleController::class, 'AddRole']);
+
+    //MODIFIER ROLE
+    Route::post('edit_role_form', [RoleController::class, 'EditRoleForm']);
+    Route::post('edit_role', [RoleController::class, 'EditRole']);
+
 });
 
 

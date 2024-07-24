@@ -20,6 +20,21 @@ class PrestationController extends Controller
 
     public function AddPrestation(Request $request)
     {
+        if($request->service == 0)
+        {
+            return back()->with('error', 'Choisissez impérativement le service');
+        }
+
+        if($request->type == 0)
+        {
+            return back()->with('error', 'Choisissez impérativement le type de prestation');
+        }
+
+        if($request->contrat == 0)
+        {
+            return back()->with('error', 'Choisissez impérativement le contrat');
+        }
+
         //VERIFIER SI IL N'EST PAS CLIENT CHANGE SONT STATUT A MEME TEMPS
         //RECUPER L'(ENTREPRISE)
         $recup_entreprise = (new ContratController())->GetById($request->contrat);
@@ -58,14 +73,14 @@ class PrestationController extends Controller
 
     public function MyOwnPrestation($id)
     {
-          //dd($id);  
+         
           $get = DB::table('prestations')
           ->join('typeprestations', 'prestations.id_type_prestation', '=', 'typeprestations.id')
           ->join('contrats', 'prestations.id_contrat', '=', 'contrats.id')
           ->join('services', 'prestations.id_service', '=', 'services.id')
           ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')
           ->where('prestations.created_by', '=', $id)
-          ->get(['prestations.*', 'contrats.fin_contrat',  'contrats.reste_a_payer', 
+          ->get(['prestations.*', 'contrats.fin_contrat',  'contrats.reste_a_payer', 'contrats.titre_contrat', 
            'services.libele_service', 'services.description', 
            'typeprestations.libele', 'entreprises.nom_entreprise']);
    
@@ -80,7 +95,23 @@ class PrestationController extends Controller
           ->join('services', 'prestations.id_service', '=', 'services.id')
           ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')
           ->join('utilisateurs', 'prestations.created_by', '=', 'utilisateurs.id')
-          ->get(['prestations.*', 'contrats.fin_contrat', 'contrats.reste_a_payer', 
+          ->get(['prestations.*', 'contrats.fin_contrat', 'contrats.reste_a_payer', 'contrats.titre_contrat',
+          'services.libele_service', 'services.description', 
+          'typeprestations.libele', 'entreprises.nom_entreprise', 'utilisateurs.nom_prenoms',]);
+        
+           return $get;
+    }
+
+    public function getAllNoReglee()
+    {
+        $get = DB::table('prestations')
+          ->join('typeprestations', 'prestations.id_type_prestation', '=', 'typeprestations.id')
+          ->join('contrats', 'prestations.id_contrat', '=', 'contrats.id')
+          ->join('services', 'prestations.id_service', '=', 'services.id')
+          ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')
+          ->join('utilisateurs', 'prestations.created_by', '=', 'utilisateurs.id')
+          ->where('contrats.statut_solde', '=', 0)
+          ->get(['prestations.*', 'contrats.fin_contrat', 'contrats.reste_a_payer', 'contrats.titre_contrat',
           'services.libele_service', 'services.description', 
           'typeprestations.libele', 'entreprises.nom_entreprise', 'utilisateurs.nom_prenoms',]);
         

@@ -15,6 +15,9 @@
      <div class="row">
       
          @if(session('success'))
+          @php
+            dd('ici');
+          @endphp
             <div class="col-md-12 box-header">
               <p class="bg-success" style="font-size:13px;">{{session('success')}}</p>
             </div>
@@ -44,9 +47,9 @@
                                     <td>{{$all->specifite}}</td>
                                     
                                     <td>
-                                        <form action="edit_typeprest_form" method="post">
+                                        <form action="edit_role_form" method="post">
                                             @csrf
-                                            <input type="text" value={{$all->id}} style="display:none;" name="id_typeprest">
+                                            <input type="text" value={{$all->id}} style="display:none;" name="id_role">
                                             <button type="submit" class="btn btn-primary"><i class="fa fa-edit"></i></button>
                                         </form>
                                         
@@ -100,6 +103,51 @@
                 </div>
               </form>
             </div>
+        </div>
+    </div>
+
+    <div class="row">
+         <div class="col-md-6">
+            @if(isset($id_edit))
+              <div class="box box-aeneas">
+                <div class="box-header with-border">
+                  <h3 class="box-title">MODIFIER UN ROLE</h3><br>(*) champ obligatoire
+                </div>
+                @php
+                 
+                  $retrive = $rolecontroller->GetById($id_edit);
+                  
+                @endphp
+                <!-- form start -->
+                <form role="form" method="post" action="edit_role">
+                  @csrf
+                  <div class="box-body">
+                    
+                    @foreach($retrive as $retrive)
+                        <input type="text" value="{{$retrive->id}}" style="display:none;" name="id_role">
+                        <div class="form-group">
+                            <label>Le titre</label>
+                            <input type="text" onkeyup='this.value=this.value.toUpperCase()' maxlength="30"
+                            class="form-control input-lg" name="intitule"  value="{{$retrive->intitule}}"/>
+                        </div>  
+                  
+                        <div class="form-group">
+                          <label>Description</label>
+                          <textarea class="form-control input-lg" name="specifite">{{$retrive->specifite}}</textarea>
+                        </div>  
+                    @endforeach
+                    
+
+                  </div>
+                  <!-- /.box-body -->
+
+                  <div class="box-footer">
+                    <button type="submit" class="btn btn-primary">VALIDER</button>
+                  </div>
+                </form>
+              </div>
+            @endif
+           
         </div>
     </div>
 		

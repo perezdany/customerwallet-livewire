@@ -33,6 +33,15 @@ class ProspectionController extends Controller
 
     public function AddProspection(Request $request)
     {
+        if($request->service_propose == 0)
+        {
+            return back()->with('error', 'Choisissez le service');
+        }
+
+        if($request->entreprise == 0)
+        {
+            return back()->with('error', 'Choisissez l\'entrprise ');
+        }
         $calculator = new Calculator();
         
         //Calcul de la date de fin de contrat

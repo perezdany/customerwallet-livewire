@@ -12,6 +12,14 @@
 
      use App\Http\Controllers\InterlocuteurController;
 
+    use App\Http\Controllers\FactureController;
+
+    use App\Http\Controllers\Calculator;
+
+    $calculator = new Calculator();
+
+    $facturecontroller = new FactureController();
+
      $servicecontroller = new ServiceController();
 
      $typeprestationcontroller = new TypePrestationController();
@@ -22,10 +30,125 @@
 
      $interlocuteurcontroller = new InterlocuteurController();
 
+     $my_own =  $facturecontroller->FactureDateDepassee();
+     $count_non_reglee = $calculator->CountFactureNonRegleDepasse();
+
      
 @endphp
 
 @section('content')
+    @if(auth()->user()->id_role == 1 OR auth()->user()->id_role == 3 OR auth()->user()->id_role == 4)
+        <div class="row">
+            <div class="col-md-8">
+            <!-- TABLE: LATEST ORDERS LES FACTURES QUI N'ONT PAS ETE REGLEES ET LADATE EST DEPASS2E-->
+            @if($count_non_reglee != 0)
+                    <div class="box box-info">
+                        <div class="box-header with-border">
+                        <h3 class="box-title">Attention! Ces factures ne sont pas régéles et la date de règlement est dépassée</h3>
+
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                            </button>
+                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                        </div>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                        <div class="table-responsive">
+                            <table class="table no-margin">
+                            <thead>
+                                <tr>
+                                    <th>Facture N°</th>
+
+                                
+                                    <th>Date de règlement</th>
+                                    <th>Montant</th>
+                                    <th>Afficher les paiements</th>
+                                    <th>Contrat</th>
+                                    <th>Etat facture</th>
+                                    <th>Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($my_own as $my_own)
+                                        <tr>
+                                        <td>{{$my_own->numero_facture}}</td>
+                                        
+                                        <td>@php echo date('d/m/Y',strtotime($my_own->date_reglement)) @endphp</td>
+                                        <td>
+                                            @php
+                                                echo  number_format($my_own->montant_facture, 2, ".", " ")." XOF";
+                                            @endphp
+                                        </td>
+                                        <td>
+                                            <form action="paiement_by_facture" method="post">
+                                                    @csrf
+                                                    <input type="text" value={{$my_own->id}} style="display:none;" name="id_facture">
+                                                    <button type="submit" class="btn btn-success"><i class="fa fa-money"></i>AFFICHER</button>
+                                            </form>
+                                        </td>
+                                        <td>{{$my_own->titre_contrat}}</td>
+                                            <td>
+                                            @if($my_own->reglee == 0)
+                                                <p class="bg-warning">
+                                                <b>Facture non réglée</b>
+                                                </p>
+                                            @endif
+                                            @if($my_own->reglee == 1)
+                                                <p class="bg-success">
+                                                <b>Facture réglée</b>
+                                                </p>
+                                            @endif
+                                            
+                                            </td>
+                                        <td>
+
+                                            @if($my_own->reglee == 0)
+                                                @if(auth()->user()->id_role != 2)
+                                                <form action="paiement_form" method="post">
+                                                    @csrf
+                                                    <input type="text" value={{$my_own->id}} style="display:none;" name="id_facture">
+                                                    <button type="submit" class="btn btn-success"><i class="fa fa-money"></i></button>
+                                                </form>
+                                                @endif
+                                            @else
+                                            
+                                            @endif
+                                            <form action="edit_facture_form" method="post">
+                                                @csrf
+                                                <input type="text" value={{$my_own->id}} style="display:none;" name="id_facture">
+                                                <button type="submit" class="btn btn-primary"><i class="fa fa-edit"></i></button>
+                                            </form>
+                                        </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                    <th>Facture N°</th>
+
+                                    
+                                        <th>Date de règlement</th>
+                                        <th>Montant</th>
+                                        <th>Afficher les paiements</th>
+                                        <th>Contrat</th>
+                                        <th>Etat facture</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        <!-- /.table-responsive -->
+                        </div>
+                        <!-- /.box-body -->
+                    
+                    </div>
+                    <!-- /.box -->
+            @endif
+            
+            </div>
+        </div>
+    @endif
     <div class="row">
          @if(session('success'))
             <div class="col-md-12 box-header" style="font-size:13px;">
@@ -53,28 +176,25 @@
                         @csrf
                         <div class="box-body">
                             <div class="form-group">
-                                <label>Entreprise: Ou choisir Autre</label>
-                                <select class="form-control input-lg" name="entreprise">
+                                <label>Entreprise (*):</label>
+                           
+                                <select class="form-control input-lg" name="entreprise" required>
                                     @php
                                         $get = (new EntrepriseController())->GetAll();
                                     @endphp
-                                    
+                                    <option value="0">--Selectionnez Une entreprise--</option>
                                     @foreach($get as $entreprise)
                                         <option value={{$entreprise->id}}>{{$entreprise->nom_entreprise}}</option>
                                         
                                     @endforeach
-                                    <option value="autre">Autre</option>
+
                                 </select>
                                     
                             </div>   
-                            <div class="form-group">
-                                <label>Renseigner le nom de l'entreprise</label>
-                                <input type="text"  maxlength="50" onkeyup='this.value=this.value.toUpperCase()' class="form-control input-lg" name="entreprise_name" placeholder="Ex:BICICI"/>
-                            </div>
 
                         <div class="form-group">
-                            <label>Titre</label>
-                            <input type="text"  maxlength="100" class="form-control input-lg" name="titre" placeholder="Ex: Contrat de sureté BICICI"/>
+                            <label>Numéro de contrat</label>
+                            <input type="text"  maxlength="100" required class="form-control input-lg" name="titre" placeholder="Ex: Contrat de sureté BICICI"/>
                         </div>
                     
                         <div class="form-group">
@@ -82,22 +202,6 @@
                             <input type="number" maxlength="13"  
                             class="form-control  input-lg" required name="montant">
                         </div>
-
-                        <!--SCRIPT POUR FORCER LA SAISIE DE NOMBRE-->
-                        <script type="text/javascript">
-                            /*function restrictAlphabets(e)
-                            {
-                                var x = e.wich || e.keycode;
-                                if(x >= 48 && x <= 57)
-                                {
-                                    return true;
-                                }
-                                else
-                                {
-                                    return false;
-                                }
-                            }*/
-                        </script>
                     
                         <div class="form-group">
                             <label>Debut du contrat</label>
@@ -155,6 +259,7 @@
                                     <label>Service (*)</label>
                                     <select class="form-control input-lg" name="service" required>
                                         <!--liste des services a choisir -->
+                                        <option  value="0">--Selectionnez le service--</option>
                                         @php
                                             $get = $servicecontroller->GetAll();
                                         @endphp
@@ -173,7 +278,7 @@
                                         @php
                                             $get = $typeprestationcontroller->GetAll();
                                         @endphp
-                                        
+                                        <option>--Choisir le type--</option>
                                         @foreach($get as $type)
                                             <option value={{$type->id}}>{{$type->libele}}</option>
                                             
@@ -190,10 +295,10 @@
                                     <!--Afficher les contrats que l'utilisateur a créé-->
                                     <select class="form-control input-lg" name="contrat" required>
                                         @php
-                                            $contrat = $contratcontroller->GetAll();
+                                            $contrat = $contratcontroller->GetAllNoSolde();
                                             
                                         @endphp
-                                        
+                                        <option>--Choisir le contrat--</option>
                                         @foreach($contrat as $contrat)
                                             <option value={{$contrat->id}}>{{$contrat->titre_contrat}}</option>
                                             
@@ -234,6 +339,7 @@
                                     <label>Service Proposé (*)</label>
                                     <select class="form-control input-lg" name="service_propose" required>
                                         <!--liste des services a choisir -->
+                                        <option>--Selectionnez le service--</option>
                                         @php
                                             $get = $servicecontroller->GetAll();
                                         @endphp
@@ -264,21 +370,16 @@
                                         @php
                                             $get = $entreprisecontroller->GetAll();
                                         @endphp
-                                        
+                                        <option>--Selectionnez Une entreprise--</option>
                                         @foreach($get as $entreprise)
                                             <option value={{$entreprise->id}}>{{$entreprise->nom_entreprise}}</option>
                                             
                                         @endforeach
-                                        <option value="autre">Autre</option>
+                                      
                                     </select>
                                     
                                 </div>
-                                <div class="form-group">
-                                    <label for="exampleInputFile">Saisir le nom de l'entreprise</label>
-                                <input type="text"  maxlength="50" class="form-control input-lg" name="entreprise_name" onkeyup="this.value=this.value.toUpperCase()">
-                                    
-                                </div>
-                            
+                               
                             </div>
                             <!-- /.box-body -->
 
@@ -370,7 +471,7 @@
                                             @php
                                                 $get = $servicecontroller->GetAll();
                                             @endphp
-                                            
+                                            <option value="0">--Choisisez le service--</option>
                                             @foreach($get as $service)
                                                 <option value={{$service->id}}>{{$service->libele_service}}</option>
                                                 
@@ -397,18 +498,13 @@
                                             @php
                                                 $get = $entreprisecontroller->GetAll();
                                             @endphp
-                                            
+                                            <option value="0">Choissez l'entreprise--</option>
                                             @foreach($get as $entreprise)
                                                 <option value={{$entreprise->id}}>{{$entreprise->nom_entreprise}}</option>
                                                 
                                             @endforeach
-                                            <option value="autre">Autre</option>
+                                           
                                         </select>
-                                        
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="exampleInputFile">Saisir le nom de l'entreprise</label>
-                                    <input type="text"  maxlength="30" class="form-control input-lg" name="entreprise_name" onkeyup="this.value=this.value.toUpperCase()">
                                         
                                     </div>
                                 
@@ -498,20 +594,16 @@
                                         @php
                                             $get = (new EntrepriseController())->GetAll();
                                         @endphp
-                                        
+                                         <option  value="0">--Selectionnez Une entreprise--</option>
                                         @foreach($get as $entreprise)
                                             <option value={{$entreprise->id}}>{{$entreprise->nom_entreprise}}</option>
                                             
                                         @endforeach
-                                        <option value="autre">Autre</option>
+                                        
                                     </select>
                                         
                                 </div>   
-                                <div class="form-group">
-                                    <label>Renseigner le nom de l'entreprise</label>
-                                    <input type="text"  maxlength="30" onkeyup='this.value=this.value.toUpperCase()'
-                                     class="form-control input-lg" name="entreprise_name" placeholder="Ex:BICICI"/>
-                                </div>
+                               
 
                             <div class="form-group">
                                 <label>Titre</label>
@@ -583,7 +675,7 @@
                                             @php
                                                 $get = $servicecontroller->GetAll();
                                             @endphp
-                                            
+                                            <option  value="0">--Selectionnez le service--</option>
                                             @foreach($get as $service)
                                                 <option value={{$service->id}}>{{$service->libele_service}}</option>
                                                 
@@ -598,7 +690,7 @@
                                             @php
                                                 $get = $typeprestationcontroller->GetAll();
                                             @endphp
-                                            
+                                             <option  value="0">--Selectionnez le type--</option>
                                             @foreach($get as $type)
                                                 <option value={{$type->id}}>{{$type->libele}}</option>
                                                 
@@ -615,10 +707,10 @@
                                         <!--Afficher les contrats que l'utilisateur a créé-->
                                         <select class="form-control input-lg" name="contrat" required>
                                             @php
-                                                $contrat = $contratcontroller->GetAll();
+                                                $contrat = $contratcontroller->GetAllNoSolde();
                                                 
                                             @endphp
-                                            
+                                             <option value="0">--Selectionnez le contrat--</option>
                                             @foreach($contrat as $contrat)
                                                 <option value={{$contrat->id}}>{{$contrat->titre_contrat}}</option>
                                                 

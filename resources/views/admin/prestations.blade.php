@@ -4,7 +4,18 @@
    
   use App\Http\Controllers\PrestationController;
 
-  $prestationcontroller = new PrestationController();
+    use App\Http\Controllers\PaiementController;
+     use App\Http\Controllers\FactureController;
+
+     use App\Http\Controllers\Calculator;
+
+    $prestationcontroller = new PrestationController();
+
+    $calculator = new Calculator();
+   
+    $paiementcontroller = new PaiementController();
+    $facturecontroller = new FactureController();
+
 
   //LES DIFFERENTES REQUETES EN FONCTION DU DEPARTEMENT
   $my_own = $prestationcontroller->MyOwnPrestation(auth()->user()->id);
@@ -13,7 +24,7 @@
 @endphp
 
 @section('content')
-     <div class="row">
+    <div class="row">
       
          @if(session('success'))
             <div class="col-md-12 box-header">
@@ -44,8 +55,8 @@
                           <th>Entreprise</th>
                           <th>Fin de contrat</th>
                           <th>Prestation</th>
-                          <th>Description de la prestation</th>	
-                          <th>Ajouté par</th>	
+                          
+                         
                           <th>Action</th>
                           </tr>
                           </thead>
@@ -58,16 +69,17 @@
                                       <td>{{$all->nom_entreprise}}</td>
                                       <td>@php echo date('d/m/Y',strtotime($all->fin_contrat));  @endphp</td>
                                       <td>{{$all->libele_service}}</td>
-                                      <td>{{$all->description}}</td>
-                                       <td>{{$all->nom_prenoms}}</td>
+                                      
+                                       
                                       <td>
                                           @if(auth()->user()->id_role != 2)
-                                              <form action="paiement_form" method="post">
+                                              <form action="display_facture" method="post">
                                                 @csrf
                                                 <input type="text" value={{$all->id}} style="display:none;" name="id_prestation">
-                                                <button type="submit" class="btn btn-success"><i class="fa fa-money"></i></button>
+                                                <button type="submit" class="btn btn-success"><i class="fa fa-ticket"></i></button>
                                             </form>
                                           @endif
+                                         
                                           <form action="edit_prestation_form" method="post">
                                               @csrf
                                               <input type="text" value={{$all->id}} style="display:none;" name="id_prestation">
@@ -86,8 +98,7 @@
                           <th>Entreprise</th>
                           <th>Fin de contrat</th>
                           <th>Prestation</th>
-                          <th>Description de la prestation</th>	
-                          <th>Ajouté par</th>	
+                          
                           <th>Action</th>
                           </tr>
                           </tfoot>
@@ -99,6 +110,104 @@
           <!-- /.box -->
         </div>
         <!-- /.col -->
-		  </div>
+		</div>
+
+
+    <!--AFFICHAGE DES FACTURES DE LA PRESTATION SELECTIONNEE-->
+    <div class="row">
+        <div class="col-md-8">
+          @if(isset($id_prestation))
+                @php
+                    $my_own = $facturecontroller->DisplayByIdPrestation($id_prestation);
+                @endphp
+
+                <div class="box">
+                    <div class="box-header">
+                    <h3 class="box-title">Facture de la prestation</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                    <table id="example1" class="table table-bordered table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <th>Facture N°</th>
+
+                            <th>Emise le:</th>
+                            <th>Date de règlement</th>
+                            <th>Montant</th>
+                            <th>Contrat</th>
+                            <th>Etat facture</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($my_own as $my_own)
+                                <tr>
+                                <td>{{$my_own->numero_facture}}</td>
+                                <td>@php echo date('d/m/Y',strtotime($my_own->date_emission)) @endphp</td>
+                                <td>@php echo date('d/m/Y',strtotime($my_own->date_reglement)) @endphp</td>
+                                <td>
+                                    @php
+                                        echo  number_format($my_own->montant_facture, 2, ".", " ")." XOF";
+                                    @endphp
+                                </td>
+                                
+                                <td>{{$my_own->titre_contrat}}</td>
+                                 <td>
+                                    @if($my_own->reglee == 0)
+                                      <p class="bg-warning">
+                                        <b>Facture non réglée</b>
+                                      </p>
+                                    @endif
+                                    @if($my_own->reglee == 1)
+                                      <p class="bg-success">
+                                        <b>Facture réglée</b>
+                                      </p>
+                                    @endif
+                                 
+                                 </td>
+                                <td>
+                                  @if($my_own->reglee == 0)
+                                       @if(auth()->user()->id_role != 2)
+                                      <form action="paiement_form" method="post">
+                                        @csrf
+                                        <input type="text" value={{$my_own->id}} style="display:none;" name="id_facture">
+                                        <button type="submit" class="btn btn-success"><i class="fa fa-money"></i></button>
+                                      </form>
+                                    @endif
+                                  @else
+                                   
+                                  @endif
+                                   
+                                    <form action="edit_facture_form" method="post">
+                                        @csrf
+                                        <input type="text" value={{$my_own->id}} style="display:none;" name="id_facture">
+                                        <button type="submit" class="btn btn-primary"><i class="fa fa-edit"></i></button>
+                                    </form>
+                                </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <th>Facture N°</th>
+
+                            <th>Emise le:</th>
+                            <th>Date de règlement</th>
+                            <th>Montant</th>
+                            <th>Contrat</th>
+                            <th>Etat facture</th>
+                            <th>Action</th>
+                        </tr>
+                        </tfoot>
+                    </table>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+              <!-- /.box -->
+          @endif
+           
+        </div>
+    </div>
 		
 @endsection

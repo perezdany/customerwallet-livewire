@@ -10,6 +10,7 @@ use App\Models\Prestation;
 use App\Models\Contrat;
 use App\Models\Paiement;
 use App\Models\Service;
+use App\Models\Facture;
 
 use DB;
 
@@ -352,7 +353,7 @@ class Calculator extends Controller
         }
         
 
-        return view('dash/monthly', compact('data', 'company', 'percent', 'data_serv', 'serv'));
+        return view('graph/monthly', compact('data', 'company', 'percent', 'data_serv', 'serv'));
     }
     
     public function SearchMonth(Request $request)
@@ -507,7 +508,7 @@ class Calculator extends Controller
         }
         
 
-        return view('dash/search_monthly', compact('data', 'company', 'percent', 'francais', 'serv', 'data_serv'));
+        return view('graph/search_monthly', compact('data', 'company', 'percent', 'francais', 'serv', 'data_serv'));
     }
 
 
@@ -694,7 +695,7 @@ class Calculator extends Controller
            
         }
         
-        return view('dash/yearly', compact('data', 'mois_francais', 'percent', 'company', 'serv', 'data_serv'));
+        return view('graph/yearly', compact('data', 'mois_francais', 'percent', 'company', 'serv', 'data_serv'));
     }
 
     public function SearchYear(Request $request)
@@ -883,7 +884,62 @@ class Calculator extends Controller
         }
       
        
-       return view('dash/search_yearly', compact('data', 'mois_francais', 'percent', 'company', 'data_serv', 'serv', 'year'));
+       return view('graph/search_yearly', compact('data', 'mois_francais', 'percent', 'company', 'data_serv', 'serv', 'year'));
+    }
+
+    public function VerifyIfFactureRegle($id_facture, $montant)
+    {
+        //somme des paiement
+        $somme_paiement = 0;
+        //Récuperer tout les paiement de la facture ['paiements.paiement']
+
+        $all_paiements = DB::table('paiements')
+        ->join('factures', 'paiements.id_facture', '=', 'factures.id')
+        ->where('paiements.id_facture', $id_facture)
+        ->get();
+
+        foreach($all_paiements as $all_paiements)
+        {
+            $somme_paiement =  $somme_paiement + $all_paiements->paiement;
+        }
+       
+        //SOUSTRACTION
+        $rest = $montant - $somme_paiement;
+        
+        return $rest;
+    }
+
+    public function RetrunMontantRest($id_facture, $montant)
+    {
+        //somme des paiement
+        $somme_paiement = 0;
+        //Récuperer tout les paiement de la facture ['paiements.paiement']
+        //dd($id_facture);
+        $all_paiements = DB::table('paiements')
+        ->join('factures', 'paiements.id_facture', '=', 'factures.id')
+        ->where('paiements.id_facture', $id_facture)
+        ->get();
+
+        foreach($all_paiements as $all_paiements)
+        {
+            $somme_paiement =  $somme_paiement + $all_paiements->paiement;
+        }
+       
+        //SOUSTRACTION
+        $rest = $montant - $somme_paiement;
+        
+        return $rest;
+    }
+
+    public function CountFactureNonRegleDepasse()
+    {
+        $today = date('Y-m-d');
+        
+        $count = Facture::where('date_reglement', '<', $today)
+        ->where('reglee', 0)
+        ->count();
+
+        return $count;
     }
 
 

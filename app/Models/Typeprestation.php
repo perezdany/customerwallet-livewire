@@ -10,6 +10,6 @@ class Typeprestation extends Model
     use HasFactory;
 
     protected $fillable = [
-         'libele',
+        'libele',
     ];
 }

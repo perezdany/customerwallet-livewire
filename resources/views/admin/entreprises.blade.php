@@ -36,7 +36,9 @@
                   <tr>
                     <th>Nom</th>
                     <th>Statut</th>
+                    <th>Adresse</th>
                     <th>Client depuis le:</th>
+                    <th>Interlocuteurs: </th>
                     <th>Action</th>
                   </tr>
                   </thead>
@@ -46,6 +48,7 @@
                           <td>{{$all->nom_entreprise}}</td>
                           
                           <td>{{$all->libele_statut}}</td>
+                          <td>{{$all->adresse}}</td>
                           <td>
                             @php 
                                 if($all->client_depuis != NULL)
@@ -54,6 +57,13 @@
                                 }
                                 
                             @endphp
+                          </td>
+                          <td>
+                            <form action="display_by_id_entreprise" method="post">
+                                @csrf
+                                <input type="text" value={{$all->id}} style="display:none;" name="id_entreprise">
+                                <button type="submit" class="btn btn-primary"><i class="fa fa-eye"></i>AFFICHER</button>
+                            </form>
                           </td>
                           <td>
                             <form action="edit_entreprise_form" method="post">
@@ -72,9 +82,11 @@
                   </tbody>
                   <tfoot>
                   <tr>
-                   <th>Nom</th>
+                    <th>Nom</th>
                     <th>Statut</th>
+                    <th>Adresse</th>
                     <th>Client depuis le:</th>
+                    <th>Interlocuteurs: </th>
                     <th>Action</th>
                   </tr>
                   </tfoot>
@@ -87,6 +99,63 @@
             <!-- /.col -->
             <div class="col-md-6">
 
+                  <!-- Afficher les interlocuteurs de l'entreprise sélectionnée -->
+              @if(isset($interloc))
+                  
+                <div class="box">
+                    <div class="box-header with-border">
+                    <h3 class="box-title">INTERLOCUTEURS</h3><br>
+                </div>
+                
+                      <!-- /.box-header -->
+                <div class="box-body">
+                    <table id="example1" class="table table-bordered table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <th>Nom & Prénom(s)</th>
+                            <th>Téléphone</th>
+                            <th>Email</th>
+                            <th>Fonction</th>
+              
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($interloc as $interloc)
+                                <tr>
+                                    
+                                    <td>{{$interloc->titre}} {{$interloc->nom}}</td>
+                                    <td>{{$interloc->tel}}</td>
+                                    <td>{{$interloc->email}}</td>
+                                    <td>{{$interloc->fonction}}</td>
+                                    
+                                    <td>
+                                        <form action="edit_interlocuteur_form" method="post">
+                                            @csrf
+                                            <input type="text" value={{$interloc->id}} style="display:none;" name="id_interlocuteur">
+                                            <button type="submit" class="btn btn-primary"><i class ="fa fa-edit"></i></button>
+                                        </form>
+                                        
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <th>Nom & Prénom(s)</th>
+                            <th>Téléphone</th>
+                            <th>Email</th>
+                            <th>Fonction</th>
+                            <th>Action</th>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <!-- /.box-body -->
+        
+                  
+              @endif
+
               <!-- general form elements -->
               @if(isset($id_entreprise))
                   @php
@@ -95,8 +164,8 @@
                   @foreach($edit as $edit)
                       <div class="box box-aeneas">
                           <div class="box-header with-border">
-                          <h3 class="box-title">MODIFIER UNE ENTREPRISE/PARTICULIER</h3><br>
-                      </div>
+                            <h3 class="box-title">MODIFIER UNE ENTREPRISE/PARTICULIER</h3><br>
+                          </div>
                       
                           <!-- form start -->
                           <form role="form" method="post" action="edit_entreprise">
@@ -115,7 +184,8 @@
                                           $statut = $statutentreprisecontroller->GetAll();
               
                                       @endphp
-                                      <select class="form-control input-lg" name="statut">
+                                      <select class="form-control input-lg" name="statut" reuqired>
+                                          <option>--Choisir--</option>
                                           <option value={{$edit->id_statutentreprise}}>{{$edit->libele_statut}}</option>
                                           @foreach($statut as $statut)
                                               <option value={{$statut->id}}>{{$statut->libele_statut}}</option>
@@ -142,12 +212,12 @@
                   
               @endif
             </div>
-        </div>
-          <!-- /.row -->
+      </div>
+      <!-- /.row -->
 		<div class="row">
           <div class="col-md-5">
             
-             <!-- general form elements -->
+            <!-- general form elements -->
             <div class="box box-aeneas">
               <div class="box-header with-border">
                 <h3 class="box-title">AJOUTER UNE ENTREPRISE/PARTICULIER</h3><br>
@@ -187,8 +257,6 @@
                     </div>
                 </div>
                 <!-- /.box-body -->
-
-               
               </form>
             </div>
             <!-- /.box -->

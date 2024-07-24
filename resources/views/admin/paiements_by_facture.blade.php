@@ -95,100 +95,12 @@
            
         </div>
         <!--/.col (left) -->
-        <!-- right column -->
-        <div class="col-md-6">
-            @php
-                $retrive = $facturecontroller->GetById($id)
-                
-                
-            @endphp
-            <div class="box box-aeneas">
-                <div class="box-header with-border">
-                    <b><h3 class="box-title">Paiements </h3><br>
-                    (*)champ obligatoire</b>
-                </div>
-              
-                @foreach($retrive as $retrive)
-                     <!-- form start -->
-                    <form role="form" action="do_paiement" method="post">
-                        @csrf
-                        <input type="text" value="{{$id}}" name="id_facture" style="display:none;">
-                        <input type="text" value="{{$retrive->montant_facture}}" name="montant_facture" style="display:none;">
-                        <input type="text" value="{{$retrive->id_contrat}}" name="id_contrat" style="display:none;">
-                        <input type="text" value="{{$retrive->id}}" name="id_facture" style="display:none;">
-                     
-                        <div class="box-body">
-
-                            <div class="form-group">
-                                <label>PRESTATION DU :</label>
-                                <p><h3>@php echo date('d/m/Y',strtotime($retrive->date_prestation)) @endphp</h3></p>
-                            </div>
-                            <div class="form-group">
-                                <label>SERVICE :</label>
-                                <p><h3> {{$retrive->libele_service}} </h3></p>
-                            </div>
-                             <div class="form-group">
-                                <label>TYPE DE PRESTATION :</label>
-                                <p><h3> {{$retrive->libele}}</h3> </p>
-                            </div>
-                            <div class="form-group">
-                                <label>Numéro facture</label>
-                                <input type="text" maxlength="30" readonly="true" class="form-control input-lg" name="numero_facture" value="{{$retrive->numero_facture}}">
-                            </div>
-                            <div class="form-group">
-                                <label>MONTANT RESTANT DE LA FACTURE:</label>
-                                <!--CODE POUR DETECTER LES TOUS LES PAIEMENTS DE CETTE FACTURE ET RETOURNER LE RESTE-->
-                                <p><h3>
-                                        @php
-                                             $rest  = $calculator->RetrunMontantRest($retrive->id, $retrive->montant_facture);
-                                        @endphp
-                                        {{$rest}}
-                                    </h3>
-                                </p>
-                            </div>
-                            <div class="form-group">
-                                <label >DATE DE REGLEMENT</label>
-                                <p><h3>@php echo date('d/m/Y',strtotime($retrive->date_reglement)) @endphp</h3></p>
-                            </div>
-
-                            <div class="form-group">
-                                <label>Entrer le montant du paiement</label>
-                                <input type="number" class="form-control input-lg" name="paiement" required>
-                            </div>
-
-                            <div class="form-group">
-                                <label>Date du paiement</label>
-                                <input type="date" class="form-control input-lg" name="date_paiement" required>
-                            </div>
-                            
-                           
-                            
-                        </div>
-                        <!-- /.box-body -->
-
-                        <div class="box-footer">
-                        <button type="submit" class="btn btn-primary">VALIDER</button>
-                        </div>
-                    </form>
-
-                @endforeach
-               
-            </div>		
-        </div>
+        
         
     </div>
     <!-- Main row -->  
     <div class="row">
-        @if(session('success'))
-            <div class="col-md-12 box-header" style="font-size:13px;">
-              <p class="bg-success" >{{session('success')}}</p>
-            </div>
-        @endif
-         @if(session('error'))
-            <div class="col-md-12 box-header" style="font-size:13px;">
-              <p class="bg-danger" >{{session('error')}}</p>
-            </div>
-        @endif
+       
     <!-- left column -->
      
         <!--/.col (left) -->
@@ -245,12 +157,12 @@
 
                                 <div class="form-group">
                                     <label>Entrer le montant du paiement</label>
-                                    <input type="number" class="form-control input-lg" required name="paiement" value="{{$retrive->paiement}}">
+                                    <input type="number" class="form-control input-lg" name="paiement" value="{{$retrive->paiement}}">
                                 </div>
 
                                 <div class="form-group">
                                     <label>Date du paiement</label>
-                                    <input type="date" class="form-control input-lg" required name="date_paiement" value="{{$retrive->date_paiement}}">
+                                    <input type="date" class="form-control input-lg" name="date_paiement" value="{{$retrive->date_paiement}}">
                                 </div>
                                 
                             </div>

@@ -29,8 +29,27 @@ class ContratController extends Controller
         return $get;
     }
 
+    public function GetAllNoSolde()
+    {
+        $today = date('Y-m-d');
+        
+        $get = DB::table('contrats')
+        ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')
+        ->join('utilisateurs', 'contrats.created_by', '=', 'utilisateurs.id')
+        ->where('statut_solde', 0)
+        ->where('fin_contrat', '>', $today )
+        ->get(['contrats.*', 'utilisateurs.nom_prenoms', 'entreprises.nom_entreprise',]);
+
+
+        return $get;
+    }
+
     public function AddContrat(Request $request)
     {
+        if($request->entreprise == 0)
+        {
+            return back()->with('error', 'Vous n\'avez pas choisi l\'entreprise');
+        }
         $jours = $request->jours;
         $annee = $request->annee;
         $mois = $request->mois;
@@ -107,8 +126,10 @@ class ContratController extends Controller
         $get = DB::table('contrats')
         ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')
         ->join('utilisateurs', 'contrats.created_by', '=', 'utilisateurs.id')
-        
-        ->get(['contrats.*', 'utilisateurs.nom_prenoms', 'entreprises.nom_entreprise',]);
+        ->join('prestations', 'prestations.id_contrat', '=', 'contrats.id')
+        ->join('typeprestations', 'prestations.id_type_prestation', '=', 'typeprestations.id')
+        ->join('services', 'prestations.id_service', '=', 'services.id')
+        ->get(['contrats.*', 'utilisateurs.nom_prenoms', 'entreprises.nom_entreprise', 'services.libele_service', 'typeprestations.libele']);
 
    
         return $get;

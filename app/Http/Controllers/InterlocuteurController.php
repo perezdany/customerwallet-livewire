@@ -80,4 +80,11 @@ class InterlocuteurController extends Controller
 
         return redirect('interlocuteurs')->with('success', 'Modification effectuée');
     }
+
+    public function DisplayByIdEntreprise(Request $request)
+    {
+        $interloc = Interlocuteur::where('id_entreprise', $request->id_entreprise)->get();
+        
+        return view('admin/entreprises', compact('interloc'));
+    }
 }
