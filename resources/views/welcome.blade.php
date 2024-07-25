@@ -37,7 +37,7 @@
 @endphp
 
 @section('content')
-    @if(auth()->user()->id_role == 1 OR auth()->user()->id_role == 3 OR auth()->user()->id_role == 4)
+    @if(auth()->user()->id_role == 1 OR auth()->user()->id_role == 4 OR auth()->user()->id_role == 2)
         <div class="row">
             <div class="col-md-8">
             <!-- TABLE: LATEST ORDERS LES FACTURES QUI N'ONT PAS ETE REGLEES ET LADATE EST DEPASS2E-->
@@ -443,7 +443,7 @@
                     </div>		
                 </div>
             @else
-              @if(auth()->user()->id_role == 2)
+              @if(auth()->user()->id_role == 5 )
                 @if(auth()->user()->id_departement == 1)
                       <!-- left column -->
                     <div class="col-md-3">
@@ -576,6 +576,169 @@
                     </div>
                 @endif
 
+                @if(auth()->user()->id_departement == 5)
+                     <!-- left column -->
+                    <div class="col-md-4">
+                        <div class="box box-aeneas">
+                        <div class="box-header with-border">
+                            <h3 class="box-title"><b>ENREGISTRER UN CONTRAT</b></h3><br>(*) <b>champ obligatoire
+                        </div>
+                        
+                        <!-- form start -->
+                        <form role="form" method="post" action="add_contrat">
+                            @csrf
+                            <div class="box-body">
+                                <div class="form-group">
+                                    <label>Entreprise: Ou choisir Autre</label>
+                                    <select class="form-control input-lg" name="entreprise">
+                                        @php
+                                            $get = (new EntrepriseController())->GetAll();
+                                        @endphp
+                                         <option  value="0">--Selectionnez Une entreprise--</option>
+                                        @foreach($get as $entreprise)
+                                            <option value={{$entreprise->id}}>{{$entreprise->nom_entreprise}}</option>
+                                            
+                                        @endforeach
+                                        
+                                    </select>
+                                        
+                                </div>   
+                               
+
+                            <div class="form-group">
+                                <label>Titre</label>
+                                <input type="text" class="form-control input-lg"  maxlength="100"  
+                                 name="titre" placeholder="Ex: Contrat de sureté BICICI"/>
+                            </div>
+                        
+                            <div class="form-group">
+                                <label >Montant (XOF)</label>
+                                <input type="number" class="form-control  input-lg" required name="montant">
+                            </div>
+                        
+                            <div class="form-group">
+                                <label>Debut du contrat</label>
+                                <input type="date" class="form-control  input-lg" required name="date_debut">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Date de solde</label>
+                                <input type="date" class="form-control  input-lg" required name="date_solde">
+                            </div>
+
+                                <div class="form-group">
+                                    <label>Durée du contrat</label>
+                                    <!--FAIRE DES CALCULS POUR DETERMINER LA FIN DU CONTRAT-->
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                        <input type="number" class="form-control" placeholder="jours" min="1" max="31" name="jour" >
+                                        </div>
+                                        <div class="col-md-4">
+                                        <input type="number" class="form-control" placeholder="mois" min="1" max="12" name="mois">
+                                        </div>
+                                        <div class="col-md-4">
+                                        <input type="number" class="form-control" placeholder="année" min="1" max="10" name="annee">
+                                        </div>
+                                    </div>
+                                </div>
+
+                            
+                            
+                            </div>
+                            <!-- /.box-body -->
+
+                            <div class="box-footer">
+                            <button type="submit" class="btn btn-primary">VALIDER</button>
+                            </div>
+                        </form>
+                        </div>
+                        <!-- /.box -->
+                    </div>
+                    <!--/.col (left) -->
+
+                    <!-- right column -->
+                    <div class="col-md-4">
+                        <!-- general form elements -->
+                        <div class="box box-aeneas">
+                            <div class="box-header with-border">
+                            <h3 class="box-title"> <b>ENREGISTRER UNE PRESTATION</b></h3><br><b>(*) champ obligatoire</b>
+                            </div>
+                            
+                            <!-- form start -->
+                            <form role="form" method="post" action="add_prestation">
+                                @csrf
+                                <div class="box-body">
+                                    <div class="form-group">
+                                        <label>Service (*)</label>
+                                        <select class="form-control input-lg" name="service" required>
+                                            <!--liste des services a choisir -->
+                                            @php
+                                                $get = $servicecontroller->GetAll();
+                                            @endphp
+                                            <option  value="0">--Selectionnez le service--</option>
+                                            @foreach($get as $service)
+                                                <option value={{$service->id}}>{{$service->libele_service}}</option>
+                                                
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                
+                                    <div class="form-group">
+                                        <label>Type de prestation (*)</label>
+                                        <select class="form-control input-lg" name="type" required>
+                                            <!--liste des services a choisir -->
+                                            @php
+                                                $get = $typeprestationcontroller->GetAll();
+                                            @endphp
+                                             <option  value="0">--Selectionnez le type--</option>
+                                            @foreach($get as $type)
+                                                <option value={{$type->id}}>{{$type->libele}}</option>
+                                                
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Date d'exécution(*)</label>
+                                        <input type="date" class="form-control  input-lg" required name="date_execute">
+                                    </div>
+                                        
+                                    <div class="form-group">
+                                        <label>Choisissez le contrat(*) </label>
+                                        <!--Afficher les contrats que l'utilisateur a créé-->
+                                        <select class="form-control input-lg" name="contrat" required>
+                                            @php
+                                                $contrat = $contratcontroller->GetAllNoSolde();
+                                                
+                                            @endphp
+                                             <option value="0">--Selectionnez le contrat--</option>
+                                            @foreach($contrat as $contrat)
+                                                <option value={{$contrat->id}}>{{$contrat->titre_contrat}}</option>
+                                                
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                        
+                                    <div class="form-group">
+                                        <label>Adresse </label>
+                                        <input type="text" class="form-control input-lg"  maxlength="100"  
+                                        name="localisation" placeholder="Ex: Cocody Angré Cocovico">
+                                    </div>
+                                
+                                </div>
+                                <!-- /.box-body -->
+
+                                <div class="box-footer">
+                                <button type="submit" class="btn btn-primary">VALIDER</button>
+                                </div>
+                            </form>
+                        </div>
+                        <!-- /.box -->
+                    </div>
+                @endif
+              @endif
+
+               @if(auth()->user()->id_role == 2 )
+               
                 @if(auth()->user()->id_departement == 5)
                      <!-- left column -->
                     <div class="col-md-4">

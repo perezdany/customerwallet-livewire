@@ -2655,6 +2655,16 @@ a:focus {
  * Component: Table
  * ----------------
  */
+thead{
+ background-color: rgb(161, 157, 157);
+ }
+
+ tfoot{
+  background-color: rgb(169, 164, 164);
+  }
+
+
+
 .table > thead > tr > th,
 .table > tbody > tr > th,
 .table > tfoot > tr > th,

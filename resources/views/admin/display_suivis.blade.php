@@ -19,7 +19,7 @@
         <div class="col-md-12">
               <div class="box">
                 <div class="box-header">
-                  <h3 class="box-title">Suivis effectué</h3>
+                  <h3 class="box-title">Suivis effectués</h3>
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
@@ -32,7 +32,10 @@
                       <th>Interlocuteur</th>
                        <th>Entreprise</th>
                         <th>Service proposé</th>
-                    <th>Action</th>
+                     @if(auth()->user()->id_role == 3)
+                    @else
+                        <th>Action</th>
+                    @endif
                   </tr>
                   </thead>
                   <tbody>
@@ -43,14 +46,17 @@
                           <td>{{$all->nom}}</td>
                          <td>{{$all->nom_entreprise}}</td>
                           <td>{{$all->libele_service}}</td>
+                          @if(auth()->user()->id_role == 3)
+                          @else
+                            <td>
+                              <form action="edit_suivi_form" method="post">
+                                  @csrf
+                                  <input type="text" value={{$all->id}} style="display:none;" name="id_suivi">
+                                  <button type="submit" class="btn btn-success">MODIFIER</button>
+                              </form>
+                            </td>
+                          @endif
                           
-                          <td>
-                            <form action="edit_suivi_form" method="post">
-                                @csrf
-                                <input type="text" value={{$all->id}} style="display:none;" name="id_suivi">
-                                <button type="submit" class="btn btn-success">MODIFIER</button>
-                            </form>
-                          </td>
                       @endforeach
                   </tbody>
                   <tfoot>
@@ -61,7 +67,10 @@
                       <th>Interlocuteur</th>
                        <th>Entreprise</th>
                         <th>Service proposé</th>
-                    <th>Action</th>
+                     @if(auth()->user()->id_role == 3)
+                    @else
+                        <th>Action</th>
+                    @endif
                   </tr>
                   </tfoot>
                   </table>

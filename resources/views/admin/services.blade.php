@@ -43,7 +43,10 @@
                             <form action="edit_service_form" method="post">
                                 @csrf
                                 <input type="text" value={{$all->id}} style="display:none;" name="id_service">
-                                <button type="submit" class="btn btn-primary"><i class="fa fa-edit"></i></button>
+                                <button type="submit" class="btn btn-primary" >
+                                
+                                <i class="fa fa-edit"></i>
+                                </button>
                             </form>
 
                              <form action="delete_service" method="post">
@@ -122,7 +125,7 @@
                 @foreach($edit as $edit)
                     <div class="box box-aeneas">
                         <div class="box-header with-border">
-                            <h3 class="box-title">MODIFIER LE DEPARTEMENT</h3><br>
+                            <h3 class="box-title">MODIFIER LE SERVICE</h3><br>
                         </div>
                 
                         <!-- form start -->

@@ -21,8 +21,9 @@ class UserController extends Controller
         //dd($id);  
         $get = DB::table('utilisateurs')
         ->join('departements', 'utilisateurs.id_departement', '=', 'departements.id')
+        ->join('roles', 'utilisateurs.id_role', '=', 'roles.id')
         ->where('utilisateurs.id', '=', $id)
-        ->get(['utilisateurs.*', 'departements.libele_departement']);
+        ->get(['utilisateurs.*', 'departements.libele_departement', 'roles.intitule']);
 
        return $get;
     }

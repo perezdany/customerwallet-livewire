@@ -56,8 +56,11 @@
                           <th>Fin de contrat</th>
                           <th>Prestation</th>
                           
+                          @if(auth()->user()->id_role == 3)
+                          @else
+                             <th>Action</th>
+                          @endif
                          
-                          <th>Action</th>
                           </tr>
                           </thead>
                           <tbody>
@@ -71,22 +74,32 @@
                                       <td>{{$all->libele_service}}</td>
                                       
                                        
-                                      <td>
-                                          @if(auth()->user()->id_role != 2)
+                                     
+                                        @if(auth()->user()->id_role == 3)
+                                         
+                                        @else
+                                          <td>
+                                            @if(auth()->user()->id_role == 2)
                                               <form action="display_facture" method="post">
+                                                  @csrf
+                                                  <input type="text" value={{$all->id}} style="display:none;" name="id_prestation">
+                                                  <button type="submit" class="btn btn-success"><i class="fa fa-ticket"></i></button>
+                                              </form>
+                                            @else
+
+                                            @endif
+
+                                          
+                                            <form action="edit_prestation_form" method="post">
                                                 @csrf
                                                 <input type="text" value={{$all->id}} style="display:none;" name="id_prestation">
-                                                <button type="submit" class="btn btn-success"><i class="fa fa-ticket"></i></button>
+                                                <button type="submit" class="btn btn-primary"><i class="fa fa-edit"></i></button>
                                             </form>
-                                          @endif
-                                         
-                                          <form action="edit_prestation_form" method="post">
-                                              @csrf
-                                              <input type="text" value={{$all->id}} style="display:none;" name="id_prestation">
-                                              <button type="submit" class="btn btn-primary"><i class="fa fa-edit"></i></button>
-                                          </form>
-                                          
-                                      </td>
+
+                                          </td>
+                                        @endif
+
+                                     
                                   </tr>
                               @endforeach
                           </tbody>
@@ -99,7 +112,10 @@
                           <th>Fin de contrat</th>
                           <th>Prestation</th>
                           
-                          <th>Action</th>
+                          @if(auth()->user()->id_role == 3)
+                          @else
+                            <th>Action</th>
+                          @endif
                           </tr>
                           </tfoot>
                       </table>
@@ -167,23 +183,26 @@
                                  
                                  </td>
                                 <td>
-                                  @if($my_own->reglee == 0)
-                                       @if(auth()->user()->id_role != 2)
-                                      <form action="paiement_form" method="post">
-                                        @csrf
-                                        <input type="text" value={{$my_own->id}} style="display:none;" name="id_facture">
-                                        <button type="submit" class="btn btn-success"><i class="fa fa-money"></i></button>
+                                  @if(auth()->user()->id_role != 3)
+                                      @if($my_own->reglee == 0)
+                                          @if(auth()->user()->id_role != 2)
+                                          <form action="paiement_form" method="post">
+                                            @csrf
+                                            <input type="text" value={{$my_own->id}} style="display:none;" name="id_facture">
+                                            <button type="submit" class="btn btn-success"><i class="fa fa-money"></i></button>
+                                          </form>
+                                        @endif
+                                      @else
+                                      
+                                      @endif
+                                      
+                                      <form action="edit_facture_form" method="post">
+                                          @csrf
+                                          <input type="text" value={{$my_own->id}} style="display:none;" name="id_facture">
+                                          <button type="submit" class="btn btn-primary"><i class="fa fa-edit"></i></button>
                                       </form>
-                                    @endif
-                                  @else
-                                   
                                   @endif
-                                   
-                                    <form action="edit_facture_form" method="post">
-                                        @csrf
-                                        <input type="text" value={{$my_own->id}} style="display:none;" name="id_facture">
-                                        <button type="submit" class="btn btn-primary"><i class="fa fa-edit"></i></button>
-                                    </form>
+                                 
                                 </td>
                                 </tr>
                             @endforeach

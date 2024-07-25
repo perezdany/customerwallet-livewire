@@ -42,7 +42,10 @@
                    <th>Fin du contrat</th>
                     <th>Montant</th>	
                    
-                    <th>Action</th>
+                    @if(auth()->user()->id_role == 3)
+                    @else
+                        <th>Action</th>
+                    @endif
                   </tr>
                   </thead>
                   <tbody>
@@ -54,14 +57,23 @@
                           <td>{{$all->libele_service}}</td>
                           <td>@php echo date('d/m/Y',strtotime($all->debut_contrat)) @endphp</td>
                            <td>@php echo date('d/m/Y',strtotime($all->fin_contrat)) @endphp</td>
-                          <td>{{$all->montant}}</td>    
                           <td>
-                            <form action="edit_contrat_form" method="post">
-                                @csrf
-                                <input type="text" value={{$all->id}} style="display:none;" name="id_contrat">
-                                <button type="submit" class="btn btn-success"><i class="fa fa-edit"></i></button>
-                            </form>
-                          </td>
+                            @php
+                              echo  number_format($all->montant, 2, ".", " ")." XOF";
+                            @endphp
+                           
+                          </td>  
+                          @if(auth()->user()->id_role == 3)
+                          @else
+                            <td>
+                              <form action="edit_contrat_form" method="post">
+                                  @csrf
+                                  <input type="text" value={{$all->id}} style="display:none;" name="id_contrat">
+                                  <button type="submit" class="btn btn-success"><i class="fa fa-edit"></i></button>
+                              </form>
+                            </td>
+                          @endif  
+                         
                         </tr>
                       @endforeach
                   </tbody>
@@ -75,7 +87,10 @@
                     <th>Fin du contrat</th>
                     <th>Montant</th>	
                    
-                    <th>Action</th>
+                    @if(auth()->user()->id_role == 3)
+                    @else
+                        <th>Action</th>
+                    @endif
                   </tr>
                   </tfoot>
                   </table>
@@ -104,12 +119,12 @@
                 @csrf
                 <div class="box-body">
                   <div class="form-group">
-                    <label>Entreprise: Ou choisir Autre</label>
+                    <label>Entreprise:</label>
                     <select class="form-control input-lg" name="entreprise">
                       @php
                             $get = (new EntrepriseController())->GetAll();
                         @endphp
-                        
+                        <option value="0">--Choisir une entreprise--</option>
                         @foreach($get as $entreprise)
                             <option value={{$entreprise->id}}>{{$entreprise->nom_entreprise}}</option>
                             
@@ -119,10 +134,6 @@
                       
                   </div>    
 
-                  <div class="form-group">
-                      <label>Renseigner le nom de l'entreprise</label>
-                      <input type="text" onkeyup='this.value=this.value.toUpperCase()' class="form-control input-lg" name="entreprise_name" placeholder="Ex:BICICI"/>
-                  </div>  
                   <div class="form-group">
                     <label>Titre</label>
                     <input type="text"  class="form-control input-lg" name="titre" placeholder="Ex: Contrat de sureté BICICI"/>

@@ -71,7 +71,7 @@
                                 @php
                                         $role = $rolecontroller->GetAll();
                                     @endphp
-                                    
+                                    <option value={{$user->id_role}}>{{$user->intitule}}</option>
                                     @foreach($role as $role)
                                         <option value={{$role->id}}>{{$role->intitule}}</option>
                                         

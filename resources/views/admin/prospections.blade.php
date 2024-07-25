@@ -42,7 +42,10 @@
                             <th>Contact/Fonction</th>
                             <th>Ajouté par:</th>
                             <th>Suivi effectués</th>
-                            <th>Action</th>
+                              @if(auth()->user()->id_role == 3)
+                                @else
+                                    <th>Action</th>
+                                @endif
                             </tr>
                             </thead>
                             <tbody>
@@ -61,16 +64,21 @@
                                             </form>
                                             </td>
                                     
-                                        <td>
-                                        
-                                            <form action="edit_prospect_form" method="post">
-                                                @csrf
-                                                <input type="text" value={{$all->id}} style="display:none;" name="id_prospection">
-                                                <button type="submit" class="btn btn-success"><i class="fa fa-edit"></i></button>
-                                            </form>
+                                       
+                                            @if(auth()->user()->id_role == 3)
+                                            @else
+                                                <td>
+                                                    <form action="edit_prospect_form" method="post">
+                                                        @csrf
+                                                        <input type="text" value={{$all->id}} style="display:none;" name="id_prospection">
+                                                        <button type="submit" class="btn btn-success"><i class="fa fa-edit"></i></button>
+                                                    </form>
+                                                </td>
 
+                                            @endif
+                                           
                                             
-                                        </td>
+                                        
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -83,7 +91,10 @@
                             <th>Contact/Fonction</th>
                             <th>Ajouté par:</th>
                             <th>Suivi effectués</th>
-                            <th>Action</th>
+                            @if(auth()->user()->id_role == 3)
+                            @else
+                                <th>Action</th>
+                            @endif
                             </tr>
                             </tfoot>
                         </table>

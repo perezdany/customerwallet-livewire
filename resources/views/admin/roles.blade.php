@@ -15,9 +15,7 @@
      <div class="row">
       
          @if(session('success'))
-          @php
-            dd('ici');
-          @endphp
+         
             <div class="col-md-12 box-header">
               <p class="bg-success" style="font-size:13px;">{{session('success')}}</p>
             </div>

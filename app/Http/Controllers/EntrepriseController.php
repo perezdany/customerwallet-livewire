@@ -106,6 +106,7 @@ class EntrepriseController extends Controller
              
         ]);
 
+      
         return redirect('entreprises')->with('success', 'Modificaiton effectuée');
     }
 

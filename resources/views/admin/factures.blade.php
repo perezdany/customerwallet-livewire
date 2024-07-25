@@ -60,7 +60,10 @@
                         <th>Afficher les paiements</th>
                         <th>Contrat</th>
                         <th>Etat facture</th>
-                        <th>Action</th>
+                        @if(auth()->user()->id_role == 3)
+                        @else
+                            <th>Action</th>
+                        @endif
                     </tr>
                     </thead>
                     <tbody>
@@ -95,25 +98,29 @@
                                 @endif
                                 
                                 </td>
-                            <td>
+                            @if(auth()->user()->id_role == 3)
+                            @else
+                                <td>
 
-                                @if($my_own->reglee == 0)
-                                     @if(auth()->user()->id_role != 2)
-                                      <form action="paiement_form" method="post">
+                                    @if($my_own->reglee == 0)
+                                        @if(auth()->user()->id_role != 2)
+                                        <form action="paiement_form" method="post">
+                                            @csrf
+                                            <input type="text" value={{$my_own->id}} style="display:none;" name="id_facture">
+                                            <button type="submit" class="btn btn-success"><i class="fa fa-money"></i></button>
+                                        </form>
+                                        @endif
+                                    @else
+                                    
+                                    @endif
+                                    <form action="edit_facture_form" method="post">
                                         @csrf
                                         <input type="text" value={{$my_own->id}} style="display:none;" name="id_facture">
-                                        <button type="submit" class="btn btn-success"><i class="fa fa-money"></i></button>
-                                      </form>
-                                    @endif
-                                @else
-                                   
-                                @endif
-                                <form action="edit_facture_form" method="post">
-                                    @csrf
-                                    <input type="text" value={{$my_own->id}} style="display:none;" name="id_facture">
-                                    <button type="submit" class="btn btn-primary"><i class="fa fa-edit"></i></button>
-                                </form>
-                            </td>
+                                        <button type="submit" class="btn btn-primary"><i class="fa fa-edit"></i></button>
+                                    </form>
+                                </td>
+                            @endif
+                            
                             </tr>
                         @endforeach
                     </tbody>
@@ -127,7 +134,10 @@
                         <th>Afficher les paiements</th>
                         <th>Contrat</th>
                         <th>Etat facture</th>
-                        <th>Action</th>
+                        @if(auth()->user()->id_role == 3)
+                        @else
+                            <th>Action</th>
+                        @endif
                     </tr>
                     </tfoot>
                 </table>

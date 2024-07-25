@@ -179,7 +179,7 @@
           <ul class="treeview-menu">
             <li><a href="welcome"><i class="fa fa-circle-o"></i>Accueil</a></li>
 
-            @if(auth()->user()->id_role == 1 OR auth()->user()->id_role == 3 OR auth()->user()->id_role == 4)
+            @if(auth()->user()->id_role == 1 OR auth()->user()->id_role == 3 OR auth()->user()->id_role == 4 OR auth()->user()->id_role == 2)
               <li class="active"><a href="prestation"><i class="fa fa-circle-o"></i>Prestations</a></li>
               <li class="active"><a href="prospection"><i class="fa fa-circle-o"></i>Prospections</a></li>
               <li class="active"><a href="suivi"><i class="fa fa-circle-o"></i>Suivis</a></li>
@@ -187,7 +187,7 @@
               <li class="active"><a href="facture"><i class="fa fa-circle-o"></i>Factures</a></li>
               <li><a href="entreprises"><i class="fa fa-circle-o"></i> Clients/Prospects</a></li>
             @else
-              @if(auth()->user()->id_role == 2)
+              @if(auth()->user()->id_role == 5)
                 @if(auth()->user()->id_departement == 1)
                     <li class="active"><a href="prospection"><i class="fa fa-circle-o"></i>Prospections</a></li>
                     <li class="active"><a href="suivi"><i class="fa fa-circle-o"></i>Suivis</a></li>
