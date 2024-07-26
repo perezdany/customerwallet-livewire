@@ -209,4 +209,15 @@ class ContratController extends Controller
 
         return $get;
     }
+
+    public function GetContratByIdEntr($id)
+    {
+        $get = Contrat::where('contrats.id_entreprise', $id)
+       ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')
+       ->join('utilisateurs', 'contrats.created_by', '=', 'utilisateurs.id')
+        ->get(['contrats.*', 'utilisateurs.nom_prenoms', 'entreprises.nom_entreprise',]);
+
+        return $get;
+    
+    }
 }

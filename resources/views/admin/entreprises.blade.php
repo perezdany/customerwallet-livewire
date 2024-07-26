@@ -59,6 +59,7 @@
                             @endphp
                           </td>
                           <td>
+                            
                             <form action="display_by_id_entreprise" method="post">
                                 @csrf
                                 <input type="text" value={{$all->id}} style="display:none;" name="id_entreprise">
@@ -105,6 +106,12 @@
                 <div class="box">
                     <div class="box-header with-border">
                     <h3 class="box-title">INTERLOCUTEURS</h3><br>
+
+                      <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                            </button>
+                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                        </div>
                 </div>
                 
                       <!-- /.box-header -->
@@ -165,6 +172,12 @@
                       <div class="box box-aeneas">
                           <div class="box-header with-border">
                             <h3 class="box-title">MODIFIER UNE ENTREPRISE/PARTICULIER</h3><br>
+
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                </button>
+                                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                            </div>
                           </div>
                       
                           <!-- form start -->
@@ -185,7 +198,7 @@
               
                                       @endphp
                                       <select class="form-control input-lg" name="statut" reuqired>
-                                          <option>--Choisir--</option>
+                                          
                                           <option value={{$edit->id_statutentreprise}}>{{$edit->libele_statut}}</option>
                                           @foreach($statut as $statut)
                                               <option value={{$statut->id}}>{{$statut->libele_statut}}</option>
@@ -197,7 +210,7 @@
 
                                   <div class="form-group">
                                       <label>Client Depuis le :</label>
-                                      <input type="date" class="form-control input-lg" value="{{$edit->client_depuis}}" name="depuis"/>
+                                      <input type="date" required class="form-control input-lg" value="{{$edit->client_depuis}}" name="depuis" />
                                   </div>
 
 
@@ -221,6 +234,12 @@
             <div class="box box-aeneas">
               <div class="box-header with-border">
                 <h3 class="box-title">AJOUTER UNE ENTREPRISE/PARTICULIER</h3><br>
+                  <div class="box-tools pull-right">
+                      <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                      </button>
+                      <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                  </div>
+                
               </div>
             
               <!-- form start -->
@@ -275,4 +294,8 @@
 		  </div>
     </div>
     <!--/.col (right) -->
+
+    <div class="defilement"></div>
+​
+
 @endsection

@@ -1,59 +1,58 @@
 @extends('layouts/base')
 
 @php
-   
+    use App\Http\Controllers\ServiceController;
+
+    use App\Http\Controllers\ControllerController;
+
+    use App\Http\Controllers\EntrepriseController;
+
     use App\Http\Controllers\ProspectionController;
+
+    $entreprisecontroller = new EntrepriseController();
 
     $prospectioncontroller = new ProspectionController();
 
-    //LES DIFFERENTES REQUETES EN FONCTION DU DEPARTEMENT
-    $my_own = $prospectioncontroller->MyOwnprospection(auth()->user()->id);
 
-    $all = $prospectioncontroller-> GetAll();
 @endphp
 
 @section('content')
-     <div class="row">
-      
-         @if(session('success'))
-            <div class="col-md-12 box-header">
-              <p class="bg-success" style="font-size:13px;">{{session('success')}}</p>
-            </div>
-          @endif
+    @if(isset($id_entreprise))
         
-			<div class="col-md-12">
-			  <div class="box">
-				
-                <!--FAIRE UN ALGO POUR AFFICHER EN FONCTION DU DEPARTEMENT -->
-           
-                  <div class="box-header">
-                        <h3 class="box-title">Prospections réalisées</h3>
+        @php
+            $prospections = $prospectioncontroller->GetProspectionByIdEntr($id_entreprise);
+        @endphp
+
+        <div class="row">
+          
+        
+            <!-- left column -->
+            <div class="col-md-12">
+                  <div class="box">
+                    <div class="box-header">
+                        <h3 class="box-title">Prospections</h3>
                     </div>
-                    
                     <!-- /.box-header -->
                     <div class="box-body">
-                        <table id="example1" class="table table-bordered table-striped table-hover">
-                            <thead>
+                    <table id="example1" class="table table-bordered table-striped table-hover">
+                    <thead>
                             <tr>
                                 <th>Date</th>
-                                <th>Entreprise</th>	
-                                <th>prestation proposée</th>
                                 <th>Date de fin de prospection</th>
                                 <th>Contact/Fonction</th>
                                 <th>Ajouté par:</th>
                                 <th>Suivi effectués</th>
-                              @if(auth()->user()->id_role == 3)
+                                @if(auth()->user()->id_role == 3)
                                 @else
                                     <th>Action</th>
                                 @endif
                             </tr>
                             </thead>
                             <tbody>
-                                @foreach($all as $all)
+                                @foreach($prospections as $all)
                                     <tr>
                                         <td>@php echo date('d/m/Y',strtotime($all->date_prospection)) @endphp</td>
-                                        <td>{{$all->nom_entreprise}}</td>
-                                        <td>{{$all->libele_service}}</td>
+                                      
                                         <td>@php echo date('d/m/Y',strtotime($all->date_fin)) @endphp</td>
                                         <td>{{$all->tel}}/{{$all->fonction}}</td>
                                         <td>{{$all->nom_prenoms}}</td>
@@ -85,8 +84,8 @@
                             <tfoot>
                             <tr>
                             <th>Date</th>
-                            <th>Entreprise</th>	
-                            <th>prestation proposée</th>
+                            
+                            
                             <th>Date de fin de prospection</th>
                             <th>Contact/Fonction</th>
                             <th>Ajouté par:</th>
@@ -97,15 +96,16 @@
                             @endif
                             </tr>
                             </tfoot>
-                        </table>
+                    </table>
                     </div>
                     <!-- /.box-body -->
-
-              
-			  </div>
-			  <!-- /.box -->
-			</div>
-			<!-- /.col -->
-		  </div>
-		
+                </div>
+                <!-- /.box -->
+            </div>
+            
+            
+        </div>
+        <!--/.col (right) -->
+    @endif
+    
 @endsection

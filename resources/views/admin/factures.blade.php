@@ -113,10 +113,16 @@
                                     @else
                                     
                                     @endif
+                                    <div class="popup" id="popup">
+                                        
+                                        <div class="popup-contenu"><b>Cliquez et le formulaire s'affiche en dessous</b><br/>
+                                            <a href="#" id="popup-fermeture" onclick="togglePopup();">Fermer</a>
+                                        </div>
+                                    </div>
                                     <form action="edit_facture_form" method="post">
                                         @csrf
                                         <input type="text" value={{$my_own->id}} style="display:none;" name="id_facture">
-                                        <button type="submit" class="btn btn-primary"><i class="fa fa-edit"></i></button>
+                                        <button  onmouseover="togglePopup();" onmouseout="togglePopup();"  type="submit" class="btn btn-primary"><i class="fa fa-edit"></i></button>
                                     </form>
                                 </td>
                             @endif
@@ -214,7 +220,13 @@
                  <!-- general form elements MODIFICATION D'UNE FACTURE-->
                 <div class="box box-aeneas">
                     <div class="box-header with-border">
-                    <h3 class="box-title"> <b>MODIFIER UNE FACTURE</b></h3><br><b>(*) champ obligatoire</b>
+                        <h3 class="box-title"> <b>MODIFIER UNE FACTURE</b></h3><br><b>(*) champ obligatoire</b>
+
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                            </button>
+                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                        </div>
                     </div>
                     @php
                         $facture_edit = $facturecontroller->GetById($id_edit);

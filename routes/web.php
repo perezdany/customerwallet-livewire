@@ -181,6 +181,12 @@ Route::middleware(['auth:web'])->group(function(){
     Route::post('edit_entreprise_form', [EntrepriseController::class, 'EditEntrForm']);
     Route::post('edit_entreprise', [EntrepriseController::class, 'EditEntreprise']);
 
+    //AFFICHER LES INFOS DE L'ENTREPRISE.. SI IL Y A DES PRESTATIONS QUI LUI SONT PROPOSE ETC
+    Route::post('display_about_customer', [EntrepriseController::class, 'GetAboutThisTable']);
+
+    //AFFICHER LES INFORMATIONS SUR LES PROSPECTS
+    Route::post('display_about_prospect', [EntrepriseController::class, 'GetProspAboutThisTable']);
+
     //AJOUTER 
     Route::post('add_entreprise', [EntrepriseController::class, 'SaveEntreprise']);
 

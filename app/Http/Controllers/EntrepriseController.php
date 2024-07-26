@@ -57,6 +57,11 @@ class EntrepriseController extends Controller
 
     public function SaveEntreprise(Request $request)
     {
+        if($request->entreprise == 0)
+        {
+            return back()->with('error', 'Vous n\'avez pas choisi l\'entreprise');
+        }
+
         //SI ON CHOISI LE STATUT CLIENT IL FAUT METTRE LA DATE
         if($request->statut == 2)
         {
@@ -96,6 +101,8 @@ class EntrepriseController extends Controller
 
     public function EditEntreprise(Request $request)
     {
+       
+
         $affected= DB::table('entreprises')
         ->where('id', $request->id_entreprise)
         ->update([
@@ -138,5 +145,38 @@ class EntrepriseController extends Controller
         return redirect('entreprises')->with('success', 'Elément supprimé');
     }
 
+    public function GetAboutThisTable(Request $request)
+    {
+        
+        return view('dash/about_this',
+            [
+                'id_entreprise' => $request->id_entreprise,
+            ]
+        );
+    }
+
+    public function GetProspAboutThisTable(Request $request)
+    {
+        
+        return view('dash/prosp_about_this',
+            [
+                'id_entreprise' => $request->id_entreprise,
+            ]
+        );
+    }
+
+    public function GetAboutThis($id)
+    {
+        $get = DB::table('contrats')
+        ->where('entreprises.id', $id)
+    
+        ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')
+        ->join('statutentreprises', 'entreprises.id_statutentreprise', '=', 'statutentreprises.id')
+        ->join('prospections', 'prospections.id_entreprise', '=', 'entreprises.id')
+        ->join('services', 'prospections.service_propose', '=', 'services.id')
+        ->get(['entreprises.*', 'statutentreprises.libele_statut', ]);
+
+        return $get;
+    }
 
 }

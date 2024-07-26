@@ -4,7 +4,7 @@
     
     use App\Http\Controllers\EntrepriseController;
 
-     use App\Http\Controllers\StatutEntrepriseController;
+    use App\Http\Controllers\StatutEntrepriseController;
 
     $entreprisecontroller = new EntrepriseController();
 
@@ -43,7 +43,14 @@
                   <tbody>
                     @foreach($all as $all)
                     <tr>
-                        <td>{{$all->nom_entreprise}}</td>  
+                        <td>
+                          <form method="post" action="display_about_prospect">
+                            @csrf
+                            <input type="text" value="{{$all->id}}" style="display:none;" name="id_entreprise">
+                            <button class="btn btn-default"> <b>{{$all->nom_entreprise}}</b></button>
+                          </form>
+                        </td>
+
                         <td>
                             @php 
                             

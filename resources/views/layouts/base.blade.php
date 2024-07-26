@@ -29,6 +29,40 @@
   <!-- Google Font -->
   <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+
+  <style type="text/css">
+      .defilement {
+  height: 3000px;
+}
+
+.popup {
+  display: none;
+}
+
+#popup.open {
+  display: flex !important;
+}
+.popup-encart {
+  position: fixed;
+  left: 90%;
+  background: rgba( 0, 0, 0, .25 )
+}
+.popup-contenu {
+  position: fixed;
+  left: 90%;
+  padding: 25px;
+  background: #fff;
+  /*transform: translate(-50%, -50%)*/
+  max-width: 250 px
+}
+
+#popup-fermeture{
+  color: #138AED;
+  position:absolute;
+  right:0;
+  bottom:-3px
+}
+  </style>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
@@ -275,7 +309,7 @@
 
     <!-- Main content -->
     <section class="content">
-     
+ 
 
 	@yield('content')
       <!-- Main row -->  
@@ -325,10 +359,48 @@
 	  })
 	</script>
 
-<script>
-  $(function () {
-    $('a').tooltip()
-  })
+<script type="text/javascript">
+
+  function togglePopup()
+  {
+     let popup = document.getElementById("popup");
+
+     popup.classList.toggle("open");
+  }
+  /*
+  let test = document.getElementById("test");
+
+// Ce gestionnaire ne sera exécuté qu'une fois
+// lorsque le curseur se déplace sur la liste
+test.addEventListener(
+  "mouseenter",
+  function (event) {
+    // on met l'accent sur la cible de mouseenter
+    event.target.style.color = "purple";
+
+    // on réinitialise la couleur après quelques instants
+    setTimeout(function () {
+      event.target.style.color = "";
+    }, 500);
+  },
+  false,
+);
+
+// Ce gestionnaire sera exécuté à chaque fois que le curseur
+// se déplacera sur un autre élément de la liste
+test.addEventListener(
+  "mouseover",
+  function (event) {
+    // on met l'accent sur la cible de mouseover
+    event.target.style.color = "orange";
+
+    // on réinitialise la couleur après quelques instants
+    setTimeout(function () {
+      event.target.style.color = "";
+    }, 500);
+  },
+  false,
+);*/
 </script>
  
  

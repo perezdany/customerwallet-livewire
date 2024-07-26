@@ -47,8 +47,8 @@
                       @foreach($all as $all)
                         <tr>
                           <td>{{$all->titre_contrat}}</td>
-                          <td>{{$all->montant}}</td>
-                          <td>{{$all->reste_a_payer}}</td>
+                          <td>@php echo  number_format($all->montant, 2, ".", " ")." XOF";@endphp </td>
+                          <td>@php echo  number_format($all->reste_a_payer, 2, ".", " ")." XOF";@endphp</td>
                           <td>@php echo date('d/m/Y',strtotime($all->debut_contrat)) @endphp</td>
                           <td>@php echo date('d/m/Y',strtotime($all->fin_contrat)) @endphp</td>
                           <td>{{$all->nom_entreprise}}</td>

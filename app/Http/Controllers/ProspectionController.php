@@ -314,5 +314,21 @@ class ProspectionController extends Controller
 
     }
 
+    public function GetProspectionByIdEntr($id)
+    {
+        $get = DB::table('prospections')
+        ->join('entreprises', 'prospections.id_entreprise', '=', 'entreprises.id')
+        ->join('utilisateurs', 'prospections.id_utilisateur', '=', 'utilisateurs.id')
+        ->join('interlocuteurs', 'prospections.interlocuteur', '=', 'interlocuteurs.id')
+        ->join('services', 'prospections.service_propose', '=', 'services.id')
+        ->where('entreprises.id', '=', $id)
+        ->get(['prospections.*', 'entreprises.nom_entreprise', 'interlocuteurs.titre', 
+        'interlocuteurs.nom', 'interlocuteurs.tel', 'interlocuteurs.email', 
+        'interlocuteurs.fonction', 'services.libele_service', 'utilisateurs.nom_prenoms']);
+
+        return $get;
+
+    }
+
 
 }
