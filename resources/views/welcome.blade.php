@@ -114,11 +114,7 @@
                                             @else
                                             
                                             @endif
-                                            <form action="edit_facture_form" method="post">
-                                                @csrf
-                                                <input type="text" value={{$my_own->id}} style="display:none;" name="id_facture">
-                                                <button type="submit" class="btn btn-primary"><i class="fa fa-edit"></i></button>
-                                            </form>
+                                           
                                         </td>
                                         </tr>
                                     @endforeach
@@ -281,7 +277,7 @@
                                         @php
                                             $get = $typeprestationcontroller->GetAll();
                                         @endphp
-                                        <option>--Choisir le type--</option>
+                                        <option value="0">--Choisir le type--</option>
                                         @foreach($get as $type)
                                             <option value={{$type->id}}>{{$type->libele}}</option>
                                             
@@ -301,7 +297,7 @@
                                             $contrat = $contratcontroller->GetAllNoSolde();
                                             
                                         @endphp
-                                        <option>--Choisir le contrat--</option>
+                                        <option value="0">--Choisir le contrat--</option>
                                         @foreach($contrat as $contrat)
                                             <option value={{$contrat->id}}>{{$contrat->titre_contrat}}</option>
                                             
@@ -311,7 +307,8 @@
                                     
                                 <div class="form-group">
                                     <label>Adresse </label>
-                                    <input type="text"  maxlength="100" class="form-control input-lg" name="localisation" placeholder="Ex: Cocody Angré Cocovico">
+                                    <input type="text" required maxlength="100" class="form-control input-lg" 
+                                    name="localisation" placeholder="Ex: Cocody Angré Cocovico">
                                 </div>
                             
                             </div>
@@ -346,7 +343,7 @@
                                     <label>Service Proposé (*)</label>
                                     <select class="form-control input-lg" name="service_propose" required>
                                         <!--liste des services a choisir -->
-                                        <option>--Selectionnez le service--</option>
+                                        <option value="0">--Selectionnez le service--</option>
                                         @php
                                             $get = $servicecontroller->GetAll();
                                         @endphp
@@ -374,14 +371,19 @@
                                         @php
                                             $get = $entreprisecontroller->GetAll();
                                         @endphp
-                                        <option>--Selectionnez Une entreprise--</option>
+                                        <option value="0">--Selectionnez Une entreprise--</option>
                                         @foreach($get as $entreprise)
                                             <option value={{$entreprise->id}}>{{$entreprise->nom_entreprise}}</option>
                                             
                                         @endforeach
-                                      
+                                        <option value="autre">Autre</option>
                                     </select>
                                     
+                                </div>
+
+                                <div class="form-group">
+                                        <label >Nom de l'entreprise:</label>
+                                        <input type="text"  maxlength="50" class="form-control  input-lg" name="entreprise_name" onkeyup="this.value=this.value.toUpperCase()">
                                 </div>
                                
                             </div>
@@ -507,11 +509,14 @@
                                                 <option value={{$entreprise->id}}>{{$entreprise->nom_entreprise}}</option>
                                                 
                                             @endforeach
-                                           
+                                            <option value="autre">Autre</option>
                                         </select>
                                         
                                     </div>
-                                
+                                    <div class="form-group">
+                                        <label >Nom de l'entreprise:</label>
+                                        <input type="text"  maxlength="50" class="form-control  input-lg" name="entreprise_name" onkeyup="this.value=this.value.toUpperCase()">
+                                    </div>
                                 </div>
                                 <!-- /.box-body -->
 
@@ -725,7 +730,7 @@
                                     <div class="form-group">
                                         <label>Adresse </label>
                                         <input type="text" class="form-control input-lg"  maxlength="100"  
-                                        name="localisation" placeholder="Ex: Cocody Angré Cocovico">
+                                        name="localisation" placeholder="Ex: Cocody Angré Cocovico" required>
                                     </div>
                                 
                                 </div>
@@ -905,10 +910,6 @@
               @endif
             @endif
 
-
-
-       
-        
            
     </div>
     <!-- Main row -->  

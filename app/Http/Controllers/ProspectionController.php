@@ -33,104 +33,125 @@ class ProspectionController extends Controller
 
     public function AddProspection(Request $request)
     {
-        if($request->service_propose == 0)
+        
+        if(strval($request->service_propose) == "0")
         {
             return back()->with('error', 'Choisissez le service');
         }
-
-        if($request->entreprise == 0)
-        {
-            return back()->with('error', 'Choisissez l\'entrprise ');
-        }
-        $calculator = new Calculator();
-        
-        //Calcul de la date de fin de contrat
-        $date_fin = $calculator->FinProspection($request->duree, $request->date_prospect);
-
-        
-        //VOIR SI L'INTERLOCUTERU EXISTE OU PAS EN VUE DE LE CREER
-        if($request->entreprise == "autre")//pas entreprise
+        else
         {
            
-            $add_client  = (new EntrepriseController())->AddEntreprise($request);
-
-            foreach($add_client as $client)
+            if(strval($request->entreprise) == "0")
             {
-                if($request->interlocuteur == "autre")//L'entreprise n'existe pas 
-                {
+               
                 
-                    $add = (new InterlocuteurController())->AddInterlocuteurWithClient($request, $client->id);
+                return back()->with('error', 'Choisissez l\'entreprise ');
+            }
+            else
+            {
+                //dd("las");
+                $calculator = new Calculator();
         
-                    foreach($add as $interlocuteur)
+                //Calcul de la date de fin de contrat
+                $date_fin = $calculator->FinProspection($request->duree, $request->date_prospect);
+        
+                
+                //VOIR SI L'INTERLOCUTERU EXISTE OU PAS EN VUE DE LE CREER
+        
+                if($request->entreprise == "autre")//pas entreprise c'ets une nouvelle entreprise
+                {
+                    //dd($request->entreprise);
+                    $add_client  = (new EntrepriseController())->AddEntreprise($request);
+        
+                    foreach($add_client as $client)
+                    {
+                        if($request->interlocuteur == "autre")//L'entreprise n'existe pas 
+                        {
+                        
+                            $add = (new InterlocuteurController())->AddInterlocuteurWithClient($request, $client->id);
+                
+                            foreach($add as $interlocuteur)
+                            {
+                                $Insert = Prospection::create([
+                                    'service_propose' => $request->service_propose, 
+                                    'date_prospection' => $request->date_prospect,
+                                    'date_fin' => $date_fin, 
+                                    'duree_jours' => $request->duree, 
+                                    'id_entreprise' => $client->id, 
+                                    'interlocuteur' => $interlocuteur->id,
+                                    'id_utilisateur' => auth()->user()->id,
+                                    
+                                ]);
+                            }
+                                
+                        }
+                        else //interlocuteur pas nouveau
+                        {
+                            $Insert = Prospection::create([
+                                'service_propose' => $request->service_propose, 
+                                'date_prospection' => $request->date_prospect,
+                                    'date_fin' => $date_fin, 
+                                    'duree_jours' => $request->duree, 
+                                    'id_entreprise' => $client->id,  
+                                    'interlocuteur' => $request->interlocuteur,
+                                    'id_utilisateur' => auth()->user()->id,
+                                    
+                            ]);
+                        }
+                        
+                    }
+                    
+                }
+                else//entreprise pas nouvelle
+                {
+                    
+                    if($request->interlocuteur == "autre")//L'interlocuteur n'existe pas 
+                    {
+                    
+                        $add = (new InterlocuteurController())->AddInterlocuteurWithClient($request, $request->entreprise);
+            
+                        foreach($add as $interlocuteur)
+                        {
+                            $Insert = Prospection::create([
+                                'service_propose' => $request->service_propose, 
+                                'date_prospection' => $request->date_prospect,
+                                    'date_fin' => $date_fin, 
+                                    'duree_jours' => $request->duree, 
+                                    'id_entreprise' => $request->entreprise, 
+                                    'interlocuteur' => $interlocuteur->id,
+                                    'id_utilisateur' => auth()->user()->id,
+                                    
+                            ]);
+                        }
+                            
+                    }
+                    else //interlocuteur pas nouveau
                     {
                         $Insert = Prospection::create([
                             'service_propose' => $request->service_propose, 
                             'date_prospection' => $request->date_prospect,
-                             'date_fin' => $date_fin, 
-                             'duree_jours' => $request->duree, 
-                             'id_entreprise' => $client->id, 
-                             'interlocuteur' => $interlocuteur->id,
-                             'id_utilisateur' => auth()->user()->id,
-                              
-                       ]);
+                                'date_fin' => $date_fin, 
+                                'duree_jours' => $request->duree, 
+                                'id_entreprise' => $request->entreprise,  
+                                'interlocuteur' => $request->interlocuteur,
+                                'id_utilisateur' => auth()->user()->id,
+                                
+                        ]);
                     }
-                        
                 }
-                else //interlocuteur pas nouveau
+
+               /* if($request->entreprise == 0)
                 {
-                    $Insert = Prospection::create([
-                        'service_propose' => $request->service_propose, 
-                        'date_prospection' => $request->date_prospect,
-                            'date_fin' => $date_fin, 
-                            'duree_jours' => $request->duree, 
-                            'id_entreprise' => $client->id,  
-                            'interlocuteur' => $request->interlocuteur,
-                            'id_utilisateur' => auth()->user()->id,
-                            
-                    ]);
+                    dd($request->entreprise);
+                    return back()->with('error', 'Choisissez l\'entreprise ');
                 }
-               
+                */
             }
-            
-        }
-        else//entreprise pas nouvelle
-        {
            
-            if($request->interlocuteur == "autre")//L'interlocuteur n'existe pas 
-            {
-            
-                $add = (new InterlocuteurController())->AddInterlocuteurWithClient($request, $request->entreprise);
     
-                foreach($add as $interlocuteur)
-                {
-                    $Insert = Prospection::create([
-                        'service_propose' => $request->service_propose, 
-                        'date_prospection' => $request->date_prospect,
-                            'date_fin' => $date_fin, 
-                            'duree_jours' => $request->duree, 
-                            'id_entreprise' => $request->entreprise, 
-                            'interlocuteur' => $interlocuteur->id,
-                            'id_utilisateur' => auth()->user()->id,
-                            
-                    ]);
-                }
-                    
-            }
-            else //interlocuteur pas nouveau
-            {
-                $Insert = Prospection::create([
-                    'service_propose' => $request->service_propose, 
-                    'date_prospection' => $request->date_prospect,
-                        'date_fin' => $date_fin, 
-                        'duree_jours' => $request->duree, 
-                        'id_entreprise' => $request->entreprise,  
-                        'interlocuteur' => $request->interlocuteur,
-                        'id_utilisateur' => auth()->user()->id,
-                        
-                ]);
-            }
         }
 
+       
 
        return redirect('welcome')->with('success', 'Enregistrement effectué');
     }

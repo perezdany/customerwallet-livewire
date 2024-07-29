@@ -20,6 +20,7 @@ class PrestationController extends Controller
 
     public function AddPrestation(Request $request)
     {
+       
         if($request->service == 0)
         {
             return back()->with('error', 'Choisissez impérativement le service');
@@ -34,7 +35,7 @@ class PrestationController extends Controller
         {
             return back()->with('error', 'Choisissez impérativement le contrat');
         }
-
+       
         //VERIFIER SI IL N'EST PAS CLIENT CHANGE SONT STATUT A MEME TEMPS
         //RECUPER L'(ENTREPRISE)
         $recup_entreprise = (new ContratController())->GetById($request->contrat);

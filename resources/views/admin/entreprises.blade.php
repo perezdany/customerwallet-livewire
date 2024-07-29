@@ -17,8 +17,8 @@
 @endphp
 
 @section('content')
-     <div class="row">
-         @if(session('success'))
+      <div class="row">
+          @if(session('success'))
             <div class="col-md-12 box-header">
               <p class="bg-success" style="font-size:13px;">{{session('success')}}</p>
             </div>
@@ -159,7 +159,6 @@
                     </table>
                 </div>
                 <!-- /.box-body -->
-        
                   
               @endif
 
@@ -182,6 +181,7 @@
                       
                           <!-- form start -->
                           <form role="form" method="post" action="edit_entreprise">
+                            <div class="box-body">
                               @csrf
                               <input type="text" name="id_entreprise" value="{{$edit->id}}" style="display:none;">
                               <div class="box-body">
@@ -209,6 +209,11 @@
                                   </div>  
 
                                   <div class="form-group">
+                                      <label>Adresse :</label>
+                                      <input type="text" class="form-control input-lg" value="{{$edit->adresse}}"  onkeyup='this.value=this.value.toUpperCase()' name="addresse" />
+                                  </div>
+
+                                  <div class="form-group">
                                       <label>Client Depuis le :</label>
                                       <input type="date" required class="form-control input-lg" value="{{$edit->client_depuis}}" name="depuis" />
                                   </div>
@@ -218,19 +223,23 @@
                                       <button type="submit" class="btn btn-primary">VALIDER</button>
                                   </div>
                               </div>
-                              <!-- /.box-body -->
+                            </div>  <!-- /.box-body -->
+                            
                           </form>
                       </div>
                   @endforeach
                   
               @endif
+
             </div>
       </div>
       <!-- /.row -->
+      
+    <div class="row"></div>
 		<div class="row">
-          <div class="col-md-5">
-            
-            <!-- general form elements -->
+      
+        <div class="col-md-6">
+          <!-- general form elements -->
             <div class="box box-aeneas">
               <div class="box-header with-border">
                 <h3 class="box-title">AJOUTER UNE ENTREPRISE/PARTICULIER</h3><br>
@@ -241,12 +250,12 @@
                   </div>
                 
               </div>
-            
+           
               <!-- form start -->
               <form role="form" method="post" action="add_entreprise">
                 @csrf
                 <div class="box-body">
-                   
+                    
                     <div class="form-group">
                         <label>Nom :</label>
                         <input type="text" class="form-control input-lg" name="nom" onkeyup='this.value=this.value.toUpperCase()'  reuqired />
@@ -277,25 +286,20 @@
                 </div>
                 <!-- /.box-body -->
               </form>
+              
+             
             </div>
             <!-- /.box -->
-          </div>
-      
-          <!-- left column -->
-          <div class="col-md-2">
-           
-          </div>
-          <!--/.col (left) -->
-          <!-- right column -->
-          <div class="col-md-5">
-           
-          </div>
-            <!-- /.box -->
-		  </div>
+        </div>
+        <!--/.col (left) -->
+        
+
+        <!-- right column -->
+        <div class="col-md-6">
+        </div>
+          <!-- /.box -->
+		  
     </div>
     <!--/.col (right) -->
-
-    <div class="defilement"></div>
-​
 
 @endsection

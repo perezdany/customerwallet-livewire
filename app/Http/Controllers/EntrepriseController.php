@@ -57,14 +57,15 @@ class EntrepriseController extends Controller
 
     public function SaveEntreprise(Request $request)
     {
-        if($request->entreprise == 0)
+       //dd($request->statut );
+        if(isset($request->entreprise) AND  $request->entreprise == 0)
         {
             return back()->with('error', 'Vous n\'avez pas choisi l\'entreprise');
         }
 
         //SI ON CHOISI LE STATUT CLIENT IL FAUT METTRE LA DATE
         if($request->statut == 2)
-        {
+        { 
             $Insert = Entreprise::create([
            
                 'nom_entreprise'=> $request->nom,
@@ -73,20 +74,24 @@ class EntrepriseController extends Controller
                  'client_depuis' => $request->depuis,
 
             ]);
+
     
         }
         else
         {
+            //dd('ici');
             $Insert = Entreprise::create([
            
                 'nom_entreprise'=> $request->nom,
                 'id_statutentreprise' => $request->statut,
                  'created_by' => auth()->user()->id,
             ]);
+
+            return redirect('entreprises')->with('success', 'Enregistrement effectué');
         }
       
 
-        return redirect('entreprises')->with('success', 'Enregistrement effectué');
+        
     }
 
     public function EditEntrForm(Request $request)
@@ -110,6 +115,7 @@ class EntrepriseController extends Controller
             'nom_entreprise'=> $request->nom,
             'id_statutentreprise' => $request->statut,
             'client_depuis' => $request->depuis,
+            'adresse' => $request->addresse,
              
         ]);
 
