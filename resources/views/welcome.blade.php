@@ -141,7 +141,10 @@
                         <!-- /.table-responsive -->
                         </div>
                         <!-- /.box-body -->
-                    
+                        <div class="box-footer clearfix">
+             
+                            <a href="facture" class="btn btn-sm btn-primary btn-flat pull-right">Voir tout</a>
+                        </div>
                     </div>
                     <!-- /.box -->
             @endif
@@ -336,6 +339,10 @@
                             @csrf
                             <div class="box-body">
                                 <div class="form-group">
+                                    <label >Date de la prospection (*)</label>
+                                    <input type="date" class="form-control  input-lg" name="date_prospect" required>
+                                </div>
+                                <div class="form-group">
                                     <label>Service Proposé (*)</label>
                                     <select class="form-control input-lg" name="service_propose" required>
                                         <!--liste des services a choisir -->
@@ -352,10 +359,7 @@
                             
                                 
                                 </div>
-                                <div class="form-group">
-                                    <label >Date de la prospection (*)</label>
-                                    <input type="date" class="form-control  input-lg" name="date_prospect" required>
-                                </div>
+                               
                                 <div class="form-group">
                                     <label for="exampleInputFile">Durée de la prospection (Jr)</label>
                                     <input type="number" max="31" min="1" class="form-control input-lg" name="duree">

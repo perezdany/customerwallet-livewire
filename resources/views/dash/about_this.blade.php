@@ -129,7 +129,7 @@
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
-                    <table id="example1" class="table table-bordered table-striped table-hover">
+                    <table id="example3" class="table table-bordered table-striped table-hover">
                     <thead>
                     <tr>
                         <th>Numéro de contrat</th>
@@ -206,7 +206,7 @@
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
-                    <table id="example1" class="table table-bordered table-striped table-hover">
+                    <table id="example4" class="table table-bordered table-striped table-hover">
                     <thead>
                             <tr>
                                 <th>Date</th>

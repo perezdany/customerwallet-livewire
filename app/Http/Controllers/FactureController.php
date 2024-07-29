@@ -136,6 +136,7 @@ class FactureController extends Controller
             ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')   
             ->where('date_reglement', '<', $today)
             ->where('reglee', 0)
+            ->take(3)
             ->get(['factures.*', 'prestations.localisation', 'prestations.date_prestation', 'contrats.titre_contrat', 'contrats.date_solde',
             'contrats.montant', 'contrats.reste_a_payer',  'services.libele_service', 'services.description',
              'typeprestations.libele',  'entreprises.nom_entreprise']);
