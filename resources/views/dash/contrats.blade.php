@@ -23,6 +23,11 @@
               <p class="bg-success" style="font-size:13px;">{{session('success')}}</p>
             </div>
           @endif
+            @if(session('error'))
+            <div class="col-md-12 box-header">
+              <p class="bg-warning" style="font-size:13px;">{{session('error')}}</p>
+            </div>
+          @endif
 
           <div class="col-md-12">
               <div class="box">
@@ -34,7 +39,7 @@
                   <table id="example1" class="table table-bordered table-striped table-hover">
                   <thead>
                   <tr>
-                    <th>Numéro de contrat</th>
+                    <th>Titre de contrat</th>
                     <th>Entreprise</th>
                     <th>Type de contrat</th>
                     <th>Service</th>
@@ -71,6 +76,22 @@
                                   <input type="text" value={{$all->id}} style="display:none;" name="id_contrat">
                                   <button type="submit" class="btn btn-success"><i class="fa fa-edit"></i></button>
                               </form>
+
+                              <form action="upload" method="post" enctype="multipart/form-data">
+                                @csrf
+                                <label>Fichier scanné</label>
+                                 <input type="text" value={{$all->id}} style="display:none;" name="id_contrat">
+                                <input type="file" class="form-control" name="file">
+                                <button type="submit" class="btn btn-primary"><i class="fa fa-upload"></i></button>
+                              </form>
+
+                              <form action="download" method="post" enctype="multipart/form-data">
+                                @csrf
+                                <label>Télécharger</label>
+                                 <input type="text" value={{$all->id}} style="display:none;" name="id_contrat">
+                                <input type="text" class="form-control" name="file" value="{{$all->path}}" style="display:none;">
+                                <button type="submit" class="btn btn-warning"><i class="fa fa-download"></i></button>
+                              </form>
                             </td>
                           @endif  
                          
@@ -79,7 +100,7 @@
                   </tbody>
                   <tfoot>
                   <tr>
-                    <th>Numéro de contrat</th>
+                    <th>Titre de contrat</th>
                     <th>Entreprise</th>
                     <th>Type de contrat</th>
                     <th>Service</th>

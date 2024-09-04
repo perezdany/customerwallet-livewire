@@ -53,8 +53,9 @@
                     <thead>
                     <tr>
                        
-                         <th>Sercice proposé</th>
-                          <th>Date</th>
+                        <th>Sercice proposé</th>
+                        <th>Catégorie</th>
+                        <th>Date</th>
                         <th>Type de prestation</th>
 
                         @if(auth()->user()->id_role == 3)
@@ -68,6 +69,7 @@
                             <tr>
 
                                 <td>{{$all->libele_service}}</td>
+                                <td>{{$all->libele_categorie}}</td>
                                  <td>@php echo date('d/m/Y',strtotime($all->date_prestation)) @endphp</td>
                                 <td>{{$all->libele}}</td>
                                 
@@ -102,6 +104,7 @@
                     <tfoot>
                     <tr>
                         <th>Sercice proposé</th>
+                        <th>Catégorie</th>
                         <th>Date</th>
                        	<th>Type de prestation</th>
                     
@@ -132,7 +135,7 @@
                     <table id="example3" class="table table-bordered table-striped table-hover">
                     <thead>
                     <tr>
-                        <th>Numéro de contrat</th>
+                        <th>Titre de contrat</th>
                         
                         <th>Début du contrat</th>
                         <th>Fin du contrat</th>
@@ -173,7 +176,7 @@
                     </tbody>
                     <tfoot>
                     <tr>
-                        <th>Numéro de contrat</th>
+                        <th>Titre de contrat</th>
                         <th>Début du contrat</th>
                         <th>Fin du contrat</th>
                         <th>Montant</th>	

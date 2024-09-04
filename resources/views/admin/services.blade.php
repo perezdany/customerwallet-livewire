@@ -29,6 +29,7 @@
                   <thead>
                   <tr>
                     <th>Service</th>
+                    <th>Catégorie</th>
                     <th>Description</th>
                     <th>Action</th>
                   </tr>
@@ -37,6 +38,7 @@
                       @foreach($all as $all)
                         <tr>
                           <td>{{$all->libele_service}}</td>
+                          <td><b>{{$all->libele_categorie}}</b></td>
                           <td>{{$all->description}}</td>
                           
                           <td>
@@ -61,6 +63,7 @@
                   <tfoot>
                   <tr>
                      <th>Service</th>
+                     <th>Catégorie</th>
                     <th>Description</th>
                     <th>Action</th>
                   </tr>

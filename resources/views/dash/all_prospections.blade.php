@@ -33,7 +33,7 @@
                             <th>Entreprise</th>	
                             <th>prestation proposée</th>
                             <th>Date de fin de prospection</th>
-                            <th>Contact/Fonction</th>
+                            <th>Référant/Fonction</th>
                         
                             <th>Suivi effectués</th>
                        
@@ -67,7 +67,7 @@
                             <th>Entreprise</th>	
                             <th>prestation proposée</th>
                             <th>Date de fin de prospection</th>
-                            <th>Contact/Fonction</th>
+                            <th>Référant/Fonction</th>
                         
                             <th>Suivi effectués</th>
                         

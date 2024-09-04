@@ -14,24 +14,28 @@
 
     use App\Http\Controllers\FactureController;
 
+    use App\Http\Controllers\CategorieController;
+
     use App\Http\Controllers\Calculator;
 
     $calculator = new Calculator();
 
     $facturecontroller = new FactureController();
 
-     $servicecontroller = new ServiceController();
+    $categoriecontroller = new CategorieController();
 
-     $typeprestationcontroller = new TypePrestationController();
+    $servicecontroller = new ServiceController();
 
-     $contratcontroller = new ContratController();
+    $typeprestationcontroller = new TypePrestationController();
 
-     $entreprisecontroller = new EntrepriseController();
+    $contratcontroller = new ContratController();
 
-     $interlocuteurcontroller = new InterlocuteurController();
+    $entreprisecontroller = new EntrepriseController();
 
-     $my_own =  $facturecontroller->FactureDateDepassee();
-     $count_non_reglee = $calculator->CountFactureNonRegleDepasse();
+    $interlocuteurcontroller = new InterlocuteurController();
+
+    $my_own =  $facturecontroller->FactureDateDepassee();
+    $count_non_reglee = $calculator->CountFactureNonRegleDepasse();
 
      
 @endphp
@@ -44,7 +48,7 @@
             @if($count_non_reglee != 0)
                     <div class="box box-info">
                         <div class="box-header with-border">
-                        <h3 class="box-title">Attention! Ces factures ne sont pas régéles et la date de règlement est dépassée</h3>
+                        <h3 class="box-title">Attention! Ces factures ne sont pas réglées et la date de règlement est dépassée</h3>
 
                         <div class="box-tools pull-right">
                             <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
@@ -257,15 +261,23 @@
                                 <div class="form-group">
                                     <label>Service (*)</label>
                                     <select class="form-control input-lg" name="service" required>
-                                        <!--liste des services a choisir -->
-                                        <option  value="0">--Selectionnez le service--</option>
+                                       <!--liste des services a choisir -->
+                                        <option value="0">--Selectionnez le service--</option>
                                         @php
                                             $get = $servicecontroller->GetAll();
+                                            $categorie = $categoriecontroller->DisplayAll();
                                         @endphp
-                                        
-                                        @foreach($get as $service)
-                                            <option value={{$service->id}}>{{$service->libele_service}}</option>
+                                         @foreach( $categorie as $categorie)
                                             
+                                            <optgroup label="{{$categorie->libele_categorie}}">{{$categorie->libele_categorie}}</optgroup>
+                                            @php
+                                                $get = $servicecontroller->GetByCategorie($categorie->id);
+                                                
+                                            @endphp
+                                            @foreach($get as $service)
+                                                <option value={{$service->id}}>{{$service->libele_service}}</option>
+                                                
+                                            @endforeach
                                         @endforeach
                                     </select>
                                 </div>
@@ -342,16 +354,26 @@
                                 <div class="form-group">
                                     <label>Service Proposé (*)</label>
                                     <select class="form-control input-lg" name="service_propose" required>
+                                    
                                         <!--liste des services a choisir -->
                                         <option value="0">--Selectionnez le service--</option>
                                         @php
                                             $get = $servicecontroller->GetAll();
+                                            $categorie = $categoriecontroller->DisplayAll();
                                         @endphp
-                                        
-                                        @foreach($get as $service)
-                                            <option value={{$service->id}}>{{$service->libele_service}}</option>
+                                         @foreach( $categorie as $categorie)
                                             
+                                            <optgroup label="{{$categorie->libele_categorie}}">{{$categorie->libele_categorie}}</optgroup>
+                                            @php
+                                                $get = $servicecontroller->GetByCategorie($categorie->id);
+                                                
+                                            @endphp
+                                            @foreach($get as $service)
+                                                <option value={{$service->id}}>{{$service->libele_service}}</option>
+                                                
+                                            @endforeach
                                         @endforeach
+                                       
                                     </select>
                             
                                 

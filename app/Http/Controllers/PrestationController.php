@@ -165,11 +165,12 @@ class PrestationController extends Controller
         ->join('typeprestations', 'prestations.id_type_prestation', '=', 'typeprestations.id')
         ->join('contrats', 'prestations.id_contrat', '=', 'contrats.id')
         ->join('services', 'prestations.id_service', '=', 'services.id')
+        ->join('categories', 'services.id_categorie', '=', 'categories.id')
         ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')
         ->where('entreprises.id', '=', $id)
         ->get(['prestations.*', 'contrats.fin_contrat', 'contrats.titre_contrat', 'contrats.date_solde',
         'contrats.montant', 'contrats.reste_a_payer',  'services.libele_service', 'services.description',
-         'typeprestations.libele',  'entreprises.nom_entreprise']);
+         'typeprestations.libele',  'entreprises.nom_entreprise', 'categories.libele_categorie']);
  
         return $get;
     }

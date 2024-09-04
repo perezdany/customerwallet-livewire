@@ -32,37 +32,48 @@
 
   <style type="text/css">
       .defilement {
-  height: 3000px;
-}
+      height: 3000px;
+    }
 
-.popup {
-  display: none;
-}
+    .popup {
+      display: none;
+    }
 
-#popup.open {
-  display: flex !important;
-}
-.popup-encart {
-  position: fixed;
-  left: 90%;
-  background: rgba( 0, 0, 0, .25 )
-}
-.popup-contenu {
-  position: fixed;
-  left: 90%;
-  padding: 25px;
-  background: #fff;
-  /*transform: translate(-50%, -50%)*/
-  max-width: 250 px
-}
+    #popup.open {
+      display: flex !important;
+    }
+    .popup-encart {
+      position: fixed;
+      left: 90%;
+      background: rgba( 0, 0, 0, .25 )
+    }
+    .popup-contenu {
+      position: fixed;
+      left: 90%;
+      padding: 25px;
+      background: #fff;
+      /*transform: translate(-50%, -50%)*/
+      max-width: 250 px
+    }
 
-#popup-fermeture{
-  color: #138AED;
-  position:absolute;
-  right:0;
-  bottom:-3px
-}
+    #popup-fermeture{
+      color: #138AED;
+      position:absolute;
+      right:0;
+      bottom:-3px
+    }
+
+    thead{
+    background-color: rgb(161, 157, 157);
+    }
+
+    tfoot{
+      background-color: rgb(169, 164, 164);
+      }
+
   </style>
+
+
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">

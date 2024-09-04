@@ -87,4 +87,27 @@ class InterlocuteurController extends Controller
         
         return view('admin/entreprises', compact('interloc'));
     }
+
+    public function AddInterlocuteur(Request $request)
+    {
+        if(strval($request->entreprise) == "0")
+        {
+            return back()->with('error', 'Choisissez l\'entreprise ');
+        }
+        
+        //dd($request->nom);
+        $Insert = Interlocuteur::create([
+            'titre' => $request->titre,
+             'nom' => $request->nom, 
+             'tel' => $request->tel,
+              'email' => $request->email, 
+              'fonction' => $request->fonction, 
+              
+              'id_entreprise' => $request->entreprise,
+               'created_by' => auth()->user()->id,
+        ]);
+        
+
+        return redirect('interlocuteurs')->with('success', 'Enregistrement effectué');
+    }
 }

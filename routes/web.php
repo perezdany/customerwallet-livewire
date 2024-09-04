@@ -23,10 +23,15 @@ use App\Http\Controllers\FactureController;
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
-|
+| erreur lors de la connexion double authentification :
+    Connection could not be established with host customwallet.aeneas-wa.com :stream_socket_client(): 
+    Unable to connect to nu://customwallet.aeneas-wa.com:465 
+    (Unable to find the socket transport &quot;nu&quot; - did you forget to enable it when you configured PHP?)
 | Here is where you can register web routes for your application. These
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
+
+    MOT DE PASSE MAIL noreply : EJGkbw#XCnDf
 |
 */
 
@@ -40,7 +45,13 @@ Route::middleware(['guest:web'])->group(function(){
         return view('login');
     })->name('login');
 
+    Route::get('code_form', function () {
+        return view('code_form');
+    });
+
     Route::post('go_login', [AuthController::class, 'AdminLogin']);
+
+    Route::post('login_code', [AuthController::class, 'LoginCode']);
 
     //DECONNEXION
     //Route::get('logout', [AuthController::class, 'logoutUser']);
@@ -50,7 +61,8 @@ Route::middleware(['guest:web'])->group(function(){
 
 //SI IL EST DEJA CONNECTE 
 Route::middleware(['auth:web'])->group(function(){
-    
+
+
     //TABLEAU DE BORD
     Route::get('welcome', function () {
         return view('welcome');
@@ -66,6 +78,12 @@ Route::middleware(['auth:web'])->group(function(){
     Route::get('contrat', function () {
         return view('dash/contrats');
     });
+
+    //AJOUTER LE FICHIER SCANNE DU CONTRAT
+    Route::post('upload', [ContratController::class, 'UploadContrat']);
+
+    //TELECHARGER LE FICHIER SCANNE DU CONTRAT
+    Route::post('download', [ContratController::class, 'DownloadContrat']);
 
     //AJOUTER UN CONTRAT
     Route::post('add_contrat', [ContratController::class, 'AddContrat']);
@@ -249,6 +267,9 @@ Route::middleware(['auth:web'])->group(function(){
     //MODIFIER INTERLOCUTEUR
     Route::post('edit_interlocuteur_form', [InterlocuteurController::class, 'EditInterlocForm']);
     Route::post('edit_interlocuteur', [InterlocuteurController::class, 'EditInterlocuteur']);
+
+    //AJOUTER UN INTRELOCUTEURS
+    Route::post('add_referant', [InterlocuteurController::class, 'AddInterlocuteur']);
 
     //AFFICHER LES INTERLOCUTEURS D'UNE ENTREPRISE 
     Route::post('display_by_id_entreprise', [InterlocuteurController::class, 'DisplayByIdEntreprise']);

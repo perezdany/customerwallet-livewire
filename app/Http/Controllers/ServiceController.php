@@ -15,7 +15,11 @@ class ServiceController extends Controller
     //Récupérer tout
     public function GetAll()
     {
-        $get = Service::all();
+        
+        $get = DB::table('services')
+        ->join('categories', 'services.id_categorie', '=', 'categories.id')
+        
+        ->get(['services.*', 'categories.libele_categorie']);
 
         return $get;
     }
@@ -68,5 +72,12 @@ class ServiceController extends Controller
         $deleted = DB::table('services')->where('id', '=', $request->id_service)->delete();
 
         return redirect('services')->with('success', 'Elément supprimé');
+    }
+
+    public function GetByCategorie($id)
+    {
+        $get = Service::where('id_categorie', $id)->get();
+
+        return $get;
     }
 }

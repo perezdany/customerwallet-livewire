@@ -8,6 +8,9 @@ use App\Http\Controllers\Calculator;
 
 use App\Http\Controllers\EntrepriseController;
 
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
+
 
 use App\Models\Contrat;
 
@@ -22,8 +25,10 @@ class ContratController extends Controller
         $get = DB::table('contrats')
         ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')
         ->join('utilisateurs', 'contrats.created_by', '=', 'utilisateurs.id')
-        
-        ->get(['contrats.*', 'utilisateurs.nom_prenoms', 'entreprises.nom_entreprise',]);
+        ->join('prestations', 'prestations.id_contrat', '=', 'contrats.id')
+        ->join('typeprestations', 'prestations.id_type_prestation', '=', 'typeprestations.id')
+        ->join('services', 'prestations.id_service', '=', 'services.id')
+        ->get(['contrats.*', 'utilisateurs.nom_prenoms', 'entreprises.nom_entreprise', 'services.libele_service', 'typeprestations.libele']);
 
 
         return $get;
@@ -205,7 +210,11 @@ class ContratController extends Controller
         ->where('fin_contrat', '>', $today)
        ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')
        ->join('utilisateurs', 'contrats.created_by', '=', 'utilisateurs.id')
-        ->get(['contrats.*', 'utilisateurs.nom_prenoms', 'entreprises.nom_entreprise',]);
+       ->join('prestations', 'prestations.id_contrat', '=', 'contrats.id')
+        ->join('typeprestations', 'prestations.id_type_prestation', '=', 'typeprestations.id')
+        ->join('services', 'prestations.id_service', '=', 'services.id')
+        ->get(['contrats.*', 'utilisateurs.nom_prenoms', 'entreprises.nom_entreprise', 
+        'typeprestations.libele', 'services.libele_service']);
 
         return $get;
     }
@@ -219,5 +228,83 @@ class ContratController extends Controller
 
         return $get;
     
+    }
+
+    public function UploadContrat(Request $request)
+    {
+        //IL FAUT SUPPRIMER L'ANCIEN FICHIER DANS LE DISQUE DUR
+        $fichier = $request->file;
+
+
+        if( $fichier != null)
+        {
+            //VERIFIER SI L'ENREGISTREMENT A UN CHEMIN D'ACCES ENREGISTRE
+            $get_path = Contrat::where('id', $request->id_contrat)->get();
+            foreach($get_path as $get_path)
+            {
+                if($get_path->path == null)
+                {
+                     //enregistrement de fichier dans la base
+                    $file_name = $fichier->getClientOriginalName();
+                    
+                            
+                    $path = $request->file('file')->storeAs(
+                        'fichiers', $file_name
+                    );
+
+                    $affected = DB::table('contrats')
+                    ->where('id', $request->id_contrat)
+                    ->update([
+                        'path'=> $path,
+                        
+                    ]);
+
+                    return redirect('contrat')->with('success', 'Fichier enregistré');
+
+                }
+                else
+                {
+                    //SUPPRESSION DE L'ANCIEN FICHIER
+                    //dd($get_path->path);
+                    Storage::delete($get_path->path);
+
+
+                    $file_name = $fichier->getClientOriginalName();
+                    
+                            
+                    $path = $request->file('file')->storeAs(
+                        'fichiers', $file_name
+                    );
+
+                    $affected = DB::table('contrats')
+                    ->where('id', $request->id_contrat)
+                    ->update([
+                        'path'=> $path,
+                        
+                    ]);
+
+                    return redirect('contrat')->with('success', 'Fichier enregistré');
+                }
+            }
+           
+        }
+        else
+        {
+            return redirect('contrat')->with('error', 'Vous devez choisir un fichier');
+        }
+    }
+
+    public function DownloadContrat(Request $request)
+    {
+        //dd($request->file);
+        if(Storage::disk('local')->exists($request->file))
+        {
+            return Storage::download($request->file);
+        }
+        else
+        {
+            return redirect('contrat')->with('error', 'Le fichier n\'existe pas');
+        }
+
     }
 }

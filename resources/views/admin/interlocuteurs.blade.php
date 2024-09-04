@@ -2,21 +2,31 @@
 
 @php
    
-  use App\Http\Controllers\InterlocuteurController;
+use App\Http\Controllers\InterlocuteurController;
 
-  $interlocuteurcontroller = new InterlocuteurController();
+$interlocuteurcontroller = new InterlocuteurController();
 
-  $all =  $interlocuteurcontroller-> GetAll();
+use App\Http\Controllers\EntrepriseController;
+
+$entreprisecontroller = new EntrepriseController();
+
+$all =  $interlocuteurcontroller-> GetAll();
 
   //dd($all);
 @endphp
 
 @section('content')
-     <div class="row">
+    <div class="row">
       
          @if(session('success'))
             <div class="col-md-12 box-header">
               <p class="bg-success" style="font-size:13px;">{{session('success')}}</p>
+            </div>
+          @endif
+
+           @if(session('error'))
+            <div class="col-md-12 box-header">
+              <p class="bg-warning" style="font-size:13px;">{{session('error')}}</p>
             </div>
           @endif
         
@@ -83,6 +93,79 @@
           <!-- /.box -->
         </div>
         <!-- /.col -->
-		  </div>
+
+        <div class="col-md-6">
+            <div class="box box-aeneas">
+                <div class="box-header with-border">
+                    <h3 class="box-title"><b>ENREGISTRER UN INTERLOCUTEUR</b> </h3><br>
+                    <b>(*)champ obligatoire</b>
+                </div>
+            
+                <!-- form start -->
+                <form role="form" action="add_referant" method="post">
+                    @csrf
+                    <div class="box-body">
+                        
+                        <div class="box-header">
+                            <b><h3 class="box-title">L'ENTREPRISE</h3></b>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputFile">Choisissez l'entreprise :</label>
+                            <select class="form-control input-lg" name="entreprise">
+                                @php
+                                    $get = $entreprisecontroller->GetAll();
+                                @endphp
+                                <option value="0">--Selectionnez Une entreprise--</option>
+                                @foreach($get as $entreprise)
+                                    <option value={{$entreprise->id}}>{{$entreprise->nom_entreprise}}</option>
+                                    
+                                @endforeach
+                                
+                            </select>
+                            
+                        </div>
+                    </div>
+                    <!-- /.box-body -->
+                    <div class="box-body">
+                        
+                        <div class="form-group">
+                            <label for="exampleInputFile">Titre :</label>
+                            <select class="form-control input-lg" name="titre">
+                                <option value="M">M</option>
+                                <option value="Mme">Mme</option>
+                                <option value="Mlle">Mlle</option>
+                            </select>
+                            
+                        </div>
+                        <div class="form-group">
+                                <label >Nom & Prénom(s)</label>
+                                <input type="text"  maxlength="100" class="form-control  input-lg" name="nom" onkeyup="this.value=this.value.toUpperCase()">
+                        </div>
+
+                        <div class="form-group">
+                                <label>Email</label>
+                                <input type="email"  maxlength="30" class="form-control input-lg" name="email" >
+                            </div>
+
+                        <div class="form-group">
+                                <label>Téléphone (*)</label>
+                                <input type="text"  maxlength="30"   class="form-control input-lg" name="tel" placeholder="(+225)0214578931" >
+                            </div>
+
+                        <div class="form-group">
+                                <label>Fonction</label>
+                                <input type="text" class="form-control input-lg"  maxlength="60" name="fonction" onkeyup="this.value=this.value.toUpperCase()">
+                            </div>  
+                    </div>
+
+                    <div class="box-footer">
+                        <button type="submit" class="btn btn-primary">VALIDER</button>
+                    </div>
+                </form>
+            </div>		
+          <!-- /.box -->
+        </div>
+        
+	</div>
 		
 @endsection

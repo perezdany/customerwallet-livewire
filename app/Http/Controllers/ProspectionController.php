@@ -342,10 +342,11 @@ class ProspectionController extends Controller
         ->join('utilisateurs', 'prospections.id_utilisateur', '=', 'utilisateurs.id')
         ->join('interlocuteurs', 'prospections.interlocuteur', '=', 'interlocuteurs.id')
         ->join('services', 'prospections.service_propose', '=', 'services.id')
+        ->join('categories', 'services.id_categorie', '=', 'categories.id')
         ->where('entreprises.id', '=', $id)
         ->get(['prospections.*', 'entreprises.nom_entreprise', 'interlocuteurs.titre', 
         'interlocuteurs.nom', 'interlocuteurs.tel', 'interlocuteurs.email', 
-        'interlocuteurs.fonction', 'services.libele_service', 'utilisateurs.nom_prenoms']);
+        'interlocuteurs.fonction', 'services.libele_service', 'utilisateurs.nom_prenoms', 'categories.libele_categorie']);
 
         return $get;
 

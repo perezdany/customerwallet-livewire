@@ -32,25 +32,35 @@
                   <table id="example1" class="table table-bordered table-striped table-hover">
                   <thead>
                   <tr>
-                    <th>Titre du contrat</th>
-                    <th>Montant</th>
+                 
+                       <th>Titre de contrat de contrat</th>
+                    <th>Entreprise</th>
+                    <th>Type de contrat</th>
+                    <th>Service</th>
+                   <th>Début du contrat</th>
+                   <th>Fin du contrat</th>
+                    <th>Montant</th>	
                     <th>Reste à payer</th>
-                    <th>Début du contrat</th>
-                    <th>Fin du contrat</th>
-                    <th>Entreprise</th>	
                     <th>Date de solde</th>
-                     <th>Ajouté par:</th>
                   </tr>
                   </thead>
                   <tbody>
                       @foreach($all as $all)
                         <tr>
                           <td>{{$all->titre_contrat}}</td>
-                         <td>@php echo  number_format($all->montant, 2, ".", " ")." XOF";@endphp </td>
-                          <td>@php echo  number_format($all->reste_a_payer, 2, ".", " ")." XOF";@endphp</td>
-                          <td>@php echo date('d/m/Y',strtotime($all->debut_contrat)) @endphp</td>
-                          <td>@php echo date('d/m/Y',strtotime($all->fin_contrat)) @endphp</td>
                           <td>{{$all->nom_entreprise}}</td>
+                          <td>{{$all->libele}}</td>
+                          <td>{{$all->libele_service}}</td>
+                          <td>@php echo date('d/m/Y',strtotime($all->debut_contrat)) @endphp</td>
+                           <td>@php echo date('d/m/Y',strtotime($all->fin_contrat)) @endphp</td>
+                          <td>
+                            @php
+                              echo  number_format($all->montant, 2, ".", " ")." XOF";
+                            @endphp
+                           
+                          </td>  
+                          <td>@php echo  number_format($all->reste_a_payer, 2, ".", " ")." XOF";@endphp</td>
+                          
                           <td>
                             @php 
                               if($all->statut_solde == 0)
@@ -63,21 +73,22 @@
                               }
                             @endphp
                           </td>
-                          <td>{{$all->nom_prenoms}}</td>
+                          
                          
                         </tr>
                       @endforeach
                   </tbody>
                   <tfoot>
                   <tr>
-                  <th>Titre du contrat</th>
-                    <th>Montant</th>
+                    <th>Titre de contrat de contrat</th>
+                    <th>Entreprise</th>
+                    <th>Type de contrat</th>
+                    <th>Service</th>
+                   <th>Début du contrat</th>
+                   <th>Fin du contrat</th>
+                    <th>Montant</th>	
                     <th>Reste à payer</th>
-                    <th>Début du contrat</th>
-                    <th>Fin du contrat</th>
-                    <th>Entreprise</th>	
                     <th>Date de solde</th>
-                    <th>Ajouté par:</th>
                   </tr>
                   </tfoot>
                   </table>
