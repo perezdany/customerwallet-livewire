@@ -11,7 +11,11 @@ use App\Http\Controllers\Calculator;
 use App\Http\Controllers\InterlocuteurController;
 
 use App\Http\Controllers\EntrepriseController;
+
 use DB;
+
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class ProspectionController extends Controller
 {
@@ -352,5 +356,157 @@ class ProspectionController extends Controller
 
     }
 
+    public function UploadProsp(Request $request)
+    {
+        //IL FAUT SUPPRIMER L'ANCIEN FICHIER DANS LE DISQUE DUR
+        $fichier = $request->file;
+
+
+        if( $fichier != null)
+        {
+            //VERIFIER SI L'ENREGISTREMENT A UN CHEMIN D'ACCES ENREGISTRE
+            $get_path = Prospection::where('id', $request->id_prospection)->get();
+            foreach($get_path as $get_path)
+            {
+                if($get_path->path == null)
+                {
+                     //enregistrement de fichier dans la base
+                    $file_name = $fichier->getClientOriginalName();
+                    
+                            
+                    $path = $request->file('file')->storeAs(
+                        'crs', $file_name
+                    );
+
+                    $affected = DB::table('prospections')
+                    ->where('id', $request->id_prospection)
+                    ->update([
+                        'path_cr'=> $path,
+                        
+                    ]);
+
+                    return redirect('prospection')->with('success', 'Fichier enregistré');
+
+                }
+                else
+                {
+                    //SUPPRESSION DE L'ANCIEN FICHIER
+                    //dd($get_path->path);
+                    Storage::delete($get_path->path);
+
+
+                    $file_name = $fichier->getClientOriginalName();
+                    
+                            
+                    $path = $request->file('file')->storeAs(
+                        'crs', $file_name
+                    );
+
+                    $affected = DB::table('prospections')
+                    ->where('id', $request->id_prospection)
+                    ->update([
+                        'path_cr'=> $path,
+                        
+                    ]);
+
+                    return redirect('prospection')->with('success', 'Fichier enregistré');
+                }
+            }
+           
+        }
+        else
+        {
+            return redirect('prospection')->with('error', 'Vous devez choisir un fichier');
+        }
+    }
+
+    public function RetriveProsp(Request $request)
+    {
+        if(Storage::disk('local')->exists($request->file))
+        {
+            return Storage::download($request->file);
+        }
+        else
+        {
+            return redirect('prospection')->with('error', 'Le fichier n\'existe pas');
+        }
+    }
+
+    public function UploadProforma(Request $request)
+    {
+        //IL FAUT SUPPRIMER L'ANCIEN FICHIER DANS LE DISQUE DUR
+        $fichier = $request->file;
+
+
+        if( $fichier != null)
+        {
+            //VERIFIER SI L'ENREGISTREMENT A UN CHEMIN D'ACCES ENREGISTRE
+            $get_path = Prospection::where('id', $request->id_prospection)->get();
+            foreach($get_path as $get_path)
+            {
+                if($get_path->path == null)
+                {
+                     //enregistrement de fichier dans la base
+                    $file_name = $fichier->getClientOriginalName();
+                    
+                            
+                    $path = $request->file('file')->storeAs(
+                        'factures/proforma', $file_name
+                    );
+
+                    $affected = DB::table('prospections')
+                    ->where('id', $request->id_prospection)
+                    ->update([
+                        'facture_path'=> $path,
+                        
+                    ]);
+
+                    return redirect('prospection')->with('success', 'Fichier enregistré');
+
+                }
+                else
+                {
+                    //SUPPRESSION DE L'ANCIEN FICHIER
+                    //dd($get_path->path);
+                    Storage::delete($get_path->path);
+
+
+                    $file_name = $fichier->getClientOriginalName();
+                    
+                            
+                    $path = $request->file('file')->storeAs(
+                        'factures/proforma', $file_name
+                    );
+
+                    $affected = DB::table('prospections')
+                    ->where('id', $request->id_prospection)
+                    ->update([
+                        'facture_path'=> $path,
+                        
+                    ]);
+
+                    return redirect('prospection')->with('success', 'Fichier enregistré');
+                }
+            }
+           
+        }
+        else
+        {
+            return redirect('prospection')->with('error', 'Vous devez choisir un fichier');
+        }
+    }
+
+    public function DownloadProforma(Request $request)
+    {
+        if(Storage::disk('local')->exists($request->file))
+        {
+            //return Storage::download($request->file);
+            return response()->file($request->file);
+        }
+        else
+        {
+            return redirect('prospection')->with('error', 'Le fichier n\'existe pas');
+        }
+    }
 
 }

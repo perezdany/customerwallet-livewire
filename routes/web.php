@@ -17,6 +17,7 @@ use App\Http\Controllers\Calculator;
 use App\Http\Controllers\TypePrestationController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\FactureController;
+use App\Http\Controllers\DocController;
 
 
 /*
@@ -45,13 +46,23 @@ Route::middleware(['guest:web'])->group(function(){
         return view('login');
     })->name('login');
 
+    Route::get('login', function () {
+        return view('login');
+    })->name('login');
+
     Route::get('code_form', function () {
         return view('code_form');
+    });
+
+    Route::get('edit_pass_firstlog', function () {
+        return view('edit_pass_firstlog');
     });
 
     Route::post('go_login', [AuthController::class, 'AdminLogin']);
 
     Route::post('login_code', [AuthController::class, 'LoginCode']);
+
+    Route::post('update_pass_firstlog', [UserController::class, 'EditPasswordFristLog']);
 
     //DECONNEXION
     //Route::get('logout', [AuthController::class, 'logoutUser']);
@@ -138,6 +149,19 @@ Route::middleware(['auth:web'])->group(function(){
     Route::post('edit_prospect_form', [ProspectionController::class, 'EditProspForm']);
 
     Route::post('edit_prospection', [ProspectionController::class, 'EditProspection']);
+
+    //AJOUTER UN COMPTE RENDU
+    Route::post('upload_prospect', [ProspectionController::class, 'UploadProsp']);
+
+    //TELECHARER UN COMPTE RENDU
+    route::post('download_prospect', [ProspectionController::class, 'RetriveProsp']);
+
+    //UPLOADER LA FACTURE PROFORMA
+    route::post('upload_facture_proforma', [ProspectionController::class, 'UploadProforma']);
+
+     //Voir LA FACTURE PROFORMA
+     route::post('download_facture_proforma', [ProspectionController::class, 'DownloadProforma']);
+
 
     //MODIFIER UN CONTRAT
     Route::post('edit_contrat_form', [ContratController::class, 'EditContratForm']);
@@ -329,6 +353,10 @@ Route::middleware(['auth:web'])->group(function(){
     //MODIFIER ROLE
     Route::post('edit_role_form', [RoleController::class, 'EditRoleForm']);
     Route::post('edit_role', [RoleController::class, 'EditRole']);
+
+
+    //GUIDE UTILISATEUR
+    Route::post('download_guide', [DocController::class, 'RetriveGuide']);
 
 });
 

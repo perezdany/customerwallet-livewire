@@ -12,6 +12,8 @@ class Prospection extends Model
     public $timestamps = true;
     
     protected $fillable=[
-         'service_propose', 'date_prospection', 'duree_jours', 'date_fin', 'id_entreprise', 'id_utilisateur', 'interlocuteur', 'update_at',
+         'service_propose', 'date_prospection', 'duree_jours', 'date_fin', 
+         'id_entreprise', 'id_utilisateur', 'interlocuteur', 'update_at',
+         'path_cr', 'facture_path'
     ];
 }

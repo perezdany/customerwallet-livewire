@@ -66,6 +66,20 @@ class UserController extends Controller
         return redirect('utilisateurs')->with('success', 'Modification Effectuée avec succès');
     }
 
+    public function EditPasswordFristLog(Request $request)
+    {
+        $user_password = Hash::make($request->password);
+
+        //ON VA AUSSI CHANGER LE COUNT LOGIN DE LA PREMIERE
+        $affected = DB::table('utilisateurs')
+        ->where('id', $request->id)
+        ->update(['password' =>  $user_password, 'count_login' => 1]);
+
+        //dd($request->id);
+
+        return redirect('login')->with('success', 'Modification Effectuée avec succès. Vueillez vous connecter à nouveau.');
+    }
+
     public function DisableUser(Request $request)
     {
         $affected = DB::table('utilisateurs')
@@ -107,6 +121,7 @@ class UserController extends Controller
              'id_role' => $request->role,
              'active' => 1,
               'created_by' => auth()->user()->id,
+              'count_user' => 0,
        ]);
 
        return redirect('utilisateurs')->with('success', 'Enregistrement effectué');

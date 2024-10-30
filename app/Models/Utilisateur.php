@@ -15,6 +15,6 @@ class Utilisateur extends Authenticatable
     
     protected $fillable = [
         'login', 'password', 'nom_prenoms', 'id_departement', 'poste', 
-        'update_at', 'created_by', 'active', 'id_role'
+        'update_at', 'created_by', 'active', 'id_role', 'count_login',
     ];
 }

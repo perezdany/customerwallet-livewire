@@ -309,7 +309,26 @@
 
         @endif
         
-       
+         <li class="">
+            <a href="#" style="background-color: #FFFFFF">
+              
+              
+              <form action="download_guide" method="post" enctype="multipart/form-data">
+                  @csrf
+                  @php
+                    $get_guide = DB::table('docs')->get();
+                  @endphp
+                  @foreach($get_guide as $all)
+                    <input type="text" value={{$all->id}} style="display:none;" name="id_doc">
+                    <input type="text" class="form-control" name="file" value="{{$all->	path_doc}}" style="display:none;">
+                    <button type="submit" class="btn btn-default "><i class="fa fa-files-o"></i>Guide Utilisateur</button>
+                  @endforeach
+                  
+              </form>
+            </a>
+           
+          </li>
+
         
       </ul>
     </section>

@@ -124,6 +124,31 @@ class AuthController extends Controller
 
         if(Auth::guard('web')->attempt(['login_token' => $request->code, 'password' => $request->password]))
         {
+             
+            //ON VA VERIFIER SI C'EST SA PREMIERE FOIS DE SE CONNECTER
+            $count_login = Utilisateur::where('id', $request->id)->get();
+
+            foreach($count_login as $count_login)
+            {
+                 //SI C'EST SA PREMIERE FOIS LE REDIRIGER VERS LE FORMULAIRE POUR MODIFIER SON MOT DE PASSE
+                if($count_login->count_login == 0)
+                {
+                    //ON le deconnecte 
+                    Auth::logout();
+
+                    $request->session()->invalidate();
+                
+                    $request->session()->regenerateToken();
+             
+                    return view('edit_pass_firstlog',
+                        [
+                            'id' =>  $request->id
+                        ]
+                    );
+                }
+            }
+            
+
             $request->session()->regenerate();//regeneger la session
         
             return redirect()->route('home'); //si l'utilisateur était sur une ancienne page après la connexion ca le renvoi la bas dans le cas contraire sur la page d'accueil welcome

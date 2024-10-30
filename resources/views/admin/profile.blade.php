@@ -65,21 +65,24 @@
                                 </select>
                             </div>
 
-                            <div class="form-group">
-                                <label>Rôle:</label>
-                                <select class="form-control input-lg" name="role">
-                                @php
-                                        $role = $rolecontroller->GetAll();
-                                    @endphp
-                                    <option value={{$user->id_role}}>{{$user->intitule}}</option>
-                                    @foreach($role as $role)
-                                        <option value={{$role->id}}>{{$role->intitule}}</option>
+                            @if(auth()->user()->id_role == 4)
+                                <div class="form-group">
+                                    <label>Rôle:</label>
+                                    <select class="form-control input-lg" name="role">
+                                        @php
+                                            $role = $rolecontroller->GetAll();
+                                        @endphp
+                                        <option value={{$user->id_role}}>{{$user->intitule}}</option>
+                                        @foreach($role as $role)
+                                            <option value={{$role->id}}>{{$role->intitule}}</option>
+                                            
+                                        @endforeach
                                         
-                                    @endforeach
+                                    </select>
                                     
-                                </select>
-                                
-                            </div>     
+                                </div>     
+                            @endif
+                           
                             <div class="form-group">
                                 <label >Fonction</label>
                                 <input type="text" class="form-control  input-lg" name="poste" value="{{$user->poste}}" onkeyup='this.value=this.value.toUpperCase()'/>
