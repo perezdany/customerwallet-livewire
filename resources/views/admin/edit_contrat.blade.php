@@ -84,6 +84,11 @@
                                 <input type="date" class="form-control  input-lg" required name="date_solde"  value="{{$contrat->date_solde}}">
                             </div>
 
+                            <div class="form-group">
+                                <label>Fichier du contrat(PDF)</label>
+                                <input type="file" class="form-control" name="file">
+                            </div>
+
                         </div>
                         <!-- /.box-body -->
 

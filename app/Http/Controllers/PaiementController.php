@@ -50,7 +50,7 @@ class PaiementController extends Controller
         ->join('factures', 'paiements.id_facture', '=', 'factures.id')
         ->join('prestations', 'factures.id_prestation', '=', 'prestations.id')
         ->join('contrats', 'prestations.id_contrat', '=', 'contrats.id')
-        ->join('services', 'prestations.id_service', '=', 'services.id')
+        
         ->get(['paiements.paiement']);
 
         foreach($get_montants as $get_montants)
@@ -142,7 +142,7 @@ class PaiementController extends Controller
         ->join('factures', 'paiements.id_facture', '=', 'factures.id')
         ->join('prestations', 'factures.id_prestation', '=', 'prestations.id')
         ->join('contrats', 'prestations.id_contrat', '=', 'contrats.id')
-        ->join('services', 'prestations.id_service', '=', 'services.id')
+        
         ->get(['paiements.paiement']);
 
         foreach($get_montants as $get_montants)
@@ -208,14 +208,14 @@ class PaiementController extends Controller
         $get = DB::table('paiements')
             ->join('factures', 'paiements.id_facture', '=', 'factures.id')
             ->join('prestations', 'factures.id_prestation', '=', 'prestations.id')
-            ->join('services', 'prestations.id_service', '=', 'services.id')
+           
             ->join('typeprestations', 'prestations.id_type_prestation', '=', 'typeprestations.id')
             ->join('contrats', 'prestations.id_contrat', '=', 'contrats.id')
             ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')       
             ->where('factures.id', $id)
            
             ->get(['paiements.*', 'factures.numero_facture', 'prestations.*', 'contrats.titre_contrat', 'contrats.date_solde',
-            'contrats.montant', 'contrats.reste_a_payer',  'services.libele_service', 'services.description',
+            'contrats.montant', 'contrats.reste_a_payer', 
              'typeprestations.libele',  'entreprises.nom_entreprise']);
 
         return $get;
@@ -246,12 +246,12 @@ class PaiementController extends Controller
             ->join('prestations', 'factures.id_prestation', '=', 'prestations.id')
             ->join('contrats', 'prestations.id_contrat', '=', 'contrats.id')
             ->join('typeprestations', 'prestations.id_type_prestation', '=', 'typeprestations.id') 
-            ->join('services', 'prestations.id_service', '=', 'services.id')
+            
             ->where('paiements.id', $id)
            
             ->get(['paiements.*', 'contrats.montant', 'prestations.id_contrat', 
             'prestations.date_prestation', 'factures.numero_facture', 'factures.id_prestation',
-             'services.libele_service', 'typeprestations.libele', 'contrats.reste_a_payer', 'contrats.date_solde']);
+              'typeprestations.libele', 'contrats.reste_a_payer', 'contrats.date_solde']);
 
         return $get;
     }

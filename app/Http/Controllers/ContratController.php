@@ -27,8 +27,9 @@ class ContratController extends Controller
         ->join('utilisateurs', 'contrats.created_by', '=', 'utilisateurs.id')
         ->join('prestations', 'prestations.id_contrat', '=', 'contrats.id')
         ->join('typeprestations', 'prestations.id_type_prestation', '=', 'typeprestations.id')
-        ->join('services', 'prestations.id_service', '=', 'services.id')
-        ->get(['contrats.*', 'utilisateurs.nom_prenoms', 'entreprises.nom_entreprise', 'services.libele_service', 'typeprestations.libele']);
+        
+        ->get(['contrats.*', 'utilisateurs.nom_prenoms', 'entreprises.nom_entreprise', 
+        'typeprestations.libele']);
 
 
         return $get;
@@ -110,7 +111,68 @@ class ContratController extends Controller
                   'created_by' => auth()->user()->id,
             ]);
     
-        }      
+        }     
+        
+        //ENREGISTRER LE FICHIER DU CONTRAT
+          //IL FAUT SUPPRIMER L'ANCIEN FICHIER DANS LE DISQUE DUR
+          $fichier = $request->file;
+
+
+          if( $fichier != null)
+          {
+              //VERIFIER SI L'ENREGISTREMENT A UN CHEMIN D'ACCES ENREGISTRE
+              $get_path = Contrat::where('id', $request->id_contrat)->get();
+              foreach($get_path as $get_path)
+              {
+                  if($get_path->path == null)
+                  {
+                       //enregistrement de fichier dans la base
+                      $file_name = $fichier->getClientOriginalName();
+                      
+                              
+                      $path = $request->file('file')->storeAs(
+                          'fichiers', $file_name
+                      );
+  
+                      $affected = DB::table('contrats')
+                      ->where('id', $request->id_contrat)
+                      ->update([
+                          'path'=> $path,
+                          
+                      ]);
+  
+                     
+                  }
+                  else
+                  {
+                      //SUPPRESSION DE L'ANCIEN FICHIER
+                      //dd($get_path->path);
+                      Storage::delete($get_path->path);
+  
+  
+                      $file_name = $fichier->getClientOriginalName();
+                      
+                              
+                      $path = $request->file('file')->storeAs(
+                          'fichiers', $file_name
+                      );
+  
+                      $affected = DB::table('contrats')
+                      ->where('id', $request->id_contrat)
+                      ->update([
+                          'path'=> $path,
+                          
+                      ]);
+  
+                     
+                  }
+              }
+             
+          }
+          else
+          {
+           
+          }
 
         return back()->with('success', 'Enregistrement effectué');
     }
@@ -133,8 +195,9 @@ class ContratController extends Controller
         ->join('utilisateurs', 'contrats.created_by', '=', 'utilisateurs.id')
         ->join('prestations', 'prestations.id_contrat', '=', 'contrats.id')
         ->join('typeprestations', 'prestations.id_type_prestation', '=', 'typeprestations.id')
-        ->join('services', 'prestations.id_service', '=', 'services.id')
-        ->get(['contrats.*', 'utilisateurs.nom_prenoms', 'entreprises.nom_entreprise', 'services.libele_service', 'typeprestations.libele']);
+        
+        ->get(['contrats.*', 'utilisateurs.nom_prenoms', 'entreprises.nom_entreprise', 
+         'typeprestations.libele']);
 
    
         return $get;
@@ -197,6 +260,68 @@ class ContratController extends Controller
               'created_by' => auth()->user()->id,
         ]);
 
+
+        //ENREGISTRER LE FICHIER DU CONTRAT
+          //IL FAUT SUPPRIMER L'ANCIEN FICHIER DANS LE DISQUE DUR
+          $fichier = $request->file;
+
+
+           if( $fichier != null)
+           {
+              //VERIFIER SI L'ENREGISTREMENT A UN CHEMIN D'ACCES ENREGISTRE
+              $get_path = Contrat::where('id', $request->id_contrat)->get();
+              foreach($get_path as $get_path)
+              {
+                  if($get_path->path == null)
+                  {
+                       //enregistrement de fichier dans la base
+                      $file_name = $fichier->getClientOriginalName();
+                      
+                              
+                      $path = $request->file('file')->storeAs(
+                          'fichiers', $file_name
+                      );
+  
+                      $affected = DB::table('contrats')
+                      ->where('id', $request->id_contrat)
+                      ->update([
+                          'path'=> $path,
+                          
+                      ]);
+  
+                     
+                  }
+                  else
+                  {
+                      //SUPPRESSION DE L'ANCIEN FICHIER
+                      //dd($get_path->path);
+                      Storage::delete($get_path->path);
+  
+  
+                      $file_name = $fichier->getClientOriginalName();
+                      
+                              
+                      $path = $request->file('file')->storeAs(
+                          'fichiers', $file_name
+                      );
+  
+                      $affected = DB::table('contrats')
+                      ->where('id', $request->id_contrat)
+                      ->update([
+                          'path'=> $path,
+                          
+                      ]);
+  
+                     
+                  }
+              }
+             
+          }
+          else
+          {
+           
+          }
+
         return redirect('contrat')->with('success', 'Modification effectuée');
 
     }
@@ -212,9 +337,8 @@ class ContratController extends Controller
        ->join('utilisateurs', 'contrats.created_by', '=', 'utilisateurs.id')
        ->join('prestations', 'prestations.id_contrat', '=', 'contrats.id')
         ->join('typeprestations', 'prestations.id_type_prestation', '=', 'typeprestations.id')
-        ->join('services', 'prestations.id_service', '=', 'services.id')
         ->get(['contrats.*', 'utilisateurs.nom_prenoms', 'entreprises.nom_entreprise', 
-        'typeprestations.libele', 'services.libele_service']);
+        'typeprestations.libele',]);
 
         return $get;
     }

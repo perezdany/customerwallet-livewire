@@ -16,4 +16,7 @@ class Service extends Model
         'description',
         'updated_at',
     ];
+
+
+   
 }

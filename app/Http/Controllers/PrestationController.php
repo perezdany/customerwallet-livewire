@@ -21,11 +21,7 @@ class PrestationController extends Controller
     public function AddPrestation(Request $request)
     {
        
-        if($request->service == 0)
-        {
-            return back()->with('error', 'Choisissez impérativement le service');
-        }
-
+        
         if($request->type == 0)
         {
             return back()->with('error', 'Choisissez impérativement le type de prestation');
@@ -60,16 +56,20 @@ class PrestationController extends Controller
         }
         
 
-        $Insert = Prestation::create([
+        $insert = Prestation::create([
              'date_prestation' => $request->date_execute, 
              'id_type_prestation' => $request->type,
               'localisation' => $request->localisation, 
               'id_contrat' => $request->contrat, 
-              'id_service' => $request->service,
+              
                'created_by' => auth()->user()->id,
         ]);
 
-        return redirect('welcome')->with('success', 'Enregistrement effectué');
+        //IMPLEMENTATION DE LA RELATION PLUSIEURS A PLUSIEURS
+        //Etant donné qu'on peut sélectionner plusieurs services lors de l'enregistrement de la prospection
+        $insert->services()->attach($request->service);//Il sera lié au IDS des différents ser1vices services selectionnés
+
+        return back()->with('success', 'Enregistrement effectué');
     }
 
     public function MyOwnPrestation($id)
@@ -78,11 +78,9 @@ class PrestationController extends Controller
           $get = DB::table('prestations')
           ->join('typeprestations', 'prestations.id_type_prestation', '=', 'typeprestations.id')
           ->join('contrats', 'prestations.id_contrat', '=', 'contrats.id')
-          ->join('services', 'prestations.id_service', '=', 'services.id')
           ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')
           ->where('prestations.created_by', '=', $id)
-          ->get(['prestations.*', 'contrats.fin_contrat',  'contrats.reste_a_payer', 'contrats.titre_contrat', 
-           'services.libele_service', 'services.description', 
+          ->get(['prestations.*', 'contrats.fin_contrat',  'contrats.reste_a_payer', 'contrats.titre_contrat',  
            'typeprestations.libele', 'entreprises.nom_entreprise']);
    
          return $get;
@@ -93,11 +91,11 @@ class PrestationController extends Controller
         $get = DB::table('prestations')
           ->join('typeprestations', 'prestations.id_type_prestation', '=', 'typeprestations.id')
           ->join('contrats', 'prestations.id_contrat', '=', 'contrats.id')
-          ->join('services', 'prestations.id_service', '=', 'services.id')
+          
           ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')
           ->join('utilisateurs', 'prestations.created_by', '=', 'utilisateurs.id')
           ->get(['prestations.*', 'contrats.fin_contrat', 'contrats.reste_a_payer', 'contrats.titre_contrat',
-          'services.libele_service', 'services.description', 
+        
           'typeprestations.libele', 'entreprises.nom_entreprise', 'utilisateurs.nom_prenoms',]);
         
            return $get;
@@ -108,12 +106,12 @@ class PrestationController extends Controller
         $get = DB::table('prestations')
           ->join('typeprestations', 'prestations.id_type_prestation', '=', 'typeprestations.id')
           ->join('contrats', 'prestations.id_contrat', '=', 'contrats.id')
-          ->join('services', 'prestations.id_service', '=', 'services.id')
+         
           ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')
           ->join('utilisateurs', 'prestations.created_by', '=', 'utilisateurs.id')
           ->where('contrats.statut_solde', '=', 0)
           ->get(['prestations.*', 'contrats.fin_contrat', 'contrats.reste_a_payer', 'contrats.titre_contrat',
-          'services.libele_service', 'services.description', 
+          
           'typeprestations.libele', 'entreprises.nom_entreprise', 'utilisateurs.nom_prenoms',]);
         
            return $get;
@@ -137,8 +135,27 @@ class PrestationController extends Controller
               'id_type_prestation' => $request->type,
                'localisation' => $request->localisation, 
                'id_contrat' => $request->contrat, 
-               'id_service' => $request->service,
+               
                 'created_by' => auth()->user()->id,]);
+
+        
+        //IMPLEMENTATION DE LA RELATION PLUSIEURS A PLUSIEURS
+        //Etant donné qu'on peut sélectionner plusieurs services lors de l'enregistrement de la prospection
+
+        //INSERER DANS LA TABLE MANY TO MANY SI IL A CHOISI UN OU PLUSIEURS SERVICE
+      
+        if($request->service == false)//L'utilisateur peut ne pas remplir
+        {
+           
+        }
+        else
+        {
+            for($a = 0; $a < count($request->service); $a++)
+            {
+                $update_prest_service_table = DB::insert('insert into prestation_service (service_id, prestation_id) values (?, ?)', [$request->service[$a], $request->id_prestation]);
+            }
+        }
+        
 
     
         return redirect('prestation')->with('success' ,'Modification effectuée');
@@ -149,11 +166,11 @@ class PrestationController extends Controller
         $get = DB::table('prestations')
         ->join('typeprestations', 'prestations.id_type_prestation', '=', 'typeprestations.id')
         ->join('contrats', 'prestations.id_contrat', '=', 'contrats.id')
-        ->join('services', 'prestations.id_service', '=', 'services.id')
+        
         ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')
         ->where('prestations.id', '=', $id)
         ->get(['prestations.*', 'contrats.fin_contrat', 'contrats.titre_contrat', 'contrats.date_solde',
-        'contrats.montant', 'contrats.reste_a_payer',  'services.libele_service', 'services.description',
+        'contrats.montant', 'contrats.reste_a_payer',  
          'typeprestations.libele',  'entreprises.nom_entreprise']);
  
         return $get;
@@ -164,13 +181,12 @@ class PrestationController extends Controller
         $get = DB::table('prestations')
         ->join('typeprestations', 'prestations.id_type_prestation', '=', 'typeprestations.id')
         ->join('contrats', 'prestations.id_contrat', '=', 'contrats.id')
-        ->join('services', 'prestations.id_service', '=', 'services.id')
-        ->join('categories', 'services.id_categorie', '=', 'categories.id')
+    
         ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')
         ->where('entreprises.id', '=', $id)
         ->get(['prestations.*', 'contrats.fin_contrat', 'contrats.titre_contrat', 'contrats.date_solde',
-        'contrats.montant', 'contrats.reste_a_payer',  'services.libele_service', 'services.description',
-         'typeprestations.libele',  'entreprises.nom_entreprise', 'categories.libele_categorie']);
+        'contrats.montant', 'contrats.reste_a_payer', 
+         'typeprestations.libele',  'entreprises.nom_entreprise', ]);
  
         return $get;
     }

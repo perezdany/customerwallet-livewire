@@ -102,6 +102,8 @@ Route::middleware(['auth:web'])->group(function(){
     //AJOUTER UNE PRESTATION
     Route::post('add_prestation', [PrestationController::class, 'AddPrestation']);
 
+
+
     //AJOUTER UNE PROSECTION
     Route::post('add_prospection', [ProspectionController::class, 'AddProspection']);
 
@@ -214,6 +216,12 @@ Route::middleware(['auth:web'])->group(function(){
     //SUPPRIMER SERVICE 
     Route::post('delete_service', [ServiceController::class, 'DeleteService']);
 
+    //SUPPRIMER LE SERVICE DANS LA TABLE DES PROSPECTIONS
+    Route::get('delete/{id}', [ServiceController::class, 'DeleteServiceInProspection']);
+
+    //SUPPRIMER LE SERVICE DANS LA TABLE DES PRESTATIONS
+    Route::get('delete_prestation/{id}', [ServiceController::class, 'DeleteServiceInPrestation']);
+
     //ENTREPRISES
     Route::get('entreprises', function(){
         return view('admin/entreprises');
@@ -259,6 +267,7 @@ Route::middleware(['auth:web'])->group(function(){
      //AFFICHER LA LISTE DE TOUS LES CONTRATS EN COURS
      Route::get('contrats_en_cours', function(){
         return view('dash/contrats_en_cours');
+
     });
 
     Route::get('all_contrats', function(){
@@ -357,6 +366,25 @@ Route::middleware(['auth:web'])->group(function(){
 
     //GUIDE UTILISATEUR
     Route::post('download_guide', [DocController::class, 'RetriveGuide']);
+
+
+     //LES ROLES D'UTILISATEURS
+     Route::get('test', function(){
+        return view('dash/test');
+    });
+
+    //LES FORMULAIRES 
+    Route::get('form_add_contrat', function(){
+        return view('forms/add_contrat');
+    });
+
+    Route::get('form_add_prestation', function(){
+        return view('forms/add_prestation');
+    });
+
+    Route::get('form_add_prospection', function(){
+        return view('forms/add_prospection');
+    });
 
 });
 

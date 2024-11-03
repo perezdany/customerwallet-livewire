@@ -40,14 +40,14 @@ class FactureController extends Controller
             
             ->join('prestations', 'factures.id_prestation', '=', 'prestations.id')
             ->join('contrats', 'prestations.id_contrat', '=', 'contrats.id')
-            ->join('services', 'prestations.id_service', '=', 'services.id')
+            
             ->join('typeprestations', 'prestations.id_type_prestation', '=', 'typeprestations.id')
             
             ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')       
             ->where('factures.id', $id)
             ->get(['factures.*', 'prestations.localisation', 'prestations.date_prestation', 'prestations.id_contrat',
             'contrats.titre_contrat', 'contrats.date_solde', 
-            'contrats.montant', 'contrats.reste_a_payer',  'services.libele_service', 'services.description',
+            'contrats.montant', 'contrats.reste_a_payer',  
              'typeprestations.libele',  'entreprises.nom_entreprise']);
        
         return $get;
@@ -57,12 +57,12 @@ class FactureController extends Controller
         $get = DB::table('factures')
             
             ->join('prestations', 'factures.id_prestation', '=', 'prestations.id')
-            ->join('services', 'prestations.id_service', '=', 'services.id')
+            
             ->join('typeprestations', 'prestations.id_type_prestation', '=', 'typeprestations.id')
             ->join('contrats', 'prestations.id_contrat', '=', 'contrats.id')
             ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')   
             ->get(['factures.*', 'prestations.localisation', 'prestations.date_prestation', 'contrats.titre_contrat', 'contrats.date_solde',
-            'contrats.montant', 'contrats.reste_a_payer',  'services.libele_service', 'services.description',
+            'contrats.montant', 'contrats.reste_a_payer',  
              'typeprestations.libele',  'entreprises.nom_entreprise']);
 
         return $get;
@@ -130,7 +130,7 @@ class FactureController extends Controller
         $get = DB::table('factures')
             
             ->join('prestations', 'factures.id_prestation', '=', 'prestations.id')
-            ->join('services', 'prestations.id_service', '=', 'services.id')
+           
             ->join('typeprestations', 'prestations.id_type_prestation', '=', 'typeprestations.id')
             ->join('contrats', 'prestations.id_contrat', '=', 'contrats.id')
             ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')   
@@ -138,7 +138,7 @@ class FactureController extends Controller
             ->where('reglee', 0)
             ->take(3)
             ->get(['factures.*', 'prestations.localisation', 'prestations.date_prestation', 'contrats.titre_contrat', 'contrats.date_solde',
-            'contrats.montant', 'contrats.reste_a_payer',  'services.libele_service', 'services.description',
+            'contrats.montant', 'contrats.reste_a_payer', 
              'typeprestations.libele',  'entreprises.nom_entreprise']);
 
         return $get;

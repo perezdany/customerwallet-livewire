@@ -27,8 +27,10 @@
   <link rel="stylesheet" href="dist/css/AdminLTE.css">
   
   <!-- Google Font -->
-  <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+
+  <!-- Select2 -->
+  <link rel="stylesheet" href="bower_components/select2/dist/css/select2.min.css">
 
   <style type="text/css">
       .defilement {
@@ -230,19 +232,19 @@
               <li class="active"><a href="suivi"><i class="fa fa-circle-o"></i>Suivis</a></li>
               <li><a href="contrat"><i class="fa fa-circle-o"></i>Contrats</a></li>
                <li class="active"><a href="facture"><i class="fa fa-circle-o"></i>Factures</a></li>
-              <li><a href="entreprises"><i class="fa fa-circle-o"></i> Clients/Prospects</a></li>
+             
             @else
               @if(auth()->user()->id_role == 5)
                 @if(auth()->user()->id_departement == 1)
                     <li class="active"><a href="prospection"><i class="fa fa-circle-o"></i>Prospections</a></li>
                     <li class="active"><a href="suivi"><i class="fa fa-circle-o"></i>Suivis</a></li>
-                    <li><a href="entreprises"><i class="fa fa-circle-o"></i> Clients/Prospects</a></li>
+                   
                 @endif
 
                 @if(auth()->user()->id_departement == 5)
                     <li class="active"><a href="prestation"><i class="fa fa-circle-o"></i>Prestations</a></li>
                     <li><a href="contrat"><i class="fa fa-circle-o"></i>Contrats</a></li>
-                    <li><a href="entreprises"><i class="fa fa-circle-o"></i> Clients/Prospects</a></li>
+                  
                 @endif
               @endif
             @endif
@@ -268,7 +270,7 @@
               <li><a href="entreprises"><i class="fa fa-circle-o"></i> Entreprises</a></li>
               <li><a href="type_prestation"><i class="fa fa-circle-o"></i>Type de prestations</a></li>
               <li><a href="interlocuteurs"><i class="fa fa-circle-o"></i>Interlocuteurs</a></li>
-        
+           <li><a href="entreprises"><i class="fa fa-circle-o"></i> Clients/Prospects</a></li>
             </ul>
           </li>
 
@@ -367,6 +369,9 @@
 <!-- AdminLTE App -->
 <script src="dist/js/adminlte.min.js"></script>
 
+<!-- Select2 -->
+<script src="bower_components/select2/dist/js/select2.full.min.js"></script>
+
 <!-- SlimScroll -->
 <script src="bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 <!-- DataTables -->
@@ -420,40 +425,50 @@
 
      popup.classList.toggle("open");
   }
+
   /*
   let test = document.getElementById("test");
 
-// Ce gestionnaire ne sera exécuté qu'une fois
-// lorsque le curseur se déplace sur la liste
-test.addEventListener(
-  "mouseenter",
-  function (event) {
-    // on met l'accent sur la cible de mouseenter
-    event.target.style.color = "purple";
+  // Ce gestionnaire ne sera exécuté qu'une fois
+  // lorsque le curseur se déplace sur la liste
+  test.addEventListener(
+    "mouseenter",
+    function (event) {
+      // on met l'accent sur la cible de mouseenter
+      event.target.style.color = "purple";
 
-    // on réinitialise la couleur après quelques instants
-    setTimeout(function () {
-      event.target.style.color = "";
-    }, 500);
-  },
-  false,
-);
+      // on réinitialise la couleur après quelques instants
+      setTimeout(function () {
+        event.target.style.color = "";
+      }, 500);
+    },
+    false,
+  );
 
-// Ce gestionnaire sera exécuté à chaque fois que le curseur
-// se déplacera sur un autre élément de la liste
-test.addEventListener(
-  "mouseover",
-  function (event) {
-    // on met l'accent sur la cible de mouseover
-    event.target.style.color = "orange";
+  // Ce gestionnaire sera exécuté à chaque fois que le curseur
+  // se déplacera sur un autre élément de la liste
+  test.addEventListener(
+    "mouseover",
+    function (event) {
+      // on met l'accent sur la cible de mouseover
+      event.target.style.color = "orange";
 
-    // on réinitialise la couleur après quelques instants
-    setTimeout(function () {
-      event.target.style.color = "";
-    }, 500);
-  },
-  false,
-);*/
+      // on réinitialise la couleur après quelques instants
+      setTimeout(function () {
+        event.target.style.color = "";
+      }, 500);
+    },
+    false,
+  );*/
+</script>
+
+<script>
+  $(function () {
+    //Initialize Select2 Elements
+    $('.select2').select2()
+
+   
+  })
 </script>
  
  

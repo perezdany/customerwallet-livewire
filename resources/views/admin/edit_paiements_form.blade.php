@@ -75,10 +75,7 @@
                                     <label>PRESTATION DU :</label>
                                     <p><h3>@php echo date('d/m/Y',strtotime($retrive->date_prestation)) @endphp</h3></p>
                                 </div>
-                                <div class="form-group">
-                                    <label>SERVICE :</label>
-                                    <p><h3> {{$retrive->libele_service}} </h3></p>
-                                </div>
+                                
                                 <div class="form-group">
                                     <label>TYPE DE PRESTATION :</label>
                                     <p><h3> {{$retrive->libele}}</h3> </p>

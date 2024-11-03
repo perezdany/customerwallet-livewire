@@ -74,6 +74,23 @@ class ServiceController extends Controller
         return redirect('services')->with('success', 'Elément supprimé');
     }
 
+    public function DeleteServiceInProspection(Request $request)
+    {
+        
+        $deleted = DB::table('prospection_service')->where('id', '=', $request->id)->delete();
+
+        return back()->with('success', 'Elément supprimé');
+    }
+
+    public function DeleteServiceInPrestation(Request $request)
+    {
+        
+        $deleted = DB::table('prestation_service')->where('id', '=', $request->id)->delete();
+
+        return back()->with('success', 'Elément supprimé');
+    }
+
+
     public function GetByCategorie($id)
     {
         $get = Service::where('id_categorie', $id)->get();

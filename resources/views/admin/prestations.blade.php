@@ -24,6 +24,12 @@
 @endphp
 
 @section('content')
+     <div class="row">
+             
+        <div class="col-md-3">
+              <a href="form_add_prestation"><button class="btn btn-primary"> <b>ENREGISTRER UNE PRESTATION</b></button></a>
+        </div>
+      </div>
     <div class="row">
       
          @if(session('success'))
@@ -49,7 +55,7 @@
                       <table id="example1" class="table table-bordered table-striped table-hover">
                           <thead>
                           <tr>
-                          <th>Date</th>
+                          <th>Date </th>
                           <th>Type de prestation</th>
                           <th>Lieu</th>
                           <th>Entreprise</th>
@@ -71,7 +77,22 @@
                                       <td>{{$all->localisation}}</td>
                                       <td>{{$all->nom_entreprise}}</td>
                                       <td>@php echo date('d/m/Y',strtotime($all->fin_contrat));  @endphp</td>
-                                      <td>{{$all->libele_service}}</td>
+                                      <td>
+                                          @php
+                                              //On va écrire un code pour detecter tous les services offerts
+                                              $se = DB::table('prestation_service')
+                                              ->join('prestations', 'prestation_service.prestation_id', '=', 'prestations.id')
+                                              ->join('services', 'prestation_service.service_id', '=', 'services.id') 
+                                              ->where('prestation_id', $all->id)    
+                                              ->get(['services.libele_service', 'prestation_service.*']);
+                                          @endphp
+                                          <ul>
+                                          @foreach($se as $se_get)
+                                              <li>{{$se_get->libele_service}}<a href="delete_prestation/{{$se_get->id}}"><button class="btn btn-danger"><i class="fa fa-times"></i></button></a></li>
+                                          @endforeach
+                                          </ul>
+                                      
+                                      </td>
                                       
                                        
                                      

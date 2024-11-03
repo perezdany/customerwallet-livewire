@@ -24,6 +24,9 @@
 
   <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/AdminLTE.css">
+
+  <!-- Select2 -->
+  <link rel="stylesheet" href="bower_components/select2/dist/css/select2.min.css">
   
   <!-- Google Font -->
   <link rel="stylesheet"
@@ -231,13 +234,13 @@
               <li class="active"><a href="suivi"><i class="fa fa-circle-o"></i>Suivis</a></li>
               <li><a href="contrat"><i class="fa fa-circle-o"></i>Contrats</a></li>
               <li class="active"><a href="facture"><i class="fa fa-circle-o"></i>Factures</a></li>
-              <li><a href="entreprises"><i class="fa fa-circle-o"></i> Clients/Prospects</a></li>
+              
             @else
               @if(auth()->user()->id_role == 5)
                 @if(auth()->user()->id_departement == 1)
                     <li class="active"><a href="prospection"><i class="fa fa-circle-o"></i>Prospections</a></li>
                     <li class="active"><a href="suivi"><i class="fa fa-circle-o"></i>Suivis</a></li>
-                    <li><a href="entreprises"><i class="fa fa-circle-o"></i> Clients/Prospects</a></li>
+                   
                 @endif
 
                 @if(auth()->user()->id_departement == 5)
@@ -269,6 +272,7 @@
               <li><a href="entreprises"><i class="fa fa-circle-o"></i> Entreprises</a></li>
               <li><a href="type_prestation"><i class="fa fa-circle-o"></i>Type de prestations</a></li>
               <li><a href="interlocuteurs"><i class="fa fa-circle-o"></i>Interlocuteurs</a></li>
+               <li><a href="entreprises"><i class="fa fa-circle-o"></i> Clients/Prospects</a></li>
         
             </ul>
           </li>
@@ -346,160 +350,143 @@
       <!--RESTRICTIONS POUR LES INFOS BOX -->
 
       @if(auth()->user()->id_role == 1 OR auth()->user()->id_role == 3 OR auth()->user()->id_role == 4)
-        <!-- Info boxes -->
+
+        <!-- Small boxes (Stat box) -->
         <div class="row">
-          <div class="col-md-3 col-sm-6 col-md-12">
-            <div class="info-box">
-              <span class="info-box-icon bg-aqua"><i class="ion ion-android-people"></i></span>
-
-              <div class="info-box-content">
-          <a href="customers">
-            <span class="info-box-text">clients</span>
-                @php
-                  $count = $calculator->CountCustomer();
-                  //dd($count);
-                @endphp
+          <div class="col-lg-4 col-xs-6">
+            <!-- small box -->
+            <div class="small-box bg-aqua">
+              <div class="inner">
+              @php
+                    $count = $calculator->CountCustomer();
+                    //dd($count);
+                  @endphp
+                <h3>{{$count}}</h3>
                 
-                <span class="info-box-number">{{$count}}</span>
-              
-                    
-          </a>
-                
+                <p>CLIENTS</p>
               </div>
-              <!-- /.info-box-content -->
+              <div class="icon">
+                <i class="fa fa-shopping-cart"></i>
+              </div>
+              <a href="customers" class="small-box-footer">
+                More info <i class="fa fa-arrow-circle-right"></i>
+              </a>
             </div>
-            <!-- /.info-box -->
           </div>
-          <!-- /.col -->
-          <div class="col-md-3 col-sm-6 col-md-12">
-            <div class="info-box">
-              <span class="info-box-icon bg-red"><i class="fa fa-bell"></i></span>
-
-              <div class="info-box-content">
-          <a href="prospects">
-            <span class="info-box-text">prospects</span>
-            @php
-                  $count = $calculator->CountProspect();
+        
+          <!-- ./col -->
+          <div class="col-lg-4 col-xs-6">
+            <!-- small box -->
+            <div class="small-box bg-yellow">
+              <div class="inner">
+              @php
+                  $count = $calculator->CountContratEncours();
                 @endphp
-              
-                    <span class="info-box-number">{{$count}}</span>
-              
-          </a>
+                <h3>{{$count}}</h3>
+
+                <p>CONTRATS EN COURS</p>
               </div>
-              <!-- /.info-box-content -->
+              <div class="icon">
+                <i class="ion ion-person-add"></i>
+              </div>
+              <a href="contrat" class="small-box-footer">
+                Plus d'infos <i class="fa fa-arrow-circle-right"></i>
+              </a>
             </div>
-            <!-- /.info-box -->
           </div>
-          <!-- /.col -->
-
-          <!-- fix for small devices only -->
-          <div class="clearfix visible-sm-block"></div>
-
-          <div class="col-md-3 col-sm-6 col-md-12">
-            <div class="info-box">
-              <span class="info-box-icon bg-green"><i class="ion ion-ios-cart-outline"></i></span>
-
-              <div class="info-box-content">
-          <a href="prestations_all">
-            <span class="info-box-text">Prestations</span>
-            @php
-                  $count = $calculator->CountPrestation();
-                @endphp
+          <!-- ./col -->
+          <div class="col-lg-4 col-xs-6">
+            <!-- small box -->
+            <div class="small-box bg-red">
+              <div class="inner">
+                  @php
+                    $count = $calculator->CountProspect();
+                  @endphp
+                <h3>{{$count}}</h3>
+                <p>PROSPECTS</p>
               
-                    <span class="info-box-number">{{$count}}</span>
-                
-          </a>
               </div>
-              <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-          </div>
-          <!-- /.col -->
-          <div class="col-md-3 col-sm-6 col-md-12">
-            <div class="info-box">
-              <span class="info-box-icon bg-yellow"><i class="ion ion-ios-people-outline"></i></span>
-
-              <div class="info-box-content">
-                  <a href="contrats_en_cours">
-                    <span class="info-box-text">Contrats en cours</span>
-                        @php
-                          $count = $calculator->CountContratEncours();
-                        @endphp
-                        
-                            <span class="info-box-number">{{$count}}</span>
-                  
-                  </a>
+              <div class="icon">
+                <i class="ion ion-pie-graph"></i>
               </div>
-              <!-- /.info-box-content -->
+              <a href="prospects" class="small-box-footer">
+                Plus d'info<i class="fa fa-arrow-circle-right"></i>
+              </a>
             </div>
-            <!-- /.info-box -->
           </div>
-          <!-- /.col -->
+          <!-- ./col -->
         </div>
         <!-- /.row -->
-        <div class="row">
-          <div class="col-md-3 col-sm-6 col-md-12">
-            <div class="info-box">
-              <span class="info-box-icon bg-aqua"><i class="ion ion-android-car"></i></span>
-
-              <div class="info-box-content">
-                <a href="all_prospections">
-                  <span class="info-box-text">Prospections</span>
-                      @php
-                        $count = $calculator->CountProspection();
-                        //dd($count);
-                      @endphp
-                      
-                      <span class="info-box-number">{{$count}}</span>
-                    
-                          
-                </a>
-                
-              </div>
-              <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-          </div>
-          <!-- /.col -->
-
-          <div class="col-md-3 col-sm-6 col-md-12">
-            <div class="info-box">
-              <span class="info-box-icon bg-green"><i class="ion ion-ios-people-outline"></i></span>
-
-              <div class="info-box-content">
-                <a href="all_contrats">
-                  <span class="info-box-text">Base des Contrats</span>
-                      @php
-                        $count = $calculator->CountContrat();
-                        //dd($count);
-                      @endphp
-                      
-                      <span class="info-box-number">{{$count}}</span>
-                    
-                          
-                </a>
-                
-              </div>
-              <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-          </div>
-          <!-- /.col -->
-        </div>
+       
+      
       @else
-        @if(auth()->user()->id_role == 2)
+        @if(auth()->user()->id_role == 5 )
           @if(auth()->user()->id_departement == 1)
-             
+            <!-- Small boxes (Stat box) -->
+              <div class="row">
+                <div class="col-lg-4 col-xs-6">
+                  <!-- small box -->
+                  <div class="small-box bg-aqua">
+                    <div class="inner">
+                    @php
+                          $count = $calculator->CountCustomer();
+                          //dd($count);
+                        @endphp
+                      <h3>{{$count}}</h3>
+                      
+                      <p>CLIENTS</p>
+                    </div>
+                    <div class="icon">
+                      <i class="fa fa-shopping-cart"></i>
+                    </div>
+                    <a href="customers" class="small-box-footer">
+                      More info <i class="fa fa-arrow-circle-right"></i>
+                    </a>
+                  </div>
+                </div>
+              
+               
+                <!-- ./col -->
+                <div class="col-lg-4 col-xs-6">
+                  <!-- small box -->
+                  <div class="small-box bg-red">
+                    <div class="inner">
+                        @php
+                          $count = $calculator->CountProspect();
+                        @endphp
+                      <h3>{{$count}}</h3>
+                      <p>PROSPECTS</p>
+                    
+                    </div>
+                    <div class="icon">
+                      <i class="ion ion-pie-graph"></i>
+                    </div>
+                    <a href="prospects" class="small-box-footer">
+                      Plus d'info<i class="fa fa-arrow-circle-right"></i>
+                    </a>
+                  </div>
+                </div>
+                <!-- ./col -->
+              </div>
+            <!-- /.row -->
           @endif
 
           @if(auth()->user()->id_departement == 5)
-               
+              
           @endif
         @endif
+
+        @if(auth()->user()->id_role == 2 )
+          
+          @if(auth()->user()->id_departement == 5)
+              
+          @endif
+        @endif
+       
       @endif
 
     
-	@yield('content')
+	    @yield('content')
       <!-- Main row -->  
     </section>
     <!-- /.content -->
@@ -521,6 +508,12 @@
 <script src="bower_components/jquery/dist/jquery.min.js"></script>
 <!-- Bootstrap 3.3.7 -->
 <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- Select2 -->
+<script src="bower_components/select2/dist/js/select2.full.min.js"></script>
+<!-- InputMask -->
+<script src="plugins/input-mask/jquery.inputmask.js"></script>
+<script src="plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+<script src="plugins/input-mask/jquery.inputmask.extensions.js"></script>
 <!-- FastClick -->
 <script src="bower_components/fastclick/lib/fastclick.js"></script>
 <!-- AdminLTE App -->
@@ -529,8 +522,26 @@
 <!-- SlimScroll -->
 <script src="bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 <!-- DataTables -->
-<script src="../../bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
-<script src="../../bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<script src="bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+
+<!-- bootstrap datepicker -->
+<script src="bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+<!-- bootstrap color picker -->
+<script src="bower_components/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js"></script>
+<!-- bootstrap time picker -->
+<script src="plugins/timepicker/bootstrap-timepicker.min.js"></script>
+<!-- SlimScroll -->
+<script src="bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+<!-- iCheck 1.0.1 -->
+<script src="plugins/iCheck/icheck.min.js"></script>
+<!-- FastClick -->
+<script src="bower_components/fastclick/lib/fastclick.js"></script>
+<!-- AdminLTE App -->
+<script src="dist/js/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="dist/js/demo.js"></script>
+<!-- Page script -->
 	
 <!-- page script -->
 	<script>
@@ -546,5 +557,14 @@
 		})
 	  })
 	</script>
+
+  <script>
+    $(function () {
+      //Initialize Select2 Elements
+      $('.select2').select2()
+
+     
+    })
+  </script>
 </body>
 </html>

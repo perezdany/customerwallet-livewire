@@ -16,6 +16,15 @@
 @endphp
 
 @section('content')
+        <div class="row">
+                <div class="col-md-3">
+                 <a href="form_add_contrat"><button class="btn btn-success"> <b>ENREGISTRER UN CONTRAT</b></button></a>
+                
+                </div>
+                <div class="col-md-3">
+                    <a href="form_add_prestation"><button class="btn btn-primary"> <b>ENREGISTRER UNE PRESTATION</b></button></a>
+                </div>
+        </div>
      <div class="row">
          @if(session('success'))
             <div class="col-md-12 box-header">
@@ -25,6 +34,7 @@
         
             <div class="col-md-12">
               <div class="box">
+               
                 <div class="box-header">
                   <h3 class="box-title">Tableaux des clients</h3>
                 </div>

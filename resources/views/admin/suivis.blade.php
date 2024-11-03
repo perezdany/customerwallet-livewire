@@ -58,7 +58,7 @@
                         @endphp
                         
                         @foreach($prospection as $prospection)
-                            <option value={{$prospection->id}}>{{$prospection->nom_entreprise}}/{{$prospection->libele_service}}</option>
+                            <option value={{$prospection->id}}>@php echo date('d/m/Y',strtotime($prospection->date_prospection));  @endphp/{{$prospection->nom_entreprise}}</option>
                             
                         @endforeach
                     </select>
@@ -101,7 +101,7 @@
                      <th>Date de la prospection</th>
                       <th>Interlocuteur</th>
                        <th>Entreprise</th>
-                        <th>Service proposé</th>
+                       
                     <th>Action</th>
                   </tr>
                   </thead>
@@ -113,7 +113,7 @@
                           <td>@php echo date('d/m/Y',strtotime($my_own->date_prospection)) @endphp</td>
                           <td>{{$my_own->nom}}</td>
                          <td>{{$my_own->nom_entreprise}}</td>
-                          <td>{{$my_own->libele_service}}</td>
+                     
                           
                           <td>
                             <form action="edit_suivi_form" method="post">
@@ -132,7 +132,7 @@
                      <th>Date de la prospection</th>
                       <th>Interlocuteur</th>
                        <th>Entreprise</th>
-                        <th>Service proposé</th>
+                      
                     <th>Action</th>
                   </tr>
                   </tfoot>

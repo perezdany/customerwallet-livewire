@@ -16,6 +16,14 @@
 @endphp
 
 @section('content')
+
+        <div class="row">
+                <div class="col-md-3">
+                <a href="form_add_prospection"><button class="btn btn-primary"> <b>AJOUTER UNE PROSPECTION</b></button></a>
+                
+        </div>
+                
+        </div>
      <div class="row">
          @if(session('success'))
             <div class="col-md-12 box-header">

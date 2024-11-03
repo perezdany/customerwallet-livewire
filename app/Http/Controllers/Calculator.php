@@ -317,8 +317,9 @@ class Calculator extends Controller
         $first_date = $year."-".$month."-01";
         $last_date = $year."-".$month."-".$number;
 
-        $compte_prestations =  DB::table('prestations')
-        ->join('services', 'services.id', '=', 'prestations.id_service')
+        $compte_prestations =  DB::table('prestation_service')
+        ->join('prestations', 'prestation_service.prestation_id', '=', 'prestations.id')
+        ->join('services', 'prestation_service.service_id', '=', 'services.id') 
         ->where('prestations.date_prestation', '>=', $first_date)
         ->where('prestations.date_prestation', '<=', $last_date)
         ->count();
@@ -331,11 +332,12 @@ class Calculator extends Controller
             //pour récupérer le nombre total de la prestation spécifique ce mois ci
             $compte_prestations_service  = 0;
            
-           $compte_prestations_service =  DB::table('prestations')
-           ->join('services', 'services.id', '=', 'prestations.id_service')
+           $compte_prestations_service = DB::table('prestation_service')
+           ->join('prestations', 'prestation_service.prestation_id', '=', 'prestations.id')
+           ->join('services', 'prestation_service.service_id', '=', 'services.id') 
            ->where('prestations.date_prestation', '>=', $first_date)
            ->where('prestations.date_prestation', '<=', $last_date)
-           ->where('prestations.id_service', '=', $all_services->id)
+           ->where('prestation_service.service_id', '=', $all_services->id)
            ->count();
 
            //echo $compte_prestations_service."<br>";
@@ -473,8 +475,9 @@ class Calculator extends Controller
         $first_date = $request->month."-01";
         $last_date = $request->month."-".$number;
 
-        $compte_prestations =  DB::table('prestations')
-        ->join('services', 'services.id', '=', 'prestations.id_service')
+        $compte_prestations =   DB::table('prestation_service')
+        ->join('prestations', 'prestation_service.prestation_id', '=', 'prestations.id')
+        ->join('services', 'prestation_service.service_id', '=', 'services.id') 
         ->where('prestations.date_prestation', '>=', $first_date)
         ->where('prestations.date_prestation', '<=', $last_date)
         ->count();
@@ -487,11 +490,12 @@ class Calculator extends Controller
             //pour récupérer le nombre total de la prestation spécifique ce mois ci
             $compte_prestations_service  = 0;
            
-           $compte_prestations_service =  DB::table('prestations')
-           ->join('services', 'services.id', '=', 'prestations.id_service')
+           $compte_prestations_service =   DB::table('prestation_service')
+           ->join('prestations', 'prestation_service.prestation_id', '=', 'prestations.id')
+           ->join('services', 'prestation_service.service_id', '=', 'services.id') 
            ->where('prestations.date_prestation', '>=', $first_date)
            ->where('prestations.date_prestation', '<=', $last_date)
-           ->where('prestations.id_service', '=', $all_services->id)
+           ->where('prestation_service.service_id', '=', $all_services->id)
            ->count();
 
            //echo $compte_prestations_service."<br>";
@@ -662,9 +666,13 @@ class Calculator extends Controller
 
         $first_date = $year."-01-01";
         $last_date = $year."-12-31";
+        /*('prestation_service')
+        ->join('prestations', 'prestation_service.prestation_id', '=', 'prestations.id')
+        ->join('services', 'prestation_service.service_id', '=', 'services.id') 
+        ->where('prestation_id', $all->id)    
+        ->get(['services.libele_service', 'prestation_service.*']);*/
 
         $compte_prestations =  DB::table('prestations')
-        ->join('services', 'services.id', '=', 'prestations.id_service')
         ->where('prestations.date_prestation', '>=', $first_date)
         ->where('prestations.date_prestation', '<=', $last_date)
         ->count();
@@ -677,16 +685,18 @@ class Calculator extends Controller
             //pour récupérer le nombre total de la prestation spécifique ce mois ci
             $compte_prestations_service  = 0;
            
-           $compte_prestations_service =  DB::table('prestations')
-           ->join('services', 'services.id', '=', 'prestations.id_service')
+           $compte_prestations_service =  DB::table('prestation_service')
+           ->join('prestations', 'prestation_service.prestation_id', '=', 'prestations.id')
+           ->join('services', 'prestation_service.service_id', '=', 'services.id') 
            ->where('prestations.date_prestation', '>=', $first_date)
            ->where('prestations.date_prestation', '<=', $last_date)
-           ->where('prestations.id_service', '=', $all_services->id)
+           
+           ->where('prestation_service.service_id', '=', $all_services->id)
            ->count();
 
            //echo $compte_prestations_service."<br>";
            //Si on a trouvé au moins une occurence de la prestation, on peut mettre dans notre tableau pour partir
-          if($compte_prestations_service != 0)
+            if($compte_prestations_service != 0)
             {
                 array_push($serv, $all_services->libele_service);
             }
@@ -851,8 +861,9 @@ class Calculator extends Controller
         $first_date = $year."-01-01";
         $last_date = $year."-12-31";
 
-        $compte_prestations =  DB::table('prestations')
-        ->join('services', 'services.id', '=', 'prestations.id_service')
+        $compte_prestations =  DB::table('prestation_service')
+        ->join('prestations', 'prestation_service.prestation_id', '=', 'prestations.id')
+        ->join('services', 'prestation_service.service_id', '=', 'services.id') 
         ->where('prestations.date_prestation', '>=', $first_date)
         ->where('prestations.date_prestation', '<=', $last_date)
         ->count();
@@ -865,11 +876,12 @@ class Calculator extends Controller
             //pour récupérer le nombre total de la prestation spécifique ce mois ci
             $compte_prestations_service  = 0;
            
-           $compte_prestations_service =  DB::table('prestations')
-           ->join('services', 'services.id', '=', 'prestations.id_service')
+           $compte_prestations_service =   DB::table('prestation_service')
+           ->join('prestations', 'prestation_service.prestation_id', '=', 'prestations.id')
+           ->join('services', 'prestation_service.service_id', '=', 'services.id') 
            ->where('prestations.date_prestation', '>=', $first_date)
            ->where('prestations.date_prestation', '<=', $last_date)
-           ->where('prestations.id_service', '=', $all_services->id)
+           ->where('prestation_service.service_id', '=', $all_services->id)
            ->count();
 
            //echo $compte_prestations_service."<br>";

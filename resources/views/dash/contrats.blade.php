@@ -1,6 +1,7 @@
 @extends('layouts/base')
 
 @php
+
     use App\Http\Controllers\ServiceController;
 
     use App\Http\Controllers\ControllerController;
@@ -9,15 +10,25 @@
 
     use App\Http\Controllers\ContratController;
 
+    use App\Http\Controllers\CategorieController;
+
+     use App\Http\Controllers\TypePrestationController;
+
+       $typeprestationcontroller = new TypePrestationController();
+
     $contratcontroller = new ContratController();
 
+    $categoriecontroller = new CategorieController();
+
+     $servicecontroller = new ServiceController();
     $my_own =  $contratcontroller->MyOwnContrat(auth()->user()->id);
 
     $all = $contratcontroller->RetriveAll();
 @endphp
 
 @section('content')
-     <div class="row">
+      
+      <div class="row">
          @if(session('success'))
             <div class="col-md-12 box-header">
               <p class="bg-success" style="font-size:13px;">{{session('success')}}</p>
@@ -42,13 +53,14 @@
                     <th>Titre de contrat</th>
                     <th>Entreprise</th>
                     <th>Type de contrat</th>
-                    <th>Service</th>
+                   
                    <th>Début du contrat</th>
                    <th>Fin du contrat</th>
                     <th>Montant</th>	
                    
                     @if(auth()->user()->id_role == 3)
                     @else
+                      <th>Fichier du contrat</th>
                         <th>Action</th>
                     @endif
                   </tr>
@@ -59,7 +71,7 @@
                           <td>{{$all->titre_contrat}}</td>
                           <td>{{$all->nom_entreprise}}</td>
                           <td>{{$all->libele}}</td>
-                          <td>{{$all->libele_service}}</td>
+                        
                           <td>@php echo date('d/m/Y',strtotime($all->debut_contrat)) @endphp</td>
                            <td>@php echo date('d/m/Y',strtotime($all->fin_contrat)) @endphp</td>
                           <td>
@@ -71,12 +83,7 @@
                           @if(auth()->user()->id_role == 3)
                           @else
                             <td>
-                              <form action="edit_contrat_form" method="post">
-                                  @csrf
-                                  <input type="text" value={{$all->id}} style="display:none;" name="id_contrat">
-                                  <button type="submit" class="btn btn-success"><i class="fa fa-edit"></i></button>
-                              </form>
-
+                              
                               <form action="upload" method="post" enctype="multipart/form-data">
                                 @csrf
                                 <label>Fichier scanné</label>
@@ -93,8 +100,17 @@
                                 <button type="submit" class="btn btn-warning"><i class="fa fa-download"></i></button>
                               </form>
                             </td>
+
+                            <td>
+                                <form action="edit_contrat_form" method="post">
+                                    @csrf
+                                    <input type="text" value={{$all->id}} style="display:none;" name="id_contrat">
+                                    <button type="submit" class="btn btn-success"><i class="fa fa-edit"></i></button>
+                                </form>
+
+                            </td>
                           @endif  
-                         
+                          
                         </tr>
                       @endforeach
                   </tbody>
@@ -103,13 +119,15 @@
                     <th>Titre de contrat</th>
                     <th>Entreprise</th>
                     <th>Type de contrat</th>
-                    <th>Service</th>
+                 
                     <th>Début du contrat</th>
                     <th>Fin du contrat</th>
+                   
                     <th>Montant</th>	
                    
                     @if(auth()->user()->id_role == 3)
                     @else
+                     <th>Fichier du contrat</th>
                         <th>Action</th>
                     @endif
                   </tr>
@@ -124,15 +142,12 @@
       </div>
           <!-- /.row -->
 		<div class="row">
-          <div class="col-md-3">
-          </div>
-      
-          <!-- left column -->
           <div class="col-md-6">
+
             <!-- general form elements -->
             <div class="box box-aeneas">
               <div class="box-header with-border">
-                <h3 class="box-title">ENREGISTRER UN CONTRAT</h3><br>(*) champ obligatoire
+                <h3 class="box-title"><b>ENREGISTRER UN CONTRAT</h3><br>(*) champ obligatoire</b>
               </div>
             
               <!-- form start -->
@@ -201,10 +216,98 @@
             </div>
             <!-- /.box -->
           </div>
+      
+          <!-- left column -->
+          <div class="col-md-6">
+              <!-- general form elements -->
+                <div class="box box-aeneas">
+                    <div class="box-header with-border">
+                    <h3 class="box-title"> <b>ENREGISTRER UNE PRESTATION</b></h3><br><b>(*) champ obligatoire</b>
+                    </div>
+                    
+                    <!-- form start -->
+                    <form role="form" method="post" action="add_prestation">
+                        @csrf
+                        <div class="box-body">
+                            <div class="form-group">
+                                <label>Service (*)</label>
+                                <select class="form-control input-lg select2" multiple="multiple" name="service[]"
+                                    style="width: 100%;" data-placeholder="--Selectionnez le service--" required>
+                                    <!--liste des services a choisir -->
+                                    
+                                    @php
+                                        $get = $servicecontroller->GetAll();
+                                        $categorie = $categoriecontroller->DisplayAll();
+                                    @endphp
+                                    @foreach( $categorie as $categorie)
+                                        
+                                        <optgroup label="{{$categorie->libele_categorie}}">{{$categorie->libele_categorie}}</optgroup>
+                                        @php
+                                            $get = $servicecontroller->GetByCategorie($categorie->id);
+                                            
+                                        @endphp
+                                        @foreach($get as $service)
+                                            
+                                            <option value={{$service->id}}>{{$service->libele_service}}</option>
+                                            
+                                        @endforeach
+                                    @endforeach
+                                </select>
+                            </div>
+                        
+                            <div class="form-group">
+                                <label>Type de prestation (*)</label>
+                                <select class="form-control input-lg" name="type" required>
+                                    <!--liste des services a choisir -->
+                                    @php
+                                        $get = $typeprestationcontroller->GetAll();
+                                    @endphp
+                                    <option value="0">--Choisir le type--</option>
+                                    @foreach($get as $type)
+                                        <option value={{$type->id}}>{{$type->libele}}</option>
+                                        
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Date d'exécution(*)</label>
+                                <input type="date" class="form-control  input-lg" required name="date_execute">
+                            </div>
+                                
+                            <div class="form-group">
+                                <label>Choisissez le contrat(*) </label>
+                                <!--Afficher les contrats que l'utilisateur a créé-->
+                                <select class="form-control input-lg" name="contrat" required>
+                                    @php
+                                        $contrat = $contratcontroller->GetAllNoSolde();
+                                        
+                                    @endphp
+                                    <option value="0">--Choisir le contrat--</option>
+                                    @foreach($contrat as $contrat)
+                                        <option value={{$contrat->id}}>{{$contrat->titre_contrat}}</option>
+                                        
+                                    @endforeach
+                                </select>
+                            </div>
+                                
+                            <div class="form-group">
+                                <label>Adresse </label>
+                                <input type="text" required maxlength="100" class="form-control input-lg" 
+                                name="localisation" placeholder="Ex: Cocody Angré Cocovico">
+                            </div>
+                        
+                        </div>
+                        <!-- /.box-body -->
+
+                        <div class="box-footer">
+                        <button type="submit" class="btn btn-primary">VALIDER</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.box -->
+          </div>
           <!--/.col (left) -->
-          <!-- right column -->
-          <div class="col-md-3">
-		  		</div>
+          
     </div>
     <!--/.col (right) -->
 @endsection

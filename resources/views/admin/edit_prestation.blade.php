@@ -14,6 +14,10 @@
 
      use App\Http\Controllers\PrestationController;
 
+      use App\Http\Controllers\CategorieController;
+
+    $categoriecontroller = new CategorieController();
+
      $prestationcontroller = new PrestationController();
 
      $servicecontroller = new ServiceController();
@@ -56,7 +60,7 @@
                     <input type="text" value={{$id}} name="id_prestation" style="display:none;">
                     <div class="box-body">
                         <div class="form-group">
-                        {{$get->localisation}}
+                        
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Date d'exécution(*)</label>
                                 <input type="date" class="form-control  input-lg" required name="date_execute" value={{$get->date_prestation}} >
@@ -68,16 +72,26 @@
                             </div>
                             
                             <label>Service (*)</label>
-                            <select class="form-control input-lg" name="service" required>
+                            <select class="form-control input-lg select2" multiple="multiple" name="service[]"
+                                style="width: 100%;" data-placeholder="--Selectionnez le service--" required>
                                 <!--liste des services a choisir -->
-                               
-                                <option value={{$get->id_service}}>{{$get->libele_service}}</option>
-                                 @php
-                                    $service = $servicecontroller->GetAll();
+                                
+                                @php
+                                    $get_service = $servicecontroller->GetAll();
+                                    $categorie = $categoriecontroller->DisplayAll();
                                 @endphp
-                                @foreach($service as $service)
-                                    <option value={{$service->id}}>{{$service->libele_service}}</option>
+                                @foreach( $categorie as $categorie)
                                     
+                                    <optgroup label="{{$categorie->libele_categorie}}">{{$categorie->libele_categorie}}</optgroup>
+                                    @php
+                                        $gett = $servicecontroller->GetByCategorie($categorie->id);
+                                        
+                                    @endphp
+                                    @foreach($gett as $service)
+                                        
+                                        <option value={{$service->id}}>{{$service->libele_service}}</option>
+                                        
+                                    @endforeach
                                 @endforeach
                             </select>
                         </div>

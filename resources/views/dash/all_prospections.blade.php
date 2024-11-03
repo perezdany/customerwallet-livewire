@@ -12,11 +12,19 @@
 @section('content')
      <div class="row">
       
-         @if(session('success'))
-            <div class="col-md-12 box-header">
-              <p class="bg-success" style="font-size:13px;">{{session('success')}}</p>
+        
+
+            <div class="row">
+                @if(session('success'))
+                    <div class="col-md-12 box-header">
+                    <p class="bg-success" style="font-size:13px;">{{session('success')}}</p>
+                    </div>
+                @endif
+                <div class="col-md-3">
+                    <a href="form_add_prospection"><button class="btn btn-primary"> <b>AJOUTER UNE PROSPECTION</b></button></a>
+                
+                </div>
             </div>
-          @endif
         
 			<div class="col-md-12">
                 <div class="box">
@@ -32,7 +40,7 @@
                             <th>Date</th>
                             <th>Entreprise</th>	
                             <th>prestation proposée</th>
-                            <th>Date de fin de prospection</th>
+                           
                             <th>Référant/Fonction</th>
                         
                             <th>Suivi effectués</th>
@@ -45,7 +53,7 @@
                                     <td>@php echo date('d/m/Y',strtotime($all->date_prospection)) @endphp</td>
                                     <td>{{$all->nom_entreprise}}</td>
                                      <td>{{$all->libele_service}}</td>
-                                    <td>@php echo date('d/m/Y',strtotime($all->date_fin)) @endphp</td>
+                                   
                                     <td>{{$all->tel}}/{{$all->fonction}}</td>
                                     <td><form action="display_suivi" method="post">
                                             @csrf
@@ -66,7 +74,7 @@
                             <th>Date</th>
                             <th>Entreprise</th>	
                             <th>prestation proposée</th>
-                            <th>Date de fin de prospection</th>
+                           
                             <th>Référant/Fonction</th>
                         
                             <th>Suivi effectués</th>

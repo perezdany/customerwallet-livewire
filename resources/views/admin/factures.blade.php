@@ -196,7 +196,7 @@
                                 @endphp
                                <option value="0">--Sélectionnez la prestation--</option>
                                 @foreach($contrats as $contrats)
-                                    <option value="{{$contrats->id}}"><b>Contrat:</b>{{$contrats->titre_contrat}}/<b>Prestation:</b>{{$contrats->libele_service}}</option>
+                                    <option value="{{$contrats->id}}">--Date:{{$contrats->date_prestation}}<b>--Contrat:</b>{{$contrats->titre_contrat}}--Lieu:</b>{{$contrats->localisation}}</option>
                                 @endforeach
 
                            </select>
@@ -265,9 +265,9 @@
                                             
                                         @endphp
                                         
-                                        <option value="{{$facture_edit->id_prestation}}"><b>Contrat:</b>{{$facture_edit->titre_contrat}}/<b>Prestation:</b>{{$facture_edit->libele_service}}</option>
+                                        <option value="{{$facture_edit->id_prestation}}"><b>Contrat:</b>{{$facture_edit->titre_contrat}}/<b>Date de la Prestation:</b>@php echo date('d/m/Y',strtotime($facture_edit->date_prestation));  @endphp</option>
                                         @foreach($contrats as $contrats)
-                                            <option value="{{$contrats->id}}"><b>Contrat:</b>{{$contrats->titre_contrat}}/<b>Prestation:</b>{{$contrats->libele_service}}</option>
+                                            <option value="{{$contrats->id}}"><b>Contrat:</b>{{$contrats->titre_contrat}}/<b>Date de la Prestation:</b>@php echo date('d/m/Y',strtotime($facture_edit->date_prestation));  @endphp</option>
                                         @endforeach
 
                                 </select>

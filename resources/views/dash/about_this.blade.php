@@ -34,13 +34,23 @@
 
             $prospections = $prospectioncontroller->GetProspectionByIdEntr($id_entreprise);
         @endphp
+
+         <div class="row">
+                <div class="col-md-3">
+                <a href="form_add_contrat"><button class="btn btn-success"> <b>ENREGISTRER UN CONTRAT</b></button></a>
+                
+                </div>
+                <div class="col-md-3">
+                     <a href="form_add_prestation"><button class="btn btn-primary"> <b>ENREGISTRER UNE PRESTATION</b></button></a>
+                </div>
+        </div>
         <div class="row">
             @if(session('success'))
                 <div class="col-md-12 box-header">
                 <p class="bg-success" style="font-size:13px;">{{session('success')}}</p>
                 </div>
             @endif
-
+           
              <!-- left column -->
             <div class="col-md-12">
                   <div class="box">
@@ -67,9 +77,41 @@
                     <tbody>
                         @foreach($prestations as $all)
                             <tr>
+                                <td>
+                                    @php
+                                        //echo $all->id;
+                                        //On va écrire un code pour detecter tous les services offerts
+                                        $se = DB::table('prestation_service')
+                                        ->join('prestations', 'prestation_service.prestation_id', '=', 'prestations.id')
+                                        ->join('services', 'prestation_service.service_id', '=', 'services.id') 
+                                        ->where('prestation_id', $all->id)    
+                                        ->get(['services.libele_service', 'prestation_service.*']);
+                                    @endphp
+                                    <ul>
+                                    @foreach($se as $se_get)
+                                        <li>{{$se_get->libele_service}}<a href="delete_prestation/{{$se_get->id}}"><button class="btn btn-danger"><i class="fa fa-times"></i></button></a></li>
+                                    @endforeach
+                                    </ul>
+                                </td>   
+                                <td>
+                                    @php
+                                        //On va écrire un code pour detecter tous la gateories de se service
+                                        $se = DB::table('prestation_service')
+                                        ->join('prestations', 'prestation_service.prestation_id', '=', 'prestations.id')
+                                        ->join('services', 'prestation_service.service_id', '=', 'services.id') 
+                                        ->join('categories', 'services.id_categorie', '=', 'categories.id') 
+                                        ->where('prestation_id', $all->id)    
+                                        ->distinct()
+                                        ->get(['categories.libele_categorie', ]);
+                                    @endphp
+                                    <ul>
+                                        @foreach($se as $se_get)
+                                            <li>{{$se_get->libele_categorie}}</li>
+                                        @endforeach
+                                    </ul>
+                                </td>
 
-                                <td>{{$all->libele_service}}</td>
-                                <td>{{$all->libele_categorie}}</td>
+                                
                                  <td>@php echo date('d/m/Y',strtotime($all->date_prestation)) @endphp</td>
                                 <td>{{$all->libele}}</td>
                                 
@@ -212,8 +254,8 @@
                     <table id="example4" class="table table-bordered table-striped table-hover">
                     <thead>
                             <tr>
-                                <th>Date</th>
-                                <th>Date de fin de prospection</th>
+                                <th>Date de la prospection</th>
+                                <th>Sercice proposé</th>
                                 <th>Contact/Fonction</th>
                                 <th>Ajouté par:</th>
                                 <th>Suivi effectués</th>
@@ -227,9 +269,24 @@
                                 @foreach($prospections as $all)
                                     <tr>
                                         <td>@php echo date('d/m/Y',strtotime($all->date_prospection)) @endphp</td>
-                                      
-                                        <td>@php echo date('d/m/Y',strtotime($all->date_fin)) @endphp</td>
-                                        <td>{{$all->tel}}/{{$all->fonction}}</td>
+                                        <td>
+                                    @php
+                                        //echo $all->id;
+                                        //On va écrire un code pour detecter tous les services offerts
+                                        $se = DB::table('prospection_service')
+                                        ->join('prospections', 'prospection_service.prospection_id', '=', 'prospections.id')
+                                        ->join('services', 'prospection_service.service_id', '=', 'services.id') 
+                                        ->where('prospection_id', $all->id)    
+                                        ->get(['services.libele_service', 'prospection_service.*']);
+                                    @endphp
+                                    <ul>
+                                    @foreach($se as $se_get)
+                                        <li>{{$se_get->libele_service}}</li>
+                                    @endforeach
+                                    </ul>
+                                </td>   
+                                        
+                                        <td>{{$all->nom}}/{{$all->tel}}/{{$all->fonction}}</td>
                                         <td>{{$all->nom_prenoms}}</td>
                                         <td><form action="display_suivi" method="post">
                                                 @csrf
@@ -258,10 +315,9 @@
                             </tbody>
                             <tfoot>
                             <tr>
-                            <th>Date</th>
-                            
-                            
-                            <th>Date de fin de prospection</th>
+                            <th>Date de la prospection</th>
+                            <th>Sercice proposé</th>
+                        
                             <th>Contact/Fonction</th>
                             <th>Ajouté par:</th>
                             <th>Suivi effectués</th>

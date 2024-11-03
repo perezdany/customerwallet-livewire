@@ -22,7 +22,13 @@
         @php
             $prospections = $prospectioncontroller->GetProspectionByIdEntr($id_entreprise);
         @endphp
-
+         
+        <div class="row">
+            <div class="col-md-3">
+                <a href="form_add_prospection"><button class="btn btn-primary"> <b>AJOUTER UNE PROSPECTION</b></button></a>
+            
+            </div>
+        </div>
         <div class="row">
           
         
@@ -37,11 +43,18 @@
                     <table id="example1" class="table table-bordered table-striped table-hover">
                     <thead>
                             <tr>
-                                <th>Date</th>
-                                <th>Date de fin de prospection</th>
-                                <th>Contact/Fonction</th>
+                                <th>Date de la prospection</th>
+                                
+                                <th>Contact(interlocuteur)</th>
                                 <th>Ajouté par:</th>
                                 <th>Suivi effectués</th>
+                   
+                                 <th>Facture proforma:</th>
+                                  @if(auth()->user()->id_role == 3)
+                                  @else
+                                        <th>Compte Rendu</th>
+                                  @endif
+                                
                                 @if(auth()->user()->id_role == 3)
                                 @else
                                     <th>Action</th>
@@ -53,16 +66,45 @@
                                     <tr>
                                         <td>@php echo date('d/m/Y',strtotime($all->date_prospection)) @endphp</td>
                                       
-                                        <td>@php echo date('d/m/Y',strtotime($all->date_fin)) @endphp</td>
-                                        <td>{{$all->tel}}/{{$all->fonction}}</td>
+                                       
+                                        <td>{{$all->nom}}/tel:{{$all->tel}}/<b>fonction:{{$all->fonction}}</b></td>
                                         <td>{{$all->nom_prenoms}}</td>
                                         <td><form action="display_suivi" method="post">
                                                 @csrf
                                                 <input type="text" value={{$all->id}} style="display:none;" name="id_prospection">
                                                 <button type="submit" class="btn btn-primary"><i class="fa fa-eye"></i></button>
                                             </form>
-                                            </td>
+                                        </td>
+                                          <td>
+                                           
+                                            <form action="download_facture_proforma" method="post" enctype="multipart/form-data">
+                                                @csrf
+                                                <label>Télécharger</label>
+                                                <input type="text" value={{$all->id}} style="display:none;" name="id_prospection">
+                                                <input type="text" class="form-control" name="file" value="{{$all->facture_path}}" style="display:none;">
+                                                <button type="submit" class="btn btn-warning"><i class="fa fa-download"></i></button>
+                                            </form>
+                                        </td>
+                                       
                                     
+                                       
+                                            @if(auth()->user()->id_role == 3)
+                                            @else
+                                                <td>
+                                                   
+
+                                                    
+
+                                                    <form action="download_prospect" method="post" enctype="multipart/form-data">
+                                                        @csrf
+                                                        <label>Télécharger</label>
+                                                        <input type="text" value={{$all->id}} style="display:none;" name="id_prospection">
+                                                        <input type="text" class="form-control" name="file" value="{{$all->path_cr}}" style="display:none;">
+                                                        <button type="submit" class="btn btn-warning"><i class="fa fa-download"></i></button>
+                                                    </form>
+                                                </td>
+
+                                            @endif
                                        
                                             @if(auth()->user()->id_role == 3)
                                             @else
@@ -83,17 +125,20 @@
                             </tbody>
                             <tfoot>
                             <tr>
-                            <th>Date</th>
-                            
-                            
-                            <th>Date de fin de prospection</th>
-                            <th>Contact/Fonction</th>
-                            <th>Ajouté par:</th>
-                            <th>Suivi effectués</th>
-                            @if(auth()->user()->id_role == 3)
-                            @else
-                                <th>Action</th>
-                            @endif
+                                <th>Date de la prospection</th>
+                    
+                                <th>Contact(interlocuteur)</th>
+                                <th>Ajouté par:</th>
+                                <th>Suivi effectués</th>
+                                <th>Facture proforma:</th>
+                                @if(auth()->user()->id_role == 3)
+                                @else
+                                    <th>Compte Rendu</th>
+                                @endif
+                                @if(auth()->user()->id_role == 3)
+                                @else
+                                    <th>Action</th>
+                                @endif
                             </tr>
                             </tfoot>
                     </table>

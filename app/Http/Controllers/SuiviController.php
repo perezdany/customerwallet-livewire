@@ -31,9 +31,9 @@ class SuiviController extends Controller
         ->where('suivis.created_by', auth()->user()->id)
         ->join('prospections', 'suivis.id_prospection', '=', 'prospections.id')
         ->join('entreprises', 'prospections.id_entreprise', '=', 'entreprises.id')
-        ->join('services', 'prospections.service_propose', '=', 'services.id')
+      
         ->join('interlocuteurs', 'prospections.interlocuteur', '=', 'interlocuteurs.id')
-        ->get(['suivis.*', 'prospections.date_prospection', 'interlocuteurs.nom', 'entreprises.nom_entreprise', 'services.libele_service']);
+        ->get(['suivis.*', 'prospections.date_prospection', 'interlocuteurs.nom', 'entreprises.nom_entreprise', ]);
 
         return $get;
     }
@@ -43,9 +43,9 @@ class SuiviController extends Controller
         $get =  DB::table('suivis')
         ->join('prospections', 'suivis.id_prospection', '=', 'prospections.id')
         ->join('entreprises', 'prospections.id_entreprise', '=', 'entreprises.id')
-        ->join('services', 'prospections.service_propose', '=', 'services.id')
+      
         ->join('interlocuteurs', 'prospections.interlocuteur', '=', 'interlocuteurs.id')
-        ->get(['suivis.*', 'prospections.date_prospection', 'interlocuteurs.nom', 'entreprises.nom_entreprise', 'services.libele_service']);
+        ->get(['suivis.*', 'prospections.date_prospection', 'interlocuteurs.nom', 'entreprises.nom_entreprise', ]);
 
         return $get;
     }
@@ -65,9 +65,9 @@ class SuiviController extends Controller
         ->where('suivis.id', $id)
         ->join('prospections', 'suivis.id_prospection', '=', 'prospections.id')
         ->join('entreprises', 'prospections.id_entreprise', '=', 'entreprises.id')
-        ->join('services', 'prospections.service_propose', '=', 'services.id')
+     
         ->join('interlocuteurs', 'prospections.interlocuteur', '=', 'interlocuteurs.id')
-        ->get(['suivis.*', 'prospections.date_prospection', 'interlocuteurs.nom', 'entreprises.nom_entreprise', 'services.libele_service']);
+        ->get(['suivis.*', 'prospections.date_prospection', 'interlocuteurs.nom', 'entreprises.nom_entreprise', ]);
 
         return $get;
     }
@@ -104,9 +104,9 @@ class SuiviController extends Controller
         ->where('suivis.id_prospection', $id)
         ->join('prospections', 'suivis.id_prospection', '=', 'prospections.id')
         ->join('entreprises', 'prospections.id_entreprise', '=', 'entreprises.id')
-        ->join('services', 'prospections.service_propose', '=', 'services.id')
+    
         ->join('interlocuteurs', 'prospections.interlocuteur', '=', 'interlocuteurs.id')
-        ->get(['suivis.*', 'prospections.date_prospection', 'interlocuteurs.nom', 'entreprises.nom_entreprise', 'services.libele_service']);
+        ->get(['suivis.*', 'prospections.date_prospection', 'interlocuteurs.nom', 'entreprises.nom_entreprise', ]);
 
         return $get;
     }

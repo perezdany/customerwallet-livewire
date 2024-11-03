@@ -12,6 +12,12 @@ class Prestation extends Model
     public $timestamps = true;
     
     protected $fillable = [
-        'date_prestation', 'id_type_prestation', 'localisation', 'id_contrat', 'id_service', 'created_by'
+        'date_prestation', 'id_type_prestation', 'localisation', 'id_contrat',  'created_by'
     ];
+
+    public function services()
+    {
+        //return $this->belongsTomany('App\Models\Service');
+        return $this->belongsTomany('App\Models\Service');
+    }
 }
