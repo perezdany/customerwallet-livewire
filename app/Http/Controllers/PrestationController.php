@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\Prestation;
+use App\Models\Prestation_service;
 
 use  App\Http\Controllers\ServiceController;
 
@@ -21,7 +22,6 @@ class PrestationController extends Controller
     public function AddPrestation(Request $request)
     {
        
-        
         if($request->type == 0)
         {
             return back()->with('error', 'Choisissez impérativement le type de prestation');
@@ -152,7 +152,13 @@ class PrestationController extends Controller
         {
             for($a = 0; $a < count($request->service); $a++)
             {
-                $update_prest_service_table = DB::insert('insert into prestation_service (service_id, prestation_id) values (?, ?)', [$request->service[$a], $request->id_prestation]);
+              
+                $Insert = Prestation_service::create([
+        
+                    'service_id' =>  $request->service[$a],
+                    'prestation_id' => $request->id_prestation,
+
+                ]);
             }
         }
         

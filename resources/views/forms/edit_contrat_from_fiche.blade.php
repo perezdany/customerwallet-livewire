@@ -11,6 +11,8 @@
 
     $contratcontroller = new ContratController();
 
+    $entreprisecontroller = new EntrepriseController();
+
     $my_own =  $contratcontroller->MyOwnContrat(auth()->user()->id);
 
     $all = $contratcontroller->RetriveAll();
@@ -43,20 +45,21 @@
 
                 @foreach($contrat as $contrat)
                     <!-- form start -->
-                    <form role="form" method="post" action="edit_contrat" enctype="multipart/form-data">
+                    <form role="form" method="post" action="edit_contrat_fiche" enctype="multipart/form-data">
                        
                         @csrf
                          <input type="text" value="{{$contrat->id}}" style="display:none" name="id_contrat">
+                         <input type="text" value="{{$id_entreprise}}" style="display:none" name="id_entreprise">
                         <div class="box-body">
                             <div class="form-group">
                                 <label>Entreprise:</label>
                                 <select class="form-control input-lg" name="entreprise">
                                     @php
-                                        $get = (new EntrepriseController())->GetAll();
+                                        $nom = $entreprisecontroller->GetById($id_entreprise)
                                     @endphp
-                                    <option value="{{$contrat->id_entreprise}}">{{$contrat->nom_entreprise}}</option>
-                                    @foreach($get as $entreprise)
-                                        <option value={{$entreprise->id}}>{{$entreprise->nom_entreprise}}</option>
+                                    @foreach($nom as $nom)
+                                    
+                                        <option value={{$nom->id}}>{{$nom->nom_entreprise}}</option>
                                         
                                     @endforeach
                                 </select>
@@ -91,14 +94,14 @@
 
                              <div class="form-group">
                                 <label>Facture proforma</label>
-                                <input type="file" class="form-control" name="file_proforma">
+                                <input type="file" class="form-control"  name="file_proforma">
                             </div>
 
                         </div>
                         <!-- /.box-body -->
 
                         <div class="box-footer">
-                        <button type="submit" class="btn btn-primary">MODIFIER</button>
+                        <button type="submit" class="btn btn-primary">VALIDER</button>
                         </div>
                     </form>
                 @endforeach

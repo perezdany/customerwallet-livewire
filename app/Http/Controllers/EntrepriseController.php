@@ -164,7 +164,23 @@ class EntrepriseController extends Controller
     public function GetProspAboutThisTable(Request $request)
     {
         
-        return view('dash/prosp_about_this',
+       /* return view('dash/prosp_about_this',
+            [
+                'id_entreprise' => $request->id_entreprise,
+            ]
+        );*/
+
+        return view('dash/prospect_about',
+            [
+                'id_entreprise' => $request->id_entreprise,
+            ]
+        );
+    }
+
+    public function GetFicheCustomer(Request $request)
+    {
+        
+        return view('dash/fiche_customer',
             [
                 'id_entreprise' => $request->id_entreprise,
             ]

@@ -95,12 +95,30 @@ Route::middleware(['auth:web'])->group(function(){
 
     //TELECHARGER LE FICHIER SCANNE DU CONTRAT
     Route::post('download', [ContratController::class, 'DownloadContrat']);
+    Route::post('view_contrat', [ContratController::class, 'DownloadContrat']);
+
+    //LE FICHIER DE PROFORMA DU CONTRAT
+    Route::post('view_contrat_proforma', [ContratController::class, 'ViewProformaContrat']);
+
 
     //AJOUTER UN CONTRAT
     Route::post('add_contrat', [ContratController::class, 'AddContrat']);
 
+    //AJOUTER UN CONTRAT AINSI QUE LA PRESTATION
+    Route::post('add_contrat_with_prest', [ContratController::class, 'AddContratPrest']);
+
+    
+    //AJOUTER DEPUIS LA FICHE DE PROSPECT
+    Route::post('go_contrat_form', [ContratController::class, 'GoFormContratProspect']);
+
+    //DE LA FICHE DE PROSPECT
+    Route::post('fiche_add_contrat_with_prest',  [ContratController::class, 'AddContratFromFiche']);
+
+
     //AJOUTER UNE PRESTATION
     Route::post('add_prestation', [PrestationController::class, 'AddPrestation']);
+
+    
 
 
 
@@ -161,14 +179,30 @@ Route::middleware(['auth:web'])->group(function(){
     //UPLOADER LA FACTURE PROFORMA
     route::post('upload_facture_proforma', [ProspectionController::class, 'UploadProforma']);
 
+    //UPLOAD DANS FICHE PROSPECTION
+    route::post('add_new_doc_proforma', [ProspectionController::class, 'AddProformaInFiche']);
+
      //Voir LA FACTURE PROFORMA
      route::post('download_facture_proforma', [ProspectionController::class, 'DownloadProforma']);
 
+     //AJOUTER UN COMPTER RENDU PROFORMA QUAND ON EST SUR LA FICHE 
+     route::post('add_new_doc_cr', [ProspectionController::class, 'AddNewcr']);
+
+     //SUPPRIMER UNE FACTURE PROFORMA DE LA FICHE
+     route::post('delete_prof_in_fiche', [ProspectionController::class, 'DeleteProfInFiche']);
+
+     //SUPPRIMER UN CR DANS LA FICHE
+     route::post('delete_cr_in_fiche', [ProspectionController::class, 'DeleteCrInFiche']);
 
     //MODIFIER UN CONTRAT
     Route::post('edit_contrat_form', [ContratController::class, 'EditContratForm']);
 
     Route::post('edit_contrat', [ContratController::class, 'EditContrat']);
+
+    //MODIFIER LE CONTRAT VENANT DE LA FICHE
+    Route::post('fiche_edit_contrat_form', [ContratController::class, 'EditContratFromFiche']);
+
+    Route::post('edit_contrat_fiche', [ContratController::class, 'EditContratFiche']);
 
     //LES SUIVIS D'ENTREPRISE
     Route::get('suivi', function(){
@@ -219,6 +253,15 @@ Route::middleware(['auth:web'])->group(function(){
     //SUPPRIMER LE SERVICE DANS LA TABLE DES PROSPECTIONS
     Route::get('delete/{id}', [ServiceController::class, 'DeleteServiceInProspection']);
 
+    //QUAND ON EST DANS LA FICHE DE PROSPECT
+    Route::post('delete_service_many_to_many', [ServiceController::class, 'DeleteServiceInFicheProspection']);
+
+    //QUAND ON EST DANS LA FICHE CLIENT
+    Route::post('delete_service_fiche_customer', [ServiceController::class, 'DeleteServiceInFicheCustomer']);
+
+    //AJOUTER UN SERVICE QUAND ON SUR LA FICHE
+    Route::post('add_service_in_fiche', [ServiceController::class, 'AddServiceInFiche']);
+
     //SUPPRIMER LE SERVICE DANS LA TABLE DES PRESTATIONS
     Route::get('delete_prestation/{id}', [ServiceController::class, 'DeleteServiceInPrestation']);
 
@@ -234,8 +277,12 @@ Route::middleware(['auth:web'])->group(function(){
     //AFFICHER LES INFOS DE L'ENTREPRISE.. SI IL Y A DES PRESTATIONS QUI LUI SONT PROPOSE ETC
     Route::post('display_about_customer', [EntrepriseController::class, 'GetAboutThisTable']);
 
+    //AFFICHER LA FICHE CLIENT 
+    Route::post('display_fiche_customer', [EntrepriseController::class, 'GetFicheCustomer']);
+
     //AFFICHER LES INFORMATIONS SUR LES PROSPECTS
     Route::post('display_about_prospect', [EntrepriseController::class, 'GetProspAboutThisTable']);
+
 
     //AJOUTER 
     Route::post('add_entreprise', [EntrepriseController::class, 'SaveEntreprise']);
@@ -245,7 +292,12 @@ Route::middleware(['auth:web'])->group(function(){
         return view('dash/customers');
     });
 
-     //AFFICHER LA LISTE DE TOUS LES PROSPECTS
+    //POUR DEBOUCHER SUR LA FICHE CLIENT
+    Route::get('fiche', function(){
+        return view('dash/to_fiche_client');
+    });
+
+    //AFFICHER LA LISTE DE TOUS LES PROSPECTS
      Route::get('prospects', function(){
         return view('dash/prospects');
     });
@@ -303,6 +355,8 @@ Route::middleware(['auth:web'])->group(function(){
 
     //AJOUTER UN INTRELOCUTEURS
     Route::post('add_referant', [InterlocuteurController::class, 'AddInterlocuteur']);
+    Route::post('add_referant_in_fiche', [InterlocuteurController::class, 'AddInterlocuteurInFiche']);
+    Route::post('add_referant_in_fiche_customer', [InterlocuteurController::class, 'AddInterlocuteurInFicheCustomer']);
 
     //AFFICHER LES INTERLOCUTEURS D'UNE ENTREPRISE 
     Route::post('display_by_id_entreprise', [InterlocuteurController::class, 'DisplayByIdEntreprise']);
@@ -385,6 +439,16 @@ Route::middleware(['auth:web'])->group(function(){
     Route::get('form_add_prospection', function(){
         return view('forms/add_prospection');
     });
+    
+
+    //AJOUTER UN AUTRE DOCUMENT
+    Route::post('add_new_doc', [DocController::class, 'AddDocProspection']);
+
+    //AFFICHER DES DOCUMENTS (AUTRE DOCS)
+    Route::post('download_docs', [DocController::class, 'ViewDoc']);
+
+    //SUPPRMIMER DES DOCUMENTS (AUTRE DOCS)
+    Route::post('delete_doc', [DocController::class, 'DeleteDoc']);
 
 });
 

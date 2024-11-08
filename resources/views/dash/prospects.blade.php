@@ -71,14 +71,7 @@
                     </tr>
                     @endforeach
                   </tbody>
-                  <tfoot>
-                  <tr>
-                   <th>Nom</th>
-                   
-                    <th>Client depuis le:</th>
-                    <th>Ajouté par</th>
-                  </tr>
-                  </tfoot>
+                  
                   </table>
                 </div>
                 <!-- /.box-body -->

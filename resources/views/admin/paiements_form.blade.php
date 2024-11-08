@@ -77,15 +77,7 @@
                                 </tr>
                             @endforeach
                         </tbody>
-                        <tfoot>
-                        <tr>
-                            <th>Montant</th>
                         
-                            <th>Date de paiement</th>
-                            <th>Numéro de facture</th>
-                            <th>Action</th>
-                        </tr>
-                        </tfoot>
                     </table>
                     </div>
                     <!-- /.box-body -->

@@ -83,18 +83,7 @@
                                 </tr>
                             @endforeach
                         </tbody>
-                        <tfoot>
-                        <tr>
-                            <th>Montant</th>
                         
-                            <th>Date de paiement</th>
-                            <th>Numéro de facture</th>
-                            @if(auth()->user()->id_role == 3)
-                            @else
-                                <th>Action</th>
-                            @endif
-                        </tr>
-                        </tfoot>
                     </table>
                     </div>
                     <!-- /.box-body -->

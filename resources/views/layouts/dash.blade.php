@@ -89,6 +89,8 @@
       <span class="logo-mini"><b>A</b>WA</span>
       <!-- logo for regular state and mobile devices -->
       <span class="logo-lg"><b>ÆNEAS</b>WA</span>
+
+     
     </a>
 
     <!-- Header Navbar: style can be found in header.less -->
@@ -99,16 +101,19 @@
       </a>
       <!-- Navbar Right Menu -->
       <div class="navbar-custom-menu">
+      
         <ul class="nav navbar-nav" style="font-size: 23px;">
           <!--CODE POUR LES ALERTES DES NOUVEAUX STATUTS DES CLIENTS-->
 
        	  <!-- Notifications: style can be found in dropdown.less -->
           <li class="dropdown notifications-menu">
+
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <i class="fa fa-bell"></i>
               <span class="label label-danger">{{$calculator->CountNewCustomer()}}</span>
             </a>
             <ul class="dropdown-menu">
+
               <li class="header">Vous avez {{$calculator->CountNewCustomer()}} notifications</li>
               <li>
                 <!-- inner menu: contains the actual data -->
@@ -172,6 +177,7 @@
 
                 <p>
                   {{auth()->user()->nom_prenoms}} <br> {{auth()->user()->poste}}
+                  
                  
                 </p>
               </li>
@@ -221,6 +227,8 @@
         <li class="active treeview menu-open">
           <a href="#" style="background-color: #FFFFFF">
             <i class="fa fa-dashboard"></i> <span>Tableau de bord</span>
+            
+             
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
@@ -228,28 +236,40 @@
           <ul class="treeview-menu">
             <li><a href="welcome"><i class="fa fa-circle-o"></i>Accueil</a></li>
 
-            @if(auth()->user()->id_role == 1 OR auth()->user()->id_role == 3 OR auth()->user()->id_role == 4 OR auth()->user()->id_role == 2)
+            @if(auth()->user()->id_role == 1 OR auth()->user()->id_role == 3 OR auth()->user()->id_role == 4 )
               <li class="active"><a href="prestation"><i class="fa fa-circle-o"></i>Prestations</a></li>
               <li class="active"><a href="prospection"><i class="fa fa-circle-o"></i>Prospections</a></li>
-              <li class="active"><a href="suivi"><i class="fa fa-circle-o"></i>Suivis</a></li>
+              <li class="active"><a href="fiche"><i class="fa fa-circle-o"></i>Clients</a></li>
               <li><a href="contrat"><i class="fa fa-circle-o"></i>Contrats</a></li>
-              <li class="active"><a href="facture"><i class="fa fa-circle-o"></i>Factures</a></li>
-              
-            @else
-              @if(auth()->user()->id_role == 5)
+
+            @endif
+
+            @if(auth()->user()->id_role == 5)
+            
                 @if(auth()->user()->id_departement == 1)
+                 
                     <li class="active"><a href="prospection"><i class="fa fa-circle-o"></i>Prospections</a></li>
-                    <li class="active"><a href="suivi"><i class="fa fa-circle-o"></i>Suivis</a></li>
+                    <li ><a href="prestation"><i class="fa fa-circle-o"></i>Prestations</a></li>
                    
                 @endif
 
                 @if(auth()->user()->id_departement == 5)
-                    <li class="active"><a href="prestation"><i class="fa fa-circle-o"></i>Prestations</a></li>
+                  
                     <li><a href="contrat"><i class="fa fa-circle-o"></i>Contrats</a></li>
-                    <li><a href="entreprises"><i class="fa fa-circle-o"></i> Clients/Prospects</a></li>
+                    
                 @endif
-              @endif
             @endif
+
+             @if(auth()->user()->id_role == 2)
+                
+                @if(auth()->user()->id_departement == 5)
+                  
+                    <li><a href="contrat"><i class="fa fa-circle-o"></i>Contrats</a></li>
+                     <li class="active"><a href="facture"><i class="fa fa-circle-o"></i>Factures</a></li>
+                @endif
+            @endif
+
+            
            
           </ul>
         </li>
@@ -320,7 +340,7 @@
               <form action="download_guide" method="post" enctype="multipart/form-data">
                   @csrf
                   @php
-                    $get_guide = DB::table('docs')->get();
+                    $get_guide = DB::table('docs')->where('id', 1)->get();
                   @endphp
                   @foreach($get_guide as $all)
                     <input type="text" value={{$all->id}} style="display:none;" name="id_doc">
@@ -361,9 +381,9 @@
                     $count = $calculator->CountCustomer();
                     //dd($count);
                   @endphp
-                <h3>{{$count}}</h3>
+                <h3><a href="customers" style="color:#fff;">{{$count}}</a></h3>
                 
-                <p>CLIENTS</p>
+                <a href="customers" style="color:#fff;"><p>CLIENTS</p></a>
               </div>
               <div class="icon">
                 <i class="fa fa-shopping-cart"></i>
@@ -378,14 +398,16 @@
           <div class="col-lg-4 col-xs-6">
             <!-- small box -->
             <div class="small-box bg-yellow">
-              <div class="inner">
-              @php
-                  $count = $calculator->CountContratEncours();
-                @endphp
-                <h3>{{$count}}</h3>
+              
+                <div class="inner">
+                  @php
+                    $count = $calculator->CountContratEncours();
+                  @endphp
+                  <h3><a href="contrat" style="color:#fff;"> {{$count}} </a></h3>
 
-                <p>CONTRATS EN COURS</p>
-              </div>
+                    <a href="contrat" style="color:#fff;"> <p>CONTRATS EN COURS</p>  </a>
+                </div>
+            
               <div class="icon">
                 <i class="ion ion-person-add"></i>
               </div>
@@ -402,8 +424,9 @@
                   @php
                     $count = $calculator->CountProspect();
                   @endphp
-                <h3>{{$count}}</h3>
-                <p>PROSPECTS</p>
+                <h3><a href="prospects" style="color:#fff">{{$count}}</a></h3>
+                      <a href="prospects" style="color:#fff"><p>PROSPECTS</p></a>
+                    
               
               </div>
               <div class="icon">
@@ -432,9 +455,9 @@
                           $count = $calculator->CountCustomer();
                           //dd($count);
                         @endphp
-                      <h3>{{$count}}</h3>
+                      <h3> <a href="customers" style="color:#fff;">{{$count}}</a></h3>
                       
-                      <p>CLIENTS</p>
+                      <a href="customers" style="color:#fff;"><p>CLIENTS</p></a>
                     </div>
                     <div class="icon">
                       <i class="fa fa-shopping-cart"></i>
@@ -454,8 +477,8 @@
                         @php
                           $count = $calculator->CountProspect();
                         @endphp
-                      <h3>{{$count}}</h3>
-                      <p>PROSPECTS</p>
+                      <h3><a href="prospects" style="color:#fff">{{$count}}</a></h3>
+                      <a href="prospects" style="color:#fff"><p>PROSPECTS</p></a>
                     
                     </div>
                     <div class="icon">

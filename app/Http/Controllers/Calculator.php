@@ -19,12 +19,15 @@ class Calculator extends Controller
     //Handle Calculation
 
     public function FinContrat($jours, $date_debut, $mois, $annee)
-    {
+    {   //dd('ici');
         $timestamp = strtotime($date_debut);
+        //dd($timestamp);
         if($annee !=0 )//il a rempli l'annee
         {
+          
             if($mois != 0)//le mois aussi est rempli
             {
+               
                 $departtime1 = strtotime('+'.$mois.' month', $timestamp);
                 $departtime2 = strtotime('+'.$annee.' year', $departtime1);
                 $depart = date("Y-m-d", $departtime2);
@@ -32,12 +35,13 @@ class Calculator extends Controller
 
             if($jours != 0)//le jour aussi est rempli
             {
+              
                 $departtime1 = strtotime('+'.$jours.' days', $timestamp);
                 $departtime2 = strtotime('+'.$annee.' year', $departtime1);
 
                 $depart = date("Y-m-d", $departtime2);
             }
-
+         
             $depart_base = strtotime('+'.$annee.' year', $timestamp);
 
             $depart = date("Y-m-d", $depart_base);
@@ -46,10 +50,13 @@ class Calculator extends Controller
             return $depart;
         }
 
+    
         if($jours == 0)//il a rempli uniquement le mois
         {
+           
             if($mois != 0) //si le mois est rempli donc et différent de zéro
             {
+             
                 //strtotime(‘+’.$duree.’ month’, $dateDepartTimestamp )
                 $departtime = strtotime('+'.$mois.' month', $timestamp);
                 $depart = date("Y-m-d", $departtime);
@@ -67,9 +74,10 @@ class Calculator extends Controller
         {
             if($mois != 0)// le jours est différent de 0 et le mois aussi
             {
-                
+              
                 if($jours == 30 OR $jours == 31) // c'est copmme ci ca fait un mois 
                 {
+                    
                     $departtime =strtotime('+1 month', $timestamp);
                     $add_month = strtotime('+'.$mois.' month', $departtime);
                     
@@ -79,6 +87,7 @@ class Calculator extends Controller
                 }
                 else 
                 {
+                   
                     $departtime = strtotime('+'.$mois.' month', $timestamp);
                     $the_final = strtotime('+'.$jours.' days', $departtime);
                     $depart = date("Y-m-d", $the_final);
@@ -87,8 +96,10 @@ class Calculator extends Controller
             }
             else //le mois est 0 c'est le jours seul qui est différent de zéro
             {
+                
                 $departtime = $timestamp + ($jours * 86400);
                 $depart = date("Y-m-d", $departtime); 
+           
                 return $depart;   
             }
 
@@ -189,7 +200,8 @@ class Calculator extends Controller
     {
         $somm = 0;
         $get =  DB::table('paiements')
-        ->join('prestations', 'paiements.id_prestation', '=', 'prestations.id')
+        ->join('factures', 'paiements.id_facture', '=', 'factures.id')
+        ->join('prestations', 'factures.id_prestation', '=', 'prestations.id')
         ->where('prestations.id_contrat', $id_contrat)
         ->get(['paiements.paiement']);
 

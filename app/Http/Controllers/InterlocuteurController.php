@@ -110,4 +110,66 @@ class InterlocuteurController extends Controller
 
         return redirect('interlocuteurs')->with('success', 'Enregistrement effectué');
     }
+
+    public function AddInterlocuteurInFiche(Request $request)
+    {
+        if(strval($request->entreprise) == "0")
+        {
+            return back()->with('error', 'Choisissez l\'entreprise ');
+        }
+        
+        //dd($request->nom);
+        $Insert = Interlocuteur::create([
+            'titre' => $request->titre,
+             'nom' => $request->nom, 
+             'tel' => $request->tel,
+              'email' => $request->email, 
+              'fonction' => $request->fonction, 
+              
+              'id_entreprise' => $request->entreprise,
+               'created_by' => auth()->user()->id,
+        ]);
+        
+
+        return view('dash/prospect_about',
+        [
+            'id_entreprise' => $request->entreprise,
+            'success' => 'Nouvel interlocuteur ajouté'
+        ]
+    );
+    }
+    public function AddInterlocuteurInFicheCustomer(Request $request)
+    {
+        if(strval($request->entreprise) == "0")
+        {
+            return back()->with('error', 'Choisissez l\'entreprise ');
+        }
+        
+        //dd($request->nom);
+        $Insert = Interlocuteur::create([
+            'titre' => $request->titre,
+             'nom' => $request->nom, 
+             'tel' => $request->tel,
+              'email' => $request->email, 
+              'fonction' => $request->fonction, 
+              
+              'id_entreprise' => $request->entreprise,
+               'created_by' => auth()->user()->id,
+        ]);
+        
+
+        return view('dash/fiche_customer',
+            [
+                'id_entreprise' => $request->entreprise,
+                'success' => 'Nouvel interlocuteur ajouté'
+            ]
+        );
+    }
+
+    public function InterlocuteurWithIdEntreprise($id)
+    {
+        $interloc = Interlocuteur::where('id_entreprise', $id)->get();
+
+        return $interloc;
+    }
 }

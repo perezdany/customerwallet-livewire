@@ -81,16 +81,7 @@
                         </tr>
                       @endforeach
                   </tbody>
-                  <tfoot>
-                  <tr>
-                    <th>Nom</th>
-                    <th>Statut</th>
-                    <th>Adresse</th>
-                    <th>Client depuis le:</th>
-                    <th>Interlocuteurs: </th>
-                    <th>Action</th>
-                  </tr>
-                  </tfoot>
+                  
                   </table>
                 </div>
                 <!-- /.box-body -->

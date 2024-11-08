@@ -59,20 +59,7 @@
                           
                       @endforeach
                   </tbody>
-                  <tfoot>
-                  <tr>
-                   <th>Titre</th>
-                    <th>description</th>
-                     <th>Date de la prospection</th>
-                      <th>Interlocuteur</th>
-                       <th>Entreprise</th>
-                        <th>Service proposé</th>
-                     @if(auth()->user()->id_role == 3)
-                    @else
-                        <th>Action</th>
-                    @endif
-                  </tr>
-                  </tfoot>
+                  
                   </table>
                 </div>
                 <!-- /.box-body -->

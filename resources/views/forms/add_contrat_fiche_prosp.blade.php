@@ -1,173 +1,100 @@
-@extends('layouts/base')
-
+@extends('layouts/dash')
 @php
-
     use App\Http\Controllers\ServiceController;
 
     use App\Http\Controllers\ControllerController;
 
-    use App\Http\Controllers\EntrepriseController;
+     use App\Http\Controllers\ContratController;
 
-    use App\Http\Controllers\ContratController;
-
-    use App\Http\Controllers\CategorieController;
+     use App\Http\Controllers\EntrepriseController;
 
      use App\Http\Controllers\TypePrestationController;
 
-       $typeprestationcontroller = new TypePrestationController();
+     use App\Http\Controllers\InterlocuteurController;
 
-    $contratcontroller = new ContratController();
+    use App\Http\Controllers\FactureController;
+
+    use App\Http\Controllers\CategorieController;
+
+    use App\Http\Controllers\Calculator;
+
+    $calculator = new Calculator();
+
+    $facturecontroller = new FactureController();
 
     $categoriecontroller = new CategorieController();
 
-     $servicecontroller = new ServiceController();
-    $my_own =  $contratcontroller->MyOwnContrat(auth()->user()->id);
+    $servicecontroller = new ServiceController();
 
-    $all = $contratcontroller->RetriveAll();
+    $typeprestationcontroller = new TypePrestationController();
+
+    $contratcontroller = new ContratController();
+
+    $entreprisecontroller = new EntrepriseController();
+
+    $interlocuteurcontroller = new InterlocuteurController();
+
+    $my_own =  $facturecontroller->FactureDateDepassee();
+    $count_non_reglee = $calculator->CountFactureNonRegleDepasse();
+
+     
 @endphp
 
 @section('content')
-      
-      <div class="row">
+   
+    <div class="row">
          @if(session('success'))
-            <div class="col-md-12 box-header">
-              <p class="bg-success" style="font-size:13px;">{{session('success')}}</p>
+            <div class="col-md-12 box-header" style="font-size:13px;">
+              <p class="bg-success" >{{session('success')}}</p>
             </div>
-          @endif
-            @if(session('error'))
-            <div class="col-md-12 box-header">
-              <p class="bg-warning" style="font-size:13px;">{{session('error')}}</p>
+        @endif
+        @if(session('error'))
+            <div class="col-md-12 box-header" style="font-size:13px;">
+              <p class="bg-danger" >{{session('error')}}</p>
             </div>
-          @endif
-
-          <div class="col-md-12">
-              <div class="box">
-                <div class="box-header">
-                  <h3 class="box-title">Contrats</h3>
+        @endif
+         @if(isset($error))
+                <div class="col-md-12 box-header">
+                <p class="bg-danger" style="font-size:13px;">{{$error}}</p>
                 </div>
-                <!-- /.box-header -->
-                <div class="box-body">
-                  <table id="example1" class="table table-bordered table-striped table-hover">
-                  <thead>
-                  <tr>
-                    <th>Titre de contrat</th>
-                    <th>Entreprise</th>
-                    <th>Type de contrat</th>
-                   
-                   <th>Début du contrat</th>
-                   <th>Fin du contrat</th>
-                    <th>Montant</th>	
-                   
-                    @if(auth()->user()->id_role == 3)
-                    @else
-                      <th>Fichier du contrat</th>
-                        <th>Action</th>
-                    @endif
-                  </tr>
-                  </thead>
-                  <tbody>
-                      @foreach($all as $all)
-                        <tr>
-                          <td>{{$all->titre_contrat}}</td>
-                          <td>{{$all->nom_entreprise}}</td>
-                          <td>
-                            <!--ECRIRE UN CODE POUR DETECTER LE TYPE DE PRESTATION-->
-                            @php
-                                $g = DB::table('prestations')
-                                      ->join('typeprestations', 'prestations.id_type_prestation', '=', 'typeprestations.id')
-                                      ->where('id_contrat', $all->id)
-                                      ->get('typeprestations.libele');
-                            @endphp
-                            @foreach($g as $type)
-                                {{$type->libele}}
-                            @endforeach
-                          
-                          </td>
-                        
-                          <td>@php echo date('d/m/Y',strtotime($all->debut_contrat)) @endphp</td>
-                           <td>@php echo date('d/m/Y',strtotime($all->fin_contrat)) @endphp</td>
-                          <td>
-                            @php
-                              echo  number_format($all->montant, 2, ".", " ")." XOF";
-                            @endphp
-                           
-                          </td>  
-                          @if(auth()->user()->id_role == 3)
-                          @else
-                            <td>
-                              
-                              <form action="upload" method="post" enctype="multipart/form-data">
-                                @csrf
-                                <label>Fichier scanné(PDF)</label>
-                                 <input type="text" value={{$all->id}} style="display:none;" name="id_contrat">
-                                <input type="file" class="form-control" name="file">
-                                <button type="submit" class="btn btn-primary"><i class="fa fa-upload"></i></button>
-                              </form>
+            @endif
 
-                              <form action="download" method="post" enctype="multipart/form-data">
-                                @csrf
-                                <label>Télécharger</label>
-                                 <input type="text" value={{$all->id}} style="display:none;" name="id_contrat">
-                                <input type="text" class="form-control" name="file" value="{{$all->path}}" style="display:none;">
-                                <button type="submit" class="btn btn-warning"><i class="fa fa-download"></i></button>
-                              </form>
-                            </td>
-
-                            <td>
-                                <form action="edit_contrat_form" method="post">
-                                    @csrf
-                                    <input type="text" value={{$all->id}} style="display:none;" name="id_contrat">
-                                    <button type="submit" class="btn btn-success"><i class="fa fa-edit"></i></button>
-                                </form>
-
-                            </td>
-                          @endif  
-                          
-                        </tr>
-                      @endforeach
-                  </tbody>
-                 
-                  </table>
+             @if(isset($success))
+                <div class="col-md-12 box-header">
+                <p class="bg-success" style="font-size:13px;">{{$success}}</p>
                 </div>
-                <!-- /.box-body -->
-              </div>
-              <!-- /.box -->
-            </div>
-            <!-- /.col --> 
-      </div>
-          <!-- /.row -->
-      <div class="row">
-          <!-- left column -->
-            <div class="col-md-2">
-              
-            </div>
-            <!--/.col (left) -->
-            <div class="col-md-8">
+            @endif
 
-              <!-- general form elements -->
-              <div class="box box-aeneas">
-               
-              
+        <!-- CODE POUR LES RESTRICTIONS-->
+
+        <div class="row">
+            <div class="col-md-3"></div>
+
+            <div class="col-md-6">
+                <div class="box box-aeneas">
+                <div class="box-header with-border">
+                    <h3 class="box-title"><b>ENREGISTRER UN CONTRAT</b></h3><br>(*) <b>champ obligatoire
+                </div>
+                
                 <!-- form start -->
-                <form role="form" method="post" action="add_contrat_with_prest" enctype="multipart/form-data">
+               <form role="form" method="post" action="fiche_add_contrat_with_prest" enctype="multipart/form-data">
                   @csrf
                   <div class="row">
+                  <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
                     <div class="col-md-6">
-                        <div class="box-header with-border">
-                          <h3 class="box-title"><b>ENREGISTRER UN CONTRAT</h3><br>(*) champ obligatoire</b>
-                        </div>
+                       
                       <div class="box-body">
                         <div class="form-group">
                           <label>Entreprise:</label>
                           <select class="form-control input-lg" name="entreprise">
                             @php
-                                  $get = (new EntrepriseController())->GetAll();
-                              @endphp
-                              <option value="0">--Choisir une entreprise--</option>
-                              @foreach($get as $entreprise)
-                                  <option value={{$entreprise->id}}>{{$entreprise->nom_entreprise}}</option>
+                              $nom = $entreprisecontroller->GetById($id_entreprise)
+                            @endphp
+                            @foreach($nom as $nom)
                                   
-                              @endforeach
+                                  <option value={{$nom->id}}>{{$nom->nom_entreprise}}</option>
+                            @endforeach
+        
                               <option value="autre">Autre<option>
                           </select>
                             
@@ -275,7 +202,21 @@
                             <input type="date" class="form-control  input-lg" required name="date_execute">
                         </div>
                           
-                       
+                        <div class="form-group">
+                            <label>Choisissez le contrat(*) </label>
+                            <!--Afficher les contrats que l'utilisateur a créé-->
+                            <select class="form-control input-lg" name="contrat" required>
+                                @php
+                                    $contrat = $contratcontroller->GetAllNoSolde();
+                                    
+                                @endphp
+                                <option value="0">--Choisir le contrat--</option>
+                                @foreach($contrat as $contrat)
+                                    <option value={{$contrat->id}}>{{$contrat->titre_contrat}}</option>
+                                    
+                                @endforeach
+                            </select>
+                        </div>
                             
                         <div class="form-group">
                             <label>Adresse </label>
@@ -297,16 +238,19 @@
                     <button type="submit" class="btn btn-primary">VALIDER</button>
                   </div>
                 </form>
-              </div>
-              <!-- /.box -->
+                </div>
+                <!-- /.box -->
             </div>
-        
-            <!-- left column -->
-            <div class="col-md-2">
-              
-            </div>
-            <!--/.col (left) -->
-            
-      </div>
-      <!--/.col (right) -->
+
+            <div class="col-md-3"></div>
+        </div>
+       
+
+           
+    </div>
+    <!-- Main row -->  
+
 @endsection
+     
+    
+   

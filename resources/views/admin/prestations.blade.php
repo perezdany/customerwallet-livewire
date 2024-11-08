@@ -80,11 +80,11 @@
                                       <td>
                                           @php
                                               //On va écrire un code pour detecter tous les services offerts
-                                              $se = DB::table('prestation_service')
-                                              ->join('prestations', 'prestation_service.prestation_id', '=', 'prestations.id')
-                                              ->join('services', 'prestation_service.service_id', '=', 'services.id') 
+                                              $se = DB::table('prestation_services')
+                                              ->join('prestations', 'prestation_services.prestation_id', '=', 'prestations.id')
+                                              ->join('services', 'prestation_services.service_id', '=', 'services.id') 
                                               ->where('prestation_id', $all->id)    
-                                              ->get(['services.libele_service', 'prestation_service.*']);
+                                              ->get(['services.libele_service', 'prestation_services.*']);
                                           @endphp
                                           <ul>
                                           @foreach($se as $se_get)
@@ -124,21 +124,7 @@
                                   </tr>
                               @endforeach
                           </tbody>
-                          <tfoot>
-                          <tr>
-                         <th>Date</th>
-                          <th>Type de prestation</th>
-                          <th>Lieu</th>
-                          <th>Entreprise</th>
-                          <th>Fin de contrat</th>
-                          <th>Prestation</th>
-                          
-                          @if(auth()->user()->id_role == 3)
-                          @else
-                            <th>Action</th>
-                          @endif
-                          </tr>
-                          </tfoot>
+                         
                       </table>
                     </div>
                     <!-- /.box-body -->

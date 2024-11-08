@@ -55,19 +55,7 @@
                                 </tr>
                             @endforeach
                         </tbody>
-                        <tfoot>
-                            <tr>
-                            <th>Date</th>
-                            <th>Type de prestation</th>
-                            <th>Lieu</th>
-                            <th>Entreprise</th>
-                            <th>Fin de contrat</th>
-                            <th>Prestation</th>
-                            <th>Description de la prestation</th>	
-                            <th>Ajpouté par</th>	
-                           
-                            </tr>
-                        </tfoot>
+                       
                     </table>
                 </div>
                 <!-- /.box-body -->

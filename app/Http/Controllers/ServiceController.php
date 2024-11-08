@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Models\Service;
 
+use App\Models\Prospection_service;
+
 use DB;
 
 class ServiceController extends Controller
@@ -77,15 +79,42 @@ class ServiceController extends Controller
     public function DeleteServiceInProspection(Request $request)
     {
         
-        $deleted = DB::table('prospection_service')->where('id', '=', $request->id)->delete();
+        $deleted = DB::table('prospection_services')->where('id', '=', $request->id)->delete();
 
         return back()->with('success', 'Elément supprimé');
     }
 
+    public function DeleteServiceInFicheProspection(Request $request)
+    {
+        
+        $deleted = DB::table('prospection_services')->where('id', '=', $request->id_service)->delete();
+
+        return view('dash/prospect_about',
+            [
+                'id_entreprise' => $request->id_entreprise,
+                'success' => 'Elément supprimé'
+            ]
+        );
+    }
+
+    public function DeleteServiceInFicheCustomer(Request $request)
+    {
+        
+        $deleted = DB::table('prestation_services')->where('id', '=', $request->id_service)->delete();
+
+        return view('dash/fiche_customer',
+            [
+                'id_entreprise' => $request->id_entreprise,
+                'success' => 'Elément supprimé'
+            ]
+        );
+    }
+
+
     public function DeleteServiceInPrestation(Request $request)
     {
         
-        $deleted = DB::table('prestation_service')->where('id', '=', $request->id)->delete();
+        $deleted = DB::table('prestation_services')->where('id', '=', $request->id)->delete();
 
         return back()->with('success', 'Elément supprimé');
     }
@@ -96,5 +125,34 @@ class ServiceController extends Controller
         $get = Service::where('id_categorie', $id)->get();
 
         return $get;
+    }
+
+    public function AddServiceInFiche(Request $request)
+    {
+      
+        if($request->service_propose == false)//L'utilisateur peut ne pas rempli
+        {
+           
+        }
+        else
+        {
+            for($a = 0; $a < count($request->service_propose); $a++)
+            {
+                
+                $Insert = Prospection_service::create([
+        
+                    'service_id' =>  $request->service_propose[$a],
+                    'prospection_id' => $request->id_prospection,
+
+                ]);
+            }
+        }
+
+        return view('dash/prospect_about',
+            [
+                'id_entreprise' => $request->id_entreprise,
+                'success' => 'Service ajouté'
+            ]
+        );
     }
 }

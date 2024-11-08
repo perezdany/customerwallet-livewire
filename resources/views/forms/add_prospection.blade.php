@@ -261,7 +261,7 @@
                             <div class="box-footer">
                                 <button type="submit" class="btn btn-primary">VALIDER</button>
                             </div>
-                        </div>
+                    
                     </form>   
 
                 </div>	

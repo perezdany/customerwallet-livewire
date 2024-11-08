@@ -78,19 +78,7 @@
                         </tr>
                       @endforeach
                   </tbody>
-                  <tfoot>
-                  <tr>
-                    <th>Titre de contrat de contrat</th>
-                    <th>Entreprise</th>
-                    <th>Type de contrat</th>
-                    <th>Service</th>
-                   <th>Début du contrat</th>
-                   <th>Fin du contrat</th>
-                    <th>Montant</th>	
-                    <th>Reste à payer</th>
-                    <th>Date de solde</th>
-                  </tr>
-                  </tfoot>
+                 
                   </table>
                 </div>
                 <!-- /.box-body -->

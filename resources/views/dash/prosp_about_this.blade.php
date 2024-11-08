@@ -123,24 +123,7 @@
                                     </tr>
                                 @endforeach
                             </tbody>
-                            <tfoot>
-                            <tr>
-                                <th>Date de la prospection</th>
-                    
-                                <th>Contact(interlocuteur)</th>
-                                <th>Ajouté par:</th>
-                                <th>Suivi effectués</th>
-                                <th>Facture proforma:</th>
-                                @if(auth()->user()->id_role == 3)
-                                @else
-                                    <th>Compte Rendu</th>
-                                @endif
-                                @if(auth()->user()->id_role == 3)
-                                @else
-                                    <th>Action</th>
-                                @endif
-                            </tr>
-                            </tfoot>
+                           
                     </table>
                     </div>
                     <!-- /.box-body -->

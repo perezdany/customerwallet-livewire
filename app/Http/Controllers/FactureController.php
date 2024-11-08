@@ -143,4 +143,9 @@ class FactureController extends Controller
 
         return $get;
     }
+
+    public function GetByIdContrat($id)
+    {
+        
+    }
 }

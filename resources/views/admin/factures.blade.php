@@ -130,22 +130,7 @@
                             </tr>
                         @endforeach
                     </tbody>
-                    <tfoot>
-                    <tr>
-                      <th>Facture N°</th>
-
-                        <th>Emise le:</th>
-                        <th>Date de règlement</th>
-                        <th>Montant</th>
-                        <th>Afficher les paiements</th>
-                        <th>Contrat</th>
-                        <th>Etat facture</th>
-                        @if(auth()->user()->id_role == 3)
-                        @else
-                            <th>Action</th>
-                        @endif
-                    </tr>
-                    </tfoot>
+                    
                 </table>
                 </div>
                 <!-- /.box-body -->

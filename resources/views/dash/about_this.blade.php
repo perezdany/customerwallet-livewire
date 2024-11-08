@@ -81,11 +81,11 @@
                                     @php
                                         //echo $all->id;
                                         //On va écrire un code pour detecter tous les services offerts
-                                        $se = DB::table('prestation_service')
-                                        ->join('prestations', 'prestation_service.prestation_id', '=', 'prestations.id')
-                                        ->join('services', 'prestation_service.service_id', '=', 'services.id') 
+                                        $se = DB::table('prestation_services')
+                                        ->join('prestations', 'prestation_services.prestation_id', '=', 'prestations.id')
+                                        ->join('services', 'prestation_services.service_id', '=', 'services.id') 
                                         ->where('prestation_id', $all->id)    
-                                        ->get(['services.libele_service', 'prestation_service.*']);
+                                        ->get(['services.libele_service', 'prestation_services.*']);
                                     @endphp
                                     <ul>
                                     @foreach($se as $se_get)
@@ -96,9 +96,9 @@
                                 <td>
                                     @php
                                         //On va écrire un code pour detecter tous la gateories de se service
-                                        $se = DB::table('prestation_service')
-                                        ->join('prestations', 'prestation_service.prestation_id', '=', 'prestations.id')
-                                        ->join('services', 'prestation_service.service_id', '=', 'services.id') 
+                                        $se = DB::table('prestation_services')
+                                        ->join('prestations', 'prestation_services.prestation_id', '=', 'prestations.id')
+                                        ->join('services', 'prestation_services.service_id', '=', 'services.id') 
                                         ->join('categories', 'services.id_categorie', '=', 'categories.id') 
                                         ->where('prestation_id', $all->id)    
                                         ->distinct()
@@ -167,7 +167,7 @@
             <!-- /.row -->
         <div class="row">
           
-           <div class="col-md-12">
+            <div class="col-md-12">
                 <div class="box">
                     <div class="box-header">
                         <h3 class="box-title">Contrats</h3>
@@ -216,19 +216,7 @@
                             </tr>
                         @endforeach
                     </tbody>
-                    <tfoot>
-                    <tr>
-                        <th>Titre de contrat</th>
-                        <th>Début du contrat</th>
-                        <th>Fin du contrat</th>
-                        <th>Montant</th>	
                     
-                        @if(auth()->user()->id_role == 3)
-                        @else
-                            <th>Action</th>
-                        @endif
-                    </tr>
-                    </tfoot>
                     </table>
                     </div>
                     <!-- /.box-body -->
@@ -273,11 +261,11 @@
                                     @php
                                         //echo $all->id;
                                         //On va écrire un code pour detecter tous les services offerts
-                                        $se = DB::table('prospection_service')
-                                        ->join('prospections', 'prospection_service.prospection_id', '=', 'prospections.id')
-                                        ->join('services', 'prospection_service.service_id', '=', 'services.id') 
+                                        $se = DB::table('prospection_services')
+                                        ->join('prospections', 'prospection_services.prospection_id', '=', 'prospections.id')
+                                        ->join('services', 'prospection_services.service_id', '=', 'services.id') 
                                         ->where('prospection_id', $all->id)    
-                                        ->get(['services.libele_service', 'prospection_service.*']);
+                                        ->get(['services.libele_service', 'prospection_services.*']);
                                     @endphp
                                     <ul>
                                     @foreach($se as $se_get)

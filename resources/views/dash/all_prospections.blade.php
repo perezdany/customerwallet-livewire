@@ -69,18 +69,7 @@
                                 </tr>
                             @endforeach
                         </tbody>
-                        <tfoot>
-                        <tr>
-                            <th>Date</th>
-                            <th>Entreprise</th>	
-                            <th>prestation proposée</th>
-                           
-                            <th>Référant/Fonction</th>
                         
-                            <th>Suivi effectués</th>
-                        
-                        </tr>
-                        </tfoot>
                     </table>
                     </div>
                     <!-- /.box-body -->

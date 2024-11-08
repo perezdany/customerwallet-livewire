@@ -55,7 +55,7 @@
                             
                             <th>Contact(interlocuteur)</th>
                             
-                            <th>Suivi effectués/Modifier la prospection</th>
+                            <th>Modifier la prospection</th>
                             <th>Facture proforma:</th>
                             
                             @if(auth()->user()->id_role == 3)
@@ -72,11 +72,11 @@
                                     <td>
                                     @php
                                         //On va écrire un code pour detecter tous les services offerts
-                                        $se = DB::table('prospection_service')
-                                        ->join('prospections', 'prospection_service.prospection_id', '=', 'prospections.id')
-                                        ->join('services', 'prospection_service.service_id', '=', 'services.id') 
+                                        $se = DB::table('prospection_services')
+                                        ->join('prospections', 'prospection_services.prospection_id', '=', 'prospections.id')
+                                        ->join('services', 'prospection_services.service_id', '=', 'services.id') 
                                         ->where('prospection_id', $all->id)    
-                                        ->get(['services.libele_service', 'prospection_service.*']);
+                                        ->get(['services.libele_service', 'prospection_services.*']);
                                     @endphp
                                     <ul>
                                     @foreach($se as $se_get)
@@ -89,11 +89,7 @@
                                     
 
                                         <td>
-                                        <form action="display_suivi" method="post">
-                                            @csrf
-                                            <input type="text" value={{$all->id}} style="display:none;" name="id_prospection">
-                                            <button type="submit" class="btn btn-primary"><i class="fa fa-eye"></i></button>
-                                        </form>
+                                       
                                         @if(auth()->user()->id_role == 3)
                                         @else
                                             <form action="edit_prospect_form" method="post">
@@ -121,9 +117,6 @@
                                         @if(auth()->user()->id_role == 3)
                                         @else
                                             <td>
-                                                
-
-                                                    
 
                                                 <form action="download_prospect" method="post" enctype="multipart/form-data">
                                                     @csrf
@@ -141,23 +134,7 @@
                                 </tr>
                             @endforeach
                         </tbody>
-                        <tfoot>
-                        <tr>
-                        <th>Date</th>
-                        <th>Entreprise</th>	
-                        <th>prestation proposée</th>
-                    
-                        <th>Contact/Fonction</th>
-                        
-                        <th>Suivi effectués/Modifier la prospection</th>
-                        <th>Facture proforma:</th>
-                        
-                        @if(auth()->user()->id_role == 3)
-                        @else
-                            <th>Compte Rendu</th>
-                        @endif
-                        </tr>
-                        </tfoot>
+                       
                     </table>
                 </div>
                 <!-- /.box-body -->

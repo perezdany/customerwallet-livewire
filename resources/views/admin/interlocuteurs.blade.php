@@ -72,19 +72,7 @@ $all =  $interlocuteurcontroller-> GetAll();
                                 </tr>
                             @endforeach
                         </tbody>
-                        <tfoot>
-                        <tr>
-                            <th>Nom & Prénom(s)</th>
-                            <th>Téléphone</th>
-                            <th>Email</th>
-                            <th>Fonction</th>
-                            <th>Entreprise</th>
-                        
-                            <th>Ajouté par</th>
-                                
-                            <th>Action</th>
-                        </tr>
-                        </tfoot>
+                       
                     </table>
                 </div>
                 <!-- /.box-body -->
