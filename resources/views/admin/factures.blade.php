@@ -60,6 +60,7 @@
                         <th>Afficher les paiements</th>
                         <th>Contrat</th>
                         <th>Etat facture</th>
+                        <th>Fichier</th>
                         @if(auth()->user()->id_role == 3)
                         @else
                             <th>Action</th>
@@ -97,7 +98,24 @@
                                     </p>
                                 @endif
                                 
-                                </td>
+                            </td>
+                            <td>
+                                <form action="upload_file_facture" method="post" enctype="multipart/form-data">
+                                    @csrf
+                                    <label>Fichier scanné(PDF)</label>
+                                    <input type="text" value={{$my_own->id}} style="display:none;" name="id_facture">
+                                    <input type="file" class="form-control" name="file">
+                                    <button type="submit" class="btn btn-primary"><i class="fa fa-upload"></i></button>
+                                </form>
+
+                                <form action="download_file_facture" method="post" enctype="multipart/form-data">
+                                    @csrf
+                                    <label>Télécharger</label>
+                                    <input type="text" value={{$my_own->id}} style="display:none;" name="id_facture">
+                                    <input type="text" class="form-control" name="file" value="{{$my_own->file_path}}" style="display:none;">
+                                    <button type="submit" class="btn btn-warning"><i class="fa fa-download"></i></button>
+                                </form>
+                            </td>
                             @if(auth()->user()->id_role == 3)
                             @else
                                 <td>
@@ -155,16 +173,17 @@
                     <div class="box-body">
                         <div class="form-group">
                             <label>Numéro de la facture (*)</label>
-                            <input type="text" name="numero_facture" required class="form-control input-lg" maxlength="30" onkeyup="this.value=this.value.toUpperCase()">
+                            <input type="text" name="numero_facture" required value="{{old('numero_facture')}}" class="form-control input-lg" maxlength="30" onkeyup="this.value=this.value.toUpperCase()">
                         </div>
-                    
+
                          <div class="form-group">
-                            <label>A régler d'ici le: (*)</label>
-                            <input type="date" name="date_reglement" class="form-control input-lg" required>
-                        </div>
-                        <div class="form-group">
                             <label for="exampleInputEmail1">Date d'emission de la facture:</label>
-                            <input type="date" class="form-control  input-lg" required name="date_emission">
+                            <input type="date" class="form-control  input-lg" value="{{old('date_emission')}}" required name="date_emission">
+                        </div>
+
+                        <div class="form-group">
+                            <label>A régler d'ici le: (*)</label>
+                            <input type="date" name="date_reglement" class="form-control input-lg" value="{{old('date_reglement')}}" required>
                         </div>
                             
                         <div class="form-group">
@@ -185,6 +204,11 @@
                                 @endforeach
 
                            </select>
+                        </div>
+
+                          <div class="form-group">
+                            <label>Fichier de la facture(PDF)</label>
+                              <input type="file" class="form-control" name="file">
                         </div>
                     
                     </div>

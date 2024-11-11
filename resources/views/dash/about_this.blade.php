@@ -35,14 +35,16 @@
             $prospections = $prospectioncontroller->GetProspectionByIdEntr($id_entreprise);
         @endphp
 
-         <div class="row">
+        <div class="row">
                 <div class="col-md-3">
                 <a href="form_add_contrat"><button class="btn btn-success"> <b>ENREGISTRER UN CONTRAT</b></button></a>
                 
                 </div>
-                <div class="col-md-3">
-                     <a href="form_add_prestation"><button class="btn btn-primary"> <b>ENREGISTRER UNE PRESTATION</b></button></a>
-                </div>
+                @if(auth()->user()->id_departement == 1)
+                    <div class="col-md-3">
+                        <a href="form_add_prestation"><button class="btn btn-primary"> <b>ENREGISTRER UNE PRESTATION</b></button></a>
+                    </div>
+                @endif
         </div>
         <div class="row">
             @if(session('success'))
@@ -89,7 +91,13 @@
                                     @endphp
                                     <ul>
                                     @foreach($se as $se_get)
-                                        <li>{{$se_get->libele_service}}<a href="delete_prestation/{{$se_get->id}}"><button class="btn btn-danger"><i class="fa fa-times"></i></button></a></li>
+                                        <li>{{$se_get->libele_service}}
+                                            @if(auth()->user()->id_departement == 1)
+                                                <a href="delete_prestation/{{$se_get->id}}">
+                                                    <button class="btn btn-danger"><i class="fa fa-times"></i></button>
+                                                </a>
+                                            @endif
+                                        </li>
                                     @endforeach
                                     </ul>
                                 </td>   
@@ -129,12 +137,13 @@
 
                                     @endif
 
-                                    
-                                    <form action="edit_prestation_form" method="post">
-                                        @csrf
-                                        <input type="text" value={{$all->id}} style="display:none;" name="id_prestation">
-                                        <button type="submit" class="btn btn-primary"><i class="fa fa-edit"></i></button>
-                                    </form>
+                                    @if(auth()->user()->id_departement == 1)
+                                        <form action="edit_prestation_form" method="post">
+                                            @csrf
+                                            <input type="text" value={{$all->id}} style="display:none;" name="id_prestation">
+                                            <button type="submit" class="btn btn-primary"><i class="fa fa-edit"></i></button>
+                                        </form>
+                                    @endif
 
                                     </td>
                                 @endif
@@ -246,10 +255,12 @@
                                 <th>Sercice proposé</th>
                                 <th>Contact/Fonction</th>
                                 <th>Ajouté par:</th>
-                                <th>Suivi effectués</th>
+                              
                                 @if(auth()->user()->id_role == 3)
                                 @else
-                                    <th>Action</th>
+                                    @if(auth()->user()->id_departement == 1)
+                                        <th>Action</th>
+                                    @endif 
                                 @endif
                             </tr>
                             </thead>
@@ -276,23 +287,19 @@
                                         
                                         <td>{{$all->nom}}/{{$all->tel}}/{{$all->fonction}}</td>
                                         <td>{{$all->nom_prenoms}}</td>
-                                        <td><form action="display_suivi" method="post">
-                                                @csrf
-                                                <input type="text" value={{$all->id}} style="display:none;" name="id_prospection">
-                                                <button type="submit" class="btn btn-primary"><i class="fa fa-eye"></i></button>
-                                            </form>
-                                            </td>
-                                    
                                        
                                             @if(auth()->user()->id_role == 3)
                                             @else
-                                                <td>
-                                                    <form action="edit_prospect_form" method="post">
-                                                        @csrf
-                                                        <input type="text" value={{$all->id}} style="display:none;" name="id_prospection">
-                                                        <button type="submit" class="btn btn-success"><i class="fa fa-edit"></i></button>
-                                                    </form>
-                                                </td>
+                                                @if(auth()->user()->id_departement == 1)
+                                                    <td>
+                                                        <form action="edit_prospect_form" method="post">
+                                                            @csrf
+                                                            <input type="text" value={{$all->id}} style="display:none;" name="id_prospection">
+                                                            <button type="submit" class="btn btn-success"><i class="fa fa-edit"></i></button>
+                                                        </form>
+                                                    </td>
+                                                @endif
+                                               
 
                                             @endif
                                            
@@ -301,20 +308,7 @@
                                     </tr>
                                 @endforeach
                             </tbody>
-                            <tfoot>
-                            <tr>
-                            <th>Date de la prospection</th>
-                            <th>Sercice proposé</th>
-                        
-                            <th>Contact/Fonction</th>
-                            <th>Ajouté par:</th>
-                            <th>Suivi effectués</th>
-                            @if(auth()->user()->id_role == 3)
-                            @else
-                                <th>Action</th>
-                            @endif
-                            </tr>
-                            </tfoot>
+                            
                     </table>
                     </div>
                     <!-- /.box-body -->

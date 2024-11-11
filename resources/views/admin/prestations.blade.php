@@ -88,7 +88,13 @@
                                           @endphp
                                           <ul>
                                           @foreach($se as $se_get)
-                                              <li>{{$se_get->libele_service}}<a href="delete_prestation/{{$se_get->id}}"><button class="btn btn-danger"><i class="fa fa-times"></i></button></a></li>
+                                              <li>{{$se_get->libele_service}}
+                                                @if(auth()->user()->id_departement == 1 OR auth()->user()->id_departement == 3 OR auth()->user()->id_departement == 4)
+                                                    <a href="delete_prestation/{{$se_get->id}}">
+                                                <button class="btn btn-danger"><i class="fa fa-times"></i></button></a>
+                                                @endif
+                                                
+                                              </li>
                                           @endforeach
                                           </ul>
                                       
@@ -109,14 +115,16 @@
                                             @else
 
                                             @endif
+                                            @if(auth()->user()->id_departement == 1 OR auth()->user()->id_departement == 3 OR auth()->user()->id_departement == 4)
+                                                
+                                              <form action="edit_prestation_form" method="post">
+                                                  @csrf
+                                                  <input type="text" value={{$all->id}} style="display:none;" name="id_prestation">
+                                                  <button type="submit" class="btn btn-primary"><i class="fa fa-edit"></i></button>
+                                              </form>
 
+                                            @endif
                                           
-                                            <form action="edit_prestation_form" method="post">
-                                                @csrf
-                                                <input type="text" value={{$all->id}} style="display:none;" name="id_prestation">
-                                                <button type="submit" class="btn btn-primary"><i class="fa fa-edit"></i></button>
-                                            </form>
-
                                           </td>
                                         @endif
 

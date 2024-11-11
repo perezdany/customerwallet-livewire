@@ -13,6 +13,6 @@ class Facture extends Model
 
     protected $fillable = [
          'numero_facture', 'date_reglement', 'date_emission', 
-         'montant_facture', 'id_prestation', 'reglee', 'updated_at', 'created_by'
+         'montant_facture', 'id_prestation', 'reglee', 'updated_at', 'created_by', 'file_path',
     ];
 }

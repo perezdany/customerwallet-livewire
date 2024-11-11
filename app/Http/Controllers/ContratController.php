@@ -126,7 +126,7 @@ class ContratController extends Controller
             if( $fichier != null)
             {
                 //VERFIFIER LE FORMAT 
-                $extension = pathinfo($fichier->getFilename(), PATHINFO_EXTENSION);
+                $extension = pathinfo($fichier->getClientOriginalName(), PATHINFO_EXTENSION);
 
                 if($extension != "pdf")
                 {
@@ -200,7 +200,7 @@ class ContratController extends Controller
             if( $fichier_proforma != null)
             {
                     //VERFIFIER LE FORMAT 
-                    $extension = pathinfo($fichier_proforma->getFilename(), PATHINFO_EXTENSION);
+                    $extension = pathinfo($fichier_proforma->getClientOriginalName(), PATHINFO_EXTENSION);
 
                     if($extension != "pdf")
                     {
@@ -291,6 +291,7 @@ class ContratController extends Controller
 
     public function AddContratPrest(Request $request)
     {
+        //dd('ici');
         if($request->entreprise == 0)
         {
             return back()->with('error', 'Vous n\'avez pas choisi l\'entreprise');

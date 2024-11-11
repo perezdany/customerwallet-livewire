@@ -35,7 +35,7 @@
                             <th>Entreprise</th>
                             <th>Fin de contrat</th>
                             <th>Prestation</th>
-                            <th>Description de la prestation</th>	
+                           
                             <th>Ajpouté par</th>	
                             
                             </tr>
@@ -49,7 +49,7 @@
                                     <td>{{$all->nom_entreprise}}</td>
                                     <td>@php echo date('d/m/Y',strtotime($all->fin_contrat));  @endphp</td>
                                     <td>{{$all->libele_service}}</td>
-                                    <td>{{$all->description}}</td>
+                              
                                     <td>{{$all->nom_prenoms}}</td>
                            
                                 </tr>

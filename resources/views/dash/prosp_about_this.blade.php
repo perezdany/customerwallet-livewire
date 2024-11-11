@@ -47,7 +47,7 @@
                                 
                                 <th>Contact(interlocuteur)</th>
                                 <th>Ajouté par:</th>
-                                <th>Suivi effectués</th>
+                               
                    
                                  <th>Facture proforma:</th>
                                   @if(auth()->user()->id_role == 3)
@@ -69,12 +69,7 @@
                                        
                                         <td>{{$all->nom}}/tel:{{$all->tel}}/<b>fonction:{{$all->fonction}}</b></td>
                                         <td>{{$all->nom_prenoms}}</td>
-                                        <td><form action="display_suivi" method="post">
-                                                @csrf
-                                                <input type="text" value={{$all->id}} style="display:none;" name="id_prospection">
-                                                <button type="submit" class="btn btn-primary"><i class="fa fa-eye"></i></button>
-                                            </form>
-                                        </td>
+                                      
                                           <td>
                                            
                                             <form action="download_facture_proforma" method="post" enctype="multipart/form-data">

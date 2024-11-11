@@ -405,6 +405,13 @@ Route::middleware(['auth:web'])->group(function(){
     Route::post('edit_facture_form', [FactureController::class, 'EditFactureForm']);
     Route::post('edit_facture', [FactureController::class, 'EditFacture']);
 
+    //AJOUTER LE FICHIER 
+    Route::post('upload_file_facture', [FactureController::class, 'UploadFileFacutre']);
+
+    //VOIR LE FICHIER
+    Route::post('download_file_facture', [FactureController::class, 'ViewFile']);
+
+
     //LES ROLES D'UTILISATEURS
     Route::get('roles', function(){
         return view('admin/roles');

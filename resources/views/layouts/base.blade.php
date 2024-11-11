@@ -252,13 +252,12 @@
              @if(auth()->user()->id_role == 2)
                 
                 @if(auth()->user()->id_departement == 5)
-                  
+                    <li class="active"><a href="prestation"><i class="fa fa-circle-o"></i>Prestations</a></li>
                     <li><a href="contrat"><i class="fa fa-circle-o"></i>Contrats</a></li>
-                     <li class="active"><a href="facture"><i class="fa fa-circle-o"></i>Factures</a></li>
+                    <li class="active"><a href="facture"><i class="fa fa-circle-o"></i>Factures</a></li>
                 @endif
             @endif
 
-            
            
           </ul>
         </li>
