@@ -334,6 +334,30 @@ class ContratController extends Controller
                 ]);
         
             }
+
+        
+            //VERIFIER SI IL N'EST PAS CLIENT CHANGE SONT STATUT A MEME TEMPS
+            //RECUPER L'(ENTREPRISE)
+            $recup_entreprise = (new ContratController())->GetById($Insert->id);
+            foreach($recup_entreprise as $recup_entreprise)
+            {
+            
+                $entreprise = (new EntrepriseController())->GetById($recup_entreprise->id_entreprise);
+                foreach($entreprise as $entreprise)
+                {
+                
+                    if($entreprise->id_statutentreprise == 1)
+                    {
+                        //dd($entreprise);
+                        $affected = DB::table('entreprises')
+                        ->where('id', $entreprise->id)
+                        ->update([ 'id_statutentreprise' => 2, 
+                            'client_depuis' => date('Y-m-d') 
+                    ]);
+                    }
+                }
+                
+            }
         
         }  
         else //ENTREPRISE PAS NOUVELLE
@@ -350,6 +374,29 @@ class ContratController extends Controller
                  'statut_solde' => 0,
                   'created_by' => auth()->user()->id,
             ]);
+
+            //VERIFIER SI IL N'EST PAS CLIENT CHANGE SONT STATUT A MEME TEMPS
+            //RECUPER L'(ENTREPRISE)
+            $recup_entreprise = (new ContratController())->GetById($Insert->id_entreprise);
+            foreach($recup_entreprise as $recup_entreprise)
+            {
+            
+                $entreprise = (new EntrepriseController())->GetById($recup_entreprise->id_entreprise);
+                foreach($entreprise as $entreprise)
+                {
+                
+                    if($entreprise->id_statutentreprise == 1)
+                    {
+                        //dd($entreprise);
+                        $affected = DB::table('entreprises')
+                        ->where('id', $entreprise->id)
+                        ->update([ 'id_statutentreprise' => 2, 
+                            'client_depuis' => date('Y-m-d') 
+                    ]);
+                    }
+                }
+                
+            }
     
         }     
         
@@ -510,28 +557,7 @@ class ContratController extends Controller
         }
 
        
-        //VERIFIER SI IL N'EST PAS CLIENT CHANGE SONT STATUT A MEME TEMPS
-        //RECUPER L'(ENTREPRISE)
-        $recup_entreprise = (new ContratController())->GetById($Insert->id);
-        foreach($recup_entreprise as $recup_entreprise)
-        {
-          
-            $entreprise = (new EntrepriseController())->GetById($recup_entreprise->id_entreprise);
-            foreach($entreprise as $entreprise)
-            {
-              
-                if($entreprise->id_statutentreprise == 1)
-                {
-                    //dd($entreprise);
-                    $affected = DB::table('entreprises')
-                    ->where('id', $entreprise->id)
-                    ->update([ 'id_statutentreprise' => 2, 
-                        'client_depuis' => date('Y-m-d') 
-                ]);
-                }
-            }
-            
-        }
+        
         
 
         $insert_prestation = Prestation::create([
@@ -708,75 +734,75 @@ class ContratController extends Controller
         //IL FAUT SUPPRIMER L'ANCIEN FICHIER DANS LE DISQUE DUR
         $fichier_proforma = $request->file_proforma;
 
-        
+       
         if( $fichier_proforma != null)
         {
-                //VERFIFIER LE FORMAT 
-                
-                //VERFIFIER LE FORMAT 
-                $extension = pathinfo($fichier_proforma->getClientOriginalName(), PATHINFO_EXTENSION);
-              
-                if($extension != "pdf")
+            //VERFIFIER LE FORMAT 
+            
+            //VERFIFIER LE FORMAT 
+            $extension = pathinfo($fichier_proforma->getClientOriginalName(), PATHINFO_EXTENSION);
+            
+            if($extension != "pdf")
+            {
+                return view('forms/add_contrat_fiche_prosp',
+                    [
+                        'id_entreprise' => $request->id_entreprise,
+                        'error' => 'LE FORMAT DE FICHIER DOIT ETRE UN FORMAT PDF!!'
+                    ]
+                );
+            }
+            //VERIFIER SI L'ENREGISTREMENT A UN CHEMIN D'ACCES ENREGISTRE
+            $get_path_prof = Contrat::where('id', $Insert->id)->get();
+            foreach($get_path_prof as $get_path_prof)
+            {
+                if($get_path_prof->proforma_file == null)
                 {
-                    return view('forms/add_contrat_fiche_prosp',
-                        [
-                            'id_entreprise' => $request->id_entreprise,
-                            'error' => 'LE FORMAT DE FICHIER DOIT ETRE UN FORMAT PDF!!'
-                        ]
+                    //enregistrement de fichier dans la base
+                    $file_name_prof = $fichier_proforma->getClientOriginalName();
+                    //dd($file_name_prof);
+                            
+                    $path = $request->file('file_proforma')->storeAs(
+                        'factures/proforma', $file_name_prof
                     );
-                }
-                //VERIFIER SI L'ENREGISTREMENT A UN CHEMIN D'ACCES ENREGISTRE
-                $get_path_prof = Contrat::where('id', $Insert->id)->get();
-                foreach($get_path_prof as $get_path_prof)
-                {
-                    if($get_path_prof->proforma_file == null)
-                    {
-                        //enregistrement de fichier dans la base
-                        $file_name_prof = $fichier_proforma->getClientOriginalName();
+
+                    $affected = DB::table('contrats')
+                    ->where('id', $Insert->id)
+                    ->update([
+                        'proforma_file'=> $path,
+                        
+                    ]);
+
                     
-                                
-                        $path = $request->file('file')->storeAs(
-                            'factures/proforma', $file_name_prof
-                        );
-    
-                        $affected = DB::table('contrats')
-                        ->where('id', $Insert->id)
-                        ->update([
-                            'proforma_file'=> $path,
-                            
-                        ]);
-    
-                        
-                    }
-                    else
-                    {
-
-                        //SUPPRESSION DE L'ANCIEN FICHIER
-                        //dd($get_path->path);
-                        $get_path_prof = Contrat::where('id', $Insert->id)->get();
-                        foreach($get_path_prof as $get_path_prof)
-                        {
-                            Storage::delete($get_path_prof->proforma_file);
-                        }
-
-    
-                        $file_name_prof = $fichier_proforma->getClientOriginalName();
-                        
-                                
-                        $path = $request->file('file')->storeAs(
-                            'factures/proforma', $file_name_prof
-                        );
-    
-                        $affected = DB::table('contrats')
-                        ->where('id', $Insert->id)
-                        ->update([
-                            'proforma_file'=> $path,
-                            
-                        ]);
-    
-                        
-                    }
                 }
+                else
+                {
+
+                    //SUPPRESSION DE L'ANCIEN FICHIER
+                    //dd($get_path->path);
+                    $get_path_prof = Contrat::where('id', $Insert->id)->get();
+                    foreach($get_path_prof as $get_path_prof)
+                    {
+                        Storage::delete($get_path_prof->proforma_file);
+                    }
+
+
+                    $file_name_prof = $fichier_proforma->getClientOriginalName();
+                    
+                            
+                    $path = $request->file('file_proforma')->storeAs(
+                        'factures/proforma', $file_name_prof
+                    );
+
+                    $affected = DB::table('contrats')
+                    ->where('id', $Insert->id)
+                    ->update([
+                        'proforma_file'=> $path,
+                        
+                    ]);
+
+                    
+                }
+            }
             
         }
         else
@@ -1338,8 +1364,8 @@ class ContratController extends Controller
         if( $fichier != null)
         {
              //VERFIFIER LE FORMAT 
-             $extension = pathinfo($fichier->getFilename(), PATHINFO_EXTENSION);
-
+             $extension = pathinfo($fichier->getClientOriginalName(), PATHINFO_EXTENSION);
+            
              if($extension != "pdf")
              {
                  return back()->with('error', 'LE FORMAT DE FICHIER DOIT ETRE UN FORMAT PDF!!');

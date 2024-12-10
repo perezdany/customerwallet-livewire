@@ -16,6 +16,7 @@ class EntrepriseController extends Controller
     {
         $get = DB::table('entreprises')
         ->join('statutentreprises', 'entreprises.id_statutentreprise', '=', 'statutentreprises.id')
+        ->orderBy('nom_entreprise', 'asc')
         ->get(['entreprises.*', 'statutentreprises.libele_statut']);
 
         return $get;
@@ -36,9 +37,13 @@ class EntrepriseController extends Controller
         $Insert = Entreprise::create([
            
             'nom_entreprise'=> $request->entreprise_name,
+            'chiffre_affaire' => $request->chiffre, 
+            'nb_employes' => $request->nb_emp,
             'id_statutentreprise' => 1,
              'created_by' => auth()->user()->id, 
         ]);
+
+        //dd($request->chiffre);
 
         //Recuperer l'enregistrement
        $get = Entreprise::where('nom_entreprise', '=', $request->entreprise_name)->get();
@@ -70,6 +75,8 @@ class EntrepriseController extends Controller
            
                 'nom_entreprise'=> $request->nom,
                 'id_statutentreprise' => $request->statut,
+                'chiffre_affaire' => $request->chiffre, 
+                'nb_employes' => $request->nb_emp,
                  'created_by' => auth()->user()->id,
                  'client_depuis' => $request->depuis,
 
@@ -84,6 +91,8 @@ class EntrepriseController extends Controller
            
                 'nom_entreprise'=> $request->nom,
                 'id_statutentreprise' => $request->statut,
+                'chiffre_affaire' => $request->chiffre, 
+                'nb_employes' => $request->nb_emp,
                  'created_by' => auth()->user()->id,
             ]);
 

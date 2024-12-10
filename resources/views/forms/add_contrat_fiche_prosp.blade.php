@@ -68,9 +68,9 @@
         <!-- CODE POUR LES RESTRICTIONS-->
 
         <div class="row">
-            <div class="col-md-3"></div>
+            <div class="col-md-2"></div>
 
-            <div class="col-md-6">
+            <div class="col-md-8">
                 <div class="box box-aeneas">
                 <div class="box-header with-border">
                     <h3 class="box-title"><b>ENREGISTRER UN CONTRAT</b></h3><br>(*) <b>champ obligatoire
@@ -102,7 +102,8 @@
 
                         <div class="form-group">
                           <label>Titre</label>
-                          <input type="text"  class="form-control input-lg" name="titre" placeholder="Ex: 202317854/SUPPORT/TTR/01"/>
+                          <input type="text"  class="form-control input-lg" name="titre"  required 
+                          onkeyup='this.value=this.value.toUpperCase()' placeholder="Ex: 202317854/SUPPORT/TTR/01"/>
                         </div>
                   
                         <div class="form-group">
@@ -125,7 +126,7 @@
                           <!--FAIRE DES CALCULS POUR DETERMINER LA FIN DU CONTRAT-->
                             <div class="row">
                               <div class="col-md-3">
-                                <input type="number" class="form-control" placeholder="jours" min="1" max="31" name="jour" required>
+                                <input type="number" class="form-control" placeholder="jours" min="1" max="31" name="jour" value="31">
                               </div>
                               <div class="col-md-4">
                                 <input type="number" class="form-control" placeholder="mois" min="1" max="12" name="mois">
@@ -201,27 +202,11 @@
                             <label for="exampleInputEmail1">Date d'exécution(*)</label>
                             <input type="date" class="form-control  input-lg" required name="date_execute">
                         </div>
-                          
-                        <div class="form-group">
-                            <label>Choisissez le contrat(*) </label>
-                            <!--Afficher les contrats que l'utilisateur a créé-->
-                            <select class="form-control input-lg" name="contrat" required>
-                                @php
-                                    $contrat = $contratcontroller->GetAllNoSolde();
-                                    
-                                @endphp
-                                <option value="0">--Choisir le contrat--</option>
-                                @foreach($contrat as $contrat)
-                                    <option value={{$contrat->id}}>{{$contrat->titre_contrat}}</option>
-                                    
-                                @endforeach
-                            </select>
-                        </div>
-                            
+                  
                         <div class="form-group">
                             <label>Adresse </label>
                             <input type="text" required maxlength="100" class="form-control input-lg" 
-                            name="localisation" placeholder="Ex: Cocody Angré Cocovico">
+                            name="localisation" placeholder="Ex: Cocody Angré Cocovico" onkeyup="this.value=this.value.toUpperCase()">
                         </div>
 
 
@@ -242,7 +227,7 @@
                 <!-- /.box -->
             </div>
 
-            <div class="col-md-3"></div>
+            <div class="col-md-2"></div>
         </div>
        
 

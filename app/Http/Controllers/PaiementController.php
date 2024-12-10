@@ -29,7 +29,7 @@ class PaiementController extends Controller
         if(strlen($ch) > 13)
         {
             //rediriger pour lui dire que c'est trop long
-            return redirect('prestation')->with('error', 'données montant saisies trop long');
+            return redirect('facture')->with('error', 'données montant saisies trop long');
         }
         
         //FAIRE LES MISES A JOURS DES TABLES CONCERNEES
@@ -68,6 +68,7 @@ class PaiementController extends Controller
             ->where('id', $request->id_facture)
             ->update([ 'reglee' => 1, ]); //LA FACTURE DEVIENT REGLEE DEFINITIVEMENT
         }
+        
 
         //MISE A JOUR DE LA TABLE CONTRAT EN MODIFIANT LE reste_a_payer DE LA TABLE
         //Récuper toutes les factures réglée

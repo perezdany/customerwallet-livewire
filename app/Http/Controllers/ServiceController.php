@@ -20,6 +20,7 @@ class ServiceController extends Controller
         
         $get = DB::table('services')
         ->join('categories', 'services.id_categorie', '=', 'categories.id')
+        ->orderBy('libele_service', 'asc')
         
         ->get(['services.*', 'categories.libele_categorie']);
 
@@ -122,7 +123,10 @@ class ServiceController extends Controller
 
     public function GetByCategorie($id)
     {
-        $get = Service::where('id_categorie', $id)->get();
+        $get = DB::table('services')
+        ->where('id_categorie', $id)
+        ->orderBy('libele_service', 'asc')
+        ->get();
 
         return $get;
     }

@@ -54,7 +54,7 @@ class ProspectionController extends Controller
             $calculator = new Calculator();
     
             //Calcul de la date de fin de prospection
-            $date_fin = $calculator->FinProspection($request->duree, $request->date_prospect);
+            $date_fin = $calculator->FinProspection(31, $request->date_prospect);
     
             
             //VOIR SI L'INTERLOCUTEUR EXISTE OU PAS EN VUE DE LE CREER
@@ -77,7 +77,7 @@ class ProspectionController extends Controller
                                 
                                 'date_prospection' => $request->date_prospect,
                                 'date_fin' => $date_fin, 
-                                'duree_jours' => $request->duree, 
+                                'duree_jours' => 31,
                                 'id_entreprise' => $client->id, 
                                 'interlocuteur' => $interlocuteur->id,
                                 'id_utilisateur' => auth()->user()->id,
@@ -93,11 +93,11 @@ class ProspectionController extends Controller
                         $insert = Prospection::create([
                             
                             'date_prospection' => $request->date_prospect,
-                                'date_fin' => $date_fin, 
-                                'duree_jours' => $request->duree, 
-                                'id_entreprise' => $client->id,  
-                                'interlocuteur' => $request->interlocuteur,
-                                'id_utilisateur' => auth()->user()->id,
+                            'date_fin' => $date_fin, 
+                            'duree_jours' => 31,
+                            'id_entreprise' => $client->id,  
+                            'interlocuteur' => $request->interlocuteur,
+                            'id_utilisateur' => auth()->user()->id,
                                 
                         ]);
 
@@ -120,11 +120,11 @@ class ProspectionController extends Controller
                         $insert = Prospection::create([
                             
                             'date_prospection' => $request->date_prospect,
-                                'date_fin' => $date_fin, 
-                                'duree_jours' => $request->duree, 
-                                'id_entreprise' => $request->entreprise, 
-                                'interlocuteur' => $interlocuteur->id,
-                                'id_utilisateur' => auth()->user()->id,
+                            'date_fin' => $date_fin, 
+                            'duree_jours' => 31, 
+                            'id_entreprise' => $request->entreprise, 
+                            'interlocuteur' => $interlocuteur->id,
+                            'id_utilisateur' => auth()->user()->id,
                                 
                         ]);
                     }
@@ -137,11 +137,11 @@ class ProspectionController extends Controller
                     $insert = Prospection::create([
                         
                         'date_prospection' => $request->date_prospect,
-                            'date_fin' => $date_fin, 
-                            'duree_jours' => $request->duree, 
-                            'id_entreprise' => $request->entreprise,  
-                            'interlocuteur' => $request->interlocuteur,
-                            'id_utilisateur' => auth()->user()->id,
+                        'date_fin' => $date_fin, 
+                        'duree_jours' => 31, 
+                        'id_entreprise' => $request->entreprise,  
+                        'interlocuteur' => $request->interlocuteur,
+                        'id_utilisateur' => auth()->user()->id,
                             
                     ]);
 
@@ -314,7 +314,6 @@ class ProspectionController extends Controller
 
         return redirect('prospection')->with('success', 'Enregistrement effectué');
     }
-
     public function MyOwnProspection($id)
     {
         $get = DB::table('prospections')

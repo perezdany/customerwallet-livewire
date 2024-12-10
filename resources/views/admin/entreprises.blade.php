@@ -205,6 +205,16 @@
                                   </div>
 
                                   <div class="form-group">
+                                    <label >Chiffre d'affaire (FCFA):</label>
+                                    <input type="tex" id="ca" value="{{$edit->chiffre_affaire}}"  maxlength="18" class="form-control  input-lg" name="chiffre" placeholder="1000000">
+                                  </div>
+
+                                  <div class="form-group">
+                                    <label >Nombre d'employer:</label>
+                                    <input type="tex" id="ne" value="{{$edit->nb_employes}}" maxlength="18" class="form-control  input-lg" name="nb_emp" placeholder="5">
+                                  </div>
+
+                                  <div class="form-group">
                                       <label>Client Depuis le :</label>
                                       <input type="date" required class="form-control input-lg" value="{{$edit->client_depuis}}" name="depuis" />
                                   </div>
@@ -265,6 +275,15 @@
                             
                         </select>
                     </div>  
+                    <div class="form-group">
+                      <label >Chiffre d'affaire (FCFA):</label>
+                      <input type="tex" id="ca" maxlength="18" class="form-control  input-lg" name="chiffre" placeholder="1000000">
+                    </div>
+
+                    <div class="form-group">
+                      <label >Nombre d'employer:</label>
+                      <input type="tex" id="ne" maxlength="18" class="form-control  input-lg" name="nb_emp" placeholder="5">
+                    </div>
 
                     <div class="form-group">
                         <label>Client Depuis le :</label>

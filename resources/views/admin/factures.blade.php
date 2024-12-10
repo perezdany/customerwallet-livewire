@@ -168,7 +168,7 @@
                 </div>
                 
                 <!-- form start -->
-                <form role="form" method="post" action="add_facture">
+                <form role="form" method="post" action="add_facture" enctype="multipart/form-data">
                     @csrf
                     <div class="box-body">
                         <div class="form-group">
@@ -206,9 +206,9 @@
                            </select>
                         </div>
 
-                          <div class="form-group">
+                        <div class="form-group">
                             <label>Fichier de la facture(PDF)</label>
-                              <input type="file" class="form-control" name="file">
+                              <input type="file" class="form-control" name="file" required>
                         </div>
                     
                     </div>

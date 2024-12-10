@@ -42,7 +42,8 @@
                   <thead>
                   <tr>
                     <th>Nom</th>
-                    
+                    <th>Chiffre d'Affaire</th>
+                    <th>Nombre d'employés</th>
                     <th>Date d'ajout</th>
                     <th>Ajouté par</th>
                     
@@ -57,6 +58,13 @@
                             <input type="text" value="{{$all->id}}" style="display:none;" name="id_entreprise">
                             <button class="btn btn-default"> <b>{{$all->nom_entreprise}}</b></button>
                           </form>
+                        </td>
+
+                        <td>
+                            {{$all->chiffre_affaire}}
+                        </td>
+                        <td>
+                            {{$all->nb_employes}}  
                         </td>
 
                         <td>

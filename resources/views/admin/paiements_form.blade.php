@@ -115,10 +115,10 @@
                                 <label>PRESTATION DU :</label>
                                 <p><h3>@php echo date('d/m/Y',strtotime($retrive->date_prestation)) @endphp</h3></p>
                             </div>
-                            <div class="form-group">
+                            <!--<div class="form-group">
                                 <label>SERVICE :</label>
-                                <p><h3> {{$retrive->libele_service}} </h3></p>
-                            </div>
+                                <p><h3>  </h3></p>
+                            </div>-->
                              <div class="form-group">
                                 <label>TYPE DE PRESTATION :</label>
                                 <p><h3> {{$retrive->libele}}</h3> </p>
@@ -130,12 +130,12 @@
                             <div class="form-group">
                                 <label>MONTANT RESTANT DE LA FACTURE:</label>
                                 <!--CODE POUR DETECTER LES TOUS LES PAIEMENTS DE CETTE FACTURE ET RETOURNER LE RESTE-->
-                                <p><h3>
+                                <p>
                                         @php
                                              $rest  = $calculator->RetrunMontantRest($retrive->id, $retrive->montant_facture);
                                         @endphp
-                                        {{$rest}}
-                                    </h3>
+                                        <input type="text" class="form-control input-lg"  value="{{$rest}}"  id="lereste" disabled>
+                                    
                                 </p>
                             </div>
                             <div class="form-group">
@@ -145,7 +145,10 @@
 
                             <div class="form-group">
                                 <label>Entrer le montant du paiement</label>
-                                <input type="number" class="form-control input-lg" name="paiement" required>
+                                <input type="number" class="form-control input-lg" name="paiement" required id="mt" onkeyup="VerifRest()">
+                            </div>
+                            <div class="form-group" id="message">
+                                
                             </div>
 
                             <div class="form-group">
@@ -159,8 +162,38 @@
                         <!-- /.box-body -->
 
                         <div class="box-footer">
-                        <button type="submit" class="btn btn-primary">VALIDER</button>
+                        <button type="submit" class="btn btn-primary" id="bt" disabled="disabled">VALIDER</button>
                         </div>
+                        <script>
+                            function VerifRest() {
+                               
+                                    /* ce script permet de vérifier si le montant saisi est trop élevé et l'obliger a saisir un montant plus bas*/
+                                    var val = document.getElementById("lereste").value;
+                                    var val2 = document.getElementById("mt").value;
+
+                                    var button = document.getElementById("bt")
+
+                                    var diff = val - val2;
+                                    
+
+                                    if((diff < 0))
+                                    {  
+                                    
+                                        var theText = "<p style='color:red'>MONTANT SUPERIEUR AU RESTE !.</p>";
+                                        document.getElementById("message").innerHTML= theText;
+                                        button.setAttribute("disabled", "true");
+                                        
+                                    }
+                                    else
+                                    {
+                                       button.removeAttribute("disabled");
+                                       var theText = "<p style='color:red'></p>";
+                                        document.getElementById("message").innerHTML= theText;
+                                      
+                                    }
+                                
+                                }
+                        </script>
                     </form>
 
                 @endforeach

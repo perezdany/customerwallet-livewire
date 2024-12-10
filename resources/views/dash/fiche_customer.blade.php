@@ -190,13 +190,17 @@
                                 
                                     <tr>
                                         <th>Nom</th>
-                                    
+                                        <th>Ajouté le :</th>
                                         <th style="width: 40px">Aperçu</th>
                                     </tr>
                                     <!--LES FICHIERS ET LES FACTURES-->
                                     <tr>
                                         <td> <label>{{$contrats->path}}</label>  </td>
-                                        
+                                        <td>
+                                        @php 
+                                            echo "<b>".date('d/m/Y',strtotime($contrats->created_at))."</b> à <b>".date('H:i:s',strtotime($contrats->created_at))."</b>" ;
+                                        @endphp
+                                        </td>
                                         <td>
                                             
                                             <form action="view_contrat" method="post" enctype="multipart/form-data">
@@ -210,10 +214,7 @@
                                                         <button type="submit" class="btn btn-warning"><i class="fa fa-download"></i></button>
 
                                             
-                                            
                                                     </div>
-
-                                                    
 
                                                 </div>
                                             
@@ -236,15 +237,20 @@
                                 
                                     <tr>
                                         <th>Nom</th>
-                                    
+                                        
+                                        <th>Ajouté le :</th>
                                         <th style="width: 40px">Aperçu</th>
                                     </tr>
                                     <!--LES FICHIERS ET LES FACTURES-->
                                     <tr>
                                         <td> <label>{{$contrats->proforma_file}}</label>  </td>
-                                        
+
                                         <td>
-                                            
+                                            @php 
+                                                echo "<b>".date('d/m/Y',strtotime($contrats->created_at))."</b> à <b>".date('H:i:s',strtotime($contrats->created_at))."</b>" ;
+                                            @endphp
+                                        </td>
+                                        <td>
                                             <form action="view_contrat_proforma" method="post" enctype="multipart/form-data">
 
                                                 @csrf
@@ -259,7 +265,6 @@
                                                 </div>
                                             
                                             </form>
-
                                         </td>
                                     </tr>
                                 
@@ -484,13 +489,17 @@
                                
                                 <tr>
                                     <th>Nom</th>
-                                    
+                                    <th>Ajouté le :</th>
                                     <th style="width: 40px">Aperçu</th>
                                 </tr>
                                 <!--LES FICHIERS ET LES FACTURES-->
                                 <tr>
                                     <td>  <span class="text">{{$prospections->facture_path}}</span> </td>
-                                    
+                                     <td>
+                                        @php 
+                                            echo "<b>".date('d/m/Y',strtotime($prospections->created_at))."</b> à <b>".date('H:i:s',strtotime($se_get->created_at))."</b>" ;
+                                        @endphp
+                                    </td>
                                     <td>
                                         
                                         <form action="download_facture_proforma" method="post" enctype="multipart/form-data">
@@ -527,7 +536,11 @@
                                 @foreach($select as $select)
                                     <tr>
                                         <td>  <span class="text">{{$select->libele}}</span> </td>
-                                       
+                                        <td>
+                                            @php 
+                                                echo "<b>".date('d/m/Y',strtotime($prospections->created_at))."</b> à <b>".date('H:i:s',strtotime($se_get->created_at))."</b>" ;
+                                            @endphp
+                                        </td>
                                         <td>
                                             
                                             <form action="download_facture_proforma" method="post" enctype="multipart/form-data">

@@ -44,7 +44,8 @@
                   <thead>
                   <tr>
                     <th>Nom</th>
-                    
+                    <th>Chiffre d'Affaire</th>
+                    <th>Nombre d'employés</th>
                     <th>Client depuis le:</th>
                     
                   </tr>
@@ -60,7 +61,12 @@
                             </form>
                              
                           </td>
-                          
+                          <td>
+                           {{$all->chiffre_affaire}}
+                          </td>
+                          <td>
+                            {{$all->nb_employes}}  
+                          </td>
                           
                           <td>
                             @php 

@@ -56,9 +56,9 @@
         <!-- CODE POUR LES RESTRICTIONS-->
 
         <div class="row">
-            <div class="col-md-3"></div>
+            <div class="col-md-2"></div>
 
-            <div class="col-md-6">
+            <div class="col-md-8">
                 <div class="box box-aeneas">
                 <div class="box-header with-border">
                     <h3 class="box-title"><b>ENREGISTRER UN CONTRAT</b></h3><br>(*) <b>champ obligatoire
@@ -229,7 +229,7 @@
                 <!-- /.box -->
             </div>
 
-            <div class="col-md-3"></div>
+            <div class="col-md-2"></div>
         </div>
        
 

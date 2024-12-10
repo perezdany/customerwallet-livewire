@@ -94,11 +94,11 @@ class FactureController extends Controller
         //IL FAUT SUPPRIMER L'ANCIEN FICHIER DANS LE DISQUE DUR
         $fichier = $request->file;
         // dd($fichier->getClientOriginalName());
-
+        //dd($fichier);
         if($fichier != null)
         {
             //VERFIFIER LE FORMAT 
-            $extension = pathinfo($fichier, PATHINFO_EXTENSION);
+            $extension = pathinfo($fichier->getClientOriginalName(), PATHINFO_EXTENSION);
             
             //dd($extension);
             if($extension != "pdf")
@@ -243,7 +243,7 @@ class FactureController extends Controller
         }
         else
         {
-        
+            return redirect('facture')->with('error', 'Vous devez choisir un fichier');
         }
 
         return redirect('facture')->with('success', 'Fichier enregistré');

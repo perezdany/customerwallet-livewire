@@ -199,7 +199,7 @@
                                                 <td>  <span class="text"><b>{{$se_get->libele_service}}</b></span></td>
                                             
                                                 <td>
-                                                        @php 
+                                                    @php 
                         
                                                         echo "<b>".date('d/m/Y',strtotime($se_get->created_at))."</b> à <b>".date('H:i:s',strtotime($se_get->created_at))."</b>" ;
                                                 
@@ -284,12 +284,18 @@
                                
                                 <tr>
                                     <th>Nom</th>
+                                    <th>Ajouté le:</th>
                                     <th>Supprimer</th>
                                     <th style="width: 40px">Aperçu</th>
                                 </tr>
                                 <!--LES FICHIERS ET LES FACTURES-->
                                 <tr>
                                     <td>  <span class="text">{{$prospections->facture_path}}</span> </td>
+                                    <td>
+                                        @php 
+                                            echo "<b>".date('d/m/Y',strtotime($prospections->created_at))."</b> à <b>".date('H:i:s',strtotime($se_get->created_at))."</b>" ;
+                                        @endphp
+                                    </td>
                                     <td>
                                         <form action="edit_prospect_form" method="post">
                                             @csrf
@@ -405,13 +411,18 @@
                                 <tr>
                             
                                     <th>Nom</th>
+                                    <th>Ajouté le :</th>
                                     <th>Supprimer</th>
                                     <th style="width: 40px">Aperçu</th>
                                 </tr>
                                
                                 <tr>
                                     <td>  <span class="text">{{$prospections->path_cr}}</span> </td>
-                                
+                                    <td>
+                                        @php 
+                                            echo "<b>".date('d/m/Y',strtotime($prospections->created_at))."</b> à <b>".date('H:i:s',strtotime($prospections->created_at))."</b>" ;
+                                        @endphp
+                                    </td>
                                      <td>
                                         <form action="edit_prospect_form" method="post">
                                             @csrf
@@ -530,6 +541,7 @@
                                 <tr>
                             
                                     <th>Nom</th>
+                                    <th>Ajouté le :</th>
                                     <th>Supprimer</th>
                                     <th style="width: 40px">Aperçu</th>
                                 </tr>
@@ -537,6 +549,11 @@
                                     <!--LES FICHIERS ET LES FACTURES-->
                                 <tr>
                                     <td>  <span class="text">{{$docs->libele}}</span> </td>
+                                    <td>
+                                        @php 
+                                            echo "<b>".date('d/m/Y',strtotime($docs->created_at))."</b> à <b>".date('H:i:s',strtotime($docs->created_at))."</b>" ;
+                                        @endphp
+                                    </td>
                                     <td>
                                         <form action="delete_doc" method="post" enctype="multipart/form-data">
 
