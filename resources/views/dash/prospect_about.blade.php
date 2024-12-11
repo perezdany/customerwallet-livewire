@@ -50,7 +50,17 @@
                <a href="form_add_prospection"><button class="btn btn-primary"> <b>AJOUTER UNE PROSPECTION</b></button></a>
             </div>
 
-             <div class="col-md-3"></div>
+             <div class="col-md-3"><a href="form_add_prospection">
+                @if(isset($id_entreprise))
+
+                  <form method="post" action="go_print_rapport">
+                            @csrf
+                            <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
+                            <button class="btn btn-success"> <b>RAPPORT FICHE</b></button></a>
+                    </form>
+                @endif
+               
+             </div>
         </div>
         <div class="col-md-2"></div>
     </div><br>
@@ -63,8 +73,6 @@
 
             $prospections = $prospectioncontroller->GetProspectionByIdEntr($id_entreprise);
 
-            
-            
         @endphp
 
         
@@ -144,6 +152,24 @@
                                 
                                     <div class="col-sm-6">
                                      <input type="text" value="{{$prospections->adresse}}" class="form-control" disabled>
+                                    </div>
+                                   
+                                </div>
+                                 <div class="form-group">
+                                    <label class="col-sm-6 control-label"> <b>CHIFFRE D'AFFAIRE :</b></label>
+                                  
+                                
+                                    <div class="col-sm-6">
+                                     <input type="text" value="{{$prospections->chiffre_affaire}}" class="form-control" disabled>
+                                    </div>
+                                   
+                                </div>
+                                 <div class="form-group">
+                                    <label class="col-sm-6 control-label"> <b>NOMBRE D'EMPLOYES :</b></label>
+                                  
+                                
+                                    <div class="col-sm-6">
+                                     <input type="text" value="{{$prospections->nb_employes}}" class="form-control" disabled>
                                     </div>
                                    
                                 </div>
@@ -290,7 +316,10 @@
                                 </tr>
                                 <!--LES FICHIERS ET LES FACTURES-->
                                 <tr>
-                                    <td>  <span class="text">{{$prospections->facture_path}}</span> </td>
+                                    @if($prospections->facture_path == null)
+                                    
+                                    @else
+                                        <td>  <span class="text">{{$prospections->facture_path}}</span> </td>
                                     <td>
                                         @php 
                                             echo "<b>".date('d/m/Y',strtotime($prospections->created_at))."</b> à <b>".date('H:i:s',strtotime($se_get->created_at))."</b>" ;
@@ -321,6 +350,8 @@
                                         </form>
 
                                     </td>
+                                    @endif
+                                    
                                 </tr>
                             
                             </table>
@@ -417,36 +448,42 @@
                                 </tr>
                                
                                 <tr>
-                                    <td>  <span class="text">{{$prospections->path_cr}}</span> </td>
-                                    <td>
-                                        @php 
-                                            echo "<b>".date('d/m/Y',strtotime($prospections->created_at))."</b> à <b>".date('H:i:s',strtotime($prospections->created_at))."</b>" ;
-                                        @endphp
-                                    </td>
-                                     <td>
-                                        <form action="edit_prospect_form" method="post">
-                                            @csrf
-                                            <input type="text" value={{$prospections->id}} style="display:none;" name="id_prospection">
-                                            <button type="submit" class="btn btn-success"><i class="fa fa-edit">Aller a la page prospections pour modifier</i></button>
-                                        </form>
-                                    <td>
-                                    <td>    
-                                        <form action="download_prospect" method="post" enctype="multipart/form-data">
-
-                                            @csrf
-                                            <div class="box-body">
-                                                <div class="form-group col-sm-6">
-                                                    <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
-                                                    <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
-                                                    <input type="text" class="form-control" name="file" value="{{$prospections->path_cr}}" style="display:none;">
-                                                    <button type="submit" class="btn btn-warning"><i class="fa fa-download"></i></button>
-                                                </div>
-
-                                            </div>
+                                    @if($prospections->path_cr == null)
                                         
-                                        </form>
-
-                                    </td>
+                                    @else
+                                    
+                                        <td>  <span class="text">{{$prospections->path_cr}}</span> </td>
+                                        <td>
+                                            @php 
+                                                echo "<b>".date('d/m/Y',strtotime($prospections->created_at))."</b> à <b>".date('H:i:s',strtotime($prospections->created_at))."</b>" ;
+                                            @endphp
+                                        </td>
+                                         <td>
+                                            <form action="edit_prospect_form" method="post">
+                                                @csrf
+                                                <input type="text" value={{$prospections->id}} style="display:none;" name="id_prospection">
+                                                <button type="submit" class="btn btn-success"><i class="fa fa-edit">Aller a la page prospections pour modifier</i></button>
+                                            </form>
+                                        <td>
+                                        <td>    
+                                            <form action="download_prospect" method="post" enctype="multipart/form-data">
+    
+                                                @csrf
+                                                <div class="box-body">
+                                                    <div class="form-group col-sm-6">
+                                                        <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
+                                                        <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
+                                                        <input type="text" class="form-control" name="file" value="{{$prospections->path_cr}}" style="display:none;">
+                                                        <button type="submit" class="btn btn-warning"><i class="fa fa-download"></i></button>
+                                                    </div>
+    
+                                                </div>
+                                            
+                                            </form>
+    
+                                        </td>
+                                    @endif
+                                   
                                 </tr>
                             
                             </table>
@@ -699,7 +736,7 @@
                                     <input required type="text" class="form-control input-lg"  id="grise4" maxlength="60" name="fonction" onkeyup="this.value=this.value.toUpperCase()">
                             </div>
 
-                            <button class="btn btn-primary" >Ajouter</button>  
+                            <button class="btn btn-primary" >Valider</button>  
                         </form>
                    </div>
                 </div>

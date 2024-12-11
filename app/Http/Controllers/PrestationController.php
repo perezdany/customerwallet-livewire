@@ -67,7 +67,25 @@ class PrestationController extends Controller
 
         //IMPLEMENTATION DE LA RELATION PLUSIEURS A PLUSIEURS
         //Etant donné qu'on peut sélectionner plusieurs services lors de l'enregistrement de la prospection
-        $insert->services()->attach($request->service);//Il sera lié au IDS des différents ser1vices services selectionnés
+        //$insert->services()->attach($request->service);//Il sera lié au IDS des différents ser1vices services selectionnés
+
+        if($request->service == false)//L'utilisateur peut ne pas remplir
+        {
+           
+        }
+        else
+        {
+            for($a = 0; $a < count($request->service); $a++)
+            {
+              
+                $Insert = Prestation_service::create([
+        
+                    'service_id' =>  $request->service[$a],
+                    'prestation_id' => $request->id_prestation,
+
+                ]);
+            }
+        }
 
         return back()->with('success', 'Enregistrement effectué');
     }

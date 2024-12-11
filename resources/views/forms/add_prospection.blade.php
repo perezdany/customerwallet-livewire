@@ -135,12 +135,17 @@
 
                                 <div class="form-group">
                                         <label >Chiffre d'affaire (FCFA):</label>
-                                        <input type="tex" id="ca" disabled="disabled" maxlength="18" class="form-control  input-lg" name="chiffre" placeholder="1000000">
+                                        <input type="text" id="ca" disabled="disabled" maxlength="18" class="form-control  input-lg" name="chiffre" placeholder="1000000">
                                 </div>
 
                                 <div class="form-group">
                                         <label >Nombre d'employés:</label>
-                                        <input type="tex" id="ne" disabled="disabled" maxlength="18" class="form-control  input-lg" name="nb_emp" placeholder="5">
+                                        <input type="text" id="ne" disabled="disabled" maxlength="18" class="form-control  input-lg" name="nb_emp" placeholder="5">
+                                </div>
+
+                                <div class="form-group">
+                                        <label >Adresse (géographique):</label>
+                                        <input type="text" id="adresse" disabled="disabled" maxlength="60" class="form-control  input-lg" name="adresse" placeholder="COCODY DANGA" onkeyup="this.value=this.value.toUpperCase()">
                                 </div>
 
                                 <script>
@@ -153,11 +158,13 @@
                                         document.getElementById("ent").removeAttribute("disabled");
                                         document.getElementById("ca").removeAttribute("disabled");
                                         document.getElementById("ne").removeAttribute("disabled");
+                                        document.getElementById("adresse").removeAttribute("disabled");
                                     }
                                     else{
                                         document.getElementById("ent").setAttribute("disabled", "disabled");
                                         document.getElementById("ca").setAttribute("disabled", "disabled");
                                         document.getElementById("ne").setAttribute("disabled", "disabled");
+                                        document.getElementById("adresse").setAttribute("disabled", "disabled");
                                     }
                                 
                                 }
@@ -259,7 +266,7 @@
                             <div class="form-group">
                                     <label>Compte Rendu</label>
                                     
-                                    <input type="file" class="form-control" name="file" required>
+                                    <input type="file" class="form-control" name="file" >
                                 </div>
                                     
                             </div>

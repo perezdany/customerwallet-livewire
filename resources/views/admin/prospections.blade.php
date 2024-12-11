@@ -68,10 +68,16 @@
                             @foreach($all as $all)
                                 <tr>
                                     <td>@php echo date('d/m/Y',strtotime($all->date_prospection)) @endphp</td>
-                                    <td>{{$all->nom_entreprise}}</td>
+                                    <td>
+                                        <form method="post" action="display_about_prospect">
+                                            @csrf
+                                            <input type="text" value="{{$all->id_entreprise}}" style="display:none;" name="id_entreprise">
+                                            <button class="btn btn-default"> <b>{{$all->nom_entreprise}}</b></button>
+                                        </form>
+                                    </td>
                                     <td>
                                     @php
-                                        //On va écrire un code pour detecter tous les services offerts
+                                        //On va écrire un code pour detecter tous les services offerts <a href="delete/{{$se_get->id}}"><button class="btn btn-danger"><i class="fa fa-times"></i></button></a>
                                         $se = DB::table('prospection_services')
                                         ->join('prospections', 'prospection_services.prospection_id', '=', 'prospections.id')
                                         ->join('services', 'prospection_services.service_id', '=', 'services.id') 
@@ -80,7 +86,7 @@
                                     @endphp
                                     <ul>
                                     @foreach($se as $se_get)
-                                        <li>{{$se_get->libele_service}}<a href="delete/{{$se_get->id}}"><button class="btn btn-danger"><i class="fa fa-times"></i></button></a></li>
+                                        <li>{{$se_get->libele_service}}</li>
                                     @endforeach
                                     </ul>
                                     </td>

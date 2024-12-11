@@ -58,7 +58,7 @@ class DocController extends Controller
         if($fichier != null)
         {
             //VERFIFIER LE FORMAT 
-            $extension = pathinfo($fichier->getFilename(), PATHINFO_EXTENSION);
+            $extension = pathinfo($fichier->getClientOriginalName(), PATHINFO_EXTENSION);
 
             if($extension != "pdf")
             {

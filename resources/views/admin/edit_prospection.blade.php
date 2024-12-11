@@ -98,7 +98,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputFile">Durée de la prospection (Jr)</label>
-                                    <input type="number" max="31" min="1" class="form-control input-lg" name="duree" value="{{$retrive->duree_jours}}">
+                                    <input type="number" max="365" min="1" class="form-control input-lg" name="duree" value="{{$retrive->duree_jours}}">
                                 </div>
                                     <!--CALCULER LA DATE DE FIN DE LA PROSPECTION ET AJOUTER-->
                                 <div class="box-header">

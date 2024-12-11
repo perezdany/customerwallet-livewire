@@ -297,6 +297,13 @@ Route::middleware(['auth:web'])->group(function(){
         return view('dash/to_fiche_client');
     });
 
+    //IMPRIMER RAPPORT FICHE PROSPECT
+    Route::post('go_print_rapport', [EntrepriseController::class, 'GoRapport']);
+
+    //IMPRIMER FICHE CLIENT
+    Route::post('go_print_rapport_clt', [EntrepriseController::class, 'GoRapportClient']);
+
+
     //AFFICHER LA LISTE DE TOUS LES PROSPECTS
      Route::get('prospects', function(){
         return view('dash/prospects');

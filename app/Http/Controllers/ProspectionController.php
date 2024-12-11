@@ -683,7 +683,8 @@ class ProspectionController extends Controller
       
         
         ->where('entreprises.id', '=', $id)
-        ->get(['prospections.*', 'entreprises.nom_entreprise', 'entreprises.adresse', 'interlocuteurs.titre', 
+        ->get(['prospections.*', 'entreprises.nom_entreprise', 'entreprises.adresse', 
+        'entreprises.chiffre_affaire', 'entreprises.nb_employes','interlocuteurs.titre', 
         'interlocuteurs.nom', 'interlocuteurs.tel', 'interlocuteurs.email', 
         'interlocuteurs.fonction', 'utilisateurs.nom_prenoms']);
       

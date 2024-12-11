@@ -1268,7 +1268,7 @@ class ContratController extends Controller
                             $file_name_prof = $fichier_proforma->getClientOriginalName();
                         
                                     
-                            $path = $request->file('file')->storeAs(
+                            $path = $request->file('file_proforma')->storeAs(
                                 'factures/proforma', $file_name_prof
                             );
         
@@ -1296,7 +1296,7 @@ class ContratController extends Controller
                             $file_name_prof = $fichier_proforma->getClientOriginalName();
                             
                                     
-                            $path = $request->file('file')->storeAs(
+                            $path = $request->file('file_proforma')->storeAs(
                                 'factures/proforma', $file_name_prof
                             );
         

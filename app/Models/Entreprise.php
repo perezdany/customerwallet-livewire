@@ -13,7 +13,7 @@ class Entreprise extends Model
     
     protected $fillable = [
        'nom_entreprise', 'client_depuis', 'id_statutentreprise', 
-       'chiffre_affaire', 'nb_employes',
+       'chiffre_affaire', 'nb_employes', 'adresse',
        'created_by', 'updated_at'
     ];
 }

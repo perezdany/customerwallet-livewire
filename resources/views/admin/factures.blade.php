@@ -121,7 +121,7 @@
                                 <td>
 
                                     @if($my_own->reglee == 0)
-                                        @if(auth()->user()->id_role != 2)
+                                        @if(auth()->user()->id_role == 2)
                                         <form action="paiement_form" method="post">
                                             @csrf
                                             <input type="text" value={{$my_own->id}} style="display:none;" name="id_facture">

@@ -230,6 +230,7 @@
               <li class="active"><a href="prospection"><i class="fa fa-circle-o"></i>Prospections</a></li>
               <li class="active"><a href="fiche"><i class="fa fa-circle-o"></i>Clients</a></li>
               <li><a href="contrat"><i class="fa fa-circle-o"></i>Contrats</a></li>
+              <li class="active"><a href="facture"><i class="fa fa-circle-o"></i>Factures</a></li>
 
             @endif
 

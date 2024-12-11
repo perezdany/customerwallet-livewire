@@ -51,7 +51,17 @@
                <a href="form_add_contrat"><button class="btn btn-primary"> <b>AJOUTER UN CONTRAT</b></button></a>
             </div>
 
-             <div class="col-md-3"></div>
+            <div class="col-md-3"><a href="form_add_prospection">
+                @if(isset($id_entreprise))
+
+                  <form method="post" action="go_print_rapport_clt">
+                            @csrf
+                            <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
+                            <button class="btn btn-success"> <b>RAPPORT FICHE</b></button></a>
+                    </form>
+                @endif
+               
+             </div>
         </div>
         <div class="col-md-2"></div>
     </div><br>
@@ -195,7 +205,10 @@
                                     </tr>
                                     <!--LES FICHIERS ET LES FACTURES-->
                                     <tr>
-                                        <td> <label>{{$contrats->path}}</label>  </td>
+                                        @if($contrats->path == null)
+
+                                        @else
+                                                 <td> <label>{{$contrats->path}}</label>  </td>
                                         <td>
                                         @php 
                                             echo "<b>".date('d/m/Y',strtotime($contrats->created_at))."</b> à <b>".date('H:i:s',strtotime($contrats->created_at))."</b>" ;
@@ -221,6 +234,8 @@
                                             </form>
 
                                         </td>
+                                        @endif
+                                       
                                     </tr>
                                 
                                 </table>

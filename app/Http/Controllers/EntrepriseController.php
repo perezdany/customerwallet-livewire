@@ -39,6 +39,7 @@ class EntrepriseController extends Controller
             'nom_entreprise'=> $request->entreprise_name,
             'chiffre_affaire' => $request->chiffre, 
             'nb_employes' => $request->nb_emp,
+            'adresse' => $request->adresse,
             'id_statutentreprise' => 1,
              'created_by' => auth()->user()->id, 
         ]);
@@ -180,6 +181,27 @@ class EntrepriseController extends Controller
         );*/
 
         return view('dash/prospect_about',
+            [
+                'id_entreprise' => $request->id_entreprise,
+            ]
+        );
+    }
+    
+    //IMPRIMER LE RAPPORT 
+    public function GoRapport(Request $request)
+    {
+        
+        return view('dash/print_fiche',
+            [
+                'id_entreprise' => $request->id_entreprise,
+            ]
+        );
+    }
+
+    public function GoRapportClient(Request $request)
+    {
+        
+        return view('dash/print_fiche_customer',
             [
                 'id_entreprise' => $request->id_entreprise,
             ]
