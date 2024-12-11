@@ -37,6 +37,15 @@ class FactureController extends Controller
         );
     }
 
+    public function FactureByCustomer(Request $request)
+    {
+        return view('admin/factures',
+        [
+            'id_entreprise' => $request->id_entreprise,
+        ]
+        );
+    }
+
     public function GetById($id)
     {
         $get = DB::table('factures')
@@ -55,6 +64,27 @@ class FactureController extends Controller
        
         return $get;
     }
+
+    public function GetByIdEntreprise($id)
+    {
+        $get = DB::table('factures')
+            
+            ->join('prestations', 'factures.id_prestation', '=', 'prestations.id')
+            ->join('contrats', 'prestations.id_contrat', '=', 'contrats.id')
+            
+            ->join('typeprestations', 'prestations.id_type_prestation', '=', 'typeprestations.id')
+            
+            ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')       
+            ->where('entreprises.id', $id)
+            ->get(['factures.*', 'prestations.localisation', 'prestations.date_prestation', 'prestations.id_contrat',
+            'contrats.titre_contrat', 'contrats.date_solde', 
+            'contrats.montant', 'contrats.reste_a_payer',  
+             'typeprestations.libele',  'entreprises.nom_entreprise']);
+       
+        return $get;
+        //dd($get);
+    }
+
     public function GetAll()
     {
         $get = DB::table('factures')

@@ -186,7 +186,7 @@
                                 datasets: [{
                                     label: 'Pourcentage',
                                     data: @json($percent),
-                                    backgroundColor: ["#A55A5A", "#47C526", "#A9CCE3 ", "#BFC9CA", "#7E5109",
+                                    backgroundColor: ["#A55A5A", "#47C526", "#A9CCE3", "#BFC9CA", "#7E5109",
                                     "#D0D3D4", "#1D8348", "#A93226", "#F4D03F", "#1A5276",
                                     "#9B59B6", "#F6DDCC", "#979A9A", "#7E5109", "#1D8348", "#A93226", "#F4D03F", "#1A5276",
                                     "#9B59B6", "#F6DDCC", "#979A9A", "#7E5109",

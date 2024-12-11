@@ -22,18 +22,18 @@ class ContratController extends Controller
 {
     //Handle contrat
 
-    public function GetAll()
+    public function GetAll($id)
     {
         $get = DB::table('contrats')
         ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')
         ->join('utilisateurs', 'contrats.created_by', '=', 'utilisateurs.id')
         ->join('prestations', 'prestations.id_contrat', '=', 'contrats.id')
         ->join('typeprestations', 'prestations.id_type_prestation', '=', 'typeprestations.id')
-        
+        ->where('entreprises.id' , $id)
         ->get(['contrats.*', 'utilisateurs.nom_prenoms', 'entreprises.nom_entreprise', 
         'typeprestations.libele']);
 
-
+        
         return $get;
     }
 
@@ -283,6 +283,15 @@ class ContratController extends Controller
     public function GoFormContratProspect(Request $request)
     {
         return view('forms/add_contrat_fiche_prosp',
+            [
+                'id_entreprise' => $request->id_entreprise,
+            ]
+        );
+    }
+
+    public function GoContratByCustomer(Request $request)
+    {
+        return view('dash/contrats',
             [
                 'id_entreprise' => $request->id_entreprise,
             ]
@@ -1346,11 +1355,12 @@ class ContratController extends Controller
 
     public function GetContratByIdEntr($id)
     {
+       
         $get = Contrat::where('contrats.id_entreprise', $id)
-       ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')
-       ->join('utilisateurs', 'contrats.created_by', '=', 'utilisateurs.id')
+        ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')
+        ->join('utilisateurs', 'contrats.created_by', '=', 'utilisateurs.id')
         ->get(['contrats.*', 'utilisateurs.nom_prenoms', 'entreprises.nom_entreprise',]);
-        //dd($get);
+       
         return $get;
     
     }

@@ -23,7 +23,6 @@
      $servicecontroller = new ServiceController();
     $my_own =  $contratcontroller->MyOwnContrat(auth()->user()->id);
 
-    $all = $contratcontroller->RetriveAll();
 @endphp
 
 @section('content')
@@ -66,6 +65,14 @@
                   </tr>
                   </thead>
                   <tbody>
+                         @php
+            
+                            if(isset($id_entreprise))
+                            {
+                                $all = $contratcontroller->GetAll($id_entreprise);
+                            }
+                            
+                        @endphp
                       @foreach($all as $all)
                         <tr>
                           <td>{{$all->titre_contrat}}</td>

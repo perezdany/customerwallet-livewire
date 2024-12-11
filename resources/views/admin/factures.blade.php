@@ -18,9 +18,11 @@
 
 
   //LES DIFFERENTES REQUETES EN FONCTION DU DEPARTEMENT
-  $my_own = $prestationcontroller->MyOwnPrestation(auth()->user()->id);
+  //$my_own = $prestationcontroller->MyOwnPrestation(auth()->user()->id);
 
   $all = $prestationcontroller-> GetAll();
+
+
 @endphp
 
 @section('content')
@@ -39,9 +41,7 @@
             </div>
         @endif
         <div class="col-md-12">
-            @php
-                $my_own = $facturecontroller->GetAll();
-            @endphp
+          
 
             <div class="box">
                 <div class="box-header">
@@ -68,6 +68,14 @@
                     </tr>
                     </thead>
                     <tbody>
+                        @php
+            
+                            if(isset($id_entreprise))
+                            {
+                                $my_own = $facturecontroller->GetByIdEntreprise($id_entreprise);
+                            }
+                            
+                        @endphp
                         @foreach($my_own as $my_own)
                             <tr>
                             <td>{{$my_own->numero_facture}}</td>
@@ -140,7 +148,8 @@
                                     <form action="edit_facture_form" method="post">
                                         @csrf
                                         <input type="text" value={{$my_own->id}} style="display:none;" name="id_facture">
-                                        <button  onmouseover="togglePopup();" onmouseout="togglePopup();"  type="submit" class="btn btn-primary"><i class="fa fa-edit"></i></button>
+                                        <input type="text" value={{$id_entreprise}} style="display:none;" name="id_entreprise">
+                                        <button  type="submit" class="btn btn-primary"><i class="fa fa-edit"></i></button>
                                     </form>
                                 </td>
                             @endif

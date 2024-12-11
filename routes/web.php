@@ -87,8 +87,11 @@ Route::middleware(['auth:web'])->group(function(){
 
     //CONTRATS
     Route::get('contrat', function () {
-        return view('dash/contrats');
+        return view('dash/ccontrats');
     });
+
+    //AFFICHER LES CONTRATS D'UN CLIENT 
+    Route::post('display_contrat_customer', [ContratController::class, 'GoContratByCustomer']);
 
     //AJOUTER LE FICHIER SCANNE DU CONTRAT
     Route::post('upload', [ContratController::class, 'UploadContrat']);
@@ -398,9 +401,18 @@ Route::middleware(['auth:web'])->group(function(){
     //FACTURE
    
     //AFFICHER TOUTES LES FACTURES
-    Route::get('facture', function(){
+    /*Route::get('facture', function(){
         return view('admin/factures');
+    });*/
+
+     //AFFICHER TOUTES LES FACTURES
+     Route::get('facture', function(){
+        return view('admin/cfactures');
     });
+
+    //AFFICHER LES FACTURES D'UN CLIENT'
+    Route::post('display_facture_customer', [FactureController::class, 'FactureByCustomer']);
+
 
     //AFFICHER LES FACTURES DE LA PRESTATION
     Route::post('display_facture', [FactureController::class, 'FactureByPrestation']);
