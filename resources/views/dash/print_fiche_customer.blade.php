@@ -150,48 +150,40 @@
                     @endif
                     @foreach($contrats as $contrats)
                         <!--Contrats-->
-
-                        <form class="form-horizontal">
-                                
-                            <div class="box-body">
-                                <div class="form-group">
-                                    <label class="col-sm-6 control-label"><b>TITRE DU CONTRAT :</b></label>
-                                
-                                    <div class="col-sm-6">
-                                    <input type="text" class="form-control" disabled value="{{$contrats->titre_contrat}}">
-                                    </div>
-                                
-                                </div>
-                                <div class="form-group">
-                                <label class="col-sm-6 control-label"> <b>DEBUT DU CONTRAT :</b></label>
-                                
-                                
-                                    <div class="col-sm-6">
-                                    <input type="text" value="@php echo date('d/m/Y', strtotime($contrats->debut_contrat)) @endphp" class="form-control" disabled>
-                                    </div>
-                                
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-6 control-label"><b>FIN DU CONTRAT :</b></label>
-                                
-                                    <div class="col-sm-6">
-                                    <input class="form-control" disabled type="text" value="@php echo date('d/m/Y', strtotime($contrats->fin_contrat)) @endphp" >
-                                    </div>
+                        <div class="no-padding">
+                            <table class="table table-hover box-body">
                             
-                                </div>
-
-                                    <div class="form-group">
-                                    <label class="col-sm-6 control-label"><b>MONTANT :</b></label>
+                                <tr>
+                                    <th>Titre de contrat</th>
+                                    <th>Début du contrat</th>
+                                    <th>Fin du contrat</th>
+                                    <th>Montant</th>	
+                                 
+                                </tr>
+                                <!--LES FICHIERS ET LES FACTURES-->
+                                <tr>
+                                    <td> {{$contrats->titre_contrat}}  </td>
+                                    <td>
+                                        @php 
+                                            echo date('d/m/Y',strtotime($contrats->debut_contrat));
+                                        @endphp
+                                        </td>
+                                    <td>
+                                        @php 
+                                        echo date('d/m/Y',strtotime($contrats->fin_contrat)) ;
+                                        @endphp
+                                    </td>
+                                    <td>
+                                        @php 
+                                        echo date('d/m/Y',strtotime($contrats->montant)) ;
+                                        @endphp
+                                    </td>
                                 
-                                    <div class="col-sm-6">
-                                    <input class="form-control" disabled type="text" value="{{$contrats->montant}}" >
-                                    </div>
+                                  
+                                </tr>
                             
-                                </div>
-                            
-                            </div>
-               
-                        </form>
+                            </table>
+                        </div>
 
                     @endforeach
                     <div class="box-header">

@@ -1,7 +1,7 @@
 @extends('layouts/base')
 
 @php
-    
+
     use App\Http\Controllers\EntrepriseController;
 
     use App\Http\Controllers\StatutEntrepriseController;
@@ -14,35 +14,36 @@
 
     $payscontroller = new PaysController();
 
-    $all = $entreprisecontroller->GetAll();
-
-    $statut = $statutentreprisecontroller->GetAll();
-
-   
-    
+    $all = $entreprisecontroller->GetInactifs();
 @endphp
 
 @section('content')
+      
       <div class="row">
-          @if(session('success'))
+         @if(session('success'))
             <div class="col-md-12 box-header">
               <p class="bg-success" style="font-size:13px;">{{session('success')}}</p>
             </div>
           @endif
-        
+            @if(session('error'))
+            <div class="col-md-12 box-header">
+              <p class="bg-warning" style="font-size:13px;">{{session('error')}}</p>
+            </div>
+          @endif
+
             <div class="col-md-6">
               <div class="box">
                 <div class="box-header">
-                  <h3 class="box-title">Tableaux des Prospects et des clients</h3>
+                  <h3 class="box-title">Clients inactifs</h3>
                 </div>
                 <!-- /.box-header -->
-                <div class="box-body">
+                 <div class="box-body">
                   <table id="example1" class="table table-bordered table-striped table-hover">
                   <thead>
                   <tr>
                     <th>Nom</th>
                     <th>Adresse</th>
-                    <th>Client depuis le:</th>
+                    
                     <th>Interlocuteurs: </th>
                     <th>Action</th>
                   </tr>
@@ -50,18 +51,15 @@
                   <tbody>
                       @foreach($all as $all)
                         <tr>
-                          <td>{{$all->nom_entreprise}}</td>
+                          <td>
+                           <form method="post" action="display_fiche_customer">
+                                @csrf
+                                <input type="text" value="{{$all->id}}" style="display:none;" name="id_entreprise">
+                                <button class="btn btn-default"> <b>{{$all->nom_entreprise}}</b></button>
+                            </form>
                           
                           <td>{{$all->adresse}}</td>
-                          <td>
-                            @php 
-                                if($all->client_depuis != NULL)
-                                {
-                                    echo date('d/m/Y',strtotime($all->client_depuis)) ;
-                                }
-                                
-                            @endphp
-                          </td>
+                          
                           <td>
                             
                             <form action="display_by_id_entreprise" method="post">
@@ -92,7 +90,8 @@
               </div>
               <!-- /.box -->
             </div>
-            <!-- /.col -->
+            <!-- /.col --> 
+
             <div class="col-md-6">
 
                   <!-- Afficher les interlocuteurs de l'entreprise sélectionnée -->
@@ -260,10 +259,9 @@
 
             </div>
       </div>
-      <!-- /.row -->
-      
+          <!-- /.row -->
     <div class="row"></div>
-		<div class="row">
+    <div class="row">
       
         <div class="col-md-6">
           <!-- general form elements -->
@@ -377,5 +375,5 @@
 		  
     </div>
     <!--/.col (right) -->
-
+      <!--/.col (right) -->
 @endsection

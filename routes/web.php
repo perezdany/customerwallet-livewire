@@ -18,6 +18,8 @@ use App\Http\Controllers\TypePrestationController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\FactureController;
 use App\Http\Controllers\DocController;
+use App\Http\Controllers\CibleController;
+use App\Http\Controllers\PropalController;
 
 
 /*
@@ -122,8 +124,6 @@ Route::middleware(['auth:web'])->group(function(){
     Route::post('add_prestation', [PrestationController::class, 'AddPrestation']);
 
     
-
-
 
     //AJOUTER UNE PROSECTION
     Route::post('add_prospection', [ProspectionController::class, 'AddProspection']);
@@ -295,6 +295,15 @@ Route::middleware(['auth:web'])->group(function(){
         return view('dash/customers');
     });
 
+    Route::get('actifs', function(){
+        return view('dash/list_actifs');
+    });
+
+    Route::get('inactifs', function(){
+        return view('dash/list_inactifs');
+    });
+
+
     //POUR DEBOUCHER SUR LA FICHE CLIENT
     Route::get('fiche', function(){
         return view('dash/to_fiche_client');
@@ -311,6 +320,23 @@ Route::middleware(['auth:web'])->group(function(){
      Route::get('prospects', function(){
         return view('dash/prospects');
     });
+
+
+    //AFFICHER LA LISTE DES ENTREPRISES CIBLES
+    Route::get('cibles', function(){
+        return view('dash/cibles');
+    });
+
+    //FORMULAIRE DE MODIF DE LA CIBLE
+    Route::post('edit_cible_form', [CibleController::class, 'EditCibleForm']);
+
+    //MODIFIER LA CIBLE
+    Route::post('edit_entreprise_cible', [CibleController::class, 'EditCible']);
+
+    //AJOUTER UNE CIBLEs
+    Route::post('add_entreprise_cible', [CibleController::class, 'AddCible']);
+
+
 
     //SUPPRIMER UNE ENTREPRISE
     Route::post('delete_entreprise', [EntrepriseController::class, 'DeleteEntreprise']);
@@ -475,6 +501,16 @@ Route::middleware(['auth:web'])->group(function(){
 
     //SUPPRMIMER DES DOCUMENTS (AUTRE DOCS)
     Route::post('delete_doc', [DocController::class, 'DeleteDoc']);
+
+    //AJOUTER UNE PROPOSITION
+    Route::post('add_doc_proposition', [PropalController::class, 'AddPropal']);
+
+    //VISUALISER LE FICHIER
+    Route::post('download_docs_propal', [PropalController::class, 'ViewDocPropal']);
+
+    //SUPPRIMER LE DOCUMENT DE PROPOSITION
+    Route::post('delete_doc_propal', [PropalController::class, 'DeleteDocPropal']);
+
 
 });
 

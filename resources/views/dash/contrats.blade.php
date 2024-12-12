@@ -168,14 +168,14 @@
                           <label>Entreprise:</label>
                           <select class="form-control input-lg" name="entreprise">
                             @php
-                                  $get = (new EntrepriseController())->GetAll();
+                                  $get = (new EntrepriseController())->GetById($id_entreprise);
                               @endphp
-                              <option value="0">--Choisir une entreprise--</option>
+                             
                               @foreach($get as $entreprise)
                                   <option value={{$entreprise->id}}>{{$entreprise->nom_entreprise}}</option>
                                   
                               @endforeach
-                              <option value="autre">Autre<option>
+                              
                           </select>
                             
                         </div>    

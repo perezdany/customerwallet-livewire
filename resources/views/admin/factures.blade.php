@@ -204,7 +204,7 @@
                             <label>Prestation/Contrat:</label>
                            <select class="form-control  input-lg" name="id_prestation" required>
                                 @php
-                                    $contrats = $prestationcontroller->getAllNoReglee();
+                                    $contrats = $prestationcontroller->getAllNoRegleeByIdEntr($id_entreprise);
                                     
                                 @endphp
                                <option value="0">--Sélectionnez la prestation--</option>

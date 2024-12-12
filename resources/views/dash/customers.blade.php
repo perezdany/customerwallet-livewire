@@ -53,7 +53,7 @@
                       @foreach($all as $all)
                         <tr>
                           <td>
-                            <form method="post" action="display_about_customer">
+                            <form method="post" action="display_fiche_customer">
                                 @csrf
                                 <input type="text" value="{{$all->id}}" style="display:none;" name="id_entreprise">
                                 <button class="btn btn-default"> <b>{{$all->nom_entreprise}}</b></button>

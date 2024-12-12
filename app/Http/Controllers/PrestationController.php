@@ -135,6 +135,22 @@ class PrestationController extends Controller
            return $get;
     }
 
+    public function getAllNoRegleebyIdEntr($id)
+    {
+        $get = DB::table('prestations')
+          ->join('typeprestations', 'prestations.id_type_prestation', '=', 'typeprestations.id')
+          ->join('contrats', 'prestations.id_contrat', '=', 'contrats.id')
+         
+          ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')
+          ->join('utilisateurs', 'prestations.created_by', '=', 'utilisateurs.id')
+          ->where('contrats.statut_solde', '=', 0)
+          ->get(['prestations.*', 'contrats.fin_contrat', 'contrats.reste_a_payer', 'contrats.titre_contrat',
+          
+          'typeprestations.libele', 'entreprises.nom_entreprise', 'utilisateurs.nom_prenoms',]);
+        
+           return $get;
+    }
+
     public function EditPrestForm(Request $request)
     {
         //dd($request->id_prestation);

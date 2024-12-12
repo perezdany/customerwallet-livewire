@@ -241,22 +241,35 @@
               <li class="active"><a href="prospection"><i class="fa fa-circle-o"></i>Prospections</a></li>
               <li class="active"><a href="fiche"><i class="fa fa-circle-o"></i>Clients</a></li>
               <li><a href="contrat"><i class="fa fa-circle-o"></i>Contrats</a></li>
-              <li class="active"><a href="facture"><i class="fa fa-circle-o"></i>Factures</a></li>
+              <!--<li class="active"><a href="facture"><i class="fa fa-circle-o"></i>Factures</a></li>-->
             @endif
 
             @if(auth()->user()->id_role == 5)
             
                 @if(auth()->user()->id_departement == 1)
+                  <li class="active"><a href="fiche"><i class="fa fa-circle-o"></i>Clients</a></li>
+                  <li class="active"><a href="prospection"><i class="fa fa-circle-o"></i>Prospections</a></li>
+                  <li ><a href="prestation"><i class="fa fa-circle-o"></i>Prestations</a></li>
+                   
+                @endif
+
+                 @if(auth()->user()->id_departement == 4)
+                  <li class="active"><a href="fiche"><i class="fa fa-circle-o"></i>Clients</a></li>
                  
-                    <li class="active"><a href="prospection"><i class="fa fa-circle-o"></i>Prospections</a></li>
-                    <li ><a href="prestation"><i class="fa fa-circle-o"></i>Prestations</a></li>
                    
                 @endif
 
                 @if(auth()->user()->id_departement == 5)
-                  
+                    <li class="active"><a href="fiche"><i class="fa fa-circle-o"></i>Clients</a></li>
                     <li><a href="contrat"><i class="fa fa-circle-o"></i>Contrats</a></li>
-                    
+                    <li class="active"><a href="facture"><i class="fa fa-circle-o"></i>Factures</a></li>
+                @endif
+
+                @if(auth()->user()->id_departement > 5)
+                    <li class="active"><a href="fiche"><i class="fa fa-circle-o"></i>Clients</a></li>
+                    <li class="active"><a href="prospection"><i class="fa fa-circle-o"></i>Prospections</a></li>
+                    <li ><a href="prestation"><i class="fa fa-circle-o"></i>Prestations</a></li>
+                  
                 @endif
             @endif
 
@@ -312,7 +325,7 @@
             </ul>
           </li>
         @else
-            @if(auth()->user()->id_role == 1 OR auth()->user()->id_role == 3)
+            @if(auth()->user()->id_role == 1 OR auth()->user()->id_role == 3 OR auth()->user()->id_role == 2)
               <li class="treeview">
                 <a href="#" style="background-color: #FFFFFF">
                   <i class="fa fa-pie-chart"></i>
@@ -328,9 +341,6 @@
                 </ul>
               </li>
             @endif
-
-          
-
         @endif
         
          <li class="">
@@ -372,39 +382,46 @@
 
         <!-- Small boxes (Stat box) -->
         <div class="row">
-          <div class="col-lg-4 col-xs-6">
+          <div class="col-lg-3 col-xs-6">
             <!-- small box -->
             <div class="small-box bg-aqua">
               <div class="inner">
-              @php
+                  @php
                     $count = $calculator->CountCustomer();
+                    $countactif = $calculator-> CountActif();
+                    $countinactif = $calculator-> CountInactif();
                     //dd($count);
                   @endphp
                 <h3><a href="customers" style="color:#fff;">{{$count}}</a></h3>
                 
-                <a href="customers" style="color:#fff;"><p>CLIENTS</p></a>
+                <a href="customers" style="color:#fff;"><p>CLIENTS</p></a><br>
+                <a href="actifs" style="color:#fff; size:13px;"><p>Actifs : {{$countactif}}  </p></a>  
+                <a href="inactifs" style="color:red;"><p>Inactifs : {{$countinactif}}</p></a>  
               </div>
               <div class="icon">
                 <i class="fa fa-shopping-cart"></i>
               </div>
               <a href="customers" class="small-box-footer">
-                More info <i class="fa fa-arrow-circle-right"></i>
+                Plus d'infos <i class="fa fa-arrow-circle-right"></i>
               </a>
             </div>
           </div>
         
           <!-- ./col -->
-          <div class="col-lg-4 col-xs-6">
+          <div class="col-lg-3 col-xs-6">
             <!-- small box -->
             <div class="small-box bg-yellow">
               
                 <div class="inner">
                   @php
-                    $count = $calculator->CountContratEncours();
+                    $count = $calculator->CountContrat();
                   @endphp
                   <h3><a href="contrat" style="color:#fff;"> {{$count}} </a></h3>
 
-                    <a href="contrat" style="color:#fff;"> <p>CONTRATS EN COURS</p>  </a>
+                    <a href="contrat" style="color:#fff;"> <p>CONTRATS</p>  </a><br>
+                    <p> </p>
+                      <p></p>  <br><br>
+                       <p></p>  
                 </div>
             
               <div class="icon">
@@ -416,7 +433,7 @@
             </div>
           </div>
           <!-- ./col -->
-          <div class="col-lg-4 col-xs-6">
+          <div class="col-lg-3 col-xs-6">
             <!-- small box -->
             <div class="small-box bg-red">
               <div class="inner">
@@ -424,7 +441,10 @@
                     $count = $calculator->CountProspect();
                   @endphp
                 <h3><a href="prospects" style="color:#fff">{{$count}}</a></h3>
-                      <a href="prospects" style="color:#fff"><p>PROSPECTS</p></a>
+                      <a href="prospects" style="color:#fff"><p>PROSPECTS</p></a><br>
+                    <p> </p>
+                      <p></p>  <br><br>
+                       <p></p>  
                     
               
               </div>
@@ -432,7 +452,32 @@
                 <i class="ion ion-pie-graph"></i>
               </div>
               <a href="prospects" class="small-box-footer">
-                Plus d'info<i class="fa fa-arrow-circle-right"></i>
+                Plus d'infos<i class="fa fa-arrow-circle-right"></i>
+              </a>
+            </div>
+          </div>
+          <!-- ./col -->
+
+          <div class="col-lg-3 col-xs-6">
+            <!-- small box -->
+            <div class="small-box bg-green">
+              <div class="inner">
+                  @php
+                    $count = $calculator->CountCible();
+                  @endphp
+                <h3><a href="cibles" style="color:#fff">{{$count}}</a></h3>
+                      <a href="cibles" style="color:#fff"><p>CIBLES</p></a><br>
+                    <p> </p>
+                      <p></p>  <br><br>
+                       <p></p>  
+                    
+              
+              </div>
+              <div class="icon">
+                <i class="ion-checkmark-circled"></i>
+              </div>
+              <a href="cibles" class="small-box-footer">
+                Plus d'infos<i class="fa fa-arrow-circle-right"></i>
               </a>
             </div>
           </div>
@@ -445,57 +490,197 @@
         @if(auth()->user()->id_role == 5 )
           @if(auth()->user()->id_departement == 1)
             <!-- Small boxes (Stat box) -->
-              <div class="row">
-                <div class="col-lg-4 col-xs-6">
-                  <!-- small box -->
-                  <div class="small-box bg-aqua">
-                    <div class="inner">
-                    @php
-                          $count = $calculator->CountCustomer();
-                          //dd($count);
-                        @endphp
-                      <h3> <a href="customers" style="color:#fff;">{{$count}}</a></h3>
-                      
-                      <a href="customers" style="color:#fff;"><p>CLIENTS</p></a>
-                    </div>
-                    <div class="icon">
-                      <i class="fa fa-shopping-cart"></i>
-                    </div>
-                    <a href="customers" class="small-box-footer">
-                      More info <i class="fa fa-arrow-circle-right"></i>
-                    </a>
-                  </div>
-                </div>
-              
-               
-                <!-- ./col -->
-                <div class="col-lg-4 col-xs-6">
-                  <!-- small box -->
-                  <div class="small-box bg-red">
-                    <div class="inner">
-                        @php
-                          $count = $calculator->CountProspect();
-                        @endphp
-                      <h3><a href="prospects" style="color:#fff">{{$count}}</a></h3>
-                      <a href="prospects" style="color:#fff"><p>PROSPECTS</p></a>
+            <div class="row">
+              <div class="col-lg-3 col-xs-6">
+                <!-- small box -->
+                <div class="small-box bg-aqua">
+                  <div class="inner">
+                  @php
+                        $count = $calculator->CountCustomer();
+                         $countactif = $calculator-> CountActif();
+                    $countinactif = $calculator-> CountInactif();
+                        //dd($count);
+                      @endphp
+                    <h3> <a href="customers" style="color:#fff;">{{$count}}</a></h3>
                     
-                    </div>
-                    <div class="icon">
-                      <i class="ion ion-pie-graph"></i>
-                    </div>
-                    <a href="prospects" class="small-box-footer">
-                      Plus d'info<i class="fa fa-arrow-circle-right"></i>
-                    </a>
+                    <a href="customers" style="color:#fff;"><p>CLIENTS</p></a><br>
+                <a href="actifs" style="color:#fff; size:13px;"><p>Actifs : {{$countactif}}  </p></a>  
+                <a href="inactifs" style="color:red;"><p>Inactifs : {{$countinactif}}</p></a>  
+                  
                   </div>
+                  <div class="icon">
+                    <i class="fa fa-shopping-cart"></i>
+                  </div>
+                  <a href="customers" class="small-box-footer">
+                    Plus d'infos <i class="fa fa-arrow-circle-right"></i>
+                  </a>
                 </div>
-                <!-- ./col -->
               </div>
+            
+              
+              <!-- ./col -->
+              <div class="col-lg-3 col-xs-6">
+                <!-- small box -->
+                <div class="small-box bg-red">
+                  <div class="inner">
+                      @php
+                        $count = $calculator->CountProspect();
+                      @endphp
+                    <h3><a href="prospects" style="color:#fff">{{$count}}</a></h3>
+                    <a href="prospects" style="color:#fff"><p>PROSPECTS</p></a><br>
+                        <p> </p>
+                          <p></p>  <br><br>
+                          <p></p>  
+                  
+                  </div>
+                  <div class="icon">
+                    <i class="ion ion-pie-graph"></i>
+                  </div>
+                  <a href="prospects" class="small-box-footer">
+                    Plus d'infos<i class="fa fa-arrow-circle-right"></i>
+                  </a>
+                </div>
+              </div>
+              <!-- ./col -->
+
+              <div class="col-lg-3 col-xs-6">
+                <!-- small box -->
+                <div class="small-box bg-green">
+                  <div class="inner">
+                      @php
+                        $count = $calculator->CountCible();
+                      @endphp
+                    <h3><a href="cibles" style="color:#fff">{{$count}}</a></h3>
+                          <a href="cibles" style="color:#fff"><p>CIBLES</p></a><br>
+                        <p> </p>
+                          <p></p>  <br><br>
+                          <p></p>  
+                        
+                  
+                  </div>
+                  <div class="icon">
+                    <i class="ion-checkmark-circled"></i>
+                  </div>
+                  <a href="cibles" class="small-box-footer">
+                    Plus d'infos<i class="fa fa-arrow-circle-right"></i>
+                  </a>
+                </div>
+              </div>
+            <!-- ./col -->
+            </div>
+            <!-- /.row -->
+          @endif
+
+          @if(auth()->user()->id_departement == 4)
+            <!-- Small boxes (Stat box) -->
+            <div class="row">
+              <div class="col-lg-3 col-xs-6">
+                <!-- small box -->
+                <div class="small-box bg-aqua">
+                  <div class="inner">
+                  @php
+                        $count = $calculator->CountCustomer();
+                         $countactif = $calculator-> CountActif();
+                        $countinactif = $calculator-> CountInactif();
+                        //dd($count);
+                      @endphp
+                    <h3> <a href="customers" style="color:#fff;">{{$count}}</a></h3>
+                    
+                    <a href="customers" style="color:#fff;"><p>CLIENTS</p></a><br>
+                <a href="actifs" style="color:#fff; size:13px;"><p>Actifs : {{$countactif}}  </p></a>  
+                <a href="inactifs" style="color:red;"><p>Inactifs : {{$countinactif}}</p></a>  
+                  
+                  </div>
+                  <div class="icon">
+                    <i class="fa fa-shopping-cart"></i>
+                  </div>
+                  <a href="customers" class="small-box-footer">
+                    Plus d'infos <i class="fa fa-arrow-circle-right"></i>
+                  </a>
+                </div>
+              </div>
+            
+
+              <div class="col-lg-3 col-xs-6">
+                <!-- small box -->
+                <div class="small-box bg-green">
+                  <div class="inner">
+                      @php
+                        $count = $calculator->CountCible();
+                      @endphp
+                    <h3><a href="cibles" style="color:#fff">{{$count}}</a></h3>
+                          <a href="cibles" style="color:#fff"><p>CIBLES</p></a><br>
+                        <p> </p>
+                          <p></p>  <br><br>
+                          <p></p>  
+                        
+                  
+                  </div>
+                  <div class="icon">
+                    <i class="ion-checkmark-circled"></i>
+                  </div>
+                  <a href="cibles" class="small-box-footer">
+                    Plus d'infos<i class="fa fa-arrow-circle-right"></i>
+                  </a>
+                </div>
+              </div>
+            <!-- ./col -->
+            </div>
             <!-- /.row -->
           @endif
 
           @if(auth()->user()->id_departement == 5)
             <div class="row">
-              
+                <div class="col-lg-3 col-xs-6">
+                  <!-- small box -->
+                  <div class="small-box bg-aqua">
+                    <div class="inner">
+                    @php
+                          $count = $calculator->CountCustomer();
+                          $countactif = $calculator-> CountActif();
+                          $countinactif = $calculator-> CountInactif();
+                          //dd($count);
+                        @endphp
+                      <h3> <a href="customers" style="color:#fff;">{{$count}}</a></h3>
+                      
+                      <a href="customers" style="color:#fff;"><p>CLIENTS</p></a><br>
+                      <a href="actifs" style="color:#fff; size:13px;"><p>Actifs : {{$countactif}}  </p></a>  
+                      <a href="inactifs" style="color:red;"><p>Inactifs : {{$countinactif}}</p></a>  
+                  
+                    </div>
+                    <div class="icon">
+                      <i class="fa fa-shopping-cart"></i>
+                    </div>
+                    <a href="customers" class="small-box-footer">
+                      Plus d'infos <i class="fa fa-arrow-circle-right"></i>
+                    </a>
+                  </div>
+                </div>
+
+                <div class="col-lg-3 col-xs-6">
+                  <!-- small box -->
+                  <div class="small-box bg-green">
+                    <div class="inner">
+                        @php
+                          $count = $calculator->CountCible();
+                        @endphp
+                      <h3><a href="cibles" style="color:#fff">{{$count}}</a></h3>
+                            <a href="cibles" style="color:#fff"><p>CIBLES</p></a><br>
+                          <p> </p>
+                            <p></p>  <br><br>
+                            <p></p>  
+                          
+                    
+                    </div>
+                    <div class="icon">
+                      <i class="ion-checkmark-circled"></i>
+                    </div>
+                    <a href="cibles" class="small-box-footer">
+                      Plus d'infos<i class="fa fa-arrow-circle-right"></i>
+                    </a>
+                  </div>
+                </div>
+                <!-- ./col -->
             </div>
           @endif
         @endif
@@ -505,39 +690,47 @@
           @if(auth()->user()->id_departement == 5)
 
             <div class="row">
-              <div class="col-lg-4 col-xs-6">
+              <div class="col-lg-3 col-xs-6">
                 <!-- small box -->
                 <div class="small-box bg-aqua">
                   <div class="inner">
                   @php
                         $count = $calculator->CountCustomer();
+                         $countactif = $calculator-> CountActif();
+                    $countinactif = $calculator-> CountInactif();
                         //dd($count);
                       @endphp
                     <h3><a href="customers" style="color:#fff;">{{$count}}</a></h3>
                     
-                    <a href="customers" style="color:#fff;"><p>CLIENTS</p></a>
+                    <a href="customers" style="color:#fff;"><p>CLIENTS</p></a><br>
+                <a href="actifs" style="color:#fff; size:13px;"><p>Actifs : {{$countactif}}  </p></a>  
+                <a href="inactifs" style="color:red;"><p>Inactifs : {{$countinactif}}</p></a>  
+                  
                   </div>
                   <div class="icon">
                     <i class="fa fa-shopping-cart"></i>
                   </div>
                   <a href="customers" class="small-box-footer">
-                    More info <i class="fa fa-arrow-circle-right"></i>
+                    Plus d'infos <i class="fa fa-arrow-circle-right"></i>
                   </a>
                 </div>
               </div>
             
               <!-- ./col -->
-              <div class="col-lg-4 col-xs-6">
+              <div class="col-lg-3 col-xs-6">
                 <!-- small box -->
                 <div class="small-box bg-yellow">
                   
                     <div class="inner">
                       @php
-                        $count = $calculator->CountContratEncours();
+                        $count = $calculator->CountContrat();
                       @endphp
                       <h3><a href="contrat" style="color:#fff;"> {{$count}} </a></h3>
 
-                        <a href="contrat" style="color:#fff;"> <p>CONTRATS</p>  </a>
+                        <a href="contrat" style="color:#fff;"> <p>CONTRATS</p>  </a><br>
+                          <p> </p>
+                            <p></p>  <br><br>
+                            <p></p>  
                     </div>
                 
                   <div class="icon">
@@ -550,7 +743,31 @@
               </div>
               <!-- ./col -->
              
-              <!-- ./col -->
+              <div class="col-lg-3 col-xs-6">
+                  <!-- small box -->
+                  <div class="small-box bg-green">
+                    <div class="inner">
+                        @php
+                          $count = $calculator->CountCible();
+                        @endphp
+                      <h3><a href="cibles" style="color:#fff">{{$count}}</a></h3>
+                            <a href="cibles" style="color:#fff"><p>CIBLES</p></a><br>
+                          <p> </p>
+                            <p></p>  <br><br>
+                            <p></p>  
+                          
+                    
+                    </div>
+                    <div class="icon">
+                      <i class="ion-checkmark-circled"></i>
+                    </div>
+                    <a href="cibles" class="small-box-footer">
+                      Plus d'infos<i class="fa fa-arrow-circle-right"></i>
+                    </a>
+                  </div>
+                </div>
+                
+                <!-- ./col -->
             </div>
               
           @endif

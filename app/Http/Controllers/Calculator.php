@@ -11,6 +11,7 @@ use App\Models\Contrat;
 use App\Models\Paiement;
 use App\Models\Service;
 use App\Models\Facture;
+use App\Models\Cible;
 
 use DB;
 
@@ -141,6 +142,28 @@ class Calculator extends Controller
           return  $count;
      }
 
+     public function CountInactif()
+     {
+         $count = Entreprise::where('etat', '=', 0)
+         ->count();
+          return  $count;
+     }
+
+     public function CountActif()
+     {
+         $count = Entreprise::where('etat', '=', 1)
+         ->count();
+          return  $count;
+     }
+
+     public function CountCible()
+     {
+         $count = Cible::all()
+         ->count();
+          return  $count;
+     }
+
+
 
      //COMPTER LES CONTRATS EN COURS,
      public function CountContratEncours()
@@ -251,6 +274,7 @@ class Calculator extends Controller
             //LA REQUETE MAINTENANT
             $get = DB::table('contrats')
                 ->join('entreprises', 'entreprises.id', '=', 'contrats.id_entreprise')
+                ->where('contrats.statut_solde', 1)
                 ->where('contrats.debut_contrat', '=', $the_date)
                 ->select(['contrats.*',])
                 ->get();
@@ -414,6 +438,7 @@ class Calculator extends Controller
             //LA REQUETE MAINTENANT
             $get = DB::table('contrats')
                 ->join('entreprises', 'entreprises.id', '=', 'contrats.id_entreprise')
+                ->where('contrats.statut_solde', 1)
                 ->where('contrats.debut_contrat', '=', $the_date)
                 ->select(['contrats.*',])
                 ->get();
@@ -571,6 +596,7 @@ class Calculator extends Controller
                 //LA REQUETE MAINTENANT
                 $get = DB::table('contrats')
                 ->join('entreprises', 'entreprises.id', '=', 'contrats.id_entreprise')
+                ->where('contrats.statut_solde', 1)
                 ->where('contrats.debut_contrat', '=', $the_date)
                 ->select(['contrats.*',])
                 ->get();
@@ -767,6 +793,7 @@ class Calculator extends Controller
                 //LA REQUETE MAINTENANT
                 $get = DB::table('contrats')
                 ->join('entreprises', 'entreprises.id', '=', 'contrats.id_entreprise')
+                ->where('contrats.statut_solde', 1)
                 ->where('contrats.debut_contrat', '=', $the_date)
                 ->select(['contrats.*',])
                 ->get();

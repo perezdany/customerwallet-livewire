@@ -24,7 +24,7 @@
 @endphp
 
 @section('content')
-     <div class="row">
+      <div class="row">
              
         <div class="col-md-3">
               <a href="form_add_prestation"><button class="btn btn-primary"> <b>ENREGISTRER UNE PRESTATION</b></button></a>
@@ -55,10 +55,11 @@
                       <table id="example1" class="table table-bordered table-striped table-hover">
                           <thead>
                           <tr>
+                          <th>Entreprise</th>
                           <th>Date </th>
                           <th>Type de prestation</th>
                           <th>Lieu</th>
-                          <th>Entreprise</th>
+                          
                           <th>Fin de contrat</th>
                           <th>Prestation</th>
                           
@@ -72,10 +73,11 @@
                           <tbody>
                               @foreach($all as $all)
                                   <tr>
+                                      <td>{{$all->nom_entreprise}}</td>
                                       <td>@php echo date('d/m/Y',strtotime($all->date_prestation)) @endphp</td>
                                       <td>{{$all->libele}}</td>
                                       <td>{{$all->localisation}}</td>
-                                      <td>{{$all->nom_entreprise}}</td>
+                                      
                                       <td>@php echo date('d/m/Y',strtotime($all->fin_contrat));  @endphp</td>
                                       <td>
                                           @php

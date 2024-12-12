@@ -1,5 +1,48 @@
 <?php
+      /*
+        <form class="form-horizontal">
+                    
+                <div class="box-body">
+                    <div class="form-group">
+                        <label class="col-sm-6 control-label"><b>TITRE DU CONTRAT :</b></label>
+                    
+                        <div class="col-sm-6">
+                        <input type="text" class="form-control" disabled value="{{$contrats->titre_contrat}}">
+                        </div>
+                    
+                    </div>
+                    <div class="form-group">
+                    <label class="col-sm-6 control-label"> <b>DEBUT DU CONTRAT :</b></label>
+                    
+                    
+                        <div class="col-sm-6">
+                        <input type="text" value="@php echo date('d/m/Y', strtotime($contrats->debut_contrat)) @endphp" class="form-control" disabled>
+                        </div>
+                    
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-6 control-label"><b>FIN DU CONTRAT :</b></label>
+                    
+                        <div class="col-sm-6">
+                        <input class="form-control" disabled type="text" value="@php echo date('d/m/Y', strtotime($contrats->fin_contrat)) @endphp" >
+                        </div>
+                
+                    </div>
 
+                        <div class="form-group">
+                        <label class="col-sm-6 control-label"><b>MONTANT :</b></label>
+                    
+                        <div class="col-sm-6">
+                        <input class="form-control" disabled type="text" value="{{$contrats->montant}}" >
+                        </div>
+                
+                    </div>
+                
+                </div>
+    
+        </form>
+    */
+    
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -16,6 +59,7 @@ class EntrepriseController extends Controller
     {
         $get = DB::table('entreprises')
         ->join('statutentreprises', 'entreprises.id_statutentreprise', '=', 'statutentreprises.id')
+        
         ->orderBy('nom_entreprise', 'asc')
         ->get(['entreprises.*', 'statutentreprises.libele_statut']);
 
@@ -27,6 +71,29 @@ class EntrepriseController extends Controller
         $get = DB::table('entreprises')
         ->where('entreprises.id', $id)
         ->join('statutentreprises', 'entreprises.id_statutentreprise', '=', 'statutentreprises.id')
+        ->orderBy('nom_entreprise', 'asc')
+        ->get(['entreprises.*', 'statutentreprises.libele_statut']);
+
+        return $get;
+    }
+
+    public function GetInactifs()
+    {
+        $get = DB::table('entreprises')
+        ->where('entreprises.etat', 0)
+        ->join('statutentreprises', 'entreprises.id_statutentreprise', '=', 'statutentreprises.id')
+        ->orderBy('nom_entreprise', 'asc')
+        ->get(['entreprises.*', 'statutentreprises.libele_statut']);
+
+        return $get;
+    }
+
+    public function GetActifs()
+    {
+        $get = DB::table('entreprises')
+        ->where('entreprises.etat', 1)
+        ->join('statutentreprises', 'entreprises.id_statutentreprise', '=', 'statutentreprises.id')
+        ->orderBy('nom_entreprise', 'asc')
         ->get(['entreprises.*', 'statutentreprises.libele_statut']);
 
         return $get;
@@ -40,6 +107,9 @@ class EntrepriseController extends Controller
             'chiffre_affaire' => $request->chiffre, 
             'nb_employes' => $request->nb_emp,
             'adresse' => $request->adresse,
+            'telephone' => $request->tel,
+            'id_pays' => $request->pays,
+            'etat' => 1,
             'id_statutentreprise' => 1,
              'created_by' => auth()->user()->id, 
         ]);
@@ -78,6 +148,10 @@ class EntrepriseController extends Controller
                 'id_statutentreprise' => $request->statut,
                 'chiffre_affaire' => $request->chiffre, 
                 'nb_employes' => $request->nb_emp,
+                'etat' => $request->optionsradios,
+                'adresse' => $request->adresse,
+                'telephone' => $request->tel,
+                'id_pays' => $request->pays,
                  'created_by' => auth()->user()->id,
                  'client_depuis' => $request->depuis,
 
@@ -87,20 +161,24 @@ class EntrepriseController extends Controller
         }
         else
         {
-            //dd('ici');
+            dd('ici');
             $Insert = Entreprise::create([
            
                 'nom_entreprise'=> $request->nom,
                 'id_statutentreprise' => $request->statut,
                 'chiffre_affaire' => $request->chiffre, 
                 'nb_employes' => $request->nb_emp,
+                'etat' => $request->optionsradios,
+                'adresse' => $request->adresse,
+                'telephone' => $request->tel,
+                'id_pays' => $request->pays,
                  'created_by' => auth()->user()->id,
             ]);
 
-            return redirect('entreprises')->with('success', 'Enregistrement effectué');
+            
         }
       
-
+        return redirect('entreprises')->with('success', 'Enregistrement effectué');
         
     }
 
@@ -125,7 +203,11 @@ class EntrepriseController extends Controller
             'nom_entreprise'=> $request->nom,
             'id_statutentreprise' => $request->statut,
             'client_depuis' => $request->depuis,
-            'adresse' => $request->addresse,
+            'chiffre_affaire' => $request->chiffre, 
+            'nb_employes' => $request->nb_emp,
+            'etat' => $request->optionsradios,
+            'adresse' => $request->adresse,
+            'telephone' => $request->tel,
              
         ]);
 
@@ -137,6 +219,7 @@ class EntrepriseController extends Controller
     {
         $get = DB::table('entreprises')
         ->where('entreprises.id_statutentreprise', 2)
+        ->where('entreprises.etat', 1)
         ->join('statutentreprises', 'entreprises.id_statutentreprise', '=', 'statutentreprises.id')
         ->get(['entreprises.*', 'statutentreprises.libele_statut']);
 

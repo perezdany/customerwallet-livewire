@@ -16,8 +16,18 @@
 @endphp
 
 @section('content')
-        
-     <div class="row">
+      
+      <div class="row">
+        <div class="col-md-3">
+          <a href="form_add_contrat"><button class="btn btn-success"> <b>ENREGISTRER UN CONTRAT</b></button></a>
+                
+        </div>   
+
+        <div class="col-md-3">
+          <a href="all_contrats"><button class="btn btn-primary"> <b>TOUS LES CONTRATS</b></button></a>
+        </div>
+      </div>
+      <div class="row">
          @if(session('success'))
             <div class="col-md-12 box-header">
               <p class="bg-success" style="font-size:13px;">{{session('success')}}</p>

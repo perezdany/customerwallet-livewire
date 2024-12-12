@@ -21,6 +21,8 @@
 
     use App\Http\Controllers\CategorieController;
 
+    use App\Http\Controllers\PropalController;
+
     $contratcontroller = new ContratController();
     $entreprisecontroller = new EntrepriseController();
     $prestationcontroller = new PrestationController();
@@ -30,6 +32,7 @@
     $documentController = new DocController();
     $categoriecontroller = new CategorieController();
     $servicecontroller = new ServiceController();
+    $propalcontroller = new PropalController();
 
 @endphp
 
@@ -126,7 +129,12 @@
                         $nom = $entreprisecontroller->GetById($id_entreprise)
                       @endphp
                       @foreach($nom as $nom)
-                            <h3 class="box-title"><b>{{$nom->nom_entreprise}}</b></h3>
+                            <h3 class="box-title"><b>{{$nom->nom_entreprise}}</b>
+                                @if($nom->etat == 0)
+                                    <span class="bg-red">INACTIF</span>
+                                @else
+                                @endif
+                            </h3>
                             </div>
                             <!-- /.box-header -->
                       @endforeach
@@ -255,10 +263,6 @@
                                     </table>
                                 </div>
 
-                            
-                                
-                                
-                                </ul>
                             </div>
                         </div>
 
@@ -319,7 +323,12 @@
                                     @if($prospections->facture_path == null)
                                     
                                     @else
-                                        <td>  <span class="text">{{$prospections->facture_path}}</span> </td>
+                                        <td>
+                                            @php
+                                                    $pieces = explode("/", $prospections->facture_path);
+                                                    echo $pieces[2];
+                                            @endphp
+                                        </td>
                                     <td>
                                         @php 
                                             echo "<b>".date('d/m/Y',strtotime($prospections->created_at))."</b> à <b>".date('H:i:s',strtotime($se_get->created_at))."</b>" ;
@@ -452,7 +461,14 @@
                                         
                                     @else
                                     
-                                        <td>  <span class="text">{{$prospections->path_cr}}</span> </td>
+                                        <td>  
+                                            <span class="text">
+                                                @php
+                                                    $pieces = explode("/", $prospections->path_cr);
+                                                    echo $pieces[1];
+                                                @endphp
+                                            </span> 
+                                        </td>
                                         <td>
                                             @php 
                                                 echo "<b>".date('d/m/Y',strtotime($prospections->created_at))."</b> à <b>".date('H:i:s',strtotime($prospections->created_at))."</b>" ;
@@ -565,11 +581,87 @@
                         </div>
 
                         @php
-                            $docs = $documentController->GetDocByProspection($prospections->id);  
+                            $propal = $propalcontroller->GetByIdEntreprise($prospections->id);  
                         @endphp
 
-                        <!--AUTRE DOCS-->
+                         <!--PROPOSITION-->
                     
+                        <div class="box-header with-border">
+                            <h3 class="box-title"><b>PROPOSITIONS</b></h3>
+                        </div>
+                        <div class="box-body no-padding">
+                            <table class="table table-hover">
+                                <tr>
+                            
+                                    <th>Nom</th>
+                                    <th>Ajouté le :</th>
+                                    <th>Supprimer</th>
+                                    <th style="width: 40px">Aperçu</th>
+                                </tr>
+                                @foreach($propal as $propal)
+                                    <!--LES FICHIERS ET LES FACTURES-->
+                                <tr>
+                                    <td>  <span class="text">{{$propal->libele}}</span> </td>
+                                    <td>
+                                        @php 
+                                            echo "<b>".date('d/m/Y',strtotime($propal->created_at))."</b> à <b>".date('H:i:s',strtotime($propal->created_at))."</b>" ;
+                                        @endphp
+                                    </td>
+                                    <td>
+                                        <form action="delete_doc_propal" method="post" enctype="multipart/form-data">
+
+                                            @csrf
+                                            <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
+                                            <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
+                                            <input type="text" value="{{$propal->id}}" style="display:none;" name="id_doc">
+                                            <input type="text" class="form-control" name="file" value="{{$propal->path_doc}}" style="display:none;">
+                                            <button type="submit" class="btn btn-sx btn-danger"><i class="fa fa-trash-o"></i></button>
+                                        </form>
+                                    </td>
+                                    <td>
+                                        
+                                        <form action="download_docs_propal" method="post" enctype="multipart/form-data" class="col-sm-6">
+
+                                            @csrf
+                                            <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
+                                            <input type="text" value="{{$propal->id}}" style="display:none;" name="id_doc">
+                                            <input type="text" class="form-control" name="file" value="{{$propal->path_doc}}" style="display:none;">
+                                            <button type="submit" class="btn btn-warning"><i class="fa fa-download"></i></button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                
+                                @endforeach
+                            </table>
+                        </div>
+                        <hr>
+                       
+                        
+                        <!--SI ON VEUT AJOUETR UNE PROPOSITION -->
+                        <div class="box-body">
+                            <form action="add_doc_proposition" method="post" enctype="multipart/form-data" class="col-sm-12">
+
+                                @csrf
+                                <div class="box-body ">
+                                    <div class="form-group col-sm-6">
+                                        <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
+                                        <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
+                                        <label class="control-label">Ajouter un document :</label>
+                                        <input type="file" class="form-control" name="new_doc" required>
+                                        <button type="submit" class="btn btn-primary"><i class="fa fa-upload"></i></button>
+                                    </div>
+
+                                </div>
+                                
+                            </form>
+                        </div>
+
+
+
+                        <!--AUTRE DOCS-->
+                        @php
+                            $docs = $documentController->GetDocByProspection($prospections->id);  
+                        @endphp
                         <div class="box-header with-border">
                             <h3 class="box-title"><b>AUTRE DOCUMENTS (facture supplémentaires & autres)</b></h3>
                         </div>
@@ -642,7 +734,6 @@
                         
                     @endforeach
                    
-                    
                     <hr>
                     @php
                             

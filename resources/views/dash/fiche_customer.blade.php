@@ -1,6 +1,7 @@
 @extends('layouts/base')
 
 @php
+
     use App\Http\Controllers\ServiceController;
 
     use App\Http\Controllers\ControllerController;
@@ -31,7 +32,7 @@
     $categoriecontroller = new CategorieController();
     $servicecontroller = new ServiceController();
     
-
+  
 @endphp
 
 @section('content')
@@ -139,63 +140,57 @@
                     @foreach($contrats as $contrats)
                         <!--Contrats-->
 
-                        <form class="form-horizontal">
+                            <div class="no-padding">
+                                <table class="table table-hover box-body">
                                 
-                            <div class="box-body">
-                                <div class="form-group">
-                                    <label class="col-sm-6 control-label"><b>TITRE DU CONTRAT :</b></label>
+                                    <tr>
+                                       <th>Titre de contrat</th>
+                                        <th>Début du contrat</th>
+                                        <th>Fin du contrat</th>
+                                        <th>Montant</th>	
+                                        <th>Action</th>
+                                    </tr>
+                                    <!--LES FICHIERS ET LES FACTURES-->
+                                    <tr>
+                                      <td> {{$contrats->titre_contrat}}  </td>
+                                        <td>
+                                            @php 
+                                                echo date('d/m/Y',strtotime($contrats->debut_contrat));
+                                            @endphp
+                                            </td>
+                                        <td>
+                                           @php 
+                                            echo date('d/m/Y',strtotime($contrats->fin_contrat)) ;
+                                            @endphp
+                                        </td>
+                                        <td>
+                                           @php 
+                                            echo date('d/m/Y',strtotime($contrats->montant)) ;
+                                            @endphp
+                                        </td>
+                                 
+                                       <td>
+                                            <form action="fiche_edit_contrat_form" method="post" >
+                                                @csrf
+                                                <input type="text" value={{$contrats->id}} style="display:none;" name="id_contrat">
+                                                <input type="text" value={{$id_entreprise}} style="display:none;" name="id_entreprise">
+                                                <button type="submit" class="btn btn-success"><i class="fa fa-edit"></i></button>
+                                            </form>
+                                       </td>
+                                    </tr>
                                 
-                                    <div class="col-sm-6">
-                                    <input type="text" class="form-control" disabled value="{{$contrats->titre_contrat}}">
-                                    </div>
-                                
-                                </div>
-                                <div class="form-group">
-                                <label class="col-sm-6 control-label"> <b>DEBUT DU CONTRAT :</b></label>
-                                
-                                
-                                    <div class="col-sm-6">
-                                    <input type="text" value="@php echo date('d/m/Y', strtotime($contrats->debut_contrat)) @endphp" class="form-control" disabled>
-                                    </div>
-                                
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-6 control-label"><b>FIN DU CONTRAT :</b></label>
-                                
-                                    <div class="col-sm-6">
-                                    <input class="form-control" disabled type="text" value="@php echo date('d/m/Y', strtotime($contrats->fin_contrat)) @endphp" >
-                                    </div>
-                            
-                                </div>
-
-                                    <div class="form-group">
-                                    <label class="col-sm-6 control-label"><b>MONTANT :</b></label>
-                                
-                                    <div class="col-sm-6">
-                                    <input class="form-control" disabled type="text" value="{{$contrats->montant}}" >
-                                    </div>
-                            
-                                </div>
-                            
+                                </table>
                             </div>
-               
-                        </form>
-                        <div class="box-body">
-                            <form action="fiche_edit_contrat_form" method="post" >
-                                    @csrf
-                                    <input type="text" value={{$contrats->id}} style="display:none;" name="id_contrat">
-                                    <input type="text" value={{$id_entreprise}} style="display:none;" name="id_entreprise">
-                                    <button type="submit" class="btn btn-success"><i class="fa fa-edit">MODIFIER</i></button>
-                            </form>
-                        </div>
 
+                       
+                      
 
                         <!--LES FICHIERS ET LES FACTURES DANS LA TABLE CONTRAT-->
                            
                             <div class="box-header with-border">
-                                <h3 class="box-title"><b>FICHIER DU CONTRAT</b></h3>
+                                <h3 class="box-title"><b>FICHIER DE CONTRAT</b></h3>
                             </div>
-                             <div class="no-padding">
+                            <div class="no-padding">
                                 <table class="table table-hover box-body">
                                 
                                     <tr>
@@ -208,7 +203,13 @@
                                         @if($contrats->path == null)
 
                                         @else
-                                                 <td> <label>{{$contrats->path}}</label>  </td>
+                                                 <td>
+                                                  
+                                                     @php
+                                                        $pieces = explode("/", $contrats->path);
+                                                        echo $pieces[2];
+                                                     @endphp
+                                                 </td>
                                         <td>
                                         @php 
                                             echo "<b>".date('d/m/Y',strtotime($contrats->created_at))."</b> à <b>".date('H:i:s',strtotime($contrats->created_at))."</b>" ;
@@ -258,7 +259,14 @@
                                     </tr>
                                     <!--LES FICHIERS ET LES FACTURES-->
                                     <tr>
-                                        <td> <label>{{$contrats->proforma_file}}</label>  </td>
+                                        <td> 
+                                            
+                                            @php
+                                            $pieces = explode("/", $contrats->proforma_file);
+                                            echo $pieces[2];
+                                            @endphp
+                                            
+                                         </td>
 
                                         <td>
                                             @php 

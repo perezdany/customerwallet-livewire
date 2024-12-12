@@ -230,23 +230,35 @@
               <li class="active"><a href="prospection"><i class="fa fa-circle-o"></i>Prospections</a></li>
               <li class="active"><a href="fiche"><i class="fa fa-circle-o"></i>Clients</a></li>
               <li><a href="contrat"><i class="fa fa-circle-o"></i>Contrats</a></li>
-              <li class="active"><a href="facture"><i class="fa fa-circle-o"></i>Factures</a></li>
-
+              <!--<li class="active"><a href="facture"><i class="fa fa-circle-o"></i>Factures</a></li>-->
             @endif
 
             @if(auth()->user()->id_role == 5)
-              
+            
                 @if(auth()->user()->id_departement == 1)
-                 
-                    <li class="active"><a href="prospection"><i class="fa fa-circle-o"></i>Prospections</a></li>
-                    <li ><a href="prestation"><i class="fa fa-circle-o"></i>Prestations</a></li>
+                  <li class="active"><a href="fiche"><i class="fa fa-circle-o"></i>Clients</a></li>
+                  <li class="active"><a href="prospection"><i class="fa fa-circle-o"></i>Prospections</a></li>
+                  <li ><a href="prestation"><i class="fa fa-circle-o"></i>Prestations</a></li>
                    
                 @endif
 
+                @if(auth()->user()->id_departement == 4)
+                  <li class="active"><a href="fiche"><i class="fa fa-circle-o"></i>Clients</a></li>
+                 
+                   
+                @endif
+                
                 @if(auth()->user()->id_departement == 5)
-                  
+                    <li class="active"><a href="fiche"><i class="fa fa-circle-o"></i>Clients</a></li>
                     <li><a href="contrat"><i class="fa fa-circle-o"></i>Contrats</a></li>
-                    
+                    <li class="active"><a href="facture"><i class="fa fa-circle-o"></i>Factures</a></li>
+                @endif
+
+                @if(auth()->user()->id_departement > 5)
+                    <li class="active"><a href="fiche"><i class="fa fa-circle-o"></i>Clients</a></li>
+                    <li class="active"><a href="prospection"><i class="fa fa-circle-o"></i>Prospections</a></li>
+                    <li ><a href="prestation"><i class="fa fa-circle-o"></i>Prestations</a></li>
+                  
                 @endif
             @endif
 
@@ -259,6 +271,7 @@
                 @endif
             @endif
 
+            
            
           </ul>
         </li>
@@ -301,7 +314,7 @@
             </ul>
           </li>
         @else
-            @if(auth()->user()->id_role == 1 OR auth()->user()->id_role == 3)
+            @if(auth()->user()->id_role == 1 OR auth()->user()->id_role == 3 OR auth()->user()->id_role == 2)
               <li class="treeview">
                 <a href="#" style="background-color: #FFFFFF">
                   <i class="fa fa-pie-chart"></i>
@@ -317,12 +330,10 @@
                 </ul>
               </li>
             @endif
-
-          
-
         @endif
         
-         <li class="">
+        
+          <li class="">
             <a href="#" style="background-color: #FFFFFF">
               
               

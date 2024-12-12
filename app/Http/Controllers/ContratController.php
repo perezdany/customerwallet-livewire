@@ -27,11 +27,10 @@ class ContratController extends Controller
         $get = DB::table('contrats')
         ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')
         ->join('utilisateurs', 'contrats.created_by', '=', 'utilisateurs.id')
-        ->join('prestations', 'prestations.id_contrat', '=', 'contrats.id')
-        ->join('typeprestations', 'prestations.id_type_prestation', '=', 'typeprestations.id')
+        /*->join('prestations', 'prestations.id_contrat', '=', 'contrats.id')
+        ->join('typeprestations', 'prestations.id_type_prestation', '=', 'typeprestations.id')*/
         ->where('entreprises.id' , $id)
-        ->get(['contrats.*', 'utilisateurs.nom_prenoms', 'entreprises.nom_entreprise', 
-        'typeprestations.libele']);
+        ->get(['contrats.*', 'utilisateurs.nom_prenoms', 'entreprises.nom_entreprise', ]);
 
         
         return $get;
@@ -436,7 +435,7 @@ class ContratController extends Controller
                     
                             
                     $path = $request->file('file')->storeAs(
-                        'fichiers', $file_name
+                        'fichiers/contrat', $file_name
                     );
 
                     $affected = DB::table('contrats')
@@ -691,7 +690,7 @@ class ContratController extends Controller
                     
                             
                     $path = $request->file('file')->storeAs(
-                        'fichiers', $file_name
+                        'fichiers/contrat', $file_name
                     );
 
                     $affected = DB::table('contrats')
@@ -744,7 +743,7 @@ class ContratController extends Controller
         $fichier_proforma = $request->file_proforma;
 
        
-        if( $fichier_proforma != null)
+        if($fichier_proforma != null)
         {
             //VERFIFIER LE FORMAT 
             
@@ -902,10 +901,9 @@ class ContratController extends Controller
         $get = DB::table('contrats')
         ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')
         ->join('utilisateurs', 'contrats.created_by', '=', 'utilisateurs.id')
-       
-        
-        
-        ->get(['contrats.*', 'utilisateurs.nom_prenoms', 'entreprises.nom_entreprise', ]);
+        ->join('prestations', 'prestations.id_contrat', '=', 'contrats.id')
+        ->join('typeprestations', 'prestations.id_type_prestation', '=', 'typeprestations.id')
+        ->get(['contrats.*', 'utilisateurs.nom_prenoms', 'entreprises.nom_entreprise', 'typeprestations.libele']);
 
    
         return $get;
@@ -1004,7 +1002,7 @@ class ContratController extends Controller
                       
                               
                       $path = $request->file('file')->storeAs(
-                          'fichiers', $file_name
+                          'fichiers/contrat', $file_name
                       );
   
                       $affected = DB::table('contrats')
@@ -1220,7 +1218,7 @@ class ContratController extends Controller
                       
                               
                       $path = $request->file('file')->storeAs(
-                          'fichiers', $file_name
+                          'fichiers/contrat', $file_name
                       );
   
                       $affected = DB::table('contrats')

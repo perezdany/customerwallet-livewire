@@ -11,7 +11,7 @@
 
     $contratcontroller = new ContratController();
 
-    $all = $contratcontroller->GetAll();
+    $all = $contratcontroller->RetriveAll();
 @endphp
 
 @section('content')
@@ -32,16 +32,16 @@
                   <table id="example1" class="table table-bordered table-striped table-hover">
                   <thead>
                   <tr>
-                 
-                       <th>Titre de contrat de contrat</th>
+                    <th>Titre de contrat</th>
                     <th>Entreprise</th>
                     <th>Type de contrat</th>
-                    <th>Service</th>
-                   <th>Début du contrat</th>
-                   <th>Fin du contrat</th>
+                    
+                    <th>Début du contrat</th>
+                    <th>Fin du contrat</th>
                     <th>Montant</th>	
                     <th>Reste à payer</th>
                     <th>Date de solde</th>
+                   
                   </tr>
                   </thead>
                   <tbody>
@@ -50,7 +50,7 @@
                           <td>{{$all->titre_contrat}}</td>
                           <td>{{$all->nom_entreprise}}</td>
                           <td>{{$all->libele}}</td>
-                          <td>{{$all->libele_service}}</td>
+                          
                           <td>@php echo date('d/m/Y',strtotime($all->debut_contrat)) @endphp</td>
                            <td>@php echo date('d/m/Y',strtotime($all->fin_contrat)) @endphp</td>
                           <td>
