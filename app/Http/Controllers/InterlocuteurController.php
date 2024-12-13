@@ -88,6 +88,20 @@ class InterlocuteurController extends Controller
         return view('admin/entreprises', compact('interloc'));
     }
 
+    public function DisplayByIdEntrepriseActif(Request $request)
+    {
+        $interloc = Interlocuteur::where('id_entreprise', $request->id_entreprise)->get();
+        
+        return view('dash/list_actifs', compact('interloc'));
+    }
+
+    public function DisplayByIdEntrepriseInactif(Request $request)
+    {
+        $interloc = Interlocuteur::where('id_entreprise', $request->id_entreprise)->get();
+        
+        return view('dash/list_inactifs', compact('interloc'));
+    }
+
     public function AddInterlocuteur(Request $request)
     {
         if(strval($request->entreprise) == "0")

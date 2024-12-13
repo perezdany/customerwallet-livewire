@@ -344,7 +344,7 @@ class ContratController extends Controller
             }
 
         
-            //VERIFIER SI IL N'EST PAS CLIENT CHANGE SONT STATUT A MEME TEMPS
+            //VERIFIER SI IL N'EST PAS CLIENT CHANGE SONT STATUT A MEME TEMPS ET IL DEVIENT ACTIF EN MEME TEMPS
             //RECUPER L'(ENTREPRISE)
             $recup_entreprise = (new ContratController())->GetById($Insert->id);
             foreach($recup_entreprise as $recup_entreprise)
@@ -359,7 +359,7 @@ class ContratController extends Controller
                         //dd($entreprise);
                         $affected = DB::table('entreprises')
                         ->where('id', $entreprise->id)
-                        ->update([ 'id_statutentreprise' => 2, 
+                        ->update([ 'id_statutentreprise' => 2, 'etat' => 1,
                             'client_depuis' => date('Y-m-d') 
                     ]);
                     }

@@ -62,23 +62,19 @@
                           
                           <td>
                             
-                            <form action="display_by_id_entreprise" method="post">
+                            <form action="display_by_id_entreprise_inactif" method="post">
                                 @csrf
                                 <input type="text" value={{$all->id}} style="display:none;" name="id_entreprise">
                                 <button type="submit" class="btn btn-primary"><i class="fa fa-eye"></i>AFFICHER</button>
                             </form>
                           </td>
                           <td>
-                            <form action="edit_entreprise_form" method="post">
+                            <form action="edit_entreprise_inactif_form" method="post">
                                 @csrf
                                 <input type="text" value={{$all->id}} style="display:none;" name="id_entreprise">
                                 <button type="submit" class="btn btn-primary"><i class="fa fa-edit"></i></button>
                             </form>
-                             <form action="delete_entreprise" method="post">
-                                @csrf
-                                <input type="text" value={{$all->id}} style="display:none;" name="id_entreprise">
-                                <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i></button>
-                            </form>
+                            
                           </td>
                         </tr>
                       @endforeach
@@ -174,7 +170,7 @@
                           </div>
                       
                           <!-- form start -->
-                          <form role="form" method="post" action="edit_entreprise">
+                          <form role="form" method="post" action="edit_entreprise_inactif">
                             <div class="box-body">
                               @csrf
                               <input type="text" name="id_entreprise" value="{{$edit->id}}" style="display:none;">
@@ -225,23 +221,39 @@
 
                                   <div class="form-group">
                                       <label>Client Depuis le :</label>
-                                      <input type="date" required class="form-control input-lg" value="{{$edit->client_depuis}}" name="depuis" />
+                                      <input type="date" class="form-control input-lg" value="{{$edit->client_depuis}}" name="depuis" />
                                   </div>
 
-                                  <div class="form-group">
+                                <div class="form-group">
                                     <label>Etat du client:</label>
-                                        <div class="radio">
-                                          <label>
-                                            <input type="radio" name="optionsradios" id="optionsRadios1" value="1" checked>
-                                            Actif
-                                          </label>
-                                        </div>
-                                        <div class="radio">
-                                          <label>
-                                            <input type="radio" name="optionsradios" id="optionsRadios2" value="0">
-                                            Inactif
-                                          </label>
-                                        </div>
+                                        @if($edit->etat == 0)
+
+                                          <div class="radio">
+                                            <label>
+                                              <input type="radio" name="optionsradios" id="optionsRadios1" value="1" >
+                                              Actif
+                                            </label>
+                                          </div>
+                                          <div class="radio">
+                                            <label>
+                                              <input type="radio" name="optionsradios" id="optionsRadios2" value="0" checked>
+                                              Inactif
+                                            </label>
+                                          </div>
+                                        @else
+                                            <div class="radio">
+                                              <label>
+                                                <input type="radio" name="optionsradios" id="optionsRadios1" value="1" checked>
+                                                Actif
+                                              </label>
+                                            </div>
+                                            <div class="radio">
+                                              <label>
+                                                <input type="radio" name="optionsradios" id="optionsRadios2" value="0" >
+                                                Inactif
+                                              </label>
+                                            </div>
+                                        @endif
                                   
                                   </div>
 

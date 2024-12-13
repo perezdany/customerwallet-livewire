@@ -329,36 +329,36 @@
                                                     echo $pieces[2];
                                             @endphp
                                         </td>
-                                    <td>
-                                        @php 
-                                            echo "<b>".date('d/m/Y',strtotime($prospections->created_at))."</b> à <b>".date('H:i:s',strtotime($se_get->created_at))."</b>" ;
-                                        @endphp
-                                    </td>
-                                    <td>
-                                        <form action="edit_prospect_form" method="post">
-                                            @csrf
-                                            <input type="text" value={{$prospections->id}} style="display:none;" name="id_prospection">
-                                            <button type="submit" class="btn btn-success"><i class="fa fa-edit">Aller a la page prospections pour modifier</i></button>
-                                        </form>
-                                    </td>
-                                    <td>
-                                        
-                                        <form action="download_facture_proforma" method="post" enctype="multipart/form-data">
+                                        <td>
+                                            @php 
+                                                echo "<b>".date('d/m/Y',strtotime($prospections->created_at))."</b> à <b>".date('H:i:s',strtotime($se_get->created_at))."</b>" ;
+                                            @endphp
+                                        </td>
+                                        <td>
+                                            <form action="edit_prospect_form" method="post">
+                                                @csrf
+                                                <input type="text" value={{$prospections->id}} style="display:none;" name="id_prospection">
+                                                <button type="submit" class="btn btn-success"><i class="fa fa-edit">Aller a la page prospections pour modifier</i></button>
+                                            </form>
+                                        </td>
+                                        <td>
+                                            
+                                            <form action="download_facture_proforma" method="post" enctype="multipart/form-data">
 
-                                            @csrf
-                                            <div class="box-body">
-                                                <div class="form-group col-sm-6">
-                                                    <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
-                                                    <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
-                                                    <input type="text" class="form-control" name="file" value="{{$prospections->facture_path}}"  style="display:none;">
-                                                    <button type="submit" class="btn btn-warning"><i class="fa fa-download"></i></button>
+                                                @csrf
+                                                <div class="box-body">
+                                                    <div class="form-group col-sm-6">
+                                                        <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
+                                                        <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
+                                                        <input type="text" class="form-control" name="file" value="{{$prospections->facture_path}}"  style="display:none;">
+                                                        <button type="submit" class="btn btn-warning"><i class="fa fa-download"></i></button>
+                                                    </div>
+
                                                 </div>
+                                            
+                                            </form>
 
-                                            </div>
-                                        
-                                        </form>
-
-                                    </td>
+                                        </td>
                                     @endif
                                     
                                 </tr>
@@ -580,84 +580,6 @@
                             </form>
                         </div>
 
-                        @php
-                            $propal = $propalcontroller->GetByIdEntreprise($prospections->id);  
-                        @endphp
-
-                         <!--PROPOSITION-->
-                    
-                        <div class="box-header with-border">
-                            <h3 class="box-title"><b>PROPOSITIONS</b></h3>
-                        </div>
-                        <div class="box-body no-padding">
-                            <table class="table table-hover">
-                                <tr>
-                            
-                                    <th>Nom</th>
-                                    <th>Ajouté le :</th>
-                                    <th>Supprimer</th>
-                                    <th style="width: 40px">Aperçu</th>
-                                </tr>
-                                @foreach($propal as $propal)
-                                    <!--LES FICHIERS ET LES FACTURES-->
-                                <tr>
-                                    <td>  <span class="text">{{$propal->libele}}</span> </td>
-                                    <td>
-                                        @php 
-                                            echo "<b>".date('d/m/Y',strtotime($propal->created_at))."</b> à <b>".date('H:i:s',strtotime($propal->created_at))."</b>" ;
-                                        @endphp
-                                    </td>
-                                    <td>
-                                        <form action="delete_doc_propal" method="post" enctype="multipart/form-data">
-
-                                            @csrf
-                                            <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
-                                            <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
-                                            <input type="text" value="{{$propal->id}}" style="display:none;" name="id_doc">
-                                            <input type="text" class="form-control" name="file" value="{{$propal->path_doc}}" style="display:none;">
-                                            <button type="submit" class="btn btn-sx btn-danger"><i class="fa fa-trash-o"></i></button>
-                                        </form>
-                                    </td>
-                                    <td>
-                                        
-                                        <form action="download_docs_propal" method="post" enctype="multipart/form-data" class="col-sm-6">
-
-                                            @csrf
-                                            <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
-                                            <input type="text" value="{{$propal->id}}" style="display:none;" name="id_doc">
-                                            <input type="text" class="form-control" name="file" value="{{$propal->path_doc}}" style="display:none;">
-                                            <button type="submit" class="btn btn-warning"><i class="fa fa-download"></i></button>
-                                        </form>
-                                    </td>
-                                </tr>
-                                
-                                @endforeach
-                            </table>
-                        </div>
-                        <hr>
-                       
-                        
-                        <!--SI ON VEUT AJOUETR UNE PROPOSITION -->
-                        <div class="box-body">
-                            <form action="add_doc_proposition" method="post" enctype="multipart/form-data" class="col-sm-12">
-
-                                @csrf
-                                <div class="box-body ">
-                                    <div class="form-group col-sm-6">
-                                        <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
-                                        <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
-                                        <label class="control-label">Ajouter un document :</label>
-                                        <input type="file" class="form-control" name="new_doc" required>
-                                        <button type="submit" class="btn btn-primary"><i class="fa fa-upload"></i></button>
-                                    </div>
-
-                                </div>
-                                
-                            </form>
-                        </div>
-
-
-
                         <!--AUTRE DOCS-->
                         @php
                             $docs = $documentController->GetDocByProspection($prospections->id);  
@@ -731,6 +653,84 @@
                                 
                             </form>
                         </div>
+
+                        
+                        @php
+                            $propal = $propalcontroller->GetByIdEntreprise($prospections->id);  
+                        @endphp
+
+                        <!--PROPOSITION-->
+                    
+                        <div class="box-header with-border">
+                            <h3 class="box-title"><b>PROPOSITIONS</b></h3>
+                        </div>
+                        <div class="box-body no-padding">
+                            <table class="table table-hover">
+                                <tr>
+                            
+                                    <th>Nom</th>
+                                    <th>Ajouté le :</th>
+                                    <th>Supprimer</th>
+                                    <th style="width: 40px">Aperçu</th>
+                                </tr>
+                                @foreach($propal as $propal)
+                                    <!--LES FICHIERS ET LES FACTURES-->
+                                <tr>
+                                    <td>  <span class="text">{{$propal->libele}}</span> </td>
+                                    <td>
+                                        @php 
+                                            echo "<b>".date('d/m/Y',strtotime($propal->created_at))."</b> à <b>".date('H:i:s',strtotime($propal->created_at))."</b>" ;
+                                        @endphp
+                                    </td>
+                                    <td>
+                                        <form action="delete_doc_propal" method="post" enctype="multipart/form-data">
+
+                                            @csrf
+                                            <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
+                                            <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
+                                            <input type="text" value="{{$propal->id}}" style="display:none;" name="id_doc">
+                                            <input type="text" class="form-control" name="file" value="{{$propal->path_doc}}" style="display:none;">
+                                            <button type="submit" class="btn btn-sx btn-danger"><i class="fa fa-trash-o"></i></button>
+                                        </form>
+                                    </td>
+                                    <td>
+                                        
+                                        <form action="download_docs_propal" method="post" enctype="multipart/form-data" class="col-sm-6">
+
+                                            @csrf
+                                            <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
+                                            <input type="text" value="{{$propal->id}}" style="display:none;" name="id_doc">
+                                            <input type="text" class="form-control" name="file" value="{{$propal->path_doc}}" style="display:none;">
+                                            <button type="submit" class="btn btn-warning"><i class="fa fa-download"></i></button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                
+                                @endforeach
+                            </table>
+                        </div>
+                        <hr>
+                       
+                        
+                        <!--SI ON VEUT AJOUETR UNE PROPOSITION -->
+                        <div class="box-body">
+                            <form action="add_doc_proposition" method="post" enctype="multipart/form-data" class="col-sm-12">
+
+                                @csrf
+                                <div class="box-body ">
+                                    <div class="form-group col-sm-6">
+                                        <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
+                                        <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
+                                        <label class="control-label">Ajouter un document :</label>
+                                        <input type="file" class="form-control" name="new_doc" required>
+                                        <button type="submit" class="btn btn-primary"><i class="fa fa-upload"></i></button>
+                                    </div>
+
+                                </div>
+                                
+                            </form>
+                        </div>
+
                         
                     @endforeach
                    

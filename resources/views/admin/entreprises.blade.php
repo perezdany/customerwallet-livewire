@@ -231,18 +231,35 @@
 
                                   <div class="form-group">
                                     <label>Etat du client:</label>
-                                        <div class="radio">
-                                          <label>
-                                            <input type="radio" name="optionsradios" id="optionsRadios1" value="1" checked>
-                                            Actif
-                                          </label>
-                                        </div>
-                                        <div class="radio">
-                                          <label>
-                                            <input type="radio" name="optionsradios" id="optionsRadios2" value="0">
-                                            Inactif
-                                          </label>
-                                        </div>
+                                        @if($edit->etat == 0)
+
+                                          <div class="radio">
+                                            <label>
+                                              <input type="radio" name="optionsradios" id="optionsRadios1" value="1" >
+                                              Actif
+                                            </label>
+                                          </div>
+                                          <div class="radio">
+                                            <label>
+                                              <input type="radio" name="optionsradios" id="optionsRadios2" value="0" checked>
+                                              Inactif
+                                            </label>
+                                          </div>
+                                        @else
+                                            <div class="radio">
+                                              <label>
+                                                <input type="radio" name="optionsradios" id="optionsRadios1" value="1" checked>
+                                                Actif
+                                              </label>
+                                            </div>
+                                            <div class="radio">
+                                              <label>
+                                                <input type="radio" name="optionsradios" id="optionsRadios2" value="0" >
+                                                Inactif
+                                              </label>
+                                            </div>
+                                        @endif
+                                        
                                   
                                   </div>
 

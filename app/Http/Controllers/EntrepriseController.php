@@ -59,8 +59,7 @@ class EntrepriseController extends Controller
     {
         $get = DB::table('entreprises')
         ->join('statutentreprises', 'entreprises.id_statutentreprise', '=', 'statutentreprises.id')
-        
-        ->orderBy('nom_entreprise', 'asc')
+         ->orderBy('nom_entreprise', 'asc')
         ->get(['entreprises.*', 'statutentreprises.libele_statut']);
 
         return $get;
@@ -109,7 +108,7 @@ class EntrepriseController extends Controller
             'adresse' => $request->adresse,
             'telephone' => $request->tel,
             'id_pays' => $request->pays,
-            'etat' => 1,
+            
             'id_statutentreprise' => 1,
              'created_by' => auth()->user()->id, 
         ]);
@@ -192,6 +191,28 @@ class EntrepriseController extends Controller
         );
     }
 
+    public function EditEntrActifForm(Request $request)
+    {
+        //dd($request->id_entreprise);
+        return view('dash/list_actifs',
+            [
+                'id_entreprise' => $request->id_entreprise,
+            ]
+        );
+    }
+
+
+    public function EditEntrInactifForm(Request $request)
+    {
+        //dd($request->id_entreprise);
+        return view('dash/list_inactifs',
+            [
+                'id_entreprise' => $request->id_entreprise,
+            ]
+        );
+    }
+
+
     public function EditEntreprise(Request $request)
     {
        
@@ -215,11 +236,57 @@ class EntrepriseController extends Controller
         return redirect('entreprises')->with('success', 'Modificaiton effectuée');
     }
 
+    public function EditEntrInactif(Request $request)
+    {
+       
+
+        $affected= DB::table('entreprises')
+        ->where('id', $request->id_entreprise)
+        ->update([
+           
+            'nom_entreprise'=> $request->nom,
+            'id_statutentreprise' => $request->statut,
+            'client_depuis' => $request->depuis,
+            'chiffre_affaire' => $request->chiffre, 
+            'nb_employes' => $request->nb_emp,
+            'etat' => $request->optionsradios,
+            'adresse' => $request->adresse,
+            'telephone' => $request->tel,
+             
+        ]);
+
+      
+        return redirect('inactifs')->with('success', 'Modificaiton effectuée');
+    }
+
+    public function EditEntrActif(Request $request)
+    {
+       
+
+        $affected= DB::table('entreprises')
+        ->where('id', $request->id_entreprise)
+        ->update([
+           
+            'nom_entreprise'=> $request->nom,
+            'id_statutentreprise' => $request->statut,
+            'client_depuis' => $request->depuis,
+            'chiffre_affaire' => $request->chiffre, 
+            'nb_employes' => $request->nb_emp,
+            'etat' => $request->optionsradios,
+            'adresse' => $request->adresse,
+            'telephone' => $request->tel,
+             
+        ]);
+
+      
+        return redirect('actifs')->with('success', 'Modificaiton effectuée');
+    }
+
     public function DisplayCustomers()
     {
         $get = DB::table('entreprises')
         ->where('entreprises.id_statutentreprise', 2)
-        ->where('entreprises.etat', 1)
+        
         ->join('statutentreprises', 'entreprises.id_statutentreprise', '=', 'statutentreprises.id')
         ->get(['entreprises.*', 'statutentreprises.libele_statut']);
 

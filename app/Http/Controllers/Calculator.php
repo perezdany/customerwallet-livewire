@@ -129,7 +129,7 @@ class Calculator extends Controller
     //NOMBRE TOTAL DES CLIENTS
     public function CountCustomer()
     {
-        $count = Entreprise::where('id_statutentreprise', '!=', 1)
+        $count = Entreprise::where('id_statutentreprise', '=', 2)
         ->count();
          return  $count;
     }
@@ -144,14 +144,14 @@ class Calculator extends Controller
 
      public function CountInactif()
      {
-         $count = Entreprise::where('etat', '=', 0)
+         $count = Entreprise::where('etat', '=', 0)->where('id_statutentreprise', '=', 2)
          ->count();
           return  $count;
      }
 
      public function CountActif()
      {
-         $count = Entreprise::where('etat', '=', 1)
+         $count = Entreprise::where('etat', '=', 1)->where('id_statutentreprise', '=', 2)
          ->count();
           return  $count;
      }

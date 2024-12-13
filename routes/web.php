@@ -273,9 +273,17 @@ Route::middleware(['auth:web'])->group(function(){
         return view('admin/entreprises');
     });
 
-    //MODIFIER
+    //MODIFIER UNE ENTREPRISE
     Route::post('edit_entreprise_form', [EntrepriseController::class, 'EditEntrForm']);
     Route::post('edit_entreprise', [EntrepriseController::class, 'EditEntreprise']);
+    
+    //ACTIFS
+    Route::post('edit_entreprise_actif_form', [EntrepriseController::class, 'EditEntrActifForm']);
+    Route::post('edit_entreprise_actif', [EntrepriseController::class, 'EditEntrActif']);
+
+    //INACTIFS
+    Route::post('edit_entreprise_inactif_form', [EntrepriseController::class, 'EditEntrInactifForm']);
+    Route::post('edit_entreprise_inactif', [EntrepriseController::class, 'EditEntrInactif']);
 
     //AFFICHER LES INFOS DE L'ENTREPRISE.. SI IL Y A DES PRESTATIONS QUI LUI SONT PROPOSE ETC
     Route::post('display_about_customer', [EntrepriseController::class, 'GetAboutThisTable']);
@@ -397,6 +405,10 @@ Route::middleware(['auth:web'])->group(function(){
     //AFFICHER LES INTERLOCUTEURS D'UNE ENTREPRISE 
     Route::post('display_by_id_entreprise', [InterlocuteurController::class, 'DisplayByIdEntreprise']);
 
+    Route::post('display_by_id_entreprise_actif', [InterlocuteurController::class, 'DisplayByIdEntrepriseActif']);
+
+    Route::post('display_by_id_entreprise_inactif', [InterlocuteurController::class, 'DisplayByIdEntrepriseInactif']);
+
     //LES GRAPHES 
 
     //MENSUEL
@@ -505,11 +517,19 @@ Route::middleware(['auth:web'])->group(function(){
     //AJOUTER UNE PROPOSITION
     Route::post('add_doc_proposition', [PropalController::class, 'AddPropal']);
 
+    Route::post('add_doc_proposition_cust', [PropalController::class, 'AddPropalCustomer']);
+
     //VISUALISER LE FICHIER
     Route::post('download_docs_propal', [PropalController::class, 'ViewDocPropal']);
 
+    Route::post('download_docs_propal_cust', [PropalController::class, 'ViewDocPropalCustomer']);
+
     //SUPPRIMER LE DOCUMENT DE PROPOSITION
     Route::post('delete_doc_propal', [PropalController::class, 'DeleteDocPropal']);
+
+    Route::post('delete_doc_propal_cust', [PropalController::class, 'DeleteDocPropalCustomer']);
+
+
 
 
 });
