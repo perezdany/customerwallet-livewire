@@ -27,6 +27,19 @@ class ServiceController extends Controller
         return $get;
     }
 
+    public function GetAllNoSusp()
+    {
+        
+        $get = DB::table('services')
+        ->join('categories', 'services.id_categorie', '=', 'categories.id')
+        ->where('suspendu', 0)
+        ->orderBy('libele_service', 'asc')
+        
+        ->get(['services.*', 'categories.libele_categorie']);
+
+        return $get;
+    }
+
     public function GetById($id)
     {
         $get = Service::where('id', $id)->get();
@@ -53,6 +66,7 @@ class ServiceController extends Controller
             ->update([
             'libele_service' => $request->libele, 
             'description' => $request->description,
+            'id_categorie' => $request->categorie
             
        ]);
         return redirect('services')->with('success', 'Modification effectuée');
@@ -63,7 +77,7 @@ class ServiceController extends Controller
         $Insert = Service::create([
             'libele_service' => $request->libele,  
             'description' => $request->description,
-            
+            'id_categorie' => $request->categorie
        ]);
 
        return redirect('services')->with('success', 'Enregistrement effectué');
@@ -124,6 +138,17 @@ class ServiceController extends Controller
     public function GetByCategorie($id)
     {
         $get = DB::table('services')
+        ->where('id_categorie', $id)
+        ->orderBy('libele_service', 'asc')
+        ->get();
+
+        return $get;
+    }
+
+    public function GetByCategorieNoSusp($id)
+    {
+        $get = DB::table('services')
+        ->where('suspendu', 0)
         ->where('id_categorie', $id)
         ->orderBy('libele_service', 'asc')
         ->get();

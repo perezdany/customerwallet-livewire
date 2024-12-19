@@ -158,7 +158,7 @@ class Calculator extends Controller
 
      public function CountCible()
      {
-         $count = Cible::all()
+        $count = Entreprise::where('id_statutentreprise', '=', 3)
          ->count();
           return  $count;
      }
@@ -274,7 +274,7 @@ class Calculator extends Controller
             //LA REQUETE MAINTENANT
             $get = DB::table('contrats')
                 ->join('entreprises', 'entreprises.id', '=', 'contrats.id_entreprise')
-                ->where('contrats.statut_solde', 1)
+                
                 ->where('contrats.debut_contrat', '=', $the_date)
                 ->select(['contrats.*',])
                 ->get();
@@ -299,9 +299,11 @@ class Calculator extends Controller
         }          
         //echo  $total;
 
+        //NOMBRE TOTAL DES ENTREPRISE
+        $totalnb_entreprise = 0;
         //CALCUL POUR LES POURCENTAGES 
 
-        //Prendre toutes les entreprises et pour chaque entrprise recupérer le montant des contrats dans le mois en questions
+        //Prendre toutes les entreprises et pour chaque entreprise recupérer le montant des contrats dans le mois en questions
         $all_entreprises = Entreprise::all();
 
         foreach($all_entreprises as $all_entreprises)
@@ -326,8 +328,9 @@ class Calculator extends Controller
            }  
 
            //METTRE LES VALLEURS DANS LES DIFFERENTS TABLEAUX
-           if($montant != 0) //Si cette entreprise a rapporter quelque il faut remplir dans le tableu pour le gaph
+           if($montant != 0) //Si cette entreprise a rapporté quelque chose il faut remplir dans le tableu pour le gaph
            {
+                $totalnb_entreprise = $totalnb_entreprise + 1;
                 array_push($company, $all_entreprises->nom_entreprise);
                  //CALCULER LE POURCENTAGE ET METTRE DANS LE TABLEAU
                 $p = ($montant * 100) / $total;
@@ -336,6 +339,35 @@ class Calculator extends Controller
 
            }
               
+           
+        }
+
+        //dd($totalnb_entreprise);
+        //ON AURA $totalnb_entreprise COULEURS DONC FAIRE UN TABLEAU QUI VA AVOIR LE NOMRE TOTAL DE COULEUR DIFFERENTES
+        $alpha = ['A', 'B', 'C', 'D', 'E', 'F', ];
+        $colors = [];
+        //FAIRE UNE BOUCLE POUR CONCEVOIR LA COULEUR DE CHAQUE ENTREPRISE DETECTEE
+        for($c=0; $c < $totalnb_entreprise; $c++)
+        {   
+            $bol = rand(0,1);
+            $chaine_couleur = "#";
+            for($l = 1; $l<=6; $l++)
+            {
+                if($bol == 0)
+                {
+                    $a = rand(0,5);
+                    $chaine_couleur =  $chaine_couleur.$alpha[$a];//les 26 lettre de l'alphabet
+                    //$bol ++;
+                }
+                else{
+                    $chaine_couleur =  $chaine_couleur.rand(0,9);
+                    //$bol = $bol - 1 ;
+                }
+            }
+           //echo $chaine_couleur ."<br>";
+            //mettre la couelur formée dans le tableau colors
+            array_push($colors, $chaine_couleur);
+            //dd($colors);
            
         }
 
@@ -389,9 +421,11 @@ class Calculator extends Controller
            array_push($data_serv, $compte_prestations_service);
            
         }
+
+        
         
 
-        return view('graph/monthly', compact('data', 'company', 'percent', 'data_serv', 'serv'));
+        return view('graph/monthly', compact('data', 'company', 'percent', 'data_serv', 'serv', 'colors'));
     }
     
     public function SearchMonth(Request $request)
@@ -438,7 +472,7 @@ class Calculator extends Controller
             //LA REQUETE MAINTENANT
             $get = DB::table('contrats')
                 ->join('entreprises', 'entreprises.id', '=', 'contrats.id_entreprise')
-                ->where('contrats.statut_solde', 1)
+              
                 ->where('contrats.debut_contrat', '=', $the_date)
                 ->select(['contrats.*',])
                 ->get();
@@ -460,6 +494,8 @@ class Calculator extends Controller
         }          
         //echo  $total;
 
+        //NOMBRE TOTAL DES ENTREPRISE
+        $totalnb_entreprise = 0;
         //CALCUL POUR LES POURCENTAGES 
 
         //Prendre toutes les entreprises et pour chaque entrprise recupérer le montant des contrats dans le mois en questions
@@ -489,6 +525,7 @@ class Calculator extends Controller
            //METTRE LES VALLEURS DANS LES DIFFERENTS TABLEAUX
            if($montant != 0) //Si cette entreprise a rapporter quelque il faut remplir dans le tableu pour le gaph
            {
+                $totalnb_entreprise = $totalnb_entreprise + 1;
                 array_push($company, $all_entreprises->nom_entreprise);
                  //CALCULER LE POURCENTAGE ET METTRE DANS LE TABLEAU
                 $p = ($montant * 100) / $total;
@@ -498,6 +535,74 @@ class Calculator extends Controller
            }
         }
 
+         //ON AURA $totalnb_entreprise COULEURS DONC FAIRE UN TABLEAU QUI VA AVOIR LE NOMRE TOTAL DE COULEUR DIFFERENTES
+         $alpha = ['A', 'B', 'C', 'D', 'E', 'F', ];
+         $colors = [];
+         //FAIRE UNE BOUCLE POUR CONCEVOIR LA COULEUR DE CHAQUE ENTREPRISE DETECTEE
+         for($c=0; $c < $totalnb_entreprise; $c++)
+         {   
+             $bol = rand(0,1);
+             $chaine_couleur = "#";
+             for($l = 1; $l<=6; $l++)
+             {
+                 if($bol == 0)
+                 {
+                     $a = rand(0,5);
+                     $chaine_couleur =  $chaine_couleur.$alpha[$a];//les 26 lettre de l'alphabet
+                     //$bol ++;
+                 }
+                 else{
+                     $chaine_couleur =  $chaine_couleur.rand(0,9);
+                     //$bol = $bol - 1 ;
+                 }
+             }
+            //echo $chaine_couleur ."<br>";
+             //mettre la couelur formée dans le tableau colors
+             array_push($colors, $chaine_couleur);
+             //dd($colors);
+            
+         }
+
+       
+        //CALCUL POUR LES POURCENTAGES 
+        //Prendre toutes les entreprises et pour chaque entreprise recupérer le montant des contrats dans le mois en questions
+        $all_entreprises = Entreprise::all();
+
+        foreach($all_entreprises as $all_entreprises)
+        {
+           //montant de contrat pour chaque entreprise
+           $montant = 0;
+           for($i = 1; $i <= $number; $i++)
+           {
+                $the_date = $year."-". $month."-".$i;
+                
+                $contrats =  DB::table('contrats')
+                ->join('entreprises', 'entreprises.id', '=', 'contrats.id_entreprise')
+                ->where('contrats.debut_contrat', '=', $the_date)
+                ->where('contrats.id_entreprise', '=', $all_entreprises->id)
+                ->get();
+
+                foreach($contrats as $contrats)
+                {
+                    $montant = $montant + $contrats->montant;
+                }
+        
+           }  
+
+           //METTRE LES VALLEURS DANS LES DIFFERENTS TABLEAUX
+           if($montant != 0) //Si cette entreprise a rapporté quelque chose il faut remplir dans le tableu pour le gaph
+           {
+                $totalnb_entreprise = $totalnb_entreprise + 1;
+                array_push($company, $all_entreprises->nom_entreprise);
+                 //CALCULER LE POURCENTAGE ET METTRE DANS LE TABLEAU
+                $p = ($montant * 100) / $total;
+                //echo $total;
+                array_push($percent, $p);
+
+           }
+              
+           
+        }
         //AFFICHER LES GRAPHES PAR PRESTATIONS, PAR SERVICES
 
         //Prendre touts les services et pour chaque service recupérer le total des contrats dans le mois en questions
@@ -596,7 +701,7 @@ class Calculator extends Controller
                 //LA REQUETE MAINTENANT
                 $get = DB::table('contrats')
                 ->join('entreprises', 'entreprises.id', '=', 'contrats.id_entreprise')
-                ->where('contrats.statut_solde', 1)
+               
                 ->where('contrats.debut_contrat', '=', $the_date)
                 ->select(['contrats.*',])
                 ->get();
@@ -616,6 +721,9 @@ class Calculator extends Controller
 
             
         } 
+
+         //NOMBRE TOTAL DES ENTREPRISE
+         $totalnb_entreprise = 0;
 
         //PAR CLIENT 
         //REQUETE POUR RECUPERER LA RECETTE ANNUELLE
@@ -679,17 +787,48 @@ class Calculator extends Controller
            
             if($montant != 0) //Si cette entreprise a rapporter quelque il faut remplir dans le tableu pour le gaph
             {
-                    array_push($company, $all_entreprises->nom_entreprise);
-                    //CALCULER LE POURCENTAGE ET METTRE DANS LE TABLEAU
-                    $p = ($montant * 100) / $total_annuel;
-                   
-                    array_push($percent, $p);
+                $totalnb_entreprise = $totalnb_entreprise + 1;
+                array_push($company, $all_entreprises->nom_entreprise);
+                //CALCULER LE POURCENTAGE ET METTRE DANS LE TABLEAU
+                $p = ($montant * 100) / $total_annuel;
+                
+                array_push($percent, $p);
 
             }
 
            
            
         }
+
+        //ON AURA $totalnb_entreprise COULEURS DONC FAIRE UN TABLEAU QUI VA AVOIR LE NOMRE TOTAL DE COULEUR DIFFERENTES
+        $alpha = ['A', 'B', 'C', 'D', 'E', 'F', ];
+        $colors = [];
+        //FAIRE UNE BOUCLE POUR CONCEVOIR LA COULEUR DE CHAQUE ENTREPRISE DETECTEE
+        for($c=0; $c < $totalnb_entreprise; $c++)
+        {   
+            $bol = rand(0,1);
+            $chaine_couleur = "#";
+            for($l = 1; $l<=6; $l++)
+            {
+                if($bol == 0)
+                {
+                    $a = rand(0,5);
+                    $chaine_couleur =  $chaine_couleur.$alpha[$a];//les 26 lettre de l'alphabet
+                    //$bol ++;
+                }
+                else{
+                    $chaine_couleur =  $chaine_couleur.rand(0,9);
+                    //$bol = $bol - 1 ;
+                }
+            }
+           //echo $chaine_couleur ."<br>";
+            //mettre la couelur formée dans le tableau colors
+            array_push($colors, $chaine_couleur);
+            //dd($colors);
+           
+        }
+
+        
 
        //AFFICHER LES GRAPHES PAR PRESTATIONS, PAR SERVICES
 
@@ -743,7 +882,7 @@ class Calculator extends Controller
            
         }
         
-        return view('graph/yearly', compact('data', 'mois_francais', 'percent', 'company', 'serv', 'data_serv'));
+        return view('graph/yearly', compact('data', 'mois_francais', 'percent', 'company', 'serv', 'data_serv', 'colors'));
     }
 
     public function SearchYear(Request $request)
@@ -814,6 +953,9 @@ class Calculator extends Controller
             
         } 
 
+        //NOMBRE TOTAL DES ENTREPRISE
+        $totalnb_entreprise = 0; 
+
         //PAR CLIENT 
         //REQUETE POUR RECUPERER LA RECETTE ANNUELLE
         $first_date = $year."-01-01";
@@ -874,6 +1016,7 @@ class Calculator extends Controller
            
             if($montant != 0) //Si cette entreprise a rapporter quelque il faut remplir dans le tableu pour le gaph
             {
+                $totalnb_entreprise = $totalnb_entreprise + 1;
                     array_push($company, $all_entreprises->nom_entreprise);
                     //CALCULER LE POURCENTAGE ET METTRE DANS LE TABLEAU
                     $p = ($montant * 100) / $total_annuel;
@@ -883,6 +1026,34 @@ class Calculator extends Controller
             }
 
            
+           
+        }
+
+        //ON AURA $totalnb_entreprise COULEURS DONC FAIRE UN TABLEAU QUI VA AVOIR LE NOMRE TOTAL DE COULEUR DIFFERENTES
+        $alpha = ['A', 'B', 'C', 'D', 'E', 'F', ];
+        $colors = [];
+        //FAIRE UNE BOUCLE POUR CONCEVOIR LA COULEUR DE CHAQUE ENTREPRISE DETECTEE
+        for($c=0; $c < $totalnb_entreprise; $c++)
+        {   
+            $bol = rand(0,1);
+            $chaine_couleur = "#";
+            for($l = 1; $l<=6; $l++)
+            {
+                if($bol == 0)
+                {
+                    $a = rand(0,5);
+                    $chaine_couleur =  $chaine_couleur.$alpha[$a];//les 26 lettre de l'alphabet
+                    //$bol ++;
+                }
+                else{
+                    $chaine_couleur =  $chaine_couleur.rand(0,9);
+                    //$bol = $bol - 1 ;
+                }
+            }
+           //echo $chaine_couleur ."<br>";
+            //mettre la couelur formée dans le tableau colors
+            array_push($colors, $chaine_couleur);
+            //dd($colors);
            
         }
 

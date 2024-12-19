@@ -16,19 +16,21 @@
 @endphp
 
 @section('content')
+    @if(auth()->user()->id_role != NULL)
         <div class="row">
                 <div class="col-md-3">
                  <a href="form_add_contrat"><button class="btn btn-success"> <b>ENREGISTRER UN CONTRAT</b></button></a>
                 
                 </div>
                 <div class="col-md-3">
-                    <a href="form_add_prestation"><button class="btn btn-primary"> <b>ENREGISTRER UNE PRESTATION</b></button></a>
+                   
                 </div>
         </div>
+    @endif
      <div class="row">
          @if(session('success'))
             <div class="col-md-12 box-header">
-              <p class="bg-success" style="font-size:13px;">{{session('success')}}</p>
+              <p class="bg-green" style="font-size:13px;">{{session('success')}}</p>
             </div>
           @endif
         

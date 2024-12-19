@@ -236,37 +236,59 @@
           <ul class="treeview-menu">
             <li><a href="welcome"><i class="fa fa-circle-o"></i>Accueil</a></li>
 
-            @if(auth()->user()->id_role == 1 OR auth()->user()->id_role == 3 OR auth()->user()->id_role == 4 )
+            @if(auth()->user()->id_role == 1 OR auth()->user()->id_role == 3)
+              <li><a href="entreprises"><i class="fa fa-circle-o"></i> Entreprises</a></li> 
+              <li><a href="entreprises"><i class="fa fa-circle-o"></i>Entreprises</a></li>
               <li class="active"><a href="prestation"><i class="fa fa-circle-o"></i>Prestations</a></li>
               <li class="active"><a href="prospection"><i class="fa fa-circle-o"></i>Prospections</a></li>
-              <li class="active"><a href="fiche"><i class="fa fa-circle-o"></i>Clients</a></li>
+              <li class="active"><a href="fiche"><i class="fa fa-circle-o"></i>Fiche clients</a></li>
               <li><a href="contrat"><i class="fa fa-circle-o"></i>Contrats</a></li>
-              <!--<li class="active"><a href="facture"><i class="fa fa-circle-o"></i>Factures</a></li>-->
+              <li class="active"><a href="facture"><i class="fa fa-circle-o"></i>Factures</a></li>
+              
+            @endif
+
+            @if(auth()->user()->id_role == 4 )
+              <li><a href="entreprises"><i class="fa fa-circle-o"></i>Entreprises</a></li>
+              <li class="active"><a href="prestation"><i class="fa fa-circle-o"></i>Prestations</a></li>
+              <li class="active"><a href="prospection"><i class="fa fa-circle-o"></i>Prospections</a></li>
+              <li class="active"><a href="fiche"><i class="fa fa-circle-o"></i>Fiche clients</a></li>
+              <li><a href="contrat"><i class="fa fa-circle-o"></i>Contrats</a></li>
+              <li class="active"><a href="facture"><i class="fa fa-circle-o"></i>Factures</a></li>
+            @endif
+
+            @if(auth()->user()->id_role == null)
+              <li class="active"><a href="prestation"><i class="fa fa-circle-o"></i>Prestations</a></li>
+              <li class="active"><a href="prospection"><i class="fa fa-circle-o"></i>Prospections</a></li>
+              <li class="active"><a href="fiche"><i class="fa fa-circle-o"></i>Fiche clients</a></li>
+
             @endif
 
             @if(auth()->user()->id_role == 5)
             
                 @if(auth()->user()->id_departement == 1)
-                  <li class="active"><a href="fiche"><i class="fa fa-circle-o"></i>Clients</a></li>
+                  <li><a href="entreprises"><i class="fa fa-circle-o"></i>Entreprises</a></li>
+                  <li class="active"><a href="fiche"><i class="fa fa-circle-o"></i>Fiche clients</a></li>
                   <li class="active"><a href="prospection"><i class="fa fa-circle-o"></i>Prospections</a></li>
                   <li ><a href="prestation"><i class="fa fa-circle-o"></i>Prestations</a></li>
                    
                 @endif
 
-                 @if(auth()->user()->id_departement == 4)
-                  <li class="active"><a href="fiche"><i class="fa fa-circle-o"></i>Clients</a></li>
+                @if(auth()->user()->id_departement == 4)
+                 <li><a href="entreprises"><i class="fa fa-circle-o"></i>Entreprises</a></li>
+                  <li class="active"><a href="fiche"><i class="fa fa-circle-o"></i>Fiche clients</a></li>
                  
                    
                 @endif
 
                 @if(auth()->user()->id_departement == 5)
-                    <li class="active"><a href="fiche"><i class="fa fa-circle-o"></i>Clients</a></li>
+                  <li><a href="entreprises"><i class="fa fa-circle-o"></i>Entreprises</a></li>
+                    <li class="active"><a href="fiche"><i class="fa fa-circle-o"></i>Fiche clients</a></li>
                     <li><a href="contrat"><i class="fa fa-circle-o"></i>Contrats</a></li>
                     <li class="active"><a href="facture"><i class="fa fa-circle-o"></i>Factures</a></li>
                 @endif
 
                 @if(auth()->user()->id_departement > 5)
-                    <li class="active"><a href="fiche"><i class="fa fa-circle-o"></i>Clients</a></li>
+                    <li class="active"><a href="fiche"><i class="fa fa-circle-o"></i>Fiche clients</a></li>
                     <li class="active"><a href="prospection"><i class="fa fa-circle-o"></i>Prospections</a></li>
                     <li ><a href="prestation"><i class="fa fa-circle-o"></i>Prestations</a></li>
                   
@@ -276,9 +298,11 @@
              @if(auth()->user()->id_role == 2)
                 
                 @if(auth()->user()->id_departement == 5)
+                    <li><a href="entreprises"><i class="fa fa-circle-o"></i>Entreprises</a></li>
                     <li class="active"><a href="prestation"><i class="fa fa-circle-o"></i>Prestations</a></li>
                     <li><a href="contrat"><i class="fa fa-circle-o"></i>Contrats</a></li>
                     <li class="active"><a href="facture"><i class="fa fa-circle-o"></i>Factures</a></li>
+                    <li><a href="entreprises"><i class="fa fa-circle-o"></i> Clients/Prospects</a></li>
                 @endif
             @endif
 
@@ -298,6 +322,7 @@
               </span>
             </a>
             <ul class="treeview-menu">
+              
               <li><a href="utilisateurs"><i class="fa fa-circle-o"></i>Utilisateurs</a></li>
               <li><a href="roles"><i class="fa fa-circle-o"></i>Rôles</a></li>
               <li><a href="departements"><i class="fa fa-circle-o"></i>Départements</a></li>
@@ -305,7 +330,7 @@
               <li><a href="entreprises"><i class="fa fa-circle-o"></i> Entreprises</a></li>
               <li><a href="type_prestation"><i class="fa fa-circle-o"></i>Type de prestations</a></li>
               <li><a href="interlocuteurs"><i class="fa fa-circle-o"></i>Interlocuteurs</a></li>
-               <li><a href="entreprises"><i class="fa fa-circle-o"></i> Clients/Prospects</a></li>
+              
         
             </ul>
           </li>
@@ -772,6 +797,89 @@
               
           @endif
         @endif
+
+        @if(auth()->user()->id_role == null)
+          <!-- Small boxes (Stat box) -->
+          <div class="row">
+            <div class="col-lg-3 col-xs-6">
+              <!-- small box -->
+              <div class="small-box bg-aqua">
+                <div class="inner">
+                @php
+                      $count = $calculator->CountCustomer();
+                        $countactif = $calculator-> CountActif();
+                  $countinactif = $calculator-> CountInactif();
+                      //dd($count);
+                    @endphp
+                  <h3> <a href="customers" style="color:#fff;">{{$count}}</a></h3>
+                  
+                  <a href="customers" style="color:#fff;"><p>CLIENTS</p></a><br>
+              <a href="actifs" style="color:#fff; size:13px;"><p>Actifs : {{$countactif}}  </p></a>  
+              <a href="inactifs" style="color:red;"><p>Inactifs : {{$countinactif}}</p></a>  
+                
+                </div>
+                <div class="icon">
+                  <i class="fa fa-shopping-cart"></i>
+                </div>
+                <a href="customers" class="small-box-footer">
+                  Plus d'infos <i class="fa fa-arrow-circle-right"></i>
+                </a>
+              </div>
+            </div>
+
+            <!-- ./col -->
+            <div class="col-lg-3 col-xs-6">
+              <!-- small box -->
+              <div class="small-box bg-red">
+                <div class="inner">
+                    @php
+                      $count = $calculator->CountProspect();
+                    @endphp
+                  <h3><a href="prospects" style="color:#fff">{{$count}}</a></h3>
+                  <a href="prospects" style="color:#fff"><p>PROSPECTS</p></a><br>
+                      <p> </p>
+                        <p></p>  <br><br>
+                        <p></p>  
+                
+                </div>
+                <div class="icon">
+                  <i class="ion ion-pie-graph"></i>
+                </div>
+                <a href="prospects" class="small-box-footer">
+                  Plus d'infos<i class="fa fa-arrow-circle-right"></i>
+                </a>
+              </div>
+            </div>
+            <!-- ./col -->
+
+            <div class="col-lg-3 col-xs-6">
+              <!-- small box -->
+              <div class="small-box bg-green">
+                <div class="inner">
+                    @php
+                      $count = $calculator->CountCible();
+                    @endphp
+                  <h3><a href="cibles" style="color:#fff">{{$count}}</a></h3>
+                        <a href="cibles" style="color:#fff"><p>CIBLES</p></a><br>
+                      <p> </p>
+                        <p></p>  <br><br>
+                        <p></p>  
+                      
+                
+                </div>
+                <div class="icon">
+                  <i class="ion-checkmark-circled"></i>
+                </div>
+                <a href="cibles" class="small-box-footer">
+                  Plus d'infos<i class="fa fa-arrow-circle-right"></i>
+                </a>
+              </div>
+            </div>
+          <!-- ./col -->
+          </div>
+          <!-- /.row -->
+        @endif
+
        
       @endif
 

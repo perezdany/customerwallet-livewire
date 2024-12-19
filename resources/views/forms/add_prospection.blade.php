@@ -77,20 +77,20 @@
                                     <input type="date" class="form-control  input-lg" name="date_prospect" required>
                                 </div>
                                 <div class="form-group">
-                                    <label>Service Proposé (*)</label>
+                                    <label>Services Proposés (*)</label>
                                     <select class="form-control input-lg select2" data-placeholder ="--Selctionner un service--" multiple="multiple" name="service_propose[]" required>
                                     
                                         <!--liste des services a choisir -->
                                     
                                         @php
-                                            $get = $servicecontroller->GetAll();
+                                            $get = $servicecontroller->GetAllNoSusp();
                                             $categorie = $categoriecontroller->DisplayAll();
                                         @endphp
                                         @foreach( $categorie as $categorie)
                                             
                                             <optgroup label="{{$categorie->libele_categorie}}">{{$categorie->libele_categorie}}</optgroup>
                                             @php
-                                                $get = $servicecontroller->GetByCategorie($categorie->id);
+                                                $get = $servicecontroller->GetByCategorieNoSusp($categorie->id);
                                                 
                                             @endphp
                                             @foreach($get as $service)
@@ -129,8 +129,8 @@
                                 </div>
 
                                 <div class="form-group">
-                                        <label >Nom de l'entreprise:</label>
-                                        <input type="text" id="ent" disabled="disabled" maxlength="50" class="form-control  input-lg" name="entreprise_name" onkeyup="this.value=this.value.toUpperCase()">
+                                        <label >Nom :</label>
+                                        <input type="text" id="ent" required disabled="disabled" maxlength="50" class="form-control  input-lg" name="nom_entreprise" onkeyup="this.value=this.value.toUpperCase()">
                                 </div>
 
                                 <div class="form-group">
@@ -148,27 +148,34 @@
                                         <input type="text" id="adresse" disabled="disabled" maxlength="60" class="form-control  input-lg" name="adresse" placeholder="COCODY DANGA" onkeyup="this.value=this.value.toUpperCase()">
                                 </div>
 
+                                 <div class="form-group">
+                                        <label >Activité :</label>
+                                        <input type="text" id="activite" disabled="disabled" maxlength="60" class="form-control  input-lg" name="activite" placeholder="TRANSIT" onkeyup="this.value=this.value.toUpperCase()">
+                                </div>
+
                                 <script>
-                                function griseFunction1() {
-                                    /* ce script permet d'activer les champ si l'utilisateur choisit autre*/
-                                    var val = document.getElementById("mySelectEnt").value;
+                                    function griseFunction1() {
+                                        /* ce script permet d'activer les champ si l'utilisateur choisit autre*/
+                                        var val = document.getElementById("mySelectEnt").value;
+                                        
+                                        if( val == 'autre')
+                                        {
+                                            document.getElementById("ent").removeAttribute("disabled");
+                                            document.getElementById("ca").removeAttribute("disabled");
+                                            document.getElementById("ne").removeAttribute("disabled");
+                                            document.getElementById("adresse").removeAttribute("disabled");
+                                            document.getElementById("activite").removeAttribute("disabled");
+                                        }
+                                        else{
+                                            document.getElementById("ent").setAttribute("disabled", "disabled");
+                                            document.getElementById("ca").setAttribute("disabled", "disabled");
+                                            document.getElementById("ne").setAttribute("disabled", "disabled");
+                                            document.getElementById("adresse").setAttribute("disabled", "disabled");
+                                            document.getElementById("activite").setAttribute("disabled", "disabled");
+                                        }
                                     
-                                    if( val == 'autre')
-                                    {
-                                        document.getElementById("ent").removeAttribute("disabled");
-                                        document.getElementById("ca").removeAttribute("disabled");
-                                        document.getElementById("ne").removeAttribute("disabled");
-                                        document.getElementById("adresse").removeAttribute("disabled");
                                     }
-                                    else{
-                                        document.getElementById("ent").setAttribute("disabled", "disabled");
-                                        document.getElementById("ca").setAttribute("disabled", "disabled");
-                                        document.getElementById("ne").setAttribute("disabled", "disabled");
-                                        document.getElementById("adresse").setAttribute("disabled", "disabled");
-                                    }
-                                
-                                }
-                            </script>
+                                </script>
                         
                             </div>
 

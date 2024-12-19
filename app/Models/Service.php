@@ -13,6 +13,7 @@ class Service extends Model
 
     protected $fillable = [
         'libele_service',
+        'suspendu',
         'description',
         'updated_at',
     ];

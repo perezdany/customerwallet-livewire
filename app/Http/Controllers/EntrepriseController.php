@@ -51,6 +51,11 @@ use App\Models\Entreprise;
 
 use DB;
 
+use App\Models\Proposition;
+
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
+
 class EntrepriseController extends Controller
 {
     //Hendle Entreporise
@@ -59,8 +64,9 @@ class EntrepriseController extends Controller
     {
         $get = DB::table('entreprises')
         ->join('statutentreprises', 'entreprises.id_statutentreprise', '=', 'statutentreprises.id')
-         ->orderBy('nom_entreprise', 'asc')
-        ->get(['entreprises.*', 'statutentreprises.libele_statut']);
+        ->join('pays', 'entreprises.id_pays', '=', 'pays.id')
+        ->orderBy('nom_entreprise', 'asc')
+        ->get(['entreprises.*', 'statutentreprises.libele_statut', 'pays.nom_pays']);
 
         return $get;
     }
@@ -70,8 +76,9 @@ class EntrepriseController extends Controller
         $get = DB::table('entreprises')
         ->where('entreprises.id', $id)
         ->join('statutentreprises', 'entreprises.id_statutentreprise', '=', 'statutentreprises.id')
+        ->join('pays', 'entreprises.id_pays', '=', 'pays.id')
         ->orderBy('nom_entreprise', 'asc')
-        ->get(['entreprises.*', 'statutentreprises.libele_statut']);
+        ->get(['entreprises.*', 'statutentreprises.libele_statut', 'pays.nom_pays']);
 
         return $get;
     }
@@ -98,17 +105,111 @@ class EntrepriseController extends Controller
         return $get;
     }
 
+    public function TableFilter(Request $request)
+    {
+        $categorie = $request->categorie;
+        $etat = $request->etat;
+        //VERIFIER LES ELEMENTS QUE LE GARS A CHOISI
+        //dd($request->all());
+        if($request->categorie == "c")
+        {
+            if($request->etat == "c")
+            {
+                $entreprises = DB::table('entreprises')
+                ->join('statutentreprises', 'entreprises.id_statutentreprise', '=', 'statutentreprises.id')
+                ->join('pays', 'entreprises.id_pays', '=', 'pays.id')
+                ->orderBy('nom_entreprise', 'asc')
+                ->get(['entreprises.*', 'statutentreprises.libele_statut', 'pays.nom_pays']);
+
+                //ON RETOURNE A LA PAGE CONTRAT
+                return view('admin/entreprises', compact('entreprises', 'categorie', 'etat', ));
+            }
+            else
+            {
+               
+                $entreprises = DB::table('entreprises')
+                ->where('entreprises.etat', $request->etat)
+                ->join('statutentreprises', 'entreprises.id_statutentreprise', '=', 'statutentreprises.id')
+                ->join('pays', 'entreprises.id_pays', '=', 'pays.id')
+                ->orderBy('nom_entreprise', 'asc')
+                ->get(['entreprises.*', 'statutentreprises.libele_statut', 'pays.nom_pays']);
+
+                //ON RETOURNE A LA PAGE CONTRAT
+                return view('admin/entreprises', compact('entreprises', 'categorie', 'etat', ));         
+               
+            }
+
+           
+        }
+        else
+        {
+            //dd('ici');
+            if($request->categorie == "3")
+            {
+                //dd('l');
+                $entreprises = DB::table('entreprises')
+                ->where('entreprises.id_statutentreprise', $categorie)
+                ->join('statutentreprises', 'entreprises.id_statutentreprise', '=', 'statutentreprises.id')
+                ->join('pays', 'entreprises.id_pays', '=', 'pays.id')
+                ->orderBy('nom_entreprise', 'asc')
+                ->get(['entreprises.*', 'statutentreprises.libele_statut', 'pays.nom_pays']);
+
+                //ON RETOURNE A LA PAGE CONTRAT
+                return view('admin/entreprises', compact('entreprises', 'categorie', 'etat', ));
+            }
+            else
+            {
+               //dd('tt');
+                if($request->etat == "c")
+                {
+                    //dd($statut);
+                    $entreprises = DB::table('entreprises')
+                    ->where('entreprises.id_statutentreprise', $categorie)
+                    ->join('statutentreprises', 'entreprises.id_statutentreprise', '=', 'statutentreprises.id')
+                    ->join('pays', 'entreprises.id_pays', '=', 'pays.id')
+                    ->orderBy('nom_entreprise', 'asc')
+                    ->get(['entreprises.*', 'statutentreprises.libele_statut', 'pays.nom_pays']);
+
+                    //ON RETOURNE A LA PAGE CONTRAT
+                    return view('admin/entreprises', compact('entreprises', 'categorie', 'etat', ));
+                }
+                else
+                {
+                    //dd('la');
+                    $entreprises = DB::table('entreprises')
+                    ->where('entreprises.id_statutentreprise', $categorie)
+                    ->where('entreprises.etat', $request->etat)
+                    ->join('statutentreprises', 'entreprises.id_statutentreprise', '=', 'statutentreprises.id')
+                    ->join('pays', 'entreprises.id_pays', '=', 'pays.id')
+                    ->orderBy('nom_entreprise', 'asc')
+                    ->get(['entreprises.*', 'statutentreprises.libele_statut', 'pays.nom_pays']);
+
+                    //ON RETOURNE A LA PAGE CONTRAT
+                    return view('admin/entreprises', compact('entreprises', 'categorie', 'etat', ));
+                }
+              
+
+              
+            }
+
+            
+        }
+
+    }
+
     public function AddEntreprise(Request $request)
     {
+        //dd($request->all());
         $Insert = Entreprise::create([
            
-            'nom_entreprise'=> $request->entreprise_name,
+            'nom_entreprise'=> $request->nom_entreprise,
             'chiffre_affaire' => $request->chiffre, 
             'nb_employes' => $request->nb_emp,
             'adresse' => $request->adresse,
+            'activite' => $request->activite,
             'telephone' => $request->tel,
             'id_pays' => $request->pays,
-            
+            'etat' => 0,
             'id_statutentreprise' => 1,
              'created_by' => auth()->user()->id, 
         ]);
@@ -116,9 +217,57 @@ class EntrepriseController extends Controller
         //dd($request->chiffre);
 
         //Recuperer l'enregistrement
-       $get = Entreprise::where('nom_entreprise', '=', $request->entreprise_name)->get();
+       $get = Entreprise::where('nom_entreprise', '=', $request->nom_entreprise)->get();
 
        return $get;
+    }
+
+    public function AddClient(Request $request)
+    {
+        //dd($request->all());
+        $Insert = Entreprise::create([
+           
+            'nom_entreprise'=> $request->nom_entreprise,
+            'chiffre_affaire' => $request->chiffre, 
+            'nb_employes' => $request->nb_emp,
+            'adresse' => $request->adresse,
+            'activite' => $request->activite,
+            'telephone' => $request->tel,
+            'id_pays' => $request->pays,
+            'etat' => 1,
+            'id_statutentreprise' => 2,
+            'client_depuis' => date('Y-m-d'),
+             'created_by' => auth()->user()->id, 
+        ]);
+
+        //dd($request->chiffre);
+
+        //Recuperer l'enregistrement
+       $get = Entreprise::where('nom_entreprise', '=', $request->nom_entreprise)->get();
+
+       return $get;
+    }
+
+
+    public function AddProspect(Request $request)
+    {
+        //dd($request->nom_entreprise);
+        $Insert = Entreprise::create([
+           
+            'nom_entreprise' => $request->nom_entreprise,
+            'chiffre_affaire' => $request->chiffre, 
+            'nb_employes' => $request->nb_emp,
+            'adresse' => $request->adresse,
+            'activite' => $request->activite,
+            'telephone' => $request->tel,
+            'etat' => 0,
+            'id_pays' => $request->pays,
+            'adresse_email' => $request->email,
+            'id_statutentreprise' => 1,
+             'created_by' => auth()->user()->id, 
+        ]);
+
+        return redirect('prospects')->with('success', 'Enregistrement effectué');
     }
 
     public function DetectNewCustomer()
@@ -143,16 +292,18 @@ class EntrepriseController extends Controller
         { 
             $Insert = Entreprise::create([
            
-                'nom_entreprise'=> $request->nom,
+                'nom_entreprise'=> $request->nom_entreprise,
                 'id_statutentreprise' => $request->statut,
                 'chiffre_affaire' => $request->chiffre, 
                 'nb_employes' => $request->nb_emp,
                 'etat' => $request->optionsradios,
                 'adresse' => $request->adresse,
+                'activite' => $request->activite,
                 'telephone' => $request->tel,
                 'id_pays' => $request->pays,
                  'created_by' => auth()->user()->id,
                  'client_depuis' => $request->depuis,
+                 'adresse_email' => $request->email,
 
             ]);
 
@@ -160,17 +311,19 @@ class EntrepriseController extends Controller
         }
         else
         {
-            dd('ici');
+           
             $Insert = Entreprise::create([
            
-                'nom_entreprise'=> $request->nom,
+                'nom_entreprise'=> $request->nom_entreprise,
                 'id_statutentreprise' => $request->statut,
                 'chiffre_affaire' => $request->chiffre, 
                 'nb_employes' => $request->nb_emp,
                 'etat' => $request->optionsradios,
                 'adresse' => $request->adresse,
                 'telephone' => $request->tel,
+                'activite' => $request->activite,
                 'id_pays' => $request->pays,
+                'adresse_email' => $request->email,
                  'created_by' => auth()->user()->id,
             ]);
 
@@ -181,6 +334,27 @@ class EntrepriseController extends Controller
         
     }
 
+    public function DisplayRecap(Request $request)
+    {
+        //dd($request->id_entreprise);
+        return view('admin/entreprises',
+            [
+                'display_recap' => $request->id_entreprise,
+            ]
+        );
+    }
+
+    public function DisplayProspRecap(Request $request)
+    {
+        //dd($request->id_entreprise);
+        return view('dash/prospects',
+            [
+                'display_recap' => $request->id_entreprise,
+            ]
+        );
+    }
+
+
     public function EditEntrForm(Request $request)
     {
         //dd($request->id_entreprise);
@@ -190,6 +364,17 @@ class EntrepriseController extends Controller
             ]
         );
     }
+
+    public function EditEntrProspForm(Request $request)
+    {
+        //dd($request->id_entreprise);
+        return view('dash/prospects',
+            [
+                'id_entreprise' => $request->id_entreprise,
+            ]
+        );
+    }
+
 
     public function EditEntrActifForm(Request $request)
     {
@@ -221,7 +406,7 @@ class EntrepriseController extends Controller
         ->where('id', $request->id_entreprise)
         ->update([
            
-            'nom_entreprise'=> $request->nom,
+            'nom_entreprise'=> $request->nom_entreprise,
             'id_statutentreprise' => $request->statut,
             'client_depuis' => $request->depuis,
             'chiffre_affaire' => $request->chiffre, 
@@ -229,11 +414,142 @@ class EntrepriseController extends Controller
             'etat' => $request->optionsradios,
             'adresse' => $request->adresse,
             'telephone' => $request->tel,
-             
+            'activite' => $request->activite,
+            'adresse_email' => $request->email,
         ]);
 
       
         return redirect('entreprises')->with('success', 'Modificaiton effectuée');
+    }
+
+    public function EditEntrepriseWithFilterList(Request $request)
+    {
+       //dd($request->all());
+
+       //MODIFIE LA TABLE
+        $affected= DB::table('entreprises')
+        ->where('id', $request->id_entreprise)
+        ->update([
+           
+            'nom_entreprise'=> $request->nom_entreprise,
+            'id_statutentreprise' => $request->statut,
+            'client_depuis' => $request->depuis,
+            'chiffre_affaire' => $request->chiffre, 
+            'nb_employes' => $request->nb_emp,
+            'etat' => $request->optionsradios,
+            'adresse' => $request->adresse,
+            'telephone' => $request->tel,
+            'activite' => $request->activite,
+            'adresse_email' => $request->email,
+        ]);
+
+        //ON APPLIQUE A NOUVEAU LE FILTRE QUI ETAIT
+        $categorie = $request->categorie;
+        $etat = $request->etat;
+        //VERIFIER LES ELEMENTS QUE LE GARS A CHOISI
+        //dd($request->all());
+        if($request->categorie == "c")
+        {
+            if($request->etat == "c")
+            {
+                $entreprises = DB::table('entreprises')
+                ->join('statutentreprises', 'entreprises.id_statutentreprise', '=', 'statutentreprises.id')
+                ->join('pays', 'entreprises.id_pays', '=', 'pays.id')
+                ->orderBy('nom_entreprise', 'asc')
+                ->get(['entreprises.*', 'statutentreprises.libele_statut', 'pays.nom_pays']);
+
+              
+            }
+            else
+            {
+               
+                $entreprises = DB::table('entreprises')
+                ->where('entreprises.etat', $request->etat)
+                ->join('statutentreprises', 'entreprises.id_statutentreprise', '=', 'statutentreprises.id')
+                ->join('pays', 'entreprises.id_pays', '=', 'pays.id')
+                ->orderBy('nom_entreprise', 'asc')
+                ->get(['entreprises.*', 'statutentreprises.libele_statut', 'pays.nom_pays']);
+               
+            }
+
+           
+        }
+        else
+        {
+            //dd('ici');
+            if($request->categorie == "3")
+            {
+                //dd('l');
+                $entreprises = DB::table('entreprises')
+                ->where('entreprises.id_statutentreprise', $categorie)
+                ->join('statutentreprises', 'entreprises.id_statutentreprise', '=', 'statutentreprises.id')
+                ->join('pays', 'entreprises.id_pays', '=', 'pays.id')
+                ->orderBy('nom_entreprise', 'asc')
+                ->get(['entreprises.*', 'statutentreprises.libele_statut', 'pays.nom_pays']);
+
+            
+            }
+            else
+            {
+               //dd('tt');
+                if($request->etat == "c")
+                {
+                    //dd($statut);
+                    $entreprises = DB::table('entreprises')
+                    ->where('entreprises.id_statutentreprise', $categorie)
+                    ->join('statutentreprises', 'entreprises.id_statutentreprise', '=', 'statutentreprises.id')
+                    ->join('pays', 'entreprises.id_pays', '=', 'pays.id')
+                    ->orderBy('nom_entreprise', 'asc')
+                    ->get(['entreprises.*', 'statutentreprises.libele_statut', 'pays.nom_pays']);
+
+                    //ON RETOURNE A LA PAGE CONTRAT
+                    return view('admin/entreprises', compact('entreprises', 'categorie', 'etat', ));
+                }
+                else
+                {
+                    //dd('la');
+                    $entreprises = DB::table('entreprises')
+                    ->where('entreprises.id_statutentreprise', $categorie)
+                    ->where('entreprises.etat', $request->etat)
+                    ->join('statutentreprises', 'entreprises.id_statutentreprise', '=', 'statutentreprises.id')
+                    ->join('pays', 'entreprises.id_pays', '=', 'pays.id')
+                    ->orderBy('nom_entreprise', 'asc')
+                    ->get(['entreprises.*', 'statutentreprises.libele_statut', 'pays.nom_pays']);
+
+                  
+                }
+              
+            }
+            
+        }
+
+       
+        $message_success = "Modification effecutée";
+      //ON RETOURNE A LA PAGE CONTRAT
+      return view('admin/entreprises', compact('entreprises', 'categorie', 'etat', 'message_success'));
+    }
+
+
+    public function EditProspect(Request $request)
+    {
+       
+
+        $affected= DB::table('entreprises')
+        ->where('id', $request->id_entreprise)
+        ->update([
+           
+            'nom_entreprise'=> $request->nom_entreprise,
+            'activite' => $request->activite,
+            'client_depuis' => $request->depuis,
+            'chiffre_affaire' => $request->chiffre, 
+            'nb_employes' => $request->nb_emp,
+            'adresse' => $request->adresse,
+            'telephone' => $request->tel,
+             'adresse_email' => $request->email,
+        ]);
+
+      
+        return redirect('prospects')->with('success', 'Modificaiton effectuée');
     }
 
     public function EditEntrInactif(Request $request)
@@ -250,9 +566,10 @@ class EntrepriseController extends Controller
             'chiffre_affaire' => $request->chiffre, 
             'nb_employes' => $request->nb_emp,
             'etat' => $request->optionsradios,
+            'activite' => $request->activite,
             'adresse' => $request->adresse,
             'telephone' => $request->tel,
-             
+            'adresse_email' => $request->email,
         ]);
 
       
@@ -272,10 +589,11 @@ class EntrepriseController extends Controller
             'client_depuis' => $request->depuis,
             'chiffre_affaire' => $request->chiffre, 
             'nb_employes' => $request->nb_emp,
+            'activite' => $request->activite,
             'etat' => $request->optionsradios,
             'adresse' => $request->adresse,
             'telephone' => $request->tel,
-             
+             'adresse_email' => $request->email,
         ]);
 
       
@@ -308,7 +626,42 @@ class EntrepriseController extends Controller
     {
         $deleted = DB::table('entreprises')->where('id', '=', $request->id_entreprise)->delete();
 
+        //SUPPRIMER TOUTES LES PROPOSITIONs DE CE CLIENT
+        $propal_customer = DB::table('propositions')->get();
+        foreach($propal_customer as $propal_customer)
+        {
+            $deleted_propal = DB::table('propositions')->where('id_client', '=', $request->id_entreprise)->delete();
+
+            if($deleted_propal != 0)
+            {
+                //SUPPRIMER LE FICHIER DANS LE DOSSIER
+                Storage::delete($propal_customer->path_doc);
+            }
+        }
+
         return redirect('entreprises')->with('success', 'Elément supprimé');
+    }
+
+    Public function DeleteProspect(Request $request)
+    {
+        $deleted = DB::table('entreprises')->where('id', '=', $request->id_entreprise)->delete();
+
+        //SUPPRIMER TOUTES LES PROPOSITIONs DE CE CLIENT
+        $propal_customer = DB::table('propositions')->get();
+        foreach($propal_customer as $propal_customer)
+        {
+            $deleted_propal = DB::table('propositions')->where('id_client', '=', $request->id_entreprise)->delete();
+            
+            if($deleted_propal != 0)
+            {
+                //SUPPRIMER LE FICHIER DANS LE DOSSIER
+                Storage::delete($propal_customer->path_doc);
+            }
+
+            
+        }
+
+        return redirect('prospects')->with('success', 'Elément supprimé');
     }
 
     public function GetAboutThisTable(Request $request)

@@ -132,7 +132,7 @@
                       @php
                             $role = $rolecontroller->GetAll();
                         @endphp
-                        
+                        <option value="">Aucun</option>
                         @foreach($role as $role)
                             <option value={{$role->id}}>{{$role->intitule}}</option>
                             

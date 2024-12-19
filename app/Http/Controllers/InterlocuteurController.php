@@ -52,6 +52,61 @@ class InterlocuteurController extends Controller
         );
     }
 
+    public function EditInterlocFormF(Request $request)
+    {
+        return view('admin/edit_interlocuteur_from_fiche',
+            [
+                'id' => $request->id_interlocuteur,
+            ]
+        );
+    }
+
+    public function EditInterlocFormFicheCustomer(Request $request)
+    {
+        
+        return view('admin/edit_interlocuteur_from_fiche_customer',
+            [
+                'id' => $request->id_interlocuteur,
+            ]
+        );
+    }
+
+    public function DeleteInterlocuteur(Request $request)
+    {
+        $delete =  DB::table('interlocuteurs')->where('id', '=', $request->id_interlocuteur)->delete();
+
+        return back()->with('success', 'Elément supprimé');
+
+    }
+
+    public function DeleteInterlocuteurInFiche(Request $request)
+    {
+        $delete =  DB::table('interlocuteurs')->where('id', '=', $request->id_interlocuteur)->delete();
+
+        //return back()->with('success', 'Elément supprimé');
+
+       return view('dash/prospect_about',
+                [
+                    'id_entreprise' => $request->id_entreprise,
+                    'success' => 'Elément supprimé'
+                ]
+            );
+    }
+
+    public function DeleteInterlocuteurFicheCustomer(Request $request)
+    {
+
+        //dd('iflz');
+        $delete =  DB::table('interlocuteurs')->where('id', '=', $request->id_interlocuteur)->delete();
+
+       
+       return view('dash/fiche_customer',
+                [
+                    'id_entreprise' => $request->id_entreprise,
+                    'success' => 'Elément supprimé'
+                ]
+                );
+    }
     public function GetById($id)
     {
         $get = DB::table('interlocuteurs')
@@ -79,6 +134,59 @@ class InterlocuteurController extends Controller
             ]);
 
         return redirect('interlocuteurs')->with('success', 'Modification effectuée');
+    }
+
+    public function EditInterlocuteurFiche(Request $request)
+    {
+        $affected = DB::table('interlocuteurs')
+        ->where('id', $request->id_interlocuteur)
+        ->update([
+            'titre' => $request->titre,
+             'nom' => $request->nom, 
+             'tel' => $request->tel,
+              'email' => $request->email, 
+              'fonction' => $request->fonction, 
+              
+              'id_entreprise' => $request->entreprise,
+              
+            ]);
+
+            return view('dash/prospect_about',
+            [
+                'id_entreprise' => $request->entreprise,
+                'success' => 'Modification effectuée'
+            ]);
+    }
+
+    public function EditInterlocuteurFicheCustomer(Request $request)
+    {
+       // dd($request->id_entreprise);
+        $affected = DB::table('interlocuteurs')
+        ->where('id', $request->id_interlocuteur)
+        ->update([
+            'titre' => $request->titre,
+             'nom' => $request->nom, 
+             'tel' => $request->tel,
+              'email' => $request->email, 
+              'fonction' => $request->fonction, 
+              
+              'id_entreprise' => $request->entreprise,
+              
+            ]);
+
+            return view('dash/fiche_customer',
+            [
+                'id_entreprise' => $request->entreprise,
+                'success' => 'Modification effectuée'
+            ]
+        );
+    }
+
+    public function CibleDisplayByIdEntreprise(Request $request)
+    {
+        $interloc = Interlocuteur::where('id_entreprise', $request->id_entreprise)->get();
+        
+        return view('dash/cibles', compact('interloc'));
     }
 
     public function DisplayByIdEntreprise(Request $request)
@@ -123,6 +231,30 @@ class InterlocuteurController extends Controller
         
 
         return redirect('interlocuteurs')->with('success', 'Enregistrement effectué');
+    }
+
+    public function AddInterlocuteurCible(Request $request)
+    {
+        //dd('idz');
+        if(strval($request->entreprise) == "0")
+        {
+            return back()->with('error', 'Choisissez l\'entreprise ');
+        }
+        
+        //dd($request->nom);
+        $Insert = Interlocuteur::create([
+            'titre' => $request->titre,
+             'nom' => $request->nom, 
+             'tel' => $request->tel,
+              'email' => $request->email, 
+              'fonction' => $request->fonction, 
+              
+              'id_entreprise' => $request->entreprise,
+               'created_by' => auth()->user()->id,
+        ]);
+        
+
+        return redirect('cibles')->with('success', 'Enregistrement effectué');
     }
 
     public function AddInterlocuteurInFiche(Request $request)

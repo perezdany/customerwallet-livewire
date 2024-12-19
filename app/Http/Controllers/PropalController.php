@@ -49,7 +49,7 @@ class PropalController extends Controller
         if($fichier != null)
         {
             //VERFIFIER LE FORMAT 
-            $extension = pathinfo($fichier->getClientOriginalName(), PATHINFO_EXTENSION);
+            /*$extension = pathinfo($fichier->getClientOriginalName(), PATHINFO_EXTENSION);
 
             if($extension != "pdf")
             {
@@ -59,7 +59,7 @@ class PropalController extends Controller
                         'error' => 'FORMAT DE FICHIER INCORRECT'
                     ]
                 );
-            }
+            }*/
 
             //VERIFIER SI L'ENREGISTREMENT A UN CHEMIN D'ACCES ENREGISTRE
             $get_path = Proposition::where('libele', $file_name)->count();
@@ -75,7 +75,7 @@ class PropalController extends Controller
                     'libele' =>  $file_name,
                     'path_doc' => $path,
                     'id_prospection' => $request->id_prospection,
-                    
+                    'id_client' => $request->id_entreprise,
                     'id_utilisateur' => auth()->user()->id
                 ]);
 
@@ -167,7 +167,7 @@ class PropalController extends Controller
                     'libele' =>  $file_name,
                     'path_doc' => $path,
                     'id_prospection' => $request->id_prospection,
-                    
+                    'id_client' => $request->id_entreprise,
                     'id_utilisateur' => auth()->user()->id
                 ]);
 

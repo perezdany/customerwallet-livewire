@@ -14,7 +14,7 @@ class Entreprise extends Model
     protected $fillable = [
        'nom_entreprise', 'client_depuis', 'id_statutentreprise', 
        'chiffre_affaire', 'nb_employes', 'adresse', 'id_pays',
-       'etat', 'telephone',
+       'etat', 'telephone', 'activite', 'adresse_email',
        'created_by', 'updated_at'
     ];
 }

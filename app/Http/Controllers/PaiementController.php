@@ -106,7 +106,9 @@ class PaiementController extends Controller
             {
                 $affected = DB::table('contrats')
                 ->where('id', $le_contrat->id)
-                ->update(['statut_solde' => 1, ]);
+                ->update(['statut_solde' => 1, 
+                    'date_solde' => Date('Y-m-d')
+                ]);
             }
         }
 

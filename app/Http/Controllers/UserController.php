@@ -111,7 +111,8 @@ class UserController extends Controller
     public function AddUser(Request $request)
     {
         $user_password = Hash::make($request->password);
-
+        
+        //dd($request->role);
         $Insert = Utilisateur::create([
             'login' => $request->login, 
             'password' => $user_password,

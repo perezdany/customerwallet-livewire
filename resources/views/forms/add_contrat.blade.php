@@ -1,4 +1,4 @@
-@extends('layouts/dash')
+@extends('layouts/base')
 @php
     use App\Http\Controllers\ServiceController;
 
@@ -73,7 +73,7 @@
                       <div class="box-body">
                         <div class="form-group">
                           <label>Entreprise:</label>
-                          <select class="form-control input-lg" name="entreprise">
+                          <select class="form-control input-lg" name="entreprise" required>
                             @php
                                   $get = (new EntrepriseController())->GetAll();
                               @endphp
@@ -82,16 +82,61 @@
                                   <option value={{$entreprise->id}}>{{$entreprise->nom_entreprise}}</option>
                                   
                               @endforeach
-                              <option value="autre">Autre<option>
+                              
                           </select>
                             
                         </div>    
 
                         <div class="form-group">
-                          <label>Titre</label>
-                          <input type="text"  class="form-control input-lg" name="titre" placeholder="Ex: 202317854/SUPPORT/TTR/01"/>
+                          <label>Référence du contrat:</label>
+                          <input type="text"  class="form-control input-lg" name="titre"  required placeholder="Ex: 202317854/SUPPORT/TTR/01"/>
                         </div>
-                  
+
+                        <!--ICI IL FAUT DONNER LA POSSIBILITE DE CHOISIR SI C'EST UN AVENANT-->
+                        <div class="form-group">
+                          <label>Avenant ?</label>
+                          <select class="form-control input-lg" name="avenant" id="mySelectAvenant" onchange="griseFunction1()" >
+                            <option value="0">NON</option>
+                            <option value="1">OUI</option>
+                              
+                          </select>
+                            
+                        </div> 
+
+                        <div class="form-group">
+                          <label>Contrat Parent:</label>
+                          <select class="form-control input-lg" name="contrat_parent" id="contratparent" disabled required>
+                              @php
+                                  $getparent = ($contratcontroller)->GetContratParent();
+                              @endphp
+                              <option value="0">--Choisir une entreprise--</option>
+                              @foreach($getparent as $getparent)
+                                  <option value={{$getparent->id}}>{{$getparent->titre_contrat}}/{{$getparent->nom_entreprise}}</option>
+                                  
+                              @endforeach
+                              
+                          </select>
+                            
+                        </div>    
+
+                        <script>
+                            function griseFunction1() {
+                                /* ce script permet d'activer les champ si l'utilisateur choisit autre*/
+                                var val = document.getElementById("mySelectAvenant").value;
+                                
+                                if( val == '1')
+                                {
+                                  document.getElementById("contratparent").removeAttribute("disabled");
+                                  
+                                }
+                                else
+                                {
+                                  document.getElementById("contratparent").setAttribute("disabled", "disabled");
+                                 
+                                }
+                            
+                            }
+                        </script>   
                         <div class="form-group">
                           <label >Montant (XOF)</label>
                           <input type="text" class="form-control  input-lg" required name="montant">
@@ -102,10 +147,7 @@
                           <input type="date" class="form-control  input-lg" required name="date_debut">
                         </div>
 
-                        <div class="form-group">
-                          <label>Date de solde</label>
-                          <input type="date" class="form-control  input-lg" required name="date_solde">
-                        </div>
+                       
 
                         <div class="form-group">
                           <label>Durée du contrat</label>
@@ -123,27 +165,12 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <label>Fichier du contrat(PDF)</label>
-                              <input type="file" class="form-control" name="file">
-                        </div>
-
-                        <div class="form-group">
-                            <label>Facture Proforma(PDF)</label>
-                              <input type="file" class="form-control" name="file_proforma" required>
-                        </div>
-
-                        
-                      
                       </div>
                     </div>
                     <div class="col-md-6">
 
                       <div class="box-body">
-                        <div class="box-header with-border">
-                          <h3 class="box-title"> <b>PRESTATION</b></h3><br>
-                        </div>
-
+                       
                         <div class="form-group">
                             <label>Service (*)</label>
                             <select class="form-control input-lg select2" multiple="multiple" name="service[]"
@@ -151,14 +178,14 @@
                                 <!--liste des services a choisir -->
                                 
                                 @php
-                                    $get = $servicecontroller->GetAll();
+                                    $get = $servicecontroller->GetAllNoSusp();
                                     $categorie = $categoriecontroller->DisplayAll();
                                 @endphp
                                 @foreach( $categorie as $categorie)
                                     
                                     <optgroup label="{{$categorie->libele_categorie}}">{{$categorie->libele_categorie}}</optgroup>
                                     @php
-                                        $get = $servicecontroller->GetByCategorie($categorie->id);
+                                        $get = $servicecontroller->GetByCategorieNoSus($categorie->id);
                                         
                                     @endphp
                                     @foreach($get as $service)
@@ -171,7 +198,7 @@
                         </div>
                   
                         <div class="form-group">
-                            <label>Type de prestation (*)</label>
+                            <label>Type de facturation (*)</label>
                             <select class="form-control input-lg" name="type" required>
                                 <!--liste des services a choisir -->
                                 @php
@@ -184,18 +211,31 @@
                                 @endforeach
                             </select>
                         </div>
+
                         <div class="form-group">
-                            <label for="exampleInputEmail1">Date d'exécution(*)</label>
-                            <input type="date" class="form-control  input-lg" required name="date_execute">
-                        </div>
-                          
-                            
-                        <div class="form-group">
-                            <label>Adresse </label>
-                            <input type="text" required maxlength="100" class="form-control input-lg" 
-                            name="localisation" placeholder="Ex: Cocody Angré Cocovico"  onkeyup='this.value=this.value.toUpperCase()'>
+                          <label>Reconduction:</label>
+                          <select class="form-control input-lg" name="reconduction" required>
+                               
+                                <option value="0">NON</option>
+                                <option value="1">TACITE</option>
+                                <option value="2">ACCORD PARTIES</option>
+                          </select>
                         </div>
 
+                        <div class="form-group">
+                            <label>Fichier du contrat(PDF)</label>
+                              <input type="file" class="form-control" name="file" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Facture Proforma(PDF)</label>
+                              <input type="file" class="form-control" name="file_proforma" >
+                        </div>
+
+                         <div class="form-group">
+                            <label>Bon de commande(PDF)</label>
+                              <input type="file" class="form-control" name="bon_commande" >
+                        </div>
 
                       </div>
 

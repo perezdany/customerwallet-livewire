@@ -62,11 +62,87 @@ $all =  $interlocuteurcontroller-> GetAll();
                                     <td>{{$all->nom_entreprise}}</td>
                                     <td>{{$all->nom_prenoms}}</td>
                                     <td>
-                                        <form action="edit_interlocuteur_form" method="post">
-                                            @csrf
-                                            <input type="text" value={{$all->id}} style="display:none;" name="id_interlocuteur">
-                                            <button type="submit" class="btn btn-primary"><i class ="fa fa-edit"></i></button>
-                                        </form>
+                                        @if(auth()->user()->id_departement == 1)
+                                            <form action="edit_interlocuteur_form" method="post">
+                                                @csrf
+                                                <input type="text" value={{$all->id}} style="display:none;" name="id_interlocuteur">
+                                                <button type="submit" class="btn btn-primary"><i class ="fa fa-edit"></i></button>
+                                            </form>
+                                            @if(auth()->user()->id_role == 5)
+                                                
+                                                <form action="delete_interlocuteur" method="post">
+                                                    @csrf
+                                                    <input type="text" value={{$all->id}} style="display:none;" name="id_interlocuteur">
+                                                   <button type="submit" class="btn btn-danger"><i class ="fa fa-trash"></i></button>
+                                                </form>
+                                            @endif
+
+                                            @if(auth()->user()->id_role == 3)
+                                            
+                                            
+                                            @endif
+                                            @if(auth()->user()->id_role == 1)
+
+                                                <form action="edit_interlocuteur_form" method="post">
+                                                    @csrf
+                                                    <input type="text" value={{$all->id}} style="display:none;" name="id_interlocuteur">
+                                                    <button type="submit" class="btn btn-primary"><i class ="fa fa-edit"></i></button>
+                                                </form>
+                                                <form action="delete_interlocuteur" method="post">
+                                                    @csrf
+                                                    <input type="text" value={{$all->id}} style="display:none;" name="id_interlocuteur">
+                                                    <button type="submit" class="btn btn-danger"><i class ="fa fa-trash"></i></button>
+                                                </form>
+                                           
+                                            
+                                            @endif
+                                        @else
+                                           
+                                            @if(auth()->user()->id_role == 5)
+                                               
+                                                <form action="delete_interlocuteur" method="post">
+                                                    @csrf
+                                                    <input type="text" value={{$all->id}} style="display:none;" name="id_interlocuteur">
+                                                     <button type="submit" class="btn btn-danger"><i class ="fa fa-trash"></i></button>
+                                                </form>
+                                            @endif
+
+                                            @if(auth()->user()->id_role == 4)
+                                                <form action="edit_interlocuteur_form" method="post">
+                                                    @csrf
+                                                    <input type="text" value={{$all->id}} style="display:none;" name="id_interlocuteur">
+                                                    <button type="submit" class="btn btn-primary"><i class ="fa fa-edit"></i></button>
+                                                </form>
+                                                <form action="delete_interlocuteur" method="post">
+                                                    @csrf
+                                                    <input type="text" value={{$all->id}} style="display:none;" name="id_interlocuteur">
+                                                     <button type="submit" class="btn btn-danger"><i class ="fa fa-trash"></i></button>
+                                                </form>
+                                            @endif
+
+                                            @if(auth()->user()->id_role == 3)
+                                           
+                                            
+                                            @endif
+                                            @if(auth()->user()->id_role == 1)
+
+                                                <form action="edit_interlocuteur_form" method="post">
+                                                    @csrf
+                                                    <input type="text" value={{$all->id}} style="display:none;" name="id_interlocuteur">
+                                                    <button type="submit" class="btn btn-primary"><i class ="fa fa-edit"></i></button>
+                                                </form>
+                                                <form action="delete_interlocuteur" method="post">
+                                                    @csrf
+                                                    <input type="text" value={{$all->id}} style="display:none;" name="id_interlocuteur">
+                                                     <button type="submit" class="btn btn-danger"><i class ="fa fa-trash"></i></button>
+                                                </form>
+
+                                           
+                                            
+                                            @endif
+                                        @endif
+                            
+                                       
                                         
                                     </td>
                                 </tr>

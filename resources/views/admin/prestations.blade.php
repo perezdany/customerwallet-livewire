@@ -24,12 +24,15 @@
 @endphp
 
 @section('content')
+    @if(auth()->user()->id_role != NULL)
       <div class="row">
              
         <div class="col-md-3">
-              <a href="form_add_prestation"><button class="btn btn-primary"> <b>ENREGISTRER UNE PRESTATION</b></button></a>
+          
         </div>
       </div>
+    @endif
+      
     <div class="row">
       
          @if(session('success'))
@@ -57,7 +60,7 @@
                           <tr>
                           <th>Entreprise</th>
                           <th>Date </th>
-                          <th>Type de prestation</th>
+                          <th>Type de facturation</th>
                           <th>Lieu</th>
                           
                           <th>Fin de contrat</th>
@@ -65,7 +68,9 @@
                           
                           @if(auth()->user()->id_role == 3)
                           @else
+                            @if(auth()->user()->id_role != NULL)
                              <th>Action</th>
+                            @endif
                           @endif
                          
                           </tr>
@@ -91,9 +96,13 @@
                                           <ul>
                                           @foreach($se as $se_get)
                                               <li>{{$se_get->libele_service}}
-                                                @if(auth()->user()->id_departement == 1 OR auth()->user()->id_departement == 3 OR auth()->user()->id_departement == 4)
-                                                    <a href="delete_prestation/{{$se_get->id}}">
-                                                <button class="btn btn-danger"><i class="fa fa-times"></i></button></a>
+                                               
+
+                                                @if(auth()->user()->id_role != NULL)
+                                                  @if(auth()->user()->id_departement == 1 OR auth()->user()->id_departement == 3 OR auth()->user()->id_departement == 4)
+                                                      <a href="delete_prestation/{{$se_get->id}}">
+                                                    <button class="btn btn-danger"><i class="fa fa-times"></i></button></a>
+                                                  @endif
                                                 @endif
                                                 
                                               </li>
@@ -102,35 +111,35 @@
                                       
                                       </td>
                                       
-                                       
-                                     
-                                        @if(auth()->user()->id_role == 3)
-                                         
-                                        @else
-                                          <td>
-                                            @if(auth()->user()->id_role == 2)
-                                              <form action="display_facture" method="post">
-                                                  @csrf
-                                                  <input type="text" value={{$all->id}} style="display:none;" name="id_prestation">
-                                                  <button type="submit" class="btn btn-success"><i class="fa fa-ticket"></i></button>
-                                              </form>
-                                            @else
-
-                                            @endif
-                                            @if(auth()->user()->id_departement == 1 OR auth()->user()->id_departement == 3 OR auth()->user()->id_departement == 4)
-                                                
-                                              <form action="edit_prestation_form" method="post">
-                                                  @csrf
-                                                  <input type="text" value={{$all->id}} style="display:none;" name="id_prestation">
-                                                  <button type="submit" class="btn btn-primary"><i class="fa fa-edit"></i></button>
-                                              </form>
-
-                                            @endif
+                                       @if(auth()->user()->id_role != NULL)
+                                             @if(auth()->user()->id_role == 3)
                                           
-                                          </td>
-                                        @endif
+                                          @else
+                                            <td>
+                                              @if(auth()->user()->id_role == 2)
+                                                <form action="display_facture" method="post">
+                                                    @csrf
+                                                    <input type="text" value={{$all->id}} style="display:none;" name="id_prestation">
+                                                    <button type="submit" class="btn btn-success"><i class="fa fa-ticket"></i></button>
+                                                </form>
+                                              @else
 
-                                     
+                                              @endif
+                                              @if(auth()->user()->id_departement == 1 OR auth()->user()->id_departement == 3 OR auth()->user()->id_departement == 4)
+                                                  
+                                                <form action="edit_prestation_form" method="post">
+                                                    @csrf
+                                                    <input type="text" value={{$all->id}} style="display:none;" name="id_prestation">
+                                                    <button type="submit" class="btn btn-primary"><i class="fa fa-edit"></i></button>
+                                                </form>
+
+                                              @endif
+                                            
+                                            </td>
+                                          @endif
+
+                                       @endif
+
                                   </tr>
                               @endforeach
                           </tbody>
@@ -170,7 +179,10 @@
                             <th>Montant</th>
                             <th>Contrat</th>
                             <th>Etat facture</th>
-                            <th>Action</th>
+                            @if(auth()->user()->id_role != NULL)
+                              <th>Action</th>
+                            @endif
+                            
                         </tr>
                         </thead>
                         <tbody>
@@ -199,28 +211,31 @@
                                     @endif
                                  
                                  </td>
-                                <td>
-                                  @if(auth()->user()->id_role != 3)
-                                      @if($my_own->reglee == 0)
-                                          @if(auth()->user()->id_role != 2)
-                                          <form action="paiement_form" method="post">
-                                            @csrf
-                                            <input type="text" value={{$my_own->id}} style="display:none;" name="id_facture">
-                                            <button type="submit" class="btn btn-success"><i class="fa fa-money"></i></button>
+                                  @if(auth()->user()->id_role != NULL)
+                                    <td>
+                                      @if(auth()->user()->id_role != 3)
+                                          @if($my_own->reglee == 0)
+                                            @if(auth()->user()->id_role != 2)
+                                              <form action="paiement_form" method="post">
+                                                @csrf
+                                                <input type="text" value={{$my_own->id}} style="display:none;" name="id_facture">
+                                                <button type="submit" class="btn btn-success"><i class="fa fa-money"></i></button>
+                                              </form>
+                                            @endif
+                                          @else
+                                          
+                                          @endif
+                                          
+                                          <form action="edit_facture_form" method="post">
+                                              @csrf
+                                              <input type="text" value={{$my_own->id}} style="display:none;" name="id_facture">
+                                              <button type="submit" class="btn btn-primary"><i class="fa fa-edit"></i></button>
                                           </form>
-                                        @endif
-                                      @else
-                                      
                                       @endif
-                                      
-                                      <form action="edit_facture_form" method="post">
-                                          @csrf
-                                          <input type="text" value={{$my_own->id}} style="display:none;" name="id_facture">
-                                          <button type="submit" class="btn btn-primary"><i class="fa fa-edit"></i></button>
-                                      </form>
+                                    
+                                    </td>
                                   @endif
-                                 
-                                </td>
+                                    
                                 </tr>
                             @endforeach
                         </tbody>

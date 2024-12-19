@@ -100,6 +100,28 @@
                         <textarea type="text" class="form-control input-lg" name="description"></textarea>
                     </div>  
 
+                     <div class="form-group">
+                                    <label>Catgégories (*)</label>
+                                    <select class="form-control input-lg select2"  multiple="multiple" name="categorie" required>
+                                    
+                                        <!--liste des services a choisir -->
+                                    
+                                        @php
+                                            $get = $servicecontroller->GetAll();
+                                            $categorie = $categoriecontroller->DisplayAll();
+                                        @endphp
+                                        @foreach( $categorie as $categorie)
+                                            
+                                            <option label="{{$categorie->id}}">{{$categorie->libele_categorie}}</option>
+                                            
+                                          
+                                        @endforeach
+                                    
+                                    </select>
+                            
+                                
+                                </div>  
+
                     <div class="box-footer">
                         <button type="submit" class="btn btn-primary">VALIDER</button>
                     </div>

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Models\Cible;
+use App\Models\Entreprise;
 
 use DB;
 
@@ -14,35 +14,43 @@ class CibleController extends Controller
 
     public function GetAll()
     {
-       $get = DB::table('cibles')
-       ->join('pays', 'cibles.id_pays', '=', 'pays.id')
-       ->orderBy('nom', 'asc')
-       ->get(['cibles.*', 'pays.nom_pays']);
+      
+       $get = DB::table('entreprises')
+       ->where('entreprises.id_statutentreprise', 3)
+       ->join('pays', 'entreprises.id_pays', '=', 'pays.id')
+       ->join('statutentreprises', 'entreprises.id_statutentreprise', '=', 'statutentreprises.id')
+        ->orderBy('nom_entreprise', 'asc')
+       ->get(['entreprises.*', 'statutentreprises.libele_statut', 'pays.nom_pays']);
 
        return $get;
     }
 
     public function GetById($id)
     {
-        $get = DB::table('cibles')
-        ->where('cibles.id', $id)
-        ->join('pays', 'cibles.id_pays', '=', 'pays.id')
-        ->orderBy('nom', 'asc')
-        ->get(['cibles.*', 'pays.nom_pays']);
+        $get = DB::table('entreprises')
+        ->where('entreprises.id', $id)
+        ->join('statutentreprises', 'entreprises.id_statutentreprise', '=', 'statutentreprises.id')
+        ->join('pays', 'entreprises.id_pays', '=', 'pays.id')
+        ->orderBy('nom_entreprise', 'asc')
+        ->get(['entreprises.*', 'pays.nom_pays']);
 
         return $get;
     }
 
     public function AddCible(Request $request)
-    {
-        $Insert = Cible::create([
+    { 
+        $Insert = Entreprise::create([
            
-            'nom'=> $request->nom,
-            'adresse' => $request->adresse, 
-            'contact' => $request->tel,
-            'id_pays' => $request->pays,
-            
-            'created_by' => auth()->user()->id, 
+        'nom_entreprise'=> $request->nom,
+        'chiffre_affaire' => $request->chiffre, 
+        'nb_employes' => $request->nb_emp,
+        'adresse' => $request->adresse,
+        'activite' => $request->activite,
+        'telephone' => $request->tel,
+        'id_pays' => $request->pays,
+        
+        'id_statutentreprise' => 3,
+         'created_by' => auth()->user()->id, 
         ]);
 
         //dd($request->chiffre);
@@ -53,32 +61,52 @@ class CibleController extends Controller
 
     public function EditCibleForm(Request $request)
     {
+      
         //dd($request->id_entreprise);
         return view('dash/cibles',
             [
                 'id_entreprise' => $request->id_entreprise,
             ]
         );
+
+        
     }
+
+    public function DisplayCibleInfo(Request $request)
+    {
+      
+        //dd($request->id_entreprise);
+        return view('dash/cibles',
+            [
+                'display_entreprise' => $request->id_entreprise,
+            ]
+        );
+
+        
+    }
+
 
     public function EditCible(Request $request)
     {
-        $affected= DB::table('cibles')
+        $affected= DB::table('entreprises')
         ->where('id', $request->id_entreprise)
         ->update([
-           
-           'nom'=> $request->nom,
-            'adresse' => $request->adresse, 
-            'contact' => $request->tel,
+            'nom_entreprise'=> $request->nom,
+            'chiffre_affaire' => $request->chiffre, 
+            'nb_employes' => $request->nb_emp,
+            'adresse' => $request->adresse,
+            'activite' => $request->activite,
+            'telephone' => $request->tel,
             'id_pays' => $request->pays,
-             
+            
+            'created_by' => auth()->user()->id, 
         ]);
         return redirect('cibles')->with('success', 'Modification effectuée');
     }
 
     public function DeleteCible(Request $request)
     {
-        $deleted = DB::table('cibles')->where('id', '=', $request->id_entreprise)->delete();
+        $deleted = DB::table('entreprises')->where('id', '=', $request->id_entreprise)->delete();
 
         return redirect('cibles')->with('success', 'Elément supprimé');
     }

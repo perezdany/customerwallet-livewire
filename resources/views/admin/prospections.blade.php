@@ -14,23 +14,24 @@
 
 @section('content')
       
-     <div class="row">
+    <div class="row">
+        @if(auth()->user()->id_role != NULL)
                 <div class="col-md-3">
                     <a href="form_add_prospection"><button class="btn btn-primary"> <b>AJOUTER UNE PROSPECTION</b></button></a>
                 
                 </div>
-
-                  @if(session('success'))
+        @endif
+        @if(session('success'))
             <div class="col-md-12 box-header">
-              <p class="bg-success" style="font-size:13px;">{{session('success')}}</p>
+                <p class="bg-success" style="font-size:13px;">{{session('success')}}</p>
             </div>
-          @endif
+        @endif
 
-          @if(session('error'))
-            <div class="col-md-12 box-header">
-              <p class="bg-warning" style="font-size:13px;">{{session('error')}}</p>
-            </div>
-          @endif
+        @if(session('error'))
+        <div class="col-md-12 box-header">
+            <p class="bg-warning" style="font-size:13px;">{{session('error')}}</p>
+        </div>
+        @endif
     </div>
     
     <div class="row">
@@ -52,10 +53,10 @@
                             <th>Date</th>
                             <th>Entreprise</th>	
                             <th>prestation(s) proposée(s)</th>
+                            @if(auth()->user()->id_role != NULL)
+                                <th>Modifier la prospection</th>
+                            @endif
                             
-                            <th>Contact(interlocuteur)</th>
-                            
-                            <th>Modifier la prospection</th>
                             <th>Facture proforma:</th>
                             
                             @if(auth()->user()->id_role == 3)
@@ -76,39 +77,38 @@
                                         </form>
                                     </td>
                                     <td>
-                                    @php
-                                        //On va écrire un code pour detecter tous les services offerts <a href="delete/{{$se_get->id}}"><button class="btn btn-danger"><i class="fa fa-times"></i></button></a>
-                                        $se = DB::table('prospection_services')
-                                        ->join('prospections', 'prospection_services.prospection_id', '=', 'prospections.id')
-                                        ->join('services', 'prospection_services.service_id', '=', 'services.id') 
-                                        ->where('prospection_id', $all->id)    
-                                        ->get(['services.libele_service', 'prospection_services.*']);
-                                    @endphp
-                                    <ul>
-                                    @foreach($se as $se_get)
-                                        <li>{{$se_get->libele_service}}</li>
-                                    @endforeach
-                                    </ul>
+                                        @php
+                                            //On va écrire un code pour detecter tous les services offerts <a href="delete/{{$se_get->id}}"><button class="btn btn-danger"><i class="fa fa-times"></i></button></a>
+                                            $se = DB::table('prospection_services')
+                                            ->join('prospections', 'prospection_services.prospection_id', '=', 'prospections.id')
+                                            ->join('services', 'prospection_services.service_id', '=', 'services.id') 
+                                            ->where('prospection_id', $all->id)    
+                                            ->get(['services.libele_service', 'prospection_services.*']);
+                                        @endphp
+                                        <ul>
+                                        @foreach($se as $se_get)
+                                            <li>{{$se_get->libele_service}}</li>
+                                        @endforeach
+                                        </ul>
                                     </td>
                                     
-                                    <td>{{$all->nom}}/{{$all->tel}}</td>
-                                    
-
+                                    @if(auth()->user()->id_role != NULL)
                                         <td>
                                        
-                                        @if(auth()->user()->id_role == 3)
-                                        @else
-                                            <form action="edit_prospect_form" method="post">
-                                                @csrf
-                                                <input type="text" value={{$all->id}} style="display:none;" name="id_prospection">
-                                                <button type="submit" class="btn btn-success"><i class="fa fa-edit"></i></button>
-                                            </form>
-                                        @endif
-                                        
-                                    </td>
+                                            @if(auth()->user()->id_role == 3)
+                                            @else
+                                                <form action="edit_prospect_form" method="post">
+                                                    @csrf
+                                                    <input type="text" value={{$all->id}} style="display:none;" name="id_prospection">
+                                                    <button type="submit" class="btn btn-success"><i class="fa fa-edit"></i></button>
+                                                </form>
+                                            @endif
+                                            
+                                        </td>
+                                    @endif
+                                   
                                     <td>
                                         
-
                                         <form action="download_facture_proforma" method="post" enctype="multipart/form-data">
                                             @csrf
                                             <label>Télécharger</label>

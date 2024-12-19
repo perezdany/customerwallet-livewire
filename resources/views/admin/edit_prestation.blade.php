@@ -63,17 +63,17 @@
                         
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Date d'exécution(*)</label>
-                                <input type="date" class="form-control  input-lg" required name="date_execute" value={{$get->date_prestation}} >
+                                <input type="date" class="form-control  input-lg" required name="date_execute" value="{{$get->date_prestation}}" >
                             </div>
 
                             <div class="form-group">
                                 <label>Adresse </label>
-                                <input type="text" maxlength="100" class="form-control input-lg" name="localisation" value={{$get->localisation}} onkeyup="this.value=this.value.toUpperCase()">
+                                <input type="text" maxlength="100" class="form-control input-lg" name="localisation" value="{{$get->localisation}}" onkeyup="this.value=this.value.toUpperCase()">
                             </div>
                             
                             <label>Service (*)</label>
                             <select class="form-control input-lg select2" multiple="multiple" name="service[]"
-                                style="width: 100%;" data-placeholder="--Selectionnez le service--" required>
+                                style="width: 100%;" data-placeholder="--Selectionnez le service--" >
                                 <!--liste des services a choisir -->
                                 
                                 @php
@@ -100,7 +100,7 @@
                             <label>Type de prestation (*)</label>
                             <select class="form-control input-lg" name="type" required>
                                
-                                 <option value={{$get->id_type_prestation}}>{{$get->libele}}</option>
+                                 <option value="{{$get->id_type_prestation}}">{{$get->libele}}</option>
                                 @php
                                     $type = $typeprestationcontroller->GetAll();
                                 @endphp
@@ -117,14 +117,14 @@
                             <label>Choisissez le contrat(*) </label>
                             <!--Afficher les contrats que l'utilisateur a créé-->
                             <select class="form-control input-lg" name="contrat" required>
-                                <option value={{$get->id_contrat}}>{{$get->titre_contrat}}</option>
+                                <option value="{{$get->id_contrat}}">{{$get->titre_contrat}}</option>
                                 @php
-                                    $contrat = $contratcontroller->GetAll();
+                                    $contrat = $contratcontroller->RetriveAll();
                                     
                                 @endphp
                                 
                                 @foreach($contrat as $contrat)
-                                    <option value={{$contrat->id}}>{{$contrat->titre_contrat}}</option>
+                                    <option value="{{$contrat->id}}">{{$contrat->titre_contrat}}</option>
                                     
                                 @endforeach
                             </select>

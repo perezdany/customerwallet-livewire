@@ -16,4 +16,11 @@ class StatutEntrepriseController extends Controller
 
         return $get;
     }
+
+    public function GetById($id)
+    {
+        $get = Statutentreprise::where('id', $id)->get();
+
+        return $get;
+    }
 }

@@ -89,7 +89,7 @@ Route::middleware(['auth:web'])->group(function(){
 
     //CONTRATS
     Route::get('contrat', function () {
-        return view('dash/ccontrats');
+        return view('dash/all_contrats');
     });
 
     //AFFICHER LES CONTRATS D'UN CLIENT 
@@ -102,9 +102,14 @@ Route::middleware(['auth:web'])->group(function(){
     Route::post('download', [ContratController::class, 'DownloadContrat']);
     Route::post('view_contrat', [ContratController::class, 'DownloadContrat']);
 
+    //FILTRE DANS LE TABLEAU DES CONTRATS
+    Route::post('make_filter_contrat', [ContratController::class, 'TableFilter']);
+
     //LE FICHIER DE PROFORMA DU CONTRAT
     Route::post('view_contrat_proforma', [ContratController::class, 'ViewProformaContrat']);
 
+    //VOIR LE BON DE COMMANDE
+    Route::post('view_bon_commande', [ContratController::class, 'ViewBon']);
 
     //AJOUTER UN CONTRAT
     Route::post('add_contrat', [ContratController::class, 'AddContrat']);
@@ -276,6 +281,12 @@ Route::middleware(['auth:web'])->group(function(){
     //MODIFIER UNE ENTREPRISE
     Route::post('edit_entreprise_form', [EntrepriseController::class, 'EditEntrForm']);
     Route::post('edit_entreprise', [EntrepriseController::class, 'EditEntreprise']);
+
+    //MODIFIER AVEC FONCTIONNALITE POPUP ET SI Y AVAIT DES FILTES APPLIQUES
+    Route::post('edit_entreprise_with_filter', [EntrepriseController::class, 'EditEntrepriseWithFilterList']);
+
+    //FILTRAGE DANS LE TABLEAU ENTREPRISES
+    Route::post('make_filter_entreprise', [EntrepriseController::class, 'TableFilter']);
     
     //ACTIFS
     Route::post('edit_entreprise_actif_form', [EntrepriseController::class, 'EditEntrActifForm']);
@@ -296,7 +307,29 @@ Route::middleware(['auth:web'])->group(function(){
 
 
     //AJOUTER 
+    Route::get('form_add_entreprise', function(){
+        return view('forms/add_entreprise');
+    });
+
     Route::post('add_entreprise', [EntrepriseController::class, 'SaveEntreprise']);
+
+    //AJOUTER UN PROSPECT
+    Route::get('form_add_prospect', function(){
+        return view('forms/add_prospect');
+    });
+    Route::post('add_prospect', [EntrepriseController::class, 'AddProspect']);
+
+    //MODIFIER LE PROSPECT
+    Route::post('edit_prospect', [EntrepriseController::class, 'EditProspect']);
+
+    //SUPPRIMEER UN PROSPECT
+    Route::post('delete_prospect', [EntrepriseController::class, 'DeleteProspect']);
+
+    //FORMULAIRE POUR MODIFIER UN PROSPECT
+    Route::post('edit_entreprise_prosp_form', [EntrepriseController::class, 'EditEntrProspForm']);
+
+    //AFFICHER LE RECAP DU PROSPECT
+    Route::post('display_prosp', [EntrepriseController::class, 'DisplayProspRecap']);
 
     //AFFICHER LA LISTE DE TOUS LES CLIENTS
     Route::get('customers', function(){
@@ -341,13 +374,25 @@ Route::middleware(['auth:web'])->group(function(){
     //MODIFIER LA CIBLE
     Route::post('edit_entreprise_cible', [CibleController::class, 'EditCible']);
 
-    //AJOUTER UNE CIBLEs
+    //AJOUTER UNE CIBLE
+    Route::get('form_add_cible', function(){
+        return view('forms/add_cible');
+    });
+    
+    //FORMULAIRE
     Route::post('add_entreprise_cible', [CibleController::class, 'AddCible']);
 
+    //SUPPRIMER UNE CIBLEs
+    Route::post('delete_cible', [CibleController::class, 'DeleteCible']);
 
+    //AFFICHER LES INFOS DE L'ENTREPRISE CIBLE
+    Route::post('display_info', [CibleController::class, 'DisplayCibleInfo']);
 
     //SUPPRIMER UNE ENTREPRISE
     Route::post('delete_entreprise', [EntrepriseController::class, 'DeleteEntreprise']);
+
+    //AFFICHER LES INFOS DE L'ENTREPRISE
+    Route::post('display_ent', [EntrepriseController::class, 'DisplayRecap']);
 
     
      //AFFICHER LA LISTE DE TOUTES LES PRESTATIONS
@@ -388,6 +433,8 @@ Route::middleware(['auth:web'])->group(function(){
     //AFFICHER LES PAIEMENTS DE LA FACTURES
     Route::post('paiement_by_facture', [PaiementController::class, 'PaiementByFacture']);
 
+    
+
     //INTERLOCUTEURS
     Route::get('interlocuteurs', function(){
         return view('admin/interlocuteurs');
@@ -397,13 +444,35 @@ Route::middleware(['auth:web'])->group(function(){
     Route::post('edit_interlocuteur_form', [InterlocuteurController::class, 'EditInterlocForm']);
     Route::post('edit_interlocuteur', [InterlocuteurController::class, 'EditInterlocuteur']);
 
+    //MODIFIER DANS LA FICHE PROSPECT
+    Route::post('edit_interlocuteur_form_fiche', [InterlocuteurController::class, 'EditInterlocFormF']);
+    Route::post('edit_interlocuteur_fiche', [InterlocuteurController::class, 'EditInterlocuteurFiche']);
+
+    //MODIFIER DANS LA FICHE CLIENT
+    Route::post('edit_interlocuteur_form_fichec', [InterlocuteurController::class, 'EditInterlocFormFicheCustomer']);
+    Route::post('edit_interlocuteur_fichec', [InterlocuteurController::class, 'EditInterlocuteurFicheCustomer']);
+
+    //SUPPRIMER UN INTERLOCUTEUR
+    Route::post('delete_interlocuteur', [InterlocuteurController::class, 'DeleteInterlocuteur']);
+
+    //SUPPRIMER DANS LA FICHE PROSPECT
+    Route::post('delete_interlocuteur_from_fiche', [InterlocuteurController::class, 'DeleteInterlocuteurInFiche']);
+
+    //SUPPRIMER DANS LA FICHE CLIENT
+    Route::post('delete_interlocuteur_from_fichec', [InterlocuteurController::class, 'DeleteInterlocuteurFicheCustomer']);
+
+
+
     //AJOUTER UN INTRELOCUTEURS
     Route::post('add_referant', [InterlocuteurController::class, 'AddInterlocuteur']);
+    Route::post('add_referant_cible', [InterlocuteurController::class, 'AddInterlocuteurCible']);
     Route::post('add_referant_in_fiche', [InterlocuteurController::class, 'AddInterlocuteurInFiche']);
     Route::post('add_referant_in_fiche_customer', [InterlocuteurController::class, 'AddInterlocuteurInFicheCustomer']);
 
     //AFFICHER LES INTERLOCUTEURS D'UNE ENTREPRISE 
     Route::post('display_by_id_entreprise', [InterlocuteurController::class, 'DisplayByIdEntreprise']);
+
+    Route::post('cible_display_by_id_entreprise', [InterlocuteurController::class, 'CibleDisplayByIdEntreprise']);
 
     Route::post('display_by_id_entreprise_actif', [InterlocuteurController::class, 'DisplayByIdEntrepriseActif']);
 
@@ -445,12 +514,19 @@ Route::middleware(['auth:web'])->group(function(){
 
      //AFFICHER TOUTES LES FACTURES
      Route::get('facture', function(){
-        return view('admin/cfactures');
+        return view('admin/factures');
+    });
+
+    //AJOUTER UNE FACTURE
+    Route::get('form_add_facture', function(){
+        return view('forms/add_facture');
     });
 
     //AFFICHER LES FACTURES D'UN CLIENT'
     Route::post('display_facture_customer', [FactureController::class, 'FactureByCustomer']);
 
+    //FILTRER PAR ETAT DES FACTURES OU PAR CLIENT
+    Route::post('make_filter_facture', [FactureController::class, 'TableFilter']);
 
     //AFFICHER LES FACTURES DE LA PRESTATION
     Route::post('display_facture', [FactureController::class, 'FactureByPrestation']);
@@ -467,6 +543,9 @@ Route::middleware(['auth:web'])->group(function(){
 
     //VOIR LE FICHIER
     Route::post('download_file_facture', [FactureController::class, 'ViewFile']);
+
+    //SUPPRIMER UNE FACTURE
+    Route::post('delete_facture', [FactureController::class, 'DeleteFacture']);
 
 
     //LES ROLES D'UTILISATEURS

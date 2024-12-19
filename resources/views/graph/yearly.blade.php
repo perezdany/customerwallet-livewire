@@ -104,16 +104,9 @@
                                 //LE LABELS POUR LES ABSCISSES DU GRAPHE
                                 labels: @json($company),
                                 datasets: [{
-                                    label: "p",
+                                    label: "Répartition",
                                     data: @json($percent),
-                                    backgroundColor: ["#A55A5A", "#47C526", "#A9CCE3 ", "#BFC9CA", "#7E5109",
-                                    "#D0D3D4", "#1D8348", "#A93226", "#F4D03F", "#1A5276",
-                                    "#9B59B6", "#F6DDCC", "#979A9A", "#7E5109", "#1D8348", "#A93226", "#F4D03F", "#1A5276",
-                                    "#9B59B6", "#F6DDCC", "#979A9A", "#7E5109",
-                                     "#A55A5A", "#47C526", "#A9CCE3 ", "#BFC9CA", "#F6DDCC", "#979A9A", "#7E5109", "#1D8348", "#A93226", "#F4D03F", "#1A5276",
-                                    "#9B59B6", "#F6DDCC", "#979A9A", "#7E5109",
-                                     "#A55A5A", "#47C526", "#A9CCE3 ", "#BFC9CA", "#F6DDCC", "#979A9A", 
-                                  "#F6DDCC", "#979A9A", "#7E5109", "#9B59B6", "#F6DDCC", "#979A9A", "#7E5109",],
+                                    backgroundColor: @json($colors),
                                 }]
                             },
                             options: {
@@ -159,14 +152,15 @@
                                 datasets: [{
                                     label: "p",
                                     data: @json($data_serv),
-                                    backgroundColor: ["#A55A5A", "#47C526", "#A9CCE3 ", "#BFC9CA", "#7E5109",
+                                    backgroundColor: ["#A09ABC", "#173753", "#1B4353", "#F6BD60", "#7E5109",
                                     "#D0D3D4", "#1D8348", "#A93226", "#F4D03F", "#1A5276",
-                                    "#9B59B6", "#F6DDCC", "#979A9A", "#7E5109", "#1D8348", "#A93226", "#F4D03F", "#1A5276",
-                                    "#9B59B6", "#F6DDCC", "#979A9A", "#7E5109",
-                                     "#A55A5A", "#47C526", "#A9CCE3 ", "#BFC9CA", "#F6DDCC", "#979A9A", "#7E5109", "#1D8348", "#A93226", "#F4D03F", "#1A5276",
-                                    "#9B59B6", "#F6DDCC", "#979A9A", "#7E5109",
-                                     "#A55A5A", "#47C526", "#A9CCE3 ", "#BFC9CA", "#F6DDCC", "#979A9A", 
-                                  "#F6DDCC", "#979A9A", "#7E5109", "#9B59B6", "#F6DDCC", "#979A9A", "#7E5109",],
+                                    "#9B59B6", "#F6DDCC", "#A57548", "#7E5109", "#1D8348", 
+                                    "#A93226", "#F4D03F", "#1A5276", "#82DDF0", "#040F0F",
+                                    "#9B59B6", "#F6DDCC", "#979A9A", "#7E5109", "#2BA84A",
+                                     "#A55A5A", "#47C526", "#A9CCE3 ", "#BFC9CA", "#F6DDCC",
+                                      "#979A9A", "#FCFFFC", "#696D7D", "#138A36", "#D4DF9E",
+                                      "#34403A", "#12100E", "#4A4B2F", "#FA198B", "#256EFF",
+                                      "#FF495C", "#46237A", "#EC7505", "#5B5B5B", "#FCB0B3"],
                                 }]
                             },
                             options: {
