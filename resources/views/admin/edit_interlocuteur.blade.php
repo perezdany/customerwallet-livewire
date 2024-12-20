@@ -64,7 +64,16 @@
 
                                 <div class="form-group">
                                     <label>Fonction</label>
-                                    <input type="text" maxlength="60" class="form-control input-lg" name="fonction" onkeyup="this.value=this.value.toUpperCase()" value="{{$interlocuteur->fonction}}" >
+                                    <select class="form-control select2"  maxlength="60" name="fonction" required>
+                                    <option value="{{$interlocuteur->fonction}}">{{$interlocuteur->fonction}}</option>
+                                                    @php
+                                                        $f = DB::table('professions')->get();
+                                                    @endphp
+                                                    @foreach($f as $f)
+                                                        <option value="{{$f->intitule}}">{{$f->intitule}}</option>
+                                                    @endforeach
+                                                </select>
+                                   
                                 </div>
 
                                 <div class="form-group">

@@ -238,26 +238,25 @@
 
             @if(auth()->user()->id_role == 1 OR auth()->user()->id_role == 3)
               <li><a href="entreprises"><i class="fa fa-circle-o"></i> Entreprises</a></li> 
-              <li><a href="entreprises"><i class="fa fa-circle-o"></i>Entreprises</a></li>
-              <li class="active"><a href="prestation"><i class="fa fa-circle-o"></i>Prestations</a></li>
+              <li><a href="interlocuteurs"><i class="fa fa-circle-o"></i>Interlocuteurs</a></li>
               <li class="active"><a href="prospection"><i class="fa fa-circle-o"></i>Prospections</a></li>
-              <li class="active"><a href="fiche"><i class="fa fa-circle-o"></i>Fiche clients</a></li>
               <li><a href="contrat"><i class="fa fa-circle-o"></i>Contrats</a></li>
               <li class="active"><a href="facture"><i class="fa fa-circle-o"></i>Factures</a></li>
+              <li class="active"><a href="fiche"><i class="fa fa-circle-o"></i>Fiche clients</a></li>
               
             @endif
 
             @if(auth()->user()->id_role == 4 )
-              <li><a href="entreprises"><i class="fa fa-circle-o"></i>Entreprises</a></li>
-              <li class="active"><a href="prestation"><i class="fa fa-circle-o"></i>Prestations</a></li>
+             <li><a href="entreprises"><i class="fa fa-circle-o"></i> Entreprises</a></li> 
+              <li><a href="interlocuteurs"><i class="fa fa-circle-o"></i>Interlocuteurs</a></li>
               <li class="active"><a href="prospection"><i class="fa fa-circle-o"></i>Prospections</a></li>
-              <li class="active"><a href="fiche"><i class="fa fa-circle-o"></i>Fiche clients</a></li>
               <li><a href="contrat"><i class="fa fa-circle-o"></i>Contrats</a></li>
               <li class="active"><a href="facture"><i class="fa fa-circle-o"></i>Factures</a></li>
+              <li class="active"><a href="fiche"><i class="fa fa-circle-o"></i>Fiche clients</a></li>
             @endif
 
             @if(auth()->user()->id_role == null)
-              <li class="active"><a href="prestation"><i class="fa fa-circle-o"></i>Prestations</a></li>
+
               <li class="active"><a href="prospection"><i class="fa fa-circle-o"></i>Prospections</a></li>
               <li class="active"><a href="fiche"><i class="fa fa-circle-o"></i>Fiche clients</a></li>
 
@@ -267,14 +266,16 @@
             
                 @if(auth()->user()->id_departement == 1)
                   <li><a href="entreprises"><i class="fa fa-circle-o"></i>Entreprises</a></li>
+                   <li><a href="interlocuteurs"><i class="fa fa-circle-o"></i>Interlocuteurs</a></li>
+                   <li class="active"><a href="prospection"><i class="fa fa-circle-o"></i>Prospections</a></li>
                   <li class="active"><a href="fiche"><i class="fa fa-circle-o"></i>Fiche clients</a></li>
-                  <li class="active"><a href="prospection"><i class="fa fa-circle-o"></i>Prospections</a></li>
                   <li ><a href="prestation"><i class="fa fa-circle-o"></i>Prestations</a></li>
                    
                 @endif
 
                 @if(auth()->user()->id_departement == 4)
                  <li><a href="entreprises"><i class="fa fa-circle-o"></i>Entreprises</a></li>
+                 <li><a href="interlocuteurs"><i class="fa fa-circle-o"></i>Interlocuteurs</a></li>
                   <li class="active"><a href="fiche"><i class="fa fa-circle-o"></i>Fiche clients</a></li>
                  
                    
@@ -282,15 +283,19 @@
 
                 @if(auth()->user()->id_departement == 5)
                   <li><a href="entreprises"><i class="fa fa-circle-o"></i>Entreprises</a></li>
-                    <li class="active"><a href="fiche"><i class="fa fa-circle-o"></i>Fiche clients</a></li>
+                  <li><a href="interlocuteurs"><i class="fa fa-circle-o"></i>Interlocuteurs</a></li>
                     <li><a href="contrat"><i class="fa fa-circle-o"></i>Contrats</a></li>
                     <li class="active"><a href="facture"><i class="fa fa-circle-o"></i>Factures</a></li>
+                    <li class="active"><a href="fiche"><i class="fa fa-circle-o"></i>Fiche clients</a></li>
+                  
                 @endif
 
                 @if(auth()->user()->id_departement > 5)
-                    <li class="active"><a href="fiche"><i class="fa fa-circle-o"></i>Fiche clients</a></li>
+                    <li><a href="entreprises"><i class="fa fa-circle-o"></i>Entreprises</a></li>
+                     <li><a href="interlocuteurs"><i class="fa fa-circle-o"></i>Interlocuteurs</a></li>
+                   
                     <li class="active"><a href="prospection"><i class="fa fa-circle-o"></i>Prospections</a></li>
-                    <li ><a href="prestation"><i class="fa fa-circle-o"></i>Prestations</a></li>
+                   
                   
                 @endif
             @endif
@@ -299,10 +304,10 @@
                 
                 @if(auth()->user()->id_departement == 5)
                     <li><a href="entreprises"><i class="fa fa-circle-o"></i>Entreprises</a></li>
-                    <li class="active"><a href="prestation"><i class="fa fa-circle-o"></i>Prestations</a></li>
+                     <li><a href="interlocuteurs"><i class="fa fa-circle-o"></i>Interlocuteurs</a></li>
                     <li><a href="contrat"><i class="fa fa-circle-o"></i>Contrats</a></li>
                     <li class="active"><a href="facture"><i class="fa fa-circle-o"></i>Factures</a></li>
-                    <li><a href="entreprises"><i class="fa fa-circle-o"></i> Clients/Prospects</a></li>
+                   
                 @endif
             @endif
 
@@ -420,8 +425,20 @@
                 <h3><a href="customers" style="color:#fff;">{{$count}}</a></h3>
                 
                 <a href="customers" style="color:#fff;"><p>CLIENTS</p></a><br>
-                <a href="actifs" style="color:#fff; size:13px;"><p>Actifs : {{$countactif}}  </p></a>  
-                <a href="inactifs" style="color:red;"><p>Inactifs : {{$countinactif}}</p></a>  
+
+                <form method="get" action="actifs">
+                  @csrf
+                  <input type="text" value="2" name="categorie" style="display:none;">
+                  <input type="text" value="1" name="etat" style="display:none;">
+                  <button class="btn bg-aqua"><p>Actifs : {{$countactif}}  </p></button>  
+                </form>
+                <form method="get" action="inactifs">
+                  @csrf
+                  <input type="text" value="2" name="categorie" style="display:none;">
+                  <input type="text" value="0" name="etat" style="display:none;">
+                  <button class="btn bg-aqua"><p style="color:red">Actifs : {{$countinactif}}  </p></button>  
+                </form>
+             
               </div>
               <div class="icon">
                 <i class="fa fa-shopping-cart"></i>
@@ -447,6 +464,9 @@
                     <p> </p>
                       <p></p>  <br><br>
                        <p></p>  
+                       <br>
+                       <p></p>  
+                    
                 </div>
             
               <div class="icon">
@@ -467,10 +487,11 @@
                   @endphp
                 <h3><a href="prospects" style="color:#fff">{{$count}}</a></h3>
                       <a href="prospects" style="color:#fff"><p>PROSPECTS</p></a><br>
-                    <p> </p>
+                     <p> </p>
                       <p></p>  <br><br>
                        <p></p>  
-                    
+                       <br>
+                       <p></p>  
               
               </div>
               <div class="icon">
@@ -492,10 +513,11 @@
                   @endphp
                 <h3><a href="cibles" style="color:#fff">{{$count}}</a></h3>
                       <a href="cibles" style="color:#fff"><p>CIBLES</p></a><br>
-                    <p> </p>
+                     <p> </p>
                       <p></p>  <br><br>
                        <p></p>  
-                    
+                       <br>
+                       <p></p>  
               
               </div>
               <div class="icon">
@@ -529,8 +551,18 @@
                     <h3> <a href="customers" style="color:#fff;">{{$count}}</a></h3>
                     
                     <a href="customers" style="color:#fff;"><p>CLIENTS</p></a><br>
-                <a href="actifs" style="color:#fff; size:13px;"><p>Actifs : {{$countactif}}  </p></a>  
-                <a href="inactifs" style="color:red;"><p>Inactifs : {{$countinactif}}</p></a>  
+                <form method="get" action="actifs">
+                  @csrf
+                  <input type="text" value="2" name="categorie" style="display:none;">
+                  <input type="text" value="1" name="etat" style="display:none;">
+                  <button class="btn bg-aqua"><p>Actifs : {{$countactif}}  </p></button>  
+                </form>
+                <form method="get" action="inactifs">
+                  @csrf
+                  <input type="text" value="2" name="categorie" style="display:none;">
+                  <input type="text" value="0" name="etat" style="display:none;">
+                  <button class="btn bg-aqua"><p style="color:red">Actifs : {{$countinactif}}  </p></button>  
+                </form>
                   
                   </div>
                   <div class="icon">
@@ -553,9 +585,11 @@
                       @endphp
                     <h3><a href="prospects" style="color:#fff">{{$count}}</a></h3>
                     <a href="prospects" style="color:#fff"><p>PROSPECTS</p></a><br>
-                        <p> </p>
-                          <p></p>  <br><br>
-                          <p></p>  
+                         <p> </p>
+                      <p></p>  <br><br>
+                       <p></p>  
+                       <br>
+                       <p></p>  
                   
                   </div>
                   <div class="icon">
@@ -577,9 +611,11 @@
                       @endphp
                     <h3><a href="cibles" style="color:#fff">{{$count}}</a></h3>
                           <a href="cibles" style="color:#fff"><p>CIBLES</p></a><br>
-                        <p> </p>
-                          <p></p>  <br><br>
-                          <p></p>  
+                       <p> </p>
+                      <p></p>  <br><br>
+                       <p></p>  
+                       <br>
+                       <p></p>  
                         
                   
                   </div>
@@ -612,9 +648,18 @@
                     <h3> <a href="customers" style="color:#fff;">{{$count}}</a></h3>
                     
                     <a href="customers" style="color:#fff;"><p>CLIENTS</p></a><br>
-                <a href="actifs" style="color:#fff; size:13px;"><p>Actifs : {{$countactif}}  </p></a>  
-                <a href="inactifs" style="color:red;"><p>Inactifs : {{$countinactif}}</p></a>  
-                  
+                 <form method="get" action="actifs">
+                  @csrf
+                  <input type="text" value="2" name="categorie" style="display:none;">
+                  <input type="text" value="1" name="etat" style="display:none;">
+                  <button class="btn bg-aqua"><p>Actifs : {{$countactif}}  </p></button>  
+                </form>
+                <form method="get" action="inactifs">
+                  @csrf
+                  <input type="text" value="2" name="categorie" style="display:none;">
+                  <input type="text" value="0" name="etat" style="display:none;">
+                  <button class="btn bg-aqua"><p style="color:red">Actifs : {{$countinactif}}  </p></button>  
+                </form>
                   </div>
                   <div class="icon">
                     <i class="fa fa-shopping-cart"></i>
@@ -635,9 +680,11 @@
                       @endphp
                     <h3><a href="cibles" style="color:#fff">{{$count}}</a></h3>
                           <a href="cibles" style="color:#fff"><p>CIBLES</p></a><br>
-                        <p> </p>
-                          <p></p>  <br><br>
-                          <p></p>  
+                         <p> </p>
+                      <p></p>  <br><br>
+                       <p></p>  
+                       <br>
+                       <p></p>  
                         
                   
                   </div>
@@ -669,9 +716,18 @@
                       <h3> <a href="customers" style="color:#fff;">{{$count}}</a></h3>
                       
                       <a href="customers" style="color:#fff;"><p>CLIENTS</p></a><br>
-                      <a href="actifs" style="color:#fff; size:13px;"><p>Actifs : {{$countactif}}  </p></a>  
-                      <a href="inactifs" style="color:red;"><p>Inactifs : {{$countinactif}}</p></a>  
-                  
+                        <form method="get" action="actifs">
+                  @csrf
+                  <input type="text" value="2" name="categorie" style="display:none;">
+                  <input type="text" value="1" name="etat" style="display:none;">
+                  <button class="btn bg-aqua"><p>Actifs : {{$countactif}}  </p></button>  
+                </form>
+                <form method="get" action="inactifs">
+                  @csrf
+                  <input type="text" value="2" name="categorie" style="display:none;">
+                  <input type="text" value="0" name="etat" style="display:none;">
+                  <button class="btn bg-aqua"><p style="color:red">Actifs : {{$countinactif}}  </p></button>  
+                </form>
                     </div>
                     <div class="icon">
                       <i class="fa fa-shopping-cart"></i>
@@ -691,9 +747,11 @@
                         @endphp
                       <h3><a href="cibles" style="color:#fff">{{$count}}</a></h3>
                             <a href="cibles" style="color:#fff"><p>CIBLES</p></a><br>
-                          <p> </p>
-                            <p></p>  <br><br>
-                            <p></p>  
+                         <p> </p>
+                      <p></p>  <br><br>
+                       <p></p>  
+                       <br>
+                       <p></p>  
                           
                     
                     </div>
@@ -728,8 +786,18 @@
                     <h3><a href="customers" style="color:#fff;">{{$count}}</a></h3>
                     
                     <a href="customers" style="color:#fff;"><p>CLIENTS</p></a><br>
-                <a href="actifs" style="color:#fff; size:13px;"><p>Actifs : {{$countactif}}  </p></a>  
-                <a href="inactifs" style="color:red;"><p>Inactifs : {{$countinactif}}</p></a>  
+              <form method="get" action="actifs">
+                  @csrf
+                  <input type="text" value="2" name="categorie" style="display:none;">
+                  <input type="text" value="1" name="etat" style="display:none;">
+                  <button class="btn bg-aqua"><p>Actifs : {{$countactif}}  </p></button>  
+                </form>
+                <form method="get" action="inactifs">
+                  @csrf
+                  <input type="text" value="2" name="categorie" style="display:none;">
+                  <input type="text" value="0" name="etat" style="display:none;">
+                  <button class="btn bg-aqua"><p style="color:red">Actifs : {{$countinactif}}  </p></button>  
+                </form>
                   
                   </div>
                   <div class="icon">
@@ -754,8 +822,10 @@
 
                         <a href="contrat" style="color:#fff;"> <p>CONTRATS</p>  </a><br>
                           <p> </p>
-                            <p></p>  <br><br>
-                            <p></p>  
+                      <p></p>  <br><br>
+                       <p></p>  
+                       <br>
+                       <p></p>  
                     </div>
                 
                   <div class="icon">
@@ -777,9 +847,11 @@
                         @endphp
                       <h3><a href="cibles" style="color:#fff">{{$count}}</a></h3>
                             <a href="cibles" style="color:#fff"><p>CIBLES</p></a><br>
-                          <p> </p>
-                            <p></p>  <br><br>
-                            <p></p>  
+                           <p> </p>
+                      <p></p>  <br><br>
+                       <p></p>  
+                       <br>
+                       <p></p>  
                           
                     
                     </div>
@@ -838,8 +910,10 @@
                   <h3><a href="prospects" style="color:#fff">{{$count}}</a></h3>
                   <a href="prospects" style="color:#fff"><p>PROSPECTS</p></a><br>
                       <p> </p>
-                        <p></p>  <br><br>
-                        <p></p>  
+                      <p></p>  <br><br>
+                       <p></p>  
+                       <br>
+                       <p></p>  
                 
                 </div>
                 <div class="icon">
@@ -862,9 +936,10 @@
                   <h3><a href="cibles" style="color:#fff">{{$count}}</a></h3>
                         <a href="cibles" style="color:#fff"><p>CIBLES</p></a><br>
                       <p> </p>
-                        <p></p>  <br><br>
-                        <p></p>  
-                      
+                      <p></p>  <br><br>
+                       <p></p>  
+                       <br>
+                       <p></p>  
                 
                 </div>
                 <div class="icon">

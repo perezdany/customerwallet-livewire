@@ -17,9 +17,75 @@ class InterlocuteurController extends Controller
         $get = DB::table('interlocuteurs')
           ->join('utilisateurs', 'interlocuteurs.created_by', '=', 'utilisateurs.id')
           ->join('entreprises', 'interlocuteurs.id_entreprise', '=', 'entreprises.id')
+          ->orderBy('updated_at', 'desc')
+          ->limit(5)
           ->get(['entreprises.nom_entreprise', 'utilisateurs.nom_prenoms', 'interlocuteurs.*', ]);
      
           return $get;
+    }
+
+    public function TableFilter(Request $request)
+    {
+        //dd($request->all());
+        $id_entreprise = $request->entreprise;
+        $fonction = $request->fonction;
+
+        if($id_entreprise == "all")
+        {
+           
+            if($fonction == "all")
+            { //dd('ici');
+                $intel = DB::table('interlocuteurs')
+                ->join('utilisateurs', 'interlocuteurs.created_by', '=', 'utilisateurs.id')
+                ->join('entreprises', 'interlocuteurs.id_entreprise', '=', 'entreprises.id')
+                ->orderBy('updated_at', 'desc')
+                ->limit(5)
+                ->get(['entreprises.nom_entreprise', 'utilisateurs.nom_prenoms', 'interlocuteurs.*', ]);
+
+                 //ON RETOURNE A LA PAGE
+                 return view('admin/interlocuteurs', compact('intel', 'id_entreprise', 'fonction'));
+            }
+            else
+            {
+                $intel = DB::table('interlocuteurs')
+                ->join('utilisateurs', 'interlocuteurs.created_by', '=', 'utilisateurs.id')
+                ->join('entreprises', 'interlocuteurs.id_entreprise', '=', 'entreprises.id')
+                ->where('interlocuteurs.fonction', $fonction)
+                ->orderBy('updated_at', 'desc')
+                ->limit(5)
+                ->get(['entreprises.nom_entreprise', 'utilisateurs.nom_prenoms', 'interlocuteurs.*', ]);
+                return view('admin/interlocuteurs', compact('intel', 'id_entreprise', 'fonction'));
+            }
+        }
+        else
+        {
+            if($fonction == "all")
+            {
+                $intel = DB::table('interlocuteurs')
+                ->join('utilisateurs', 'interlocuteurs.created_by', '=', 'utilisateurs.id')
+                ->join('entreprises', 'interlocuteurs.id_entreprise', '=', 'entreprises.id')
+                ->where('interlocuteurs.id_entreprise', $id_entreprise)
+                ->orderBy('updated_at', 'desc')
+                ->limit(5)
+                ->get(['entreprises.nom_entreprise', 'utilisateurs.nom_prenoms', 'interlocuteurs.*', ]);
+                return view('admin/interlocuteurs', compact('intel', 'id_entreprise', 'fonction'));
+            }
+            else
+            {
+                $intel = DB::table('interlocuteurs')
+                ->join('utilisateurs', 'interlocuteurs.created_by', '=', 'utilisateurs.id')
+                ->join('entreprises', 'interlocuteurs.id_entreprise', '=', 'entreprises.id')
+                ->where('interlocuteurs.id_entreprise', $id_entreprise)
+                ->where('interlocuteurs.fonction', $fonction)
+                ->orderBy('updated_at', 'desc')
+                ->limit(5)
+                ->get(['entreprises.nom_entreprise', 'utilisateurs.nom_prenoms', 'interlocuteurs.*', ]);
+                return view('admin/interlocuteurs', compact('intel', 'id_entreprise', 'fonction'));
+            }
+        }
+
+       
+
     }
 
     public function AddInterlocuteurWithClient(Request $request, $client)

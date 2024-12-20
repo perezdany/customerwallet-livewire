@@ -207,8 +207,11 @@
   </header>
   <!-- Left side column. contains the logo and sidebar -->
   <aside class="main-sidebar">
-    
-     <!-- sidebar menu: : style can be found in sidebar.less -->
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+      <!-- Sidebar user panel -->
+     
+      <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">NAVIGATION</li>
 
@@ -226,60 +229,65 @@
             <li><a href="welcome"><i class="fa fa-circle-o"></i>Accueil</a></li>
 
             @if(auth()->user()->id_role == 1 OR auth()->user()->id_role == 3)
-              <li><a href="entreprises"><i class="fa fa-circle-o"></i>Entreprises</a></li>
-              <li class="active"><a href="prestation"><i class="fa fa-circle-o"></i>Prestations</a></li>
+              <li><a href="entreprises"><i class="fa fa-circle-o"></i> Entreprises</a></li> 
+              <li><a href="interlocuteurs"><i class="fa fa-circle-o"></i>Interlocuteurs</a></li>
               <li class="active"><a href="prospection"><i class="fa fa-circle-o"></i>Prospections</a></li>
-              <li class="active"><a href="fiche"><i class="fa fa-circle-o"></i>Fiche clients</a></li>
               <li><a href="contrat"><i class="fa fa-circle-o"></i>Contrats</a></li>
               <li class="active"><a href="facture"><i class="fa fa-circle-o"></i>Factures</a></li>
-             
+              <li class="active"><a href="fiche"><i class="fa fa-circle-o"></i>Fiche clients</a></li>
+              
             @endif
 
-            @if( auth()->user()->id_role == 4 )
-               <li><a href="entreprises"><i class="fa fa-circle-o"></i>Entreprises</a></li>
-              <li class="active"><a href="prestation"><i class="fa fa-circle-o"></i>Prestations</a></li>
+            @if(auth()->user()->id_role == 4 )
+             <li><a href="entreprises"><i class="fa fa-circle-o"></i> Entreprises</a></li> 
+              <li><a href="interlocuteurs"><i class="fa fa-circle-o"></i>Interlocuteurs</a></li>
               <li class="active"><a href="prospection"><i class="fa fa-circle-o"></i>Prospections</a></li>
-              <li class="active"><a href="fiche"><i class="fa fa-circle-o"></i>Fiche clients</a></li>
               <li><a href="contrat"><i class="fa fa-circle-o"></i>Contrats</a></li>
               <li class="active"><a href="facture"><i class="fa fa-circle-o"></i>Factures</a></li>
+              <li class="active"><a href="fiche"><i class="fa fa-circle-o"></i>Fiche clients</a></li>
             @endif
 
             @if(auth()->user()->id_role == null)
-              <li class="active"><a href="prestation"><i class="fa fa-circle-o"></i>Prestations</a></li>
+
               <li class="active"><a href="prospection"><i class="fa fa-circle-o"></i>Prospections</a></li>
               <li class="active"><a href="fiche"><i class="fa fa-circle-o"></i>Fiche clients</a></li>
 
             @endif
-
 
             @if(auth()->user()->id_role == 5)
             
                 @if(auth()->user()->id_departement == 1)
                   <li><a href="entreprises"><i class="fa fa-circle-o"></i>Entreprises</a></li>
+                   <li><a href="interlocuteurs"><i class="fa fa-circle-o"></i>Interlocuteurs</a></li>
+                   <li class="active"><a href="prospection"><i class="fa fa-circle-o"></i>Prospections</a></li>
                   <li class="active"><a href="fiche"><i class="fa fa-circle-o"></i>Fiche clients</a></li>
-                  <li class="active"><a href="prospection"><i class="fa fa-circle-o"></i>Prospections</a></li>
                   <li ><a href="prestation"><i class="fa fa-circle-o"></i>Prestations</a></li>
                    
                 @endif
 
                 @if(auth()->user()->id_departement == 4)
-                  <li><a href="entreprises"><i class="fa fa-circle-o"></i>Entreprises</a></li>
+                 <li><a href="entreprises"><i class="fa fa-circle-o"></i>Entreprises</a></li>
+                 <li><a href="interlocuteurs"><i class="fa fa-circle-o"></i>Interlocuteurs</a></li>
                   <li class="active"><a href="fiche"><i class="fa fa-circle-o"></i>Fiche clients</a></li>
                  
                    
                 @endif
-                
+
                 @if(auth()->user()->id_departement == 5)
                   <li><a href="entreprises"><i class="fa fa-circle-o"></i>Entreprises</a></li>
-                    <li class="active"><a href="fiche"><i class="fa fa-circle-o"></i>Fiche clients</a></li>
+                  <li><a href="interlocuteurs"><i class="fa fa-circle-o"></i>Interlocuteurs</a></li>
                     <li><a href="contrat"><i class="fa fa-circle-o"></i>Contrats</a></li>
                     <li class="active"><a href="facture"><i class="fa fa-circle-o"></i>Factures</a></li>
+                    <li class="active"><a href="fiche"><i class="fa fa-circle-o"></i>Fiche clients</a></li>
+                  
                 @endif
 
                 @if(auth()->user()->id_departement > 5)
-                    <li class="active"><a href="fiche"><i class="fa fa-circle-o"></i>Fiche clients</a></li>
+                    <li><a href="entreprises"><i class="fa fa-circle-o"></i>Entreprises</a></li>
+                     <li><a href="interlocuteurs"><i class="fa fa-circle-o"></i>Interlocuteurs</a></li>
+                   
                     <li class="active"><a href="prospection"><i class="fa fa-circle-o"></i>Prospections</a></li>
-                    <li ><a href="prestation"><i class="fa fa-circle-o"></i>Prestations</a></li>
+                   
                   
                 @endif
             @endif
@@ -287,11 +295,11 @@
              @if(auth()->user()->id_role == 2)
                 
                 @if(auth()->user()->id_departement == 5)
-                    <li class="active"><a href="fiche"><i class="fa fa-circle-o"></i>Fiche clients</a></li>
-                    <li class="active"><a href="prestation"><i class="fa fa-circle-o"></i>Prestations</a></li>
+                    <li><a href="entreprises"><i class="fa fa-circle-o"></i>Entreprises</a></li>
+                     <li><a href="interlocuteurs"><i class="fa fa-circle-o"></i>Interlocuteurs</a></li>
                     <li><a href="contrat"><i class="fa fa-circle-o"></i>Contrats</a></li>
                     <li class="active"><a href="facture"><i class="fa fa-circle-o"></i>Factures</a></li>
-                    <li><a href="entreprises"><i class="fa fa-circle-o"></i> Clients/Prospects</a></li>
+                   
                 @endif
             @endif
 
@@ -311,15 +319,15 @@
               </span>
             </a>
             <ul class="treeview-menu">
-             
+              
               <li><a href="utilisateurs"><i class="fa fa-circle-o"></i>Utilisateurs</a></li>
               <li><a href="roles"><i class="fa fa-circle-o"></i>Rôles</a></li>
               <li><a href="departements"><i class="fa fa-circle-o"></i>Départements</a></li>
               <li><a href="services"><i class="fa fa-circle-o"></i>Nos services</a></li>
-              
+              <li><a href="entreprises"><i class="fa fa-circle-o"></i> Entreprises</a></li>
               <li><a href="type_prestation"><i class="fa fa-circle-o"></i>Type de prestations</a></li>
               <li><a href="interlocuteurs"><i class="fa fa-circle-o"></i>Interlocuteurs</a></li>
-               
+              
         
             </ul>
           </li>
@@ -357,8 +365,7 @@
             @endif
         @endif
         
-        
-          <li class="">
+         <li class="">
             <a href="#" style="background-color: #FFFFFF">
               
               
@@ -380,8 +387,10 @@
 
         
       </ul>
+    </section>
     <!-- /.sidebar -->
   </aside>
+
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">

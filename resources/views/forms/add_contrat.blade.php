@@ -109,7 +109,7 @@
                               @php
                                   $getparent = ($contratcontroller)->GetContratParent();
                               @endphp
-                              <option value="0">--Choisir une entreprise--</option>
+                              <option value="0">--Choisir le contrat</option>
                               @foreach($getparent as $getparent)
                                   <option value={{$getparent->id}}>{{$getparent->titre_contrat}}/{{$getparent->nom_entreprise}}</option>
                                   
@@ -185,7 +185,7 @@
                                     
                                     <optgroup label="{{$categorie->libele_categorie}}">{{$categorie->libele_categorie}}</optgroup>
                                     @php
-                                        $get = $servicecontroller->GetByCategorieNoSus($categorie->id);
+                                        $get = $servicecontroller->GetByCategorieNoSusp($categorie->id);
                                         
                                     @endphp
                                     @foreach($get as $service)

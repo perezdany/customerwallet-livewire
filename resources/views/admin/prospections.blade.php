@@ -17,13 +17,13 @@
     <div class="row">
         @if(auth()->user()->id_role != NULL)
                 <div class="col-md-3">
-                    <a href="form_add_prospection"><button class="btn btn-primary"> <b>AJOUTER UNE PROSPECTION</b></button></a>
+                    <a href="form_add_prospection"><button class="btn btn-primary"> <b><i class="fa fa-plus"></i> PROSPECTION</b></button></a>
                 
                 </div>
         @endif
         @if(session('success'))
             <div class="col-md-12 box-header">
-                <p class="bg-success" style="font-size:13px;">{{session('success')}}</p>
+                <p class="bg-green" style="font-size:13px;">{{session('success')}}</p>
             </div>
         @endif
 

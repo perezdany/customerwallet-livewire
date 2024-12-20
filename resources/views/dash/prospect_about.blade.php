@@ -52,7 +52,7 @@
                     <a href="prospection"><button class="btn btn-warning"> <b>PROSPECTIONS</b></button></a>
                 </div>
                 <div class="col-md-3">
-                    <a href="form_add_prospection"><button class="btn btn-primary"> <b>AJOUTER UNE PROSPECTION</b></button></a>
+                    <a href="form_add_prospection"><button class="btn btn-primary"> <b><i class="fa fa-plus"></i>PROSPECTION</b></button></a>
                 </div>
             @endif
             
@@ -60,7 +60,7 @@
              <div class="col-md-3"><a href="form_add_prospection">
                 @if(isset($id_entreprise))
 
-                  <form method="post" action="go_print_rapport">
+                  <form method="post" action="go_print_rapport" target="blank"> 
                             @csrf
                             <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
                             <button class="btn btn-success"> <b>RAPPORT FICHE</b></button></a>

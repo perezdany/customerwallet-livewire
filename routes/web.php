@@ -105,6 +105,8 @@ Route::middleware(['auth:web'])->group(function(){
     //FILTRE DANS LE TABLEAU DES CONTRATS
     Route::post('make_filter_contrat', [ContratController::class, 'TableFilter']);
 
+    //Route::get('make_filter_contrat', [ContratController::class, 'TableFilter']);
+
     //LE FICHIER DE PROFORMA DU CONTRAT
     Route::post('view_contrat_proforma', [ContratController::class, 'ViewProformaContrat']);
 
@@ -336,13 +338,14 @@ Route::middleware(['auth:web'])->group(function(){
         return view('dash/customers');
     });
 
-    Route::get('actifs', function(){
-        return view('dash/list_actifs');
-    });
+    //FAIRE UN FILTRE DEJA SUR LA PAGE ENTREPRISE EN ALLANT AVEC LE CHOIX ACTIF
+    Route::get('actifs', [EntrepriseController::class, 'TableFilter']);
 
-    Route::get('inactifs', function(){
+    //MEME CHOSE POUR INACTIFS
+    Route::get('inactifs', [EntrepriseController::class, 'TableFilter']);
+    /*Route::get('inactifs', function(){
         return view('dash/list_inactifs');
-    });
+    });*/
 
 
     //POUR DEBOUCHER SUR LA FICHE CLIENT
@@ -443,6 +446,9 @@ Route::middleware(['auth:web'])->group(function(){
     //MODIFIER INTERLOCUTEUR
     Route::post('edit_interlocuteur_form', [InterlocuteurController::class, 'EditInterlocForm']);
     Route::post('edit_interlocuteur', [InterlocuteurController::class, 'EditInterlocuteur']);
+
+    //FAIRE UN FILTRE PAR INTERLOCUTEUR OU PAR ENTREPRISE
+    Route::post('make_filter_interlocuteur', [InterlocuteurController::class, 'TableFilter']);
 
     //MODIFIER DANS LA FICHE PROSPECT
     Route::post('edit_interlocuteur_form_fiche', [InterlocuteurController::class, 'EditInterlocFormF']);

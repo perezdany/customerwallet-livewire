@@ -53,14 +53,14 @@
                     <a href="prestation"><button class="btn btn-warning"> <b>PRESTAIONS</b></button></a>
                 </div>
                 <div class="col-md-3">
-                    <a href="form_add_contrat"><button class="btn btn-primary"> <b>AJOUTER UN CONTRAT</b></button></a>
+                    <a href="form_add_contrat"><button class="btn btn-primary"> <b><i class="fa fa-plus"></i>CONTRAT</b></button></a>
                 </div>
             @endif
 
             <div class="col-md-3"><a href="form_add_prospection">
                 @if(isset($id_entreprise))
 
-                  <form method="post" action="go_print_rapport_clt">
+                  <form method="post" action="go_print_rapport_clt" target="blank">
                             @csrf
                             <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
                             <button class="btn btn-success"> <b>RAPPORT FICHE</b></button></a>
@@ -293,7 +293,8 @@
                                     </tr>
                                     <!--LES FICHIERS ET LES FACTURES-->
                                     <tr>
-                                        <td> 
+                                        @if($contrats->proforma_file != null)
+                                             <td> 
                                             
                                             @php
                                             $pieces = explode("/", $contrats->proforma_file);
@@ -323,6 +324,10 @@
                                             
                                             </form>
                                         </td>
+                                        @else
+                                        
+                                        @endif
+                                       
                                     </tr>
                                 
                                 </table>

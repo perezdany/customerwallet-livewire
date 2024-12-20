@@ -38,7 +38,7 @@
       <div class="row">
           @if(session('success'))
             <div class="col-md-12 box-header">
-              <p class="bg-success" style="font-size:13px;">{{session('success')}}</p>
+              <p class="bg-green" style="font-size:13px;">{{session('success')}}</p>
             </div>
           @endif
 
@@ -47,13 +47,20 @@
               <p class="bg-success" style="font-size:13px;">{{$message_success}}</p>
             </div>
           @endif
+           @if(isset($message_error))
+            <div class="col-md-12 box-header">
+              <p class="bg-red" style="font-size:13px;">{{$message_error}}</p>
+            </div>
+          @endif
           @php
             //dd($entreprises);
           @endphp
 
 
           @if(isset($entreprises))
-            
+              @php
+                //dd($entreprises)
+              @endphp
               <div class="col-xs-12">
                 <div class="box">
                   <div class="box-header">
@@ -149,7 +156,7 @@
                     <tr>
                       <th>Nom</th>
                       <th>Adresse</th>
-                  
+                      <th>Fiche</th>
                       <th>Interlocuteurs: </th>
                       <th>Modifier</th>
                       <th>Supprimer</th>
@@ -164,6 +171,15 @@
 
                             <td>
                               {{$entreprises->adresse}}
+                            </td>
+                            <td>
+                             @if($entreprises->id_statutentreprise == 2)
+                              <form method="post" action="display_fiche_customer">
+                                  @csrf
+                                  <input type="text" value="{{$entreprises->id}}" style="display:none;" name="id_entreprise">
+                                  <button class="btn btn-default"> <b>Fiche</b></button>
+                              </form>
+                             @endif
                             </td>
                             <td>
                               
@@ -544,6 +560,70 @@
                                     </div>
                                     <form action="delete_entreprise" method="post">
                                       <div class="modal-body">
+                                        <div class="">
+                                          <select class="form-control" name="categorie" style="display:none;">
+                                          
+                                            @if($categorie == "c")
+                                              <option value="c">Catégorie</option>
+                                              @php
+                                                  $get = ($statutentreprisecontroller)->GetAll();
+                                              @endphp
+                                            
+                                              @foreach($get as $statut)
+                                                <option value={{$statut->id}}>{{$statut->libele_statut}}</option>
+                                                  
+                                              @endforeach
+                                            @else
+                                              @php
+                                                $le_statut_choisi = ($statutentreprisecontroller)->GetById($categorie);
+                                                
+                                              @endphp
+                                              
+                                              @foreach($le_statut_choisi as $le_statut_choisi)
+                                                  <option value={{$le_statut_choisi->id}}><b>{{$le_statut_choisi->libele_statut}}</b></option>
+                                              @endforeach
+                                              <option value="c">Catégorie</option>
+                                              @php
+                                                  $get = ($statutentreprisecontroller)->GetAll();
+                                              @endphp
+                                            
+                                              @foreach($get as $statut)
+                                                  <option value={{$statut->id}}>{{$statut->libele_statut}}</option>
+                                              @endforeach
+
+                                            
+                                            @endif
+                                            
+                
+                                              
+                                          </select>   
+                                        </div>    
+                                        <div class="">
+                                          <select class="form-control" style="display:none;" name="etat">
+                                            @if($etat == "c")
+                                              <option value="c">Statut</option>
+                                              <option value="0">Inactif</option>
+                                              <option value="1">Actif</option>
+
+                                            @else
+                                              @if($etat == "0")
+                                            
+                                                <option value="0"><b>Inactif</b></option>
+                                              <option value="1">Actif</option>
+                                              
+                                              <option value="c">Statut</option>
+                                              @else
+                                                <option value="1"><b>Actif</b></option>
+                                        
+                                                <option value="0">Inactif</option>
+                                                <option value="c">Statut</option>
+                                              @endif
+                                            @endif
+                                          
+                                            
+                                          </select>                         
+                                        </div>
+                                        TTTTT
                                         <p>Voulez-vous supprimer {{$entreprises->nom_entreprise}}?</p>
                                         @csrf
                                         <input type="text" value="{{$entreprises->id}}" style="display:none;" name="id_entreprise">
@@ -682,7 +762,7 @@
                     <tr>
                       <th>Nom</th>
                       <th>Adresse</th>
-                  
+                      <th>Fiche</th>
                       <th>Interlocuteurs: </th>
                       <th>Modifier</th>
                       <th>Supprimer</th>
@@ -697,6 +777,15 @@
                 
                             <td>
                             {{$all->adresse}}
+                            </td>
+                            <td>
+                              @if($all->id_statutentreprise == 2)
+                                <form method="post" action="display_fiche_customer">
+                                    @csrf
+                                    <input type="text" value="{{$all->id}}" style="display:none;" name="id_entreprise">
+                                    <button class="btn btn-default"> <b>Fiche</b></button>
+                                </form>
+                              @endif
                             </td>
                             <td>
 
@@ -1038,6 +1127,32 @@
                                     </div>
                                     <form action="delete_entreprise" method="post">
                                       <div class="modal-body">
+                                              <div class="">
+                                              <select class="form-control" style="display:none;" name="categorie">
+                                                  <option value="c">Catégorie</option>
+                                                  @php
+                                                      $get = ($statutentreprisecontroller)->GetAll();
+                                                  @endphp
+                                                
+                                                  @foreach($get as $statut)
+                                                      <option value={{$statut->id}}>{{$statut->libele_statut}}</option>
+                                                      
+                                                  @endforeach
+                                                  
+                                              </select>   
+                                            </div>    
+
+                                            <div class="">
+                                        
+                                              <select class="form-control" name="etat" style="display:none;">
+                                              
+                                                  <option value="c">Statut</option>
+                                                  <option value="0">Inactif</option>
+                                                  <option value="1">Actif</option>
+                                              </select>
+                                                                          
+                                            </div>
+
                                         <p>Voulez-vous supprimer {{$all->nom_entreprise}}?</p>
                                         @csrf
                                         <input type="text" value="{{$all->id}}" style="display:none;" name="id_entreprise">

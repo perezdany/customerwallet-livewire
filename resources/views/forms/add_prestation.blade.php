@@ -96,7 +96,7 @@
                             </div>
                         
                             <div class="form-group">
-                                <label>Type de prestation (*)</label>
+                                <label>Type de facturation (*)</label>
                                 <select class="form-control input-lg" name="type" required>
                                     <!--liste des services a choisir -->
                                     @php
@@ -119,7 +119,7 @@
                                 <!--Afficher les contrats que l'utilisateur a créé-->
                                 <select class="form-control input-lg" name="contrat" required>
                                     @php
-                                        $contrat = $contratcontroller->GetAllNoSolde();
+                                        $contrat = $contratcontroller->RetriveAll();
                                         
                                     @endphp
                                     <option value="0">--Choisir le contrat--</option>

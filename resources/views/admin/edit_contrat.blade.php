@@ -39,6 +39,7 @@
               </div>
                  @php
                     $contrat = $contratcontroller->GetById($id);
+                    //dd($id_entreprise);
                 @endphp
 
                 @foreach($contrat as $contrat)
@@ -47,6 +48,10 @@
                        
                         @csrf
                          <input type="text" value="{{$contrat->id}}" style="display:none" name="id_contrat">
+                         <input type="text" value="{{$reconduction}}" style="display:none" name="reconduction">
+                         <input type="text" value="{{$etat}}" style="display:none" name="etat_contrat">
+                         <input type="text" value="{{$id_entreprise}}" style="display:none" name="entreprise_filter">
+                         <input type="text" value="{{$service}}" style="display:none" name="service">
                         <div class="box-body">
                             <div class="form-group">
                                 <label>Entreprise:</label>
@@ -75,21 +80,14 @@
                             <select class="form-control input-lg" name="avenant" id="mySelectAvenant" onchange="griseFunction1()" >
                                 @if($contrat->avenant == 0)
                                     <option value="{{$contrat->avenant}}">NON</option>
-                                    <option value="0">NON</option>
-                                    <option value="1">TACITE</option>
-                                    <option value="1">ACCORD PARTIES</option>
+                               
+                                    <option value="1">OUI</option>
+                                  
                                 @else
                                     @if($contrat->avenant == 1)
-                                        <option value="{{$contrat->avenant}}">TACITE</option>
-                                        <option value="0">NON</option>
-                                        <option value="1">TACITE</option>
-                                        <option value="1">ACCORD PARTIES</option>
-                                    @endif
-                                    @if($contrat->avenant == 2)
-                                        <option value="{{$contrat->avenant}}">ACCORD PARTIES</option>
-                                        <option value="0">NON</option>
-                                        <option value="1">TACITE</option>
-                                        <option value="1">ACCORD PARTIES</option>
+                                        <option value="{{$contrat->avenant}}">OUI</option>
+                               
+                                    <option value="0">NON</option>
                                     @endif
                                    
                                 @endif
@@ -98,7 +96,32 @@
                             </select>
                                 
                             </div> 
+                            
+                            <div class="form-group">
+                                <label>Reconduction:</label>
+                                <select class="form-control input-lg" name="reconduction" required>
+                                    @if($contrat->reconduction == 1)
+                                        <option value="1">TACITE</option>
+                                        <option value="0">NON</option>
+                                        
+                                        <option value="2">ACCORD PARTIES</option>
+                                    @else
+                                        @if($contrat->reconduction == 0)
+                                        <option value="0">NON</option>
+                                            <option value="1">TACITE</option>       
+                                            <option value="2">ACCORD PARTIES</option>
+                                        @else
 
+                                        @if($contrat->reconduction == 2)
+                                            <option value="2">ACCORD PARTIES</option>
+                                            <option value="0">NON</option>
+                                            <option value="1">TACITE</option>       
+                                            
+                                        @else
+                                    @endif
+                                    
+                                </select>
+                            </div>
                             <div class="form-group">
                                 <label>Contrat Parent:</label>
                                 <select class="form-control input-lg" name="contrat_parent" id="contratparent" disabled required>

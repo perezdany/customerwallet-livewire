@@ -88,9 +88,11 @@ class EntrepriseController extends Controller
         $get = DB::table('entreprises')
         ->where('entreprises.etat', 0)
         ->join('statutentreprises', 'entreprises.id_statutentreprise', '=', 'statutentreprises.id')
-        ->orderBy('nom_entreprise', 'asc')
-        ->get(['entreprises.*', 'statutentreprises.libele_statut']);
+        ->join('pays', 'entreprises.id_pays', '=', 'pays.id')
+        ->orderBy('entreprises.updated_at', 'desc')
+        ->get(['entreprises.*', 'statutentreprises.libele_statut', 'pays.nom_pays']);
 
+       // dd($get);
         return $get;
     }
 
@@ -99,8 +101,9 @@ class EntrepriseController extends Controller
         $get = DB::table('entreprises')
         ->where('entreprises.etat', 1)
         ->join('statutentreprises', 'entreprises.id_statutentreprise', '=', 'statutentreprises.id')
-        ->orderBy('nom_entreprise', 'asc')
-        ->get(['entreprises.*', 'statutentreprises.libele_statut']);
+        ->join('pays', 'entreprises.id_pays', '=', 'pays.id')
+        ->orderBy('entreprises.updated_at', 'desc')
+        ->get(['entreprises.*', 'statutentreprises.libele_statut', 'pays.nom_pays']);
 
         return $get;
     }
@@ -118,7 +121,7 @@ class EntrepriseController extends Controller
                 $entreprises = DB::table('entreprises')
                 ->join('statutentreprises', 'entreprises.id_statutentreprise', '=', 'statutentreprises.id')
                 ->join('pays', 'entreprises.id_pays', '=', 'pays.id')
-                ->orderBy('nom_entreprise', 'asc')
+                ->orderBy('entreprises.updated_at', 'desc')
                 ->get(['entreprises.*', 'statutentreprises.libele_statut', 'pays.nom_pays']);
 
                 //ON RETOURNE A LA PAGE CONTRAT
@@ -131,7 +134,7 @@ class EntrepriseController extends Controller
                 ->where('entreprises.etat', $request->etat)
                 ->join('statutentreprises', 'entreprises.id_statutentreprise', '=', 'statutentreprises.id')
                 ->join('pays', 'entreprises.id_pays', '=', 'pays.id')
-                ->orderBy('nom_entreprise', 'asc')
+                ->orderBy('entreprises.updated_at', 'desc')
                 ->get(['entreprises.*', 'statutentreprises.libele_statut', 'pays.nom_pays']);
 
                 //ON RETOURNE A LA PAGE CONTRAT
@@ -151,7 +154,7 @@ class EntrepriseController extends Controller
                 ->where('entreprises.id_statutentreprise', $categorie)
                 ->join('statutentreprises', 'entreprises.id_statutentreprise', '=', 'statutentreprises.id')
                 ->join('pays', 'entreprises.id_pays', '=', 'pays.id')
-                ->orderBy('nom_entreprise', 'asc')
+                ->orderBy('entreprises.updated_at', 'desc')
                 ->get(['entreprises.*', 'statutentreprises.libele_statut', 'pays.nom_pays']);
 
                 //ON RETOURNE A LA PAGE CONTRAT
@@ -167,7 +170,7 @@ class EntrepriseController extends Controller
                     ->where('entreprises.id_statutentreprise', $categorie)
                     ->join('statutentreprises', 'entreprises.id_statutentreprise', '=', 'statutentreprises.id')
                     ->join('pays', 'entreprises.id_pays', '=', 'pays.id')
-                    ->orderBy('nom_entreprise', 'asc')
+                    ->orderBy('entreprises.updated_at', 'desc')
                     ->get(['entreprises.*', 'statutentreprises.libele_statut', 'pays.nom_pays']);
 
                     //ON RETOURNE A LA PAGE CONTRAT
@@ -181,7 +184,7 @@ class EntrepriseController extends Controller
                     ->where('entreprises.etat', $request->etat)
                     ->join('statutentreprises', 'entreprises.id_statutentreprise', '=', 'statutentreprises.id')
                     ->join('pays', 'entreprises.id_pays', '=', 'pays.id')
-                    ->orderBy('nom_entreprise', 'asc')
+                    ->orderBy('entreprises.updated_at', 'desc')
                     ->get(['entreprises.*', 'statutentreprises.libele_statut', 'pays.nom_pays']);
 
                     //ON RETOURNE A LA PAGE CONTRAT
@@ -455,7 +458,7 @@ class EntrepriseController extends Controller
                 $entreprises = DB::table('entreprises')
                 ->join('statutentreprises', 'entreprises.id_statutentreprise', '=', 'statutentreprises.id')
                 ->join('pays', 'entreprises.id_pays', '=', 'pays.id')
-                ->orderBy('nom_entreprise', 'asc')
+                ->orderBy('entreprises.updated_at', 'desc')
                 ->get(['entreprises.*', 'statutentreprises.libele_statut', 'pays.nom_pays']);
 
               
@@ -467,7 +470,7 @@ class EntrepriseController extends Controller
                 ->where('entreprises.etat', $request->etat)
                 ->join('statutentreprises', 'entreprises.id_statutentreprise', '=', 'statutentreprises.id')
                 ->join('pays', 'entreprises.id_pays', '=', 'pays.id')
-                ->orderBy('nom_entreprise', 'asc')
+                ->orderBy('entreprises.updated_at', 'desc')
                 ->get(['entreprises.*', 'statutentreprises.libele_statut', 'pays.nom_pays']);
                
             }
@@ -484,7 +487,7 @@ class EntrepriseController extends Controller
                 ->where('entreprises.id_statutentreprise', $categorie)
                 ->join('statutentreprises', 'entreprises.id_statutentreprise', '=', 'statutentreprises.id')
                 ->join('pays', 'entreprises.id_pays', '=', 'pays.id')
-                ->orderBy('nom_entreprise', 'asc')
+                ->orderBy('entreprises.updated_at', 'desc')
                 ->get(['entreprises.*', 'statutentreprises.libele_statut', 'pays.nom_pays']);
 
             
@@ -499,7 +502,7 @@ class EntrepriseController extends Controller
                     ->where('entreprises.id_statutentreprise', $categorie)
                     ->join('statutentreprises', 'entreprises.id_statutentreprise', '=', 'statutentreprises.id')
                     ->join('pays', 'entreprises.id_pays', '=', 'pays.id')
-                    ->orderBy('nom_entreprise', 'asc')
+                    ->orderBy('entreprises.updated_at', 'desc')
                     ->get(['entreprises.*', 'statutentreprises.libele_statut', 'pays.nom_pays']);
 
                     //ON RETOURNE A LA PAGE CONTRAT
@@ -513,7 +516,7 @@ class EntrepriseController extends Controller
                     ->where('entreprises.etat', $request->etat)
                     ->join('statutentreprises', 'entreprises.id_statutentreprise', '=', 'statutentreprises.id')
                     ->join('pays', 'entreprises.id_pays', '=', 'pays.id')
-                    ->orderBy('nom_entreprise', 'asc')
+                    ->orderBy('entreprises.updated_at', 'desc')
                     ->get(['entreprises.*', 'statutentreprises.libele_statut', 'pays.nom_pays']);
 
                   
@@ -584,7 +587,7 @@ class EntrepriseController extends Controller
         ->where('id', $request->id_entreprise)
         ->update([
            
-            'nom_entreprise'=> $request->nom,
+            'nom_entreprise'=> $request->nom_entreprise,
             'id_statutentreprise' => $request->statut,
             'client_depuis' => $request->depuis,
             'chiffre_affaire' => $request->chiffre, 
@@ -624,43 +627,296 @@ class EntrepriseController extends Controller
 
     Public function DeleteEntreprise(Request $request)
     {
-        $deleted = DB::table('entreprises')->where('id', '=', $request->id_entreprise)->delete();
+        //dd($request->all());;
+        
+        //VERIFIER AUSIS SI IL A DES CONTRATS
+        $contrats = DB::table('contrats')->where('id_entreprise', '=', $request->id_entreprise)->get();
+        $count_contrat = $contrats->count();
 
-        //SUPPRIMER TOUTES LES PROPOSITIONs DE CE CLIENT
-        $propal_customer = DB::table('propositions')->get();
-        foreach($propal_customer as $propal_customer)
+        if($count_contrat != 0) //Y a des éléments dedans 
         {
-            $deleted_propal = DB::table('propositions')->where('id_client', '=', $request->id_entreprise)->delete();
-
-            if($deleted_propal != 0)
+            //dd('ici');
+            //ON APPLIQUE A NOUVEAU LE FILTRE QUI ETAIT
+            $categorie = $request->categorie;
+            $etat = $request->etat;
+            //VERIFIER LES ELEMENTS QUE LE GARS A CHOISI
+            //dd($request->all());
+            if($request->categorie == "c")
             {
-                //SUPPRIMER LE FICHIER DANS LE DOSSIER
-                Storage::delete($propal_customer->path_doc);
+                if($request->etat == "c")
+                {
+                    $entreprises = DB::table('entreprises')
+                    ->join('statutentreprises', 'entreprises.id_statutentreprise', '=', 'statutentreprises.id')
+                    ->join('pays', 'entreprises.id_pays', '=', 'pays.id')
+                    ->orderBy('entreprises.updated_at', 'desc')
+                    ->get(['entreprises.*', 'statutentreprises.libele_statut', 'pays.nom_pays']);
+
+                
+                }
+                else
+                {
+                
+                    $entreprises = DB::table('entreprises')
+                    ->where('entreprises.etat', $request->etat)
+                    ->join('statutentreprises', 'entreprises.id_statutentreprise', '=', 'statutentreprises.id')
+                    ->join('pays', 'entreprises.id_pays', '=', 'pays.id')
+                    ->orderBy('entreprises.updated_at', 'desc')
+                    ->get(['entreprises.*', 'statutentreprises.libele_statut', 'pays.nom_pays']);
+                
+                }
+
+            
             }
+            else
+            {
+                //dd('ici');
+                if($request->categorie == "3")
+                {
+                    //dd('l');
+                    $entreprises = DB::table('entreprises')
+                    ->where('entreprises.id_statutentreprise', $categorie)
+                    ->join('statutentreprises', 'entreprises.id_statutentreprise', '=', 'statutentreprises.id')
+                    ->join('pays', 'entreprises.id_pays', '=', 'pays.id')
+                    ->orderBy('entreprises.updated_at', 'desc')
+                    ->get(['entreprises.*', 'statutentreprises.libele_statut', 'pays.nom_pays']);
+
+                
+                }
+                else
+                {
+                //dd('tt');
+                    if($request->etat == "c")
+                    {
+                        //dd($statut);
+                        $entreprises = DB::table('entreprises')
+                        ->where('entreprises.id_statutentreprise', $categorie)
+                        ->join('statutentreprises', 'entreprises.id_statutentreprise', '=', 'statutentreprises.id')
+                        ->join('pays', 'entreprises.id_pays', '=', 'pays.id')
+                        ->orderBy('entreprises.updated_at', 'desc')
+                        ->get(['entreprises.*', 'statutentreprises.libele_statut', 'pays.nom_pays']);
+
+                        //ON RETOURNE A LA PAGE CONTRAT
+                        return view('admin/entreprises', compact('entreprises', 'categorie', 'etat', ));
+                    }
+                    else
+                    {
+                        //dd('la');
+                        $entreprises = DB::table('entreprises')
+                        ->where('entreprises.id_statutentreprise', $categorie)
+                        ->where('entreprises.etat', $request->etat)
+                        ->join('statutentreprises', 'entreprises.id_statutentreprise', '=', 'statutentreprises.id')
+                        ->join('pays', 'entreprises.id_pays', '=', 'pays.id')
+                        ->orderBy('entreprises.updated_at', 'desc')
+                        ->get(['entreprises.*', 'statutentreprises.libele_statut', 'pays.nom_pays']);
+
+                    
+                    }
+                
+                }
+                
+            }
+                     
+            $message_error = "Vous ne pouvez pas supprimer une entreprise qui a des contrats.";
+            //ON RETOURNE A LA PAGE CONTRAT
+            return view('admin/entreprises', compact('entreprises', 'categorie', 'etat', 'message_error'));
+         
+        }
+        else
+        {
+            //dd('io');
+            //SUPPRIMER TOUTES LES PROPOSITIONs DE CE CLIENT
+            $propal_customer = DB::table('propositions')->where('id_client', '=', $request->id_entreprise)->get();
+            $count = $propal_customer->count();
+            if($count != 0) //Y a des éléments dedans 
+            {
+                //ON APPLIQUE A NOUVEAU LE FILTRE QUI ETAIT
+                $categorie = $request->categorie;
+                $etat = $request->etat;
+                //VERIFIER LES ELEMENTS QUE LE GARS A CHOISI
+                //dd($request->all());
+                if($request->categorie == "c")
+                {
+                    if($request->etat == "c")
+                    {
+                        $entreprises = DB::table('entreprises')
+                        ->join('statutentreprises', 'entreprises.id_statutentreprise', '=', 'statutentreprises.id')
+                        ->join('pays', 'entreprises.id_pays', '=', 'pays.id')
+                        ->orderBy('entreprises.updated_at', 'desc')
+                        ->get(['entreprises.*', 'statutentreprises.libele_statut', 'pays.nom_pays']);
+
+                    
+                    }
+                    else
+                    {
+                    
+                        $entreprises = DB::table('entreprises')
+                        ->where('entreprises.etat', $request->etat)
+                        ->join('statutentreprises', 'entreprises.id_statutentreprise', '=', 'statutentreprises.id')
+                        ->join('pays', 'entreprises.id_pays', '=', 'pays.id')
+                        ->orderBy('entreprises.updated_at', 'desc')
+                        ->get(['entreprises.*', 'statutentreprises.libele_statut', 'pays.nom_pays']);
+                    
+                    }
+
+                
+                }
+                else
+                {
+                    //dd('ici');
+                    if($request->categorie == "3")
+                    {
+                        //dd('l');
+                        $entreprises = DB::table('entreprises')
+                        ->where('entreprises.id_statutentreprise', $categorie)
+                        ->join('statutentreprises', 'entreprises.id_statutentreprise', '=', 'statutentreprises.id')
+                        ->join('pays', 'entreprises.id_pays', '=', 'pays.id')
+                        ->orderBy('entreprises.updated_at', 'desc')
+                        ->get(['entreprises.*', 'statutentreprises.libele_statut', 'pays.nom_pays']);
+
+                    
+                    }
+                    else
+                    {
+                    //dd('tt');
+                        if($request->etat == "c")
+                        {
+                            //dd($statut);
+                            $entreprises = DB::table('entreprises')
+                            ->where('entreprises.id_statutentreprise', $categorie)
+                            ->join('statutentreprises', 'entreprises.id_statutentreprise', '=', 'statutentreprises.id')
+                            ->join('pays', 'entreprises.id_pays', '=', 'pays.id')
+                            ->orderBy('entreprises.updated_at', 'desc')
+                            ->get(['entreprises.*', 'statutentreprises.libele_statut', 'pays.nom_pays']);
+
+                            //ON RETOURNE A LA PAGE CONTRAT
+                            return view('admin/entreprises', compact('entreprises', 'categorie', 'etat', ));
+                        }
+                        else
+                        {
+                            //dd('la');
+                            $entreprises = DB::table('entreprises')
+                            ->where('entreprises.id_statutentreprise', $categorie)
+                            ->where('entreprises.etat', $request->etat)
+                            ->join('statutentreprises', 'entreprises.id_statutentreprise', '=', 'statutentreprises.id')
+                            ->join('pays', 'entreprises.id_pays', '=', 'pays.id')
+                            ->orderBy('entreprises.updated_at', 'desc')
+                            ->get(['entreprises.*', 'statutentreprises.libele_statut', 'pays.nom_pays']);
+
+                        
+                        }
+                    
+                    }
+                    
+                }
+                     
+                $message_error = "Vous ne pouvez pas supprimer une entreprise qui a des propositions.";
+                //ON RETOURNE A LA PAGE CONTRAT
+                return view('admin/entreprises', compact('entreprises', 'categorie', 'etat', 'message_error'));
+             
+            }
+            else
+            {
+                //dd('oei');
+                $categorie = $request->categorie;
+                $etat = $request->etat;
+                //VERIFIER LES ELEMENTS QUE LE GARS A CHOISI
+                //dd($request->all());
+                if($request->categorie == "c")
+                {
+                    if($request->etat == "c")
+                    {
+                        $entreprises = DB::table('entreprises')
+                        ->join('statutentreprises', 'entreprises.id_statutentreprise', '=', 'statutentreprises.id')
+                        ->join('pays', 'entreprises.id_pays', '=', 'pays.id')
+                        ->orderBy('entreprises.updated_at', 'desc')
+                        ->get(['entreprises.*', 'statutentreprises.libele_statut', 'pays.nom_pays']);
+
+                    
+                    }
+                    else
+                    {
+                    
+                        $entreprises = DB::table('entreprises')
+                        ->where('entreprises.etat', $request->etat)
+                        ->join('statutentreprises', 'entreprises.id_statutentreprise', '=', 'statutentreprises.id')
+                        ->join('pays', 'entreprises.id_pays', '=', 'pays.id')
+                        ->orderBy('entreprises.updated_at', 'desc')
+                        ->get(['entreprises.*', 'statutentreprises.libele_statut', 'pays.nom_pays']);
+                    
+                    }
+
+                
+                }
+                else
+                {
+                    //dd('ici');
+                    if($request->categorie == "3")
+                    {
+                        //dd('l');
+                        $entreprises = DB::table('entreprises')
+                        ->where('entreprises.id_statutentreprise', $categorie)
+                        ->join('statutentreprises', 'entreprises.id_statutentreprise', '=', 'statutentreprises.id')
+                        ->join('pays', 'entreprises.id_pays', '=', 'pays.id')
+                        ->orderBy('entreprises.updated_at', 'desc')
+                        ->get(['entreprises.*', 'statutentreprises.libele_statut', 'pays.nom_pays']);
+
+                    
+                    }
+                    else
+                    {
+                    //dd('tt');
+                        if($request->etat == "c")
+                        {
+                            //dd($statut);
+                            $entreprises = DB::table('entreprises')
+                            ->where('entreprises.id_statutentreprise', $categorie)
+                            ->join('statutentreprises', 'entreprises.id_statutentreprise', '=', 'statutentreprises.id')
+                            ->join('pays', 'entreprises.id_pays', '=', 'pays.id')
+                            ->orderBy('entreprises.updated_at', 'desc')
+                            ->get(['entreprises.*', 'statutentreprises.libele_statut', 'pays.nom_pays']);
+
+                            //ON RETOURNE A LA PAGE CONTRAT
+                            return view('admin/entreprises', compact('entreprises', 'categorie', 'etat', ));
+                        }
+                        else
+                        {
+                            //dd('la');
+                            $entreprises = DB::table('entreprises')
+                            ->where('entreprises.id_statutentreprise', $categorie)
+                            ->where('entreprises.etat', $request->etat)
+                            ->join('statutentreprises', 'entreprises.id_statutentreprise', '=', 'statutentreprises.id')
+                            ->join('pays', 'entreprises.id_pays', '=', 'pays.id')
+                            ->orderBy('entreprises.updated_at', 'desc')
+                            ->get(['entreprises.*', 'statutentreprises.libele_statut', 'pays.nom_pays']);
+
+                        
+                        }
+                    
+                    }
+                    
+                }
+                     
+                $deleted = DB::table('entreprises')->where('id', '=', $request->id_entreprise)->delete();
+                $message_success = "Elément supprimé";
+                
+                //ON RETOURNE A LA PAGE CONTRAT
+                return view('admin/entreprises', compact('entreprises', 'categorie', 'etat', 'message_success'));
+               
+            }
+         
         }
 
-        return redirect('entreprises')->with('success', 'Elément supprimé');
+       
+      
+
+       
     }
 
     Public function DeleteProspect(Request $request)
     {
         $deleted = DB::table('entreprises')->where('id', '=', $request->id_entreprise)->delete();
 
-        //SUPPRIMER TOUTES LES PROPOSITIONs DE CE CLIENT
-        $propal_customer = DB::table('propositions')->get();
-        foreach($propal_customer as $propal_customer)
-        {
-            $deleted_propal = DB::table('propositions')->where('id_client', '=', $request->id_entreprise)->delete();
-            
-            if($deleted_propal != 0)
-            {
-                //SUPPRIMER LE FICHIER DANS LE DOSSIER
-                Storage::delete($propal_customer->path_doc);
-            }
-
-            
-        }
-
+        
         return redirect('prospects')->with('success', 'Elément supprimé');
     }
 

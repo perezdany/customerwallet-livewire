@@ -18,10 +18,11 @@ use DB;
 class PrestationController extends Controller
 {
     //Handle Prestation
+   
 
     public function AddPrestation(Request $request)
     {
-       
+        //dd($request->all());
         if($request->type == 0)
         {
             return back()->with('error', 'Choisissez impérativement le type de prestation');
@@ -81,7 +82,7 @@ class PrestationController extends Controller
                 $Insert = Prestation_service::create([
         
                     'service_id' =>  $request->service[$a],
-                    'prestation_id' => $request->id_prestation,
+                    'prestation_id' => $insert->id,
 
                 ]);
             }

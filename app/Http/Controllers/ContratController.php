@@ -390,10 +390,11 @@ class ContratController extends Controller
         if($id_entreprise == "all")
         {
            
+           
             //VERIFIER CE QUE L'UTILISATEUR A CHOISI POUR FILTRER
             if($request->reconduction == "c")//Il n'a PAS CHOISI RECONDUCTION
             {   
-              
+               
                 if($request->etat_contrat == "c")//PAS CHOISI ETAT CONTRAT
                 {
                     
@@ -404,6 +405,7 @@ class ContratController extends Controller
                 
                         ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')
                         ->join('utilisateurs', 'contrats.created_by', '=', 'utilisateurs.id')
+                        ->orderBy('contrats.updated_at', 'desc')
                         ->get(['contrats.*', 'utilisateurs.nom_prenoms', 'entreprises.nom_entreprise', ]);
 
                         //ON RETOURNE A LA PAGE CONTRAT
@@ -430,18 +432,21 @@ class ContratController extends Controller
                 }
                 else
                 {
+                   
                     if($request->service == "service")//IL N'A PAS NON PLUS CHOISI LE SERVICE
                     {
+                       
                         //EN COURS OU TERMINE
                         if($request->etat_contrat == 0)
                         {
+                            
                             $contrats = DB::table('contrats')
                             ->where('contrats.fin_contrat' ,'>', date('Y-m-d'))
                             ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')
                             ->join('utilisateurs', 'contrats.created_by', '=', 'utilisateurs.id')
             
                             ->get(['contrats.*', 'utilisateurs.nom_prenoms', 'entreprises.nom_entreprise', ]);
-
+                            
                             //ON RETOURNE A LA PAGE CONTRAT
                             return view('dash/all_contrats', compact('contrats', 'reconduction', 'etat', 'id_entreprise', 'service'));
                         }
@@ -1558,9 +1563,14 @@ class ContratController extends Controller
 
     public function EditContratForm(Request $request)
     {
+        //dd($request->all());
         return view('admin/edit_contrat',
             [
                 'id' => $request->id_contrat,
+                'reconduction' => $request->reconduction,
+                'etat' => $request->etat_contrat,
+                'id_entreprise' => $request->entreprise,
+                'service' => $request->service,
             ]
         );
     }
@@ -1577,6 +1587,8 @@ class ContratController extends Controller
 
     public function EditContrat(Request $request)
     {
+        //ddd($request->all());
+        
         //dd($request->all());
         $jours = $request->jours;
         $annee = $request->annee;
@@ -1588,7 +1600,9 @@ class ContratController extends Controller
         if(strlen($ch) > 13)
         {
             //rediriger pour lui dire que c'est trop long
-            return back()->with('error', 'données montant saisies trop long');
+            $message_error = 'Données saisies trop long!';
+            return view('dash/all_contrats', compact('contrats', 'reconduction', 'etat', 'id_entreprise', 'service', 'message_error'));
+            //return back()->with('error', 'données montant saisies trop long');
         }
 
         $calculator = new Calculator();
@@ -1602,6 +1616,7 @@ class ContratController extends Controller
         $rest = $request->montant - $tot_paiement;
         if(isset($request->contrat_parent))
         {
+           // dd('d');
             $affected = DB::table('contrats')
             ->where('id', $request->id_contrat)
             ->update([
@@ -1619,6 +1634,7 @@ class ContratController extends Controller
         }
         else
         {
+            //dd('de');
             $affected = DB::table('contrats')
             ->where('id', $request->id_contrat)
             ->update([
@@ -1636,6 +1652,7 @@ class ContratController extends Controller
         
         }
 
+        //dd($affected);
         //ENREGISTRER LE FICHIER DU CONTRAT
         //IL FAUT SUPPRIMER L'ANCIEN FICHIER DANS LE DISQUE DUR
         $fichier = $request->file;
@@ -1646,7 +1663,9 @@ class ContratController extends Controller
 
             if($extension != "pdf")
             {
-                redirect('contrat')->with('error', 'Modification effectuée');
+                $message_error = 'Format de Fichier incorrect';
+                return view('dash/all_contrats', compact('contrats', 'reconduction', 'etat', 'id_entreprise', 'service', 'message_error'));
+                //redirect('contrat')->with('error', 'Modification effectuée');
             }
             //VERIFIER SI L'ENREGISTREMENT A UN CHEMIN D'ACCES ENREGISTRE
             $get_path = Contrat::where('id', $request->id_contrat)->get();
@@ -1713,59 +1732,60 @@ class ContratController extends Controller
 
                 if($extension != "pdf")
                 {
-                    return back()->with('error', 'LE FORMAT DE FICHIER DOIT ETRE UN FORMAT PDF!!');
+                    $message_error = 'Format de Fichier incorrect';
+                    return view('dash/all_contrats', compact('contrats', 'reconduction', 'etat', 'id_entreprise', 'service', 'message_error'));
                 }
                 //VERIFIER SI L'ENREGISTREMENT A UN CHEMIN D'ACCES ENREGISTRE
                 $get_path_prof = Contrat::where('id', $Insert->id)->get();
                 foreach($get_path_prof as $get_path_prof)
                 {
-                        if($get_path_prof->proforma_file == null)
-                        {
-                            //enregistrement de fichier dans la base
-                            $file_name_prof = $fichier_proforma->getClientOriginalName();
+                    if($get_path_prof->proforma_file == null)
+                    {
+                        //enregistrement de fichier dans la base
+                        $file_name_prof = $fichier_proforma->getClientOriginalName();
+                    
+                                
+                        $path = $request->file('file')->storeAs(
+                            'factures/proforma', $file_name_prof
+                        );
+    
+                        $affected = DB::table('contrats')
+                        ->where('id', $Insert->id)
+                        ->update([
+                            'proforma_file'=> $path,
+                            
+                        ]);
+    
                         
-                                    
-                            $path = $request->file('file')->storeAs(
-                                'factures/proforma', $file_name_prof
-                            );
-        
-                            $affected = DB::table('contrats')
-                            ->where('id', $Insert->id)
-                            ->update([
-                                'proforma_file'=> $path,
-                                
-                            ]);
-        
-                            
-                        }
-                        else
+                    }
+                    else
+                    {
+
+                        //SUPPRESSION DE L'ANCIEN FICHIER
+                        //dd($get_path->path);
+                        $get_path_prof = Contrat::where('id', $Insert->id)->get();
+                        foreach($get_path_prof as $get_path_prof)
                         {
-
-                            //SUPPRESSION DE L'ANCIEN FICHIER
-                            //dd($get_path->path);
-                            $get_path_prof = Contrat::where('id', $Insert->id)->get();
-                            foreach($get_path_prof as $get_path_prof)
-                            {
-                                Storage::delete($get_path_prof->proforma_file);
-                            }
-
-        
-                            $file_name_prof = $fichier_proforma->getClientOriginalName();
-                            
-                                    
-                            $path = $request->file('file')->storeAs(
-                                'factures/proforma', $file_name_prof
-                            );
-        
-                            $affected = DB::table('contrats')
-                            ->where('id', $Insert->id)
-                            ->update([
-                                'proforma_file'=> $path,
-                                
-                            ]);
-        
-                            
+                            Storage::delete($get_path_prof->proforma_file);
                         }
+
+    
+                        $file_name_prof = $fichier_proforma->getClientOriginalName();
+                        
+                                
+                        $path = $request->file('file')->storeAs(
+                            'factures/proforma', $file_name_prof
+                        );
+    
+                        $affected = DB::table('contrats')
+                        ->where('id', $Insert->id)
+                        ->update([
+                            'proforma_file'=> $path,
+                            
+                        ]);
+    
+                        
+                    }
                 }
             
         }
@@ -1785,7 +1805,8 @@ class ContratController extends Controller
             
             if($extension != "pdf")
             {
-                return back()->with('error', 'LE FORMAT DE FICHIER DOIT ETRE UN FORMAT PDF!!');
+                $message_error = 'Format de Fichier incorrect';
+                return view('dash/all_contrats', compact('contrats', 'reconduction', 'etat', 'id_entreprise', 'service', 'message_error'));
             }
             //VERIFIER SI L'ENREGISTREMENT A UN CHEMIN D'ACCES ENREGISTRE
             $get_bon_commande = Contrat::where('id', $request->id_contrat)->get();
@@ -1846,9 +1867,466 @@ class ContratController extends Controller
         
         }
 
+        $reconduction = $request->reconduction;
+        $etat = $request->etat_contrat;
+        $id_entreprise = $request->entreprise_filter;
+        $service = $request->service;
+        
+        //APPLIQUER LZ FILTRE QUI ETAIT LA D'ABORD
+        if($id_entreprise == "all")
+        {
+           
+            //VERIFIER CE QUE L'UTILISATEUR A CHOISI POUR FILTRER
+            if($request->reconduction == "c")//Il n'a PAS CHOISI RECONDUCTION
+            {   
+              
+                if($request->etat_contrat == "c")//PAS CHOISI ETAT CONTRAT
+                {
+                    
+                    if($request->service == "service")//IL N'A PAS NON PLUS CHOISI LE SERVICE
+                    {
+                       //AUCUN CHOIX
+                        $contrats = DB::table('contrats')
+                
+                        ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')
+                        ->join('utilisateurs', 'contrats.created_by', '=', 'utilisateurs.id')
+                        ->get(['contrats.*', 'utilisateurs.nom_prenoms', 'entreprises.nom_entreprise', ]);
+
+                        //ON RETOURNE A LA PAGE CONTRAT
+                        //return view('dash/all_contrats', compact('contrats', 'reconduction', 'etat', 'id_entreprise', 'service'));
+                    
+                    }
+                    else
+                    {   
+                        //dd('test2');
+                        //SERVICE SEULEMENT EST CHOISI
+                        $contrats = DB::table('prestations')
+              
+                        ->join('contrats', 'prestations.id_contrat', '=', 'contrats.id')
+                        ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')
+                        ->join('prestation_services', 'prestation_services.prestation_id', '=', 'prestations.id')
+                        ->join('services', 'prestation_services.service_id', '=', 'services.id') 
+                        ->where('services.id', $request->service)
+                        ->get(['contrats.*', 'entreprises.nom_entreprise', ]);
+
+                        //ON RETOURNE A LA PAGE CONTRAT
+                        //return view('dash/all_contrats', compact('contrats', 'reconduction', 'etat', 'id_entreprise', 'service'));
+                    
+                    }
+                }
+                else
+                {
+                    if($request->service == "service")//IL N'A PAS NON PLUS CHOISI LE SERVICE
+                    {
+                        //EN COURS OU TERMINE
+                        if($request->etat_contrat == 0)
+                        {
+                            $contrats = DB::table('contrats')
+                            ->where('contrats.fin_contrat' ,'>', date('Y-m-d'))
+                            ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')
+                            ->join('utilisateurs', 'contrats.created_by', '=', 'utilisateurs.id')
+            
+                            ->get(['contrats.*', 'utilisateurs.nom_prenoms', 'entreprises.nom_entreprise', ]);
+
+                            //ON RETOURNE A LA PAGE CONTRAT
+                            //return view('dash/all_contrats', compact('contrats', 'reconduction', 'etat', 'id_entreprise', 'service'));
+                        }
+                        else
+                        {
+                            $contrats = DB::table('contrats')
+                            ->where('contrats.fin_contrat' ,'<', date('Y-m-d'))
+                            ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')
+                            ->join('utilisateurs', 'contrats.created_by', '=', 'utilisateurs.id')
+    
+                            ->get(['contrats.*', 'utilisateurs.nom_prenoms', 'entreprises.nom_entreprise', ]);
+
+                            //ON RETOURNE A LA PAGE CONTRAT
+                            //return view('dash/all_contrats', compact('contrats', 'reconduction', 'etat', 'id_entreprise', 'service'));
+
+                        }
+                    
+                    }
+                    else
+                    {   
+                       
+                         //SERVICE EST CHOISI ET ETAT CONTRAT EST CHOISI
+                        if($request->etat_contrat == 0)
+                        {
+                            $contrats = DB::table('prestations')     
+                            ->where('contrats.fin_contrat' ,'>', date('Y-m-d'))
+                            ->join('contrats', 'prestations.id_contrat', '=', 'contrats.id')
+                            ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')
+                            ->join('prestation_services', 'prestation_services.prestation_id', '=', 'prestations.id')
+                            ->join('services', 'prestation_services.service_id', '=', 'services.id') 
+                            ->where('services.id', $request->service)
+                            ->get(['contrats.*', 'entreprises.nom_entreprise', ]);
+
+                            //ON RETOURNE A LA PAGE CONTRAT
+                            //return view('dash/all_contrats', compact('contrats', 'reconduction', 'etat', 'id_entreprise', 'service'));
+                        }
+                        else
+                        {
+                            $contrats = DB::table('prestations')
+                            ->join('contrats', 'prestations.id_contrat', '=', 'contrats.id')
+                                ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')
+                                ->join('prestation_services', 'prestation_services.prestation_id', '=', 'prestations.id')
+                                ->join('services', 'prestation_services.service_id', '=', 'services.id') 
+                            ->where('contrats.fin_contrat' ,'<', date('Y-m-d'))
+                            ->where('services.id', $request->service)
+                            ->get(['contrats.*', 'entreprises.nom_entreprise', ]);
+
+                            //ON RETOURNE A LA PAGE CONTRAT
+                           // return view('dash/all_contrats', compact('contrats', 'reconduction', 'etat', 'id_entreprise', 'service'));
+
+                        }
+                       
+           
+                    
+                    }
+                }
+            }
+            else // IL A CHOISI RECONDUCTION
+            {
+               
+                if($request->etat_contrat == "c")//PAS CHOISI ETAT CONTRAT
+                {
+                    
+                    if($request->service == "service")//IL N'A PAS NON PLUS CHOISI LE SERVICE
+                    {
+                        //dd('ici2');
+                       //AUCUN CHOIX
+                        $contrats = DB::table('contrats')
+                
+                        ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')
+                        ->join('utilisateurs', 'contrats.created_by', '=', 'utilisateurs.id')
+                        ->where('contrats.reconduction', $request->reconduction)
+                        ->get(['contrats.*', 'utilisateurs.nom_prenoms', 'entreprises.nom_entreprise', ]);
+
+                        //ON RETOURNE A LA PAGE CONTRAT
+                        //return view('dash/all_contrats', compact('contrats', 'reconduction', 'etat', 'id_entreprise', 'service'));
+                    
+                    }
+                    else
+                    {   
+                        
+                        //SERVICE SEULEMENT EST CHOISI
+                        $contrats = DB::table('prestations')
+                        ->join('contrats', 'prestations.id_contrat', '=', 'contrats.id')
+                            ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')
+                            ->join('prestation_services', 'prestation_services.prestation_id', '=', 'prestations.id')
+                            ->join('services', 'prestation_services.service_id', '=', 'services.id') 
+                        ->where('contrats.reconduction', $request->reconduction)
+                        ->where('services.id', $request->service)
+                        ->get(['contrats.*', 'entreprises.nom_entreprise', ]);
+
+                        //ON RETOURNE A LA PAGE CONTRAT
+                        //return view('dash/all_contrats', compact('contrats', 'reconduction', 'etat', 'id_entreprise', 'service'));
+                    
+                    }
+                }
+                else
+                {
+                    
+                    if($request->service == "service")//IL N'A PAS NON PLUS CHOISI LE SERVICE
+                    {
+                        //EN COURS OU TERMINE
+                        if($request->etat_contrat == 0)
+                        {
+                            //dd('test1');
+                            $contrats = DB::table('contrats')
+                            ->where('contrats.fin_contrat' ,'>', date('Y-m-d'))
+                            ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')
+                            ->join('utilisateurs', 'contrats.created_by', '=', 'utilisateurs.id')
+                            ->where('contrats.reconduction', $request->reconduction)
+                            ->get(['contrats.*', 'utilisateurs.nom_prenoms', 'entreprises.nom_entreprise', ]);
+
+                            //ON RETOURNE A LA PAGE CONTRAT
+                            //return view('dash/all_contrats', compact('contrats', 'reconduction', 'etat', 'id_entreprise', 'service'));
+                        }
+                        else
+                        {
+                            $contrats = DB::table('contrats')
+                            ->where('contrats.fin_contrat' ,'<', date('Y-m-d'))
+                            ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')
+                            ->join('utilisateurs', 'contrats.created_by', '=', 'utilisateurs.id')
+                            ->where('contrats.reconduction', $request->reconduction)
+                            ->get(['contrats.*', 'entreprises.nom_entreprise', ]);
+
+                            //ON RETOURNE A LA PAGE CONTRAT
+                            //return view('dash/all_contrats', compact('contrats', 'reconduction', 'etat', 'id_entreprise', 'service'));
+
+                        }
+                    
+                    }
+                    else
+                    {   
+                         //SERVICE EST CHOISI ET ETAT CONTRAT EST CHOISI
+                        if($request->etat_contrat == 0)
+                        {
+                            $contrats = DB::table('prestations')
+                           
+                            ->join('contrats', 'prestations.id_contrat', '=', 'contrats.id')
+                            ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')
+                            ->join('prestation_services', 'prestation_services.prestation_id', '=', 'prestations.id')
+                            ->join('services', 'prestation_services.service_id', '=', 'services.id') 
+                            ->where('contrats.fin_contrat' ,'>', date('Y-m-d'))
+                            ->where('contrats.reconduction', $request->reconduction) 
+                            ->where('services.id', $request->service)
+                            ->get(['contrats.*', 'entreprises.nom_entreprise', ]);
+
+                            //ON RETOURNE A LA PAGE CONTRAT
+                            //return view('dash/all_contrats', compact('contrats', 'reconduction', 'etat', 'id_entreprise', 'service'));
+                        }
+                        else
+                        {
+                            $contrats = DB::table('prestations')
+                            ->join('contrats', 'prestations.id_contrat', '=', 'contrats.id')
+                                ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')
+                                ->join('prestation_services', 'prestation_services.prestation_id', '=', 'prestations.id')
+                                ->join('services', 'prestation_services.service_id', '=', 'services.id') 
+                            ->where('contrats.fin_contrat' ,'<', date('Y-m-d'))
+                            ->where('contrats.reconduction', $request->reconduction)
+                            ->where('services.id', $request->service)
+                            ->get(['contrats.*', 'entreprises.nom_entreprise', ]);
+
+                            //ON RETOURNE A LA PAGE CONTRAT
+                            //return view('dash/all_contrats', compact('contrats', 'reconduction', 'etat', 'id_entreprise', 'service'));
+
+                        }
+                       
+           
+                    
+                    }
+                }
+
+            }
+
+        }
+        else
+        {
+            //IL A CHOISI UNE ENTREPRISE
+          
+            if($request->reconduction == "c")//Il n'a PAS CHOISI RECONDUCTION
+            {
+                if($request->etat_contrat == "c")//PAS CHOISI ETAT CONTRAT
+                {
+                    if($request->service == "service")//IL N'A PAS NON PLUS CHOISI LE SERVICE
+                    {
+                       //AUCUN CHOIX
+                        $contrats = DB::table('contrats')
+                        ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')
+                        ->join('utilisateurs', 'contrats.created_by', '=', 'utilisateurs.id')
+                        ->where('contrats.id_entreprise', $request->entreprise)
+                        ->get(['contrats.*', 'utilisateurs.nom_prenoms', 'entreprises.nom_entreprise', ]);
+
+                        //ON RETOURNE A LA PAGE CONTRAT
+                        //return view('dash/all_contrats', compact('contrats', 'reconduction', 'etat', 'id_entreprise', 'service'));
+                    
+                    }
+                    else
+                    {   
+                        //SERVICE SEULEMENT EST CHOISI
+                        $contrats = DB::table('prestations')
+                            ->join('contrats', 'prestations.id_contrat', '=', 'contrats.id')
+                                ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')
+                                ->join('prestation_services', 'prestation_services.prestation_id', '=', 'prestations.id')
+                                ->join('services', 'prestation_services.service_id', '=', 'services.id') 
+                        ->where('contrats.id_entreprise', $request->entreprise)
+                        ->where('services.id', $request->service)
+                        ->get(['contrats.*',  'entreprises.nom_entreprise', ]);
+
+                        //ON RETOURNE A LA PAGE CONTRAT
+                        //return view('dash/all_contrats', compact('contrats', 'reconduction', 'etat', 'id_entreprise', 'service'));
+                    
+                    }
+                }
+                else
+                {
+                    if($request->service == "service")//IL N'A PAS NON PLUS CHOISI LE SERVICE
+                    {
+                        //EN COURS OU TERMINE
+                        if($request->etat_contrat == 0)
+                        {
+                            $contrats = DB::table('contrats')
+                            ->where('contrats.fin_contrat' ,'>', date('Y-m-d'))
+                            ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')
+                            ->join('utilisateurs', 'contrats.created_by', '=', 'utilisateurs.id')
+                            ->where('contrats.id_entreprise', $request->entreprise)
+                            ->get(['contrats.*', 'utilisateurs.nom_prenoms', 'entreprises.nom_entreprise', ]);
+
+                            //ON RETOURNE A LA PAGE CONTRAT
+                            //return view('dash/all_contrats', compact('contrats', 'reconduction', 'etat', 'id_entreprise', 'service'));
+                        }
+                        else
+                        {
+                            $contrats = DB::table('contrats')
+                            ->where('contrats.fin_contrat' ,'<', date('Y-m-d'))
+                            ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')
+                            ->join('utilisateurs', 'contrats.created_by', '=', 'utilisateurs.id')
+                            ->where('contrats.id_entreprise', $request->entreprise)
+                            ->get(['contrats.*', 'utilisateurs.nom_prenoms', 'entreprises.nom_entreprise', ]);
+
+                            //ON RETOURNE A LA PAGE CONTRAT
+                            //return view('dash/all_contrats', compact('contrats', 'reconduction', 'etat', 'id_entreprise', 'service'));
+
+                        }
+                    
+                    }
+                    else
+                    {   
+                         //SERVICE EST CHOISI ET ETAT CONTRAT EST CHOISI
+                        if($request->etat_contrat == 0)
+                        {
+                            $contrats = DB::table('prestations')
+                            ->join('contrats', 'prestations.id_contrat', '=', 'contrats.id')
+                                ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')
+                                ->join('prestation_services', 'prestation_services.prestation_id', '=', 'prestations.id')
+                                ->join('services', 'prestation_services.service_id', '=', 'services.id') 
+                            ->where('contrats.fin_contrat' ,'>', date('Y-m-d'))
+                            ->where('contrats.id_entreprise', $request->entreprise)
+                            ->where('services.id', $request->service)
+                            ->get(['contrats.*', 'entreprises.nom_entreprise', ]);
+
+                            //ON RETOURNE A LA PAGE CONTRAT
+                            //return view('dash/all_contrats', compact('contrats', 'reconduction', 'etat', 'id_entreprise', 'service'));
+                        }
+                        else
+                        {
+                            $contrats = DB::table('prestations')
+                            ->join('contrats', 'prestations.id_contrat', '=', 'contrats.id')
+                                ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')
+                                ->join('prestation_services', 'prestation_services.prestation_id', '=', 'prestations.id')
+                                ->join('services', 'prestation_services.service_id', '=', 'services.id') 
+                            ->where('contrats.fin_contrat' ,'<', date('Y-m-d'))
+                            ->where('contrats.id_entreprise', $request->entreprise)
+                            ->where('services.id', $request->service)
+                            ->get(['contrats.*', 'utilisateurs.nom_prenoms', 'entreprises.nom_entreprise', ]);
+
+                            //ON RETOURNE A LA PAGE CONTRAT
+                            //return view('dash/all_contrats', compact('contrats', 'reconduction', 'etat', 'id_entreprise', 'service'));
+
+                        }
+                    }
+                }
+            }
+            else // IL A CHOISI RECONDUCTION
+            {
+                if($request->etat_contrat == "c")//PAS CHOISI ETAT CONTRAT
+                {
+                    if($request->service == "service")//IL N'A PAS NON PLUS CHOISI LE SERVICE
+                    {
+                       //AUCUN CHOIX
+                        $contrats = DB::table('contrats')
+                
+                        ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')
+                        ->join('utilisateurs', 'contrats.created_by', '=', 'utilisateurs.id')
+                        ->where('contrats.id_entreprise', $request->entreprise)
+                        ->where('contrats.reconduction', $request->reconduction)
+                        ->get(['contrats.*', 'utilisateurs.nom_prenoms', 'entreprises.nom_entreprise', ]);
+                        
+                        //ON RETOURNE A LA PAGE CONTRAT
+                       // return view('dash/all_contrats', compact('contrats', 'reconduction', 'etat', 'id_entreprise', 'service'));
+                    
+                    }
+                    else
+                    {   
+                        //SERVICE SEULEMENT EST CHOISI
+                        $contrats = DB::table('prestations')
+                        ->join('contrats', 'prestations.id_contrat', '=', 'contrats.id')
+                            ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')
+                            ->join('prestation_services', 'prestation_services.prestation_id', '=', 'prestations.id')
+                            ->join('services', 'prestation_services.service_id', '=', 'services.id') 
+                        ->where('contrats.reconduction', $request->reconduction)
+                        ->where('contrats.id_entreprise', $request->enntreprise)
+                        ->where('services.id', $request->service)
+                        ->get(['contrats.*', 'utilisateurs.nom_prenoms', 'entreprises.nom_entreprise', ]);
+
+                        //ON RETOURNE A LA PAGE CONTRAT
+                        //return view('dash/all_contrats', compact('contrats', 'reconduction', 'etat', 'id_entreprise', 'service'));
+                    
+                    }
+                }
+                else
+                {
+                    if($request->service == "service")//IL N'A PAS NON PLUS CHOISI LE SERVICE
+                    {
+                        //EN COURS OU TERMINE
+                        if($request->etat_contrat == 0)
+                        {
+                            $contrats = DB::table('contrats')
+                            ->where('contrats.fin_contrat' ,'>', date('Y-m-d'))
+                            ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')
+                            ->join('utilisateurs', 'contrats.created_by', '=', 'utilisateurs.id')
+                            ->where('contrats.reconduction', $request->reconduction)
+                            ->where('contrats.id_entreprise', $request->enntreprise)
+                            ->get(['contrats.*', 'utilisateurs.nom_prenoms', 'entreprises.nom_entreprise', ]);
+
+                            //ON RETOURNE A LA PAGE CONTRAT
+                           // return view('dash/all_contrats', compact('contrats', 'reconduction', 'etat', 'id_entreprise', 'service'));
+                        }
+                        else
+                        {
+                            $contrats = DB::table('contrats')
+                            ->where('contrats.fin_contrat' ,'<', date('Y-m-d'))
+                            ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')
+                            ->join('utilisateurs', 'contrats.created_by', '=', 'utilisateurs.id')
+                            ->where('contrats.reconduction', $request->reconduction)
+                            ->where('contrats.id_entreprise', $request->enntreprise)
+                            ->get(['contrats.*', 'utilisateurs.nom_prenoms', 'entreprises.nom_entreprise', ]);
+
+                            //ON RETOURNE A LA PAGE CONTRAT
+                            //return view('dash/all_contrats', compact('contrats', 'reconduction', 'etat', 'id_entreprise', 'service'));
+
+                        }
+                    
+                    }
+                    else
+                    {   
+                         //SERVICE EST CHOISI ET ETAT CONTRAT EST CHOISI
+                        if($request->etat_contrat == 0)
+                        {
+                            $contrats = DB::table('prestations')
+                            ->join('contrats', 'prestations.id_contrat', '=', 'contrats.id')
+                                ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')
+                                ->join('prestation_services', 'prestation_services.prestation_id', '=', 'prestations.id')
+                                ->join('services', 'prestation_services.service_id', '=', 'services.id') 
+                            ->where('contrats.fin_contrat' ,'>', date('Y-m-d'))
+                            ->where('contrats.reconduction', $request->reconduction)
+                            ->where('contrats.id_entreprise', $request->enntreprise)
+                            ->where('services.id', $request->service)
+                            ->get(['contrats.*', 'entreprises.nom_entreprise', ]);
+
+                            //ON RETOURNE A LA PAGE CONTRAT
+                            //return view('dash/all_contrats', compact('contrats', 'reconduction', 'etat', 'id_entreprise', 'service'));
+                        }
+                        else
+                        {
+                            $contrats = DB::table('prestations')
+                            ->join('contrats', 'prestations.id_contrat', '=', 'contrats.id')
+                                ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')
+                                ->join('prestation_services', 'prestation_services.prestation_id', '=', 'prestations.id')
+                                ->join('services', 'prestation_services.service_id', '=', 'services.id') 
+                            ->where('contrats.fin_contrat' ,'<', date('Y-m-d'))
+                            
+                            ->where('contrats.id_entreprise', $request->enntreprise)
+                            ->where('services.id', $request->service)
+                            ->get(['contrats.*', 'entreprises.nom_entreprise', ]);
+
+                            //ON RETOURNE A LA PAGE CONTRAT
+                           // return view('dash/all_contrats', compact('contrats', 'reconduction', 'etat', 'id_entreprise', 'service'));
+
+                        }
+                    }
+                }
+
+            }
+           
+        }
 
 
-        return redirect('contrat')->with('success', 'Modification effectuée');
+        $message_success = 'Modification effecutée';
+        return view('dash/all_contrats', compact('contrats', 'reconduction', 'etat', 'id_entreprise', 'service', 'message_success'));
+        //return redirect('contrat')->with('success', 'Modification effectuée');
 
     }
 

@@ -285,6 +285,90 @@ class FactureController extends Controller
     public function DeleteFacture(Request $request)
     {
         //dd($request->all());
+        //VERIFIER SI IL EST LIE A UN CONTRAT
+         //ON REFAIT LE FILTRE QUI Y ETAIT AVANT DE SE REVENIR SUR LA PAGE
+         //dd($request->all());
+         $id_entreprise = $request->id_entreprise;
+         $etat = $request->etat;
+         //dd($id_entreprise);
+         if($request->id_entreprise == "all")//TOUT LE MONDE
+         {
+
+             if($request->etat == "c")
+             {
+                 $factures = DB::table('factures')
+                 ->join('prestations', 'factures.id_prestation', '=', 'prestations.id')
+                 ->join('typeprestations', 'prestations.id_type_prestation', '=', 'typeprestations.id')
+                 ->join('contrats', 'prestations.id_contrat', '=', 'contrats.id')
+                 ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id') 
+                 ->orderBy('factures.date_emission', 'desc')
+                 ->get(['factures.*', 'prestations.localisation', 'prestations.date_prestation', 'prestations.id_contrat',
+                 'contrats.titre_contrat', 'contrats.date_solde', 
+                 'contrats.montant', 'contrats.reste_a_payer',  
+                 'typeprestations.libele',  'entreprises.nom_entreprise']);
+ 
+               
+             }
+             else
+             {
+                
+                 $factures = DB::table('factures')
+                 ->where('factures.reglee', $etat)
+                 ->join('prestations', 'factures.id_prestation', '=', 'prestations.id')
+                 ->join('typeprestations', 'prestations.id_type_prestation', '=', 'typeprestations.id')
+                 ->join('contrats', 'prestations.id_contrat', '=', 'contrats.id')
+                 ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id') 
+                 ->orderBy('factures.date_emission', 'desc')
+                 ->get(['factures.*', 'prestations.localisation', 'prestations.date_prestation', 'prestations.id_contrat',
+                 'contrats.titre_contrat', 'contrats.date_solde', 
+                 'contrats.montant', 'contrats.reste_a_payer',  
+                 'typeprestations.libele',  'entreprises.nom_entreprise']);
+ 
+                
+             }
+ 
+         }
+         else
+         {
+             if($request->etat == "c")
+             {
+                 $factures = DB::table('factures')
+                 ->join('prestations', 'factures.id_prestation', '=', 'prestations.id')
+                 ->join('typeprestations', 'prestations.id_type_prestation', '=', 'typeprestations.id')
+                 ->join('contrats', 'prestations.id_contrat', '=', 'contrats.id')
+                 ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id') 
+                 ->where('contrats.id_entreprise', $id_entreprise)
+                 ->orderBy('factures.date_emission', 'desc')
+                 ->get(['factures.*', 'prestations.localisation', 'prestations.date_prestation', 'prestations.id_contrat',
+                 'contrats.titre_contrat', 'contrats.date_solde', 
+                 'contrats.montant', 'contrats.reste_a_payer',  
+                 'typeprestations.libele',  'entreprises.nom_entreprise']);
+ 
+                 
+             }
+             else
+             {
+                 $factures = DB::table('factures')
+                 ->join('prestations', 'factures.id_prestation', '=', 'prestations.id')
+                 ->join('typeprestations', 'prestations.id_type_prestation', '=', 'typeprestations.id')
+                 ->join('contrats', 'prestations.id_contrat', '=', 'contrats.id')
+                 ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id') 
+                 ->where('factures.reglee', $etat)
+                 ->where('contrats.id_entreprise', $id_entreprise)
+                 ->orderBy('factures.date_emission', 'desc')
+                 ->get(['factures.*', 'prestations.localisation', 'prestations.date_prestation', 'prestations.id_contrat',
+                 'contrats.titre_contrat', 'contrats.date_solde', 
+                 'contrats.montant', 'contrats.reste_a_payer',  
+                 'typeprestations.libele',  'entreprises.nom_entreprise']);
+ 
+                 
+             }
+         }
+
+        $message_success = 'Facture modifiée';
+       
+        return redirect('facture')->with('id_entreprise', $id_entreprise)->with('factures', $factures)->with('etat', $etat)
+        ->with('message_success', $message_success);
         $delete = DB::table('factures')->where('id', '=', $request->id_facture)->delete();
 
         return redirect('facture')->with('success', 'Facture supprimée');
@@ -398,85 +482,7 @@ class FactureController extends Controller
     {
         
         //dd($request->all());
-        //ON REFAIT LE FILTRE QUI Y ETAIT AVANT DE SE REVENIR SUR LA PAGE
-         //dd($request->all());
-         $id_entreprise = $request->id_entreprise;
-         $etat = $request->etat;
-         //dd($id_entreprise);
-         if($request->id_entreprise == "all")//TOUT LE MONDE
-         {
-
-             if($request->etat == "c")
-             {
-                 $factures = DB::table('factures')
-                 ->join('prestations', 'factures.id_prestation', '=', 'prestations.id')
-                 ->join('typeprestations', 'prestations.id_type_prestation', '=', 'typeprestations.id')
-                 ->join('contrats', 'prestations.id_contrat', '=', 'contrats.id')
-                 ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id') 
-                 ->orderBy('factures.date_emission', 'desc')
-                 ->get(['factures.*', 'prestations.localisation', 'prestations.date_prestation', 'prestations.id_contrat',
-                 'contrats.titre_contrat', 'contrats.date_solde', 
-                 'contrats.montant', 'contrats.reste_a_payer',  
-                 'typeprestations.libele',  'entreprises.nom_entreprise']);
- 
-               
-             }
-             else
-             {
-                
-                 $factures = DB::table('factures')
-                 ->where('factures.reglee', $etat)
-                 ->join('prestations', 'factures.id_prestation', '=', 'prestations.id')
-                 ->join('typeprestations', 'prestations.id_type_prestation', '=', 'typeprestations.id')
-                 ->join('contrats', 'prestations.id_contrat', '=', 'contrats.id')
-                 ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id') 
-                 ->orderBy('factures.date_emission', 'desc')
-                 ->get(['factures.*', 'prestations.localisation', 'prestations.date_prestation', 'prestations.id_contrat',
-                 'contrats.titre_contrat', 'contrats.date_solde', 
-                 'contrats.montant', 'contrats.reste_a_payer',  
-                 'typeprestations.libele',  'entreprises.nom_entreprise']);
- 
-                
-             }
- 
-         }
-         else
-         {
-             if($request->etat == "c")
-             {
-                 $factures = DB::table('factures')
-                 ->join('prestations', 'factures.id_prestation', '=', 'prestations.id')
-                 ->join('typeprestations', 'prestations.id_type_prestation', '=', 'typeprestations.id')
-                 ->join('contrats', 'prestations.id_contrat', '=', 'contrats.id')
-                 ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id') 
-                 ->where('contrats.id_entreprise', $id_entreprise)
-                 ->orderBy('factures.date_emission', 'desc')
-                 ->get(['factures.*', 'prestations.localisation', 'prestations.date_prestation', 'prestations.id_contrat',
-                 'contrats.titre_contrat', 'contrats.date_solde', 
-                 'contrats.montant', 'contrats.reste_a_payer',  
-                 'typeprestations.libele',  'entreprises.nom_entreprise']);
- 
-                 
-             }
-             else
-             {
-                 $factures = DB::table('factures')
-                 ->join('prestations', 'factures.id_prestation', '=', 'prestations.id')
-                 ->join('typeprestations', 'prestations.id_type_prestation', '=', 'typeprestations.id')
-                 ->join('contrats', 'prestations.id_contrat', '=', 'contrats.id')
-                 ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id') 
-                 ->where('factures.reglee', $etat)
-                 ->where('contrats.id_entreprise', $id_entreprise)
-                 ->orderBy('factures.date_emission', 'desc')
-                 ->get(['factures.*', 'prestations.localisation', 'prestations.date_prestation', 'prestations.id_contrat',
-                 'contrats.titre_contrat', 'contrats.date_solde', 
-                 'contrats.montant', 'contrats.reste_a_payer',  
-                 'typeprestations.libele',  'entreprises.nom_entreprise']);
- 
-                 
-             }
-         }
-
+        
         $affected = DB::table('factures')
         ->where('id', $request->id_facture)
         ->update([ 'numero_facture' => $request->numero_facture, 
@@ -563,6 +569,84 @@ class FactureController extends Controller
         
         }
 
+        //ON REFAIT LE FILTRE QUI Y ETAIT AVANT DE SE REVENIR SUR LA PAGE
+         //dd($request->all());
+         $id_entreprise = $request->id_entreprise;
+         $etat = $request->etat;
+         //dd($id_entreprise);
+         if($request->id_entreprise == "all")//TOUT LE MONDE
+         {
+
+             if($request->etat == "c")
+             {
+                 $factures = DB::table('factures')
+                 ->join('prestations', 'factures.id_prestation', '=', 'prestations.id')
+                 ->join('typeprestations', 'prestations.id_type_prestation', '=', 'typeprestations.id')
+                 ->join('contrats', 'prestations.id_contrat', '=', 'contrats.id')
+                 ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id') 
+                 ->orderBy('factures.date_emission', 'desc')
+                 ->get(['factures.*', 'prestations.localisation', 'prestations.date_prestation', 'prestations.id_contrat',
+                 'contrats.titre_contrat', 'contrats.date_solde', 
+                 'contrats.montant', 'contrats.reste_a_payer',  
+                 'typeprestations.libele',  'entreprises.nom_entreprise']);
+ 
+               
+             }
+             else
+             {
+                
+                 $factures = DB::table('factures')
+                 ->where('factures.reglee', $etat)
+                 ->join('prestations', 'factures.id_prestation', '=', 'prestations.id')
+                 ->join('typeprestations', 'prestations.id_type_prestation', '=', 'typeprestations.id')
+                 ->join('contrats', 'prestations.id_contrat', '=', 'contrats.id')
+                 ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id') 
+                 ->orderBy('factures.date_emission', 'desc')
+                 ->get(['factures.*', 'prestations.localisation', 'prestations.date_prestation', 'prestations.id_contrat',
+                 'contrats.titre_contrat', 'contrats.date_solde', 
+                 'contrats.montant', 'contrats.reste_a_payer',  
+                 'typeprestations.libele',  'entreprises.nom_entreprise']);
+ 
+                
+             }
+ 
+         }
+         else
+         {
+             if($request->etat == "c")
+             {
+                 $factures = DB::table('factures')
+                 ->join('prestations', 'factures.id_prestation', '=', 'prestations.id')
+                 ->join('typeprestations', 'prestations.id_type_prestation', '=', 'typeprestations.id')
+                 ->join('contrats', 'prestations.id_contrat', '=', 'contrats.id')
+                 ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id') 
+                 ->where('contrats.id_entreprise', $id_entreprise)
+                 ->orderBy('factures.date_emission', 'desc')
+                 ->get(['factures.*', 'prestations.localisation', 'prestations.date_prestation', 'prestations.id_contrat',
+                 'contrats.titre_contrat', 'contrats.date_solde', 
+                 'contrats.montant', 'contrats.reste_a_payer',  
+                 'typeprestations.libele',  'entreprises.nom_entreprise']);
+ 
+                 
+             }
+             else
+             {
+                 $factures = DB::table('factures')
+                 ->join('prestations', 'factures.id_prestation', '=', 'prestations.id')
+                 ->join('typeprestations', 'prestations.id_type_prestation', '=', 'typeprestations.id')
+                 ->join('contrats', 'prestations.id_contrat', '=', 'contrats.id')
+                 ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id') 
+                 ->where('factures.reglee', $etat)
+                 ->where('contrats.id_entreprise', $id_entreprise)
+                 ->orderBy('factures.date_emission', 'desc')
+                 ->get(['factures.*', 'prestations.localisation', 'prestations.date_prestation', 'prestations.id_contrat',
+                 'contrats.titre_contrat', 'contrats.date_solde', 
+                 'contrats.montant', 'contrats.reste_a_payer',  
+                 'typeprestations.libele',  'entreprises.nom_entreprise']);
+ 
+                 
+             }
+         }
 
         $message_success = 'Facture modifiée';
        
