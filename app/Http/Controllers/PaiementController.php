@@ -66,7 +66,7 @@ class PaiementController extends Controller
         {
             $affected = DB::table('factures')
             ->where('id', $request->id_facture)
-            ->update([ 'reglee' => 1, ]); //LA FACTURE DEVIENT REGLEE DEFINITIVEMENT
+            ->update([ 'reglee' => 1, 'date_reglement' => date('Y-m-d')]); //LA FACTURE DEVIENT REGLEE DEFINITIVEMENT
         }
         
 

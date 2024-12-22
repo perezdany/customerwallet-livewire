@@ -533,6 +533,8 @@ Route::middleware(['auth:web'])->group(function(){
 
     //FILTRER PAR ETAT DES FACTURES OU PAR CLIENT
     Route::post('make_filter_facture', [FactureController::class, 'TableFilter']);
+    Route::get('no_reglee', [FactureController::class, 'TableFilter']);
+    Route::get('reglee', [FactureController::class, 'TableFilter']);
 
     //AFFICHER LES FACTURES DE LA PRESTATION
     Route::post('display_facture', [FactureController::class, 'FactureByPrestation']);

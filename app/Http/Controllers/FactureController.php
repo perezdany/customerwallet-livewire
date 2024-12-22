@@ -95,12 +95,12 @@ class FactureController extends Controller
             ->join('typeprestations', 'prestations.id_type_prestation', '=', 'typeprestations.id')
             ->join('contrats', 'prestations.id_contrat', '=', 'contrats.id')
             ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id') 
-            ->orderBy('factures.date_emission', 'desc')
+            
             ->get(['factures.*', 'prestations.localisation', 'prestations.date_prestation', 'prestations.id_contrat',
             'contrats.titre_contrat', 'contrats.date_solde', 
             'contrats.montant', 'contrats.reste_a_payer',  
              'typeprestations.libele',  'entreprises.nom_entreprise']);
-        ///dd($get);
+        //dd($get);
         return $get;
     }
 
@@ -123,7 +123,7 @@ class FactureController extends Controller
                 'contrats.titre_contrat', 'contrats.date_solde', 
                 'contrats.montant', 'contrats.reste_a_payer',  
                 'typeprestations.libele',  'entreprises.nom_entreprise']);
-
+                
                 return view('admin/factures', compact('factures', 'id_entreprise', 'etat'));
             }
             else
@@ -140,7 +140,7 @@ class FactureController extends Controller
                 'contrats.titre_contrat', 'contrats.date_solde', 
                 'contrats.montant', 'contrats.reste_a_payer',  
                 'typeprestations.libele',  'entreprises.nom_entreprise']);
-
+               
                 return view('admin/factures', compact('factures', 'id_entreprise', 'etat'));
             }
 
@@ -160,7 +160,7 @@ class FactureController extends Controller
                 'contrats.titre_contrat', 'contrats.date_solde', 
                 'contrats.montant', 'contrats.reste_a_payer',  
                 'typeprestations.libele',  'entreprises.nom_entreprise']);
-
+               
                 return view('admin/factures', compact('factures', 'id_entreprise', 'etat'));
             }
             else
@@ -177,7 +177,7 @@ class FactureController extends Controller
                 'contrats.titre_contrat', 'contrats.date_solde', 
                 'contrats.montant', 'contrats.reste_a_payer',  
                 'typeprestations.libele',  'entreprises.nom_entreprise']);
-
+                
                 return view('admin/factures', compact('factures', 'id_entreprise', 'etat'));
             }
         }
@@ -191,9 +191,13 @@ class FactureController extends Controller
             return back()->with('error', 'Choisissez impérativement la prestation');
         }
 
+        //LA DATE DE REGLEMENT EST PAR DEFAUT TROIS JOURS APRES
+        $timestamp = strtotime($request->date_emission);
+        $date_reglement = date('Y-m-d', strtotime('+3 days',  $timestamp));
+        //dd($date_reglement);
         $Insert = Facture::create([
             'numero_facture' => $request->numero_facture, 
-            'date_reglement' => $request->date_reglement,
+            'date_reglement' => $date_reglement,
              'date_emission' => $request->date_emission, 
              'montant_facture' => $request->montant_facture, 
              'id_prestation' => $request->id_prestation,
@@ -286,6 +290,7 @@ class FactureController extends Controller
     {
         //dd($request->all());
         //VERIFIER SI IL EST LIE A UN CONTRAT
+
          //ON REFAIT LE FILTRE QUI Y ETAIT AVANT DE SE REVENIR SUR LA PAGE
          //dd($request->all());
          $id_entreprise = $request->id_entreprise;
@@ -365,13 +370,15 @@ class FactureController extends Controller
              }
          }
 
-        $message_success = 'Facture modifiée';
-       
-        return redirect('facture')->with('id_entreprise', $id_entreprise)->with('factures', $factures)->with('etat', $etat)
-        ->with('message_success', $message_success);
-        $delete = DB::table('factures')->where('id', '=', $request->id_facture)->delete();
+        $message_success = 'Facture supprimée';
 
-        return redirect('facture')->with('success', 'Facture supprimée');
+        $delete = DB::table('factures')->where('id', '=', $request->id_facture)->delete();
+         return view('admin/factures', compact('id_entreprise', 'factures', 'etat', 'message_success'));
+        //return redirect('facture')->with('id_entreprise', $id_entreprise)->with('factures', $factures)->with('etat', $etat)
+        //->with('message_success', $message_success);
+       
+
+        //return redirect('facture')->with('success', 'Facture supprimée');
     }
 
     public function UploadFileFacutre(Request $request)
@@ -486,7 +493,7 @@ class FactureController extends Controller
         $affected = DB::table('factures')
         ->where('id', $request->id_facture)
         ->update([ 'numero_facture' => $request->numero_facture, 
-            'date_reglement' => $request->date_reglement,
+            
             'date_emission' => $request->date_emission, 
             'montant_facture' => $request->montant_facture, 
             'id_prestation' => $request->id_prestation,]);
@@ -649,9 +656,9 @@ class FactureController extends Controller
          }
 
         $message_success = 'Facture modifiée';
-       
-        return redirect('facture')->with('id_entreprise', $id_entreprise)->with('factures', $factures)->with('etat', $etat)
-        ->with('message_success', $message_success);
+        return view('admin/factures', compact('id_entreprise', 'factures', 'etat', 'message_success'));
+        //return redirect('facture')->with('id_entreprise', $id_entreprise)->with('factures', $factures)->with('etat', $etat)
+        //->with('message_success', $message_success);
    
         
     }

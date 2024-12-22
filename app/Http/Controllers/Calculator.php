@@ -134,6 +134,26 @@ class Calculator extends Controller
          return  $count;
     }
 
+    public function CountFacture()
+    {
+        $count = Facture::all()
+        ->count();
+         return  $count;
+    }
+
+    public function CountFactureNoReglee()
+    {
+        $count = Facture::all()
+        ->count();
+         return  $count;
+    }
+    public function CountFactureReglee()
+    {
+        $count = Facture::where('reglee', 0)
+        ->count();
+         return  $count;
+    }
+
      //NOMBRE TOTAL DES PROSPECT
      public function CountProspect()
      {

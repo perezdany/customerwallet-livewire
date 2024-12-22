@@ -531,7 +531,48 @@
           <!-- ./col -->
         </div>
         <!-- /.row -->
-       
+
+        <div class="row">
+            <div class="col-lg-3 col-xs-6">
+              <!-- small box -->
+              <div class="small-box bg-purple">
+                <div class="inner">
+                @php
+                      $count = $calculator->CountFacture();
+                        $countno = $calculator-> CountFactureNoReglee();
+                  $countreglee = $calculator-> CountFactureReglee();
+                      //dd($count);
+                    @endphp
+                  <h3> <a href="facture" style="color:#fff;">{{$count}}</a></h3>
+                  
+                  <a href="facture" style="color:#fff;"><p>FACTURE</p></a><br>
+
+                <form method="get" action="no_reglee">
+                  @csrf
+                  <input type="text" value="all" name="entreprise" style="display:none;">
+                  <input type="text" value="0" name="etat" style="display:none;">
+                  <button class="btn bg-purple"><p>Non réglées : {{$countno}} </p></button>  
+                </form>
+                <form method="get" action="reglee">
+                  @csrf
+                    <input type="text" value="all" name="entreprise" style="display:none;">
+                  <input type="text" value="1" name="etat" style="display:none;">
+                  <button class="btn bg-purple"><p>Réglées : {{$countreglee}}  </p></button>  
+                </form> 
+                
+                </div>
+                <div class="icon">
+                  <i class="fa fa-shopping-cart"></i>
+                </div>
+                <a href="factures" class="small-box-footer">
+                  Plus d'infos <i class="fa fa-arrow-circle-right"></i>
+                </a>
+              </div>
+            </div>
+
+            
+        </div>
+        <!-- /.row -->
       
       @else
         @if(auth()->user()->id_role == 5 )
@@ -573,8 +614,6 @@
                   </a>
                 </div>
               </div>
-            
-              
               <!-- ./col -->
               <div class="col-lg-3 col-xs-6">
                 <!-- small box -->
@@ -627,9 +666,51 @@
                   </a>
                 </div>
               </div>
-            <!-- ./col -->
+              <!-- ./col -->
             </div>
             <!-- /.row -->
+            <div class="row">
+              <div class="col-lg-3 col-xs-6">
+                <!-- small box -->
+                <div class="small-box bg-purple">
+                  <div class="inner">
+                  @php
+                        $count = $calculator->CountFacture();
+                          $countno = $calculator-> CountFactureNoReglee();
+                    $countreglee = $calculator-> CountFactureReglee();
+                        //dd($count);
+                      @endphp
+                    <h3> <a href="facture" style="color:#fff;">{{$count}}</a></h3>
+                    
+                    <a href="facture" style="color:#fff;"><p>FACTURE</p></a><br>
+
+                  <form method="get" action="no_reglee">
+                    @csrf
+                    <input type="text" value="all" name="entreprise" style="display:none;">
+                    <input type="text" value="0" name="etat" style="display:none;">
+                    <button class="btn bg-purple"><p>Non réglées : {{$countno}} </p></button>  
+                  </form>
+                  <form method="get" action="reglee">
+                    @csrf
+                      <input type="text" value="all" name="entreprise" style="display:none;">
+                    <input type="text" value="1" name="etat" style="display:none;">
+                    <button class="btn bg-purple"><p>Réglées : {{$countreglee}}  </p></button>  
+                  </form> 
+                  
+                  </div>
+                  <div class="icon">
+                    <i class="fa fa-shopping-cart"></i>
+                  </div>
+                  <a href="factures" class="small-box-footer">
+                    Plus d'infos <i class="fa fa-arrow-circle-right"></i>
+                  </a>
+                </div>
+              </div>
+
+              
+            </div>
+            <!-- /.row -->
+      
           @endif
 
           @if(auth()->user()->id_departement == 4)
@@ -765,6 +846,48 @@
                 </div>
                 <!-- ./col -->
             </div>
+
+            <div class="row">
+              <div class="col-lg-3 col-xs-6">
+                <!-- small box -->
+                <div class="small-box bg-purple">
+                  <div class="inner">
+                  @php
+                        $count = $calculator->CountFacture();
+                          $countno = $calculator-> CountFactureNoReglee();
+                    $countreglee = $calculator-> CountFactureReglee();
+                        //dd($count);
+                      @endphp
+                    <h3> <a href="facture" style="color:#fff;">{{$count}}</a></h3>
+                    
+                    <a href="facture" style="color:#fff;"><p>FACTURE</p></a><br>
+
+                  <form method="get" action="no_reglee">
+                    @csrf
+                    <input type="text" value="all" name="entreprise" style="display:none;">
+                    <input type="text" value="0" name="etat" style="display:none;">
+                    <button class="btn bg-purple"><p>Non réglées : {{$countno}} </p></button>  
+                  </form>
+                  <form method="get" action="reglee">
+                    @csrf
+                      <input type="text" value="all" name="entreprise" style="display:none;">
+                    <input type="text" value="1" name="etat" style="display:none;">
+                    <button class="btn bg-purple"><p>Réglées : {{$countreglee}}  </p></button>  
+                  </form> 
+                  
+                  </div>
+                  <div class="icon">
+                    <i class="fa fa-shopping-cart"></i>
+                  </div>
+                  <a href="factures" class="small-box-footer">
+                    Plus d'infos <i class="fa fa-arrow-circle-right"></i>
+                  </a>
+                </div>
+              </div>
+
+              
+            </div>
+            <!-- /.row -->
           @endif
         @endif
 
@@ -838,7 +961,7 @@
               </div>
               <!-- ./col -->
              
-              <div class="col-lg-3 col-xs-6">
+                <div class="col-lg-3 col-xs-6">
                   <!-- small box -->
                   <div class="small-box bg-green">
                     <div class="inner">
@@ -866,6 +989,48 @@
                 
                 <!-- ./col -->
             </div>
+
+            <div class="row">
+              <div class="col-lg-3 col-xs-6">
+                <!-- small box -->
+                <div class="small-box bg-purple">
+                  <div class="inner">
+                  @php
+                        $count = $calculator->CountFacture();
+                          $countno = $calculator-> CountFactureNoReglee();
+                    $countreglee = $calculator-> CountFactureReglee();
+                        //dd($count);
+                      @endphp
+                    <h3> <a href="facture" style="color:#fff;">{{$count}}</a></h3>
+                    
+                    <a href="facture" style="color:#fff;"><p>FACTURE</p></a><br>
+
+                  <form method="get" action="no_reglee">
+                    @csrf
+                    <input type="text" value="all" name="entreprise" style="display:none;">
+                    <input type="text" value="0" name="etat" style="display:none;">
+                    <button class="btn bg-purple"><p>Non réglées : {{$countno}} </p></button>  
+                  </form>
+                  <form method="get" action="reglee">
+                    @csrf
+                      <input type="text" value="all" name="entreprise" style="display:none;">
+                    <input type="text" value="1" name="etat" style="display:none;">
+                    <button class="btn bg-purple"><p>Réglées : {{$countreglee}}  </p></button>  
+                  </form> 
+                  
+                  </div>
+                  <div class="icon">
+                    <i class="fa fa-shopping-cart"></i>
+                  </div>
+                  <a href="factures" class="small-box-footer">
+                    Plus d'infos <i class="fa fa-arrow-circle-right"></i>
+                  </a>
+                </div>
+              </div>
+
+              
+            </div>
+            <!-- /.row -->
               
           @endif
         @endif
@@ -885,9 +1050,19 @@
                     @endphp
                   <h3> <a href="customers" style="color:#fff;">{{$count}}</a></h3>
                   
-                  <a href="customers" style="color:#fff;"><p>CLIENTS</p></a><br>
-              <a href="actifs" style="color:#fff; size:13px;"><p>Actifs : {{$countactif}}  </p></a>  
-              <a href="inactifs" style="color:red;"><p>Inactifs : {{$countinactif}}</p></a>  
+               
+                <form method="get" action="actifs">
+                  @csrf
+                  <input type="text" value="2" name="categorie" style="display:none;">
+                  <input type="text" value="1" name="etat" style="display:none;">
+                  <button class="btn bg-aqua"><p>Actifs : {{$countactif}}  </p></button>  
+                </form>
+                <form method="get" action="inactifs">
+                  @csrf
+                  <input type="text" value="2" name="categorie" style="display:none;">
+                  <input type="text" value="0" name="etat" style="display:none;">
+                  <button class="btn bg-aqua"><p style="color:red">Actifs : {{$countinactif}}  </p></button>  
+                </form>
                 
                 </div>
                 <div class="icon">
@@ -953,6 +1128,7 @@
           <!-- ./col -->
           </div>
           <!-- /.row -->
+
         @endif
 
        

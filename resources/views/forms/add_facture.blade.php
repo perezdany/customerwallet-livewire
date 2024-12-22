@@ -80,10 +80,7 @@
                                     <input type="text" name="numero_facture" value="{{$facture_edit->numero_facture}}" required class="form-control input-lg" maxlength="30" onkeyup="this.value=this.value.toUpperCase()">
                                 </div>
                             
-                                <div class="form-group">
-                                    <label>A régler d'ici le: (*)</label>
-                                    <input type="date" name="date_reglement" value="{{$facture_edit->date_reglement}}" class="form-control input-lg" required>
-                                </div>
+                                
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Date d'emission de la facture:</label>
                                     <input type="date" class="form-control  input-lg" required name="date_emission" value="{{$facture_edit->date_emission}}">
@@ -147,11 +144,6 @@
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Date d'emission de la facture:</label>
                                 <input type="date" class="form-control  input-lg" value="{{old('date_emission')}}" required name="date_emission">
-                            </div>
-
-                            <div class="form-group">
-                                <label>A régler d'ici le: (*)</label>
-                                <input type="date" name="date_reglement" class="form-control input-lg" value="{{old('date_reglement')}}" required>
                             </div>
                                 
                             <div class="form-group">

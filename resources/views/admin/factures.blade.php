@@ -163,9 +163,10 @@
                         <thead>
                         <tr>
                             <th>Facture N°</th>
-                            <th>Client</th>
+                           
                             <th>Emise le:</th>
                             <th>Date de règlement</th>
+                             <th>Client</th>
                             <th>Montant</th>
                             <th>Afficher les paiements</th>
                             <th>Fichier</th>
@@ -194,9 +195,10 @@
                                       
                                         <tr class="bg-red">
                                             <td class="bg-red">{{$factures->numero_facture}}</td>
-                                            <td class="bg-red">{{$factures->nom_entreprise}}</td>
+                                            
                                             <td class="bg-red">@php echo date('d/m/Y',strtotime($factures->date_emission)) @endphp</td>
                                             <td class="bg-red">@php echo date('d/m/Y',strtotime($factures->date_reglement)) @endphp</td>
+                                            <td class="bg-red">{{$factures->nom_entreprise}}</td>
                                             <td class="bg-red">
                                                 @php
                                                     echo  number_format($factures->montant_facture, 2, ".", " ")." XOF";
@@ -311,6 +313,56 @@
                                                             </div>
                                                             <form action="delete_facture" method="post">
                                                             <div class="modal-body">
+                                                               
+                                                                <select class="form-control" name="entreprise" style="display:none;">
+                                                                    @if($id_entreprise == "all")
+                                                                    <option value="all">Entreprises</option>
+                                                                    @else
+
+                                                                    @php
+                                                                        $le_nom_entreprise = (new EntrepriseController())->GetById($id_entreprise);
+                                                                    @endphp
+                                                                    
+                                                                    @foreach($le_nom_entreprise as $le_nom_entreprise)
+                                                                        <option value={{$le_nom_entreprise->id}}>{{$le_nom_entreprise->nom_entreprise}}</option>
+                                                                        
+                                                                    @endforeach
+                                                                    <option value="all">Entreprises</option>
+                                                                    
+                                                                    @endif
+                                                                    
+                                                                    @php
+                                                                    
+                                                                    $get = (new EntrepriseController())->GetAll();
+                                                                    
+                                                                    @endphp
+                                                                
+                                                                    @foreach($get as $entreprise)
+                                                                        <option value={{$entreprise->id}}>{{$entreprise->nom_entreprise}}</option>
+                                                                        
+                                                                    @endforeach
+                                                                    
+                                                                </select>   
+                                                                                                                
+                                                                <select class="form-control" name="etat" style="display:none;">
+                                                                    @if($etat == "c")
+                                                                    <option value="c">Etat</option>
+                                                                    <option value="0">Non réglé</option>
+                                                                    <option value="1">Réglé</option>
+
+                                                                    @else
+                                                                    @if($etat == 0)
+                                                                    <option value="0">Non réglé</option>
+                                                                    <option value="1">Réglé</option>
+                                                                    <option value="c">--Rétablir--</option>
+                                                                    @else
+                                                                        <option value="1">Réglé</option>
+                                                                        <option value="0">Non réglé</option>
+                                                                        <option value="c">--Rétablir--</option>
+                                                                    @endif
+                                                                    @endif
+                                                                </select>
+
                                                                 <p>Voulez-vous supprimer la facture {{$factures->numero_facture}}?</p>
                                                                 @csrf
                                                                 <input type="text" value={{$factures->id}} style="display:none;" name="id_facture">
@@ -335,9 +387,10 @@
                                         @if($diff_in_days == 30)
                                             <tr class="bg-warning">
                                                 <td class="bg-warning">{{$factures->numero_facture}}</td>
-                                                <td class="bg-warning">{{$factures->nom_entreprise}}</td>
+                                               
                                                 <td class="bg-warning">@php echo date('d/m/Y',strtotime($factures->date_emission)) @endphp</td>
                                                 <td class="bg-warning">@php echo date('d/m/Y',strtotime($factures->date_reglement)) @endphp</td>
+                                                 <td class="bg-warning">{{$factures->nom_entreprise}}</td>
                                                 <td class="bg-warning">
                                                     @php
                                                         echo  number_format($factures->montant_facture, 2, ".", " ")." XOF";
@@ -354,7 +407,7 @@
                                             
                                                 <td class="bg-warning">
                                                 
-                                                    <form action="download_file_facture" method="post" enctype="multipart/form-data">
+                                                    <form action="download_file_facture" method="post" enctype="multipart/form-data" trash="blank">
                                                         @csrf
                                                     
                                                         <input type="text" value={{$factures->id}} style="display:none;" name="id_facture">
@@ -440,7 +493,7 @@
                                                     </td>
                                                     <td class="bg-warning">
                                                         <!--SUPPRESSION AVEC POPUP-->
-                                                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="@php echo "#".$factuees->id.""; @endphp">
+                                                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="@php echo "#".$factures->id.""; @endphp">
                                                         <i class="fa fa-trash"></i>
                                                         </button>
                                                         <div class="modal modal-danger fade" id="@php echo "".$factures->id.""; @endphp">
@@ -453,6 +506,54 @@
                                                                 </div>
                                                                 <form action="delete_facture" method="post">
                                                                 <div class="modal-body">
+                                                                    <select class="form-control" name="entreprise" style="display:none;">
+                                                                    @if($id_entreprise == "all")
+                                                                    <option value="all">Entreprises</option>
+                                                                    @else
+
+                                                                    @php
+                                                                        $le_nom_entreprise = (new EntrepriseController())->GetById($id_entreprise);
+                                                                    @endphp
+                                                                    
+                                                                    @foreach($le_nom_entreprise as $le_nom_entreprise)
+                                                                        <option value={{$le_nom_entreprise->id}}>{{$le_nom_entreprise->nom_entreprise}}</option>
+                                                                        
+                                                                    @endforeach
+                                                                    <option value="all">Entreprises</option>
+                                                                    
+                                                                    @endif
+                                                                    
+                                                                    @php
+                                                                    
+                                                                    $get = (new EntrepriseController())->GetAll();
+                                                                    
+                                                                    @endphp
+                                                                
+                                                                    @foreach($get as $entreprise)
+                                                                        <option value={{$entreprise->id}}>{{$entreprise->nom_entreprise}}</option>
+                                                                        
+                                                                    @endforeach
+                                                                    
+                                                                </select>   
+                                                                                                                
+                                                                <select class="form-control" name="etat" style="display:none;">
+                                                                    @if($etat == "c")
+                                                                    <option value="c">Etat</option>
+                                                                    <option value="0">Non réglé</option>
+                                                                    <option value="1">Réglé</option>
+
+                                                                    @else
+                                                                    @if($etat == 0)
+                                                                    <option value="0">Non réglé</option>
+                                                                    <option value="1">Réglé</option>
+                                                                    <option value="c">--Rétablir--</option>
+                                                                    @else
+                                                                        <option value="1">Réglé</option>
+                                                                        <option value="0">Non réglé</option>
+                                                                        <option value="c">--Rétablir--</option>
+                                                                    @endif
+                                                                    @endif
+                                                                </select>
                                                                     <p>Voulez-vous supprimer la facture {{$factures->numero_facture}}?</p>
                                                                     @csrf
                                                                     <input type="text" value={{$factures->id}} style="display:none;" name="id_facture">
@@ -478,9 +579,10 @@
                                         @else
                                             <tr class="bg-warning">
                                                 <td class="bg-warning">{{$factures->numero_facture}}</td>
-                                                <td class="bg-warning">{{$factures->nom_entreprise}}</td>
+                                                
                                                 <td class="bg-warning">@php echo date('d/m/Y',strtotime($factures->date_emission)) @endphp</td>
                                                 <td class="bg-warning">@php echo date('d/m/Y',strtotime($factures->date_reglement)) @endphp</td>
+                                                <td class="bg-warning">{{$factures->nom_entreprise}}</td>
                                                 <td class="bg-warning">
                                                     @php
                                                         echo  number_format($factures->montant_facture, 2, ".", " ")." XOF";
@@ -497,7 +599,7 @@
                                             
                                                 <td class="bg-warning">
                                                 
-                                                    <form action="download_file_facture" method="post" enctype="multipart/form-data">
+                                                    <form action="download_file_facture" method="post" enctype="multipart/form-data" target="blank">
                                                         @csrf
                                                     
                                                         <input type="text" value={{$factures->id}} style="display:none;" name="id_facture">
@@ -625,9 +727,10 @@
                                 @else
                                     <tr>
                                         <td >{{$factures->numero_facture}}</td>
-                                        <td>{{$factures->nom_entreprise}}</td>
+                                        
                                         <td>@php echo date('d/m/Y',strtotime($factures->date_emission)) @endphp</td>
                                         <td>@php echo date('d/m/Y',strtotime($factures->date_reglement)) @endphp</td>
+                                        <td>{{$factures->nom_entreprise}}</td>
                                         <td>
                                             @php
                                                 echo  number_format($factures->montant_facture, 2, ".", " ")." XOF";
@@ -643,7 +746,7 @@
                                         
                                         <td>
                                         
-                                            <form action="download_file_facture" method="post" enctype="multipart/form-data">
+                                            <form action="download_file_facture" method="post" enctype="multipart/form-data" target="blank">
                                                 @csrf
                                                 
                                                 <input type="text" value={{$factures->id}} style="display:none;" name="id_facture">
@@ -657,7 +760,7 @@
 
                                                 @if($factures->reglee == 0)
                                                     @if(auth()->user()->id_role == 2)
-                                                    <form action="paiement_form" method="post">
+                                                    <form action="paiement_form" method="post" >
                                                         @csrf
                                                         <input type="text" value={{$factures->id}} style="display:none;" name="id_facture">
                                                         <button type="submit" class="btn btn-success"><i class="fa fa-money"></i></button>
@@ -729,7 +832,7 @@
                                             </td>
                                             <td>
                                                <!--SUPPRESSION AVEC POPUP-->
-                                                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="@php echo "#".$factuees->id.""; @endphp">
+                                                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="@php echo "#".$factures->id.""; @endphp">
                                                     <i class="fa fa-trash"></i>
                                                     </button>
                                                     <div class="modal modal-danger fade" id="@php echo "".$factures->id.""; @endphp">
@@ -742,6 +845,54 @@
                                                             </div>
                                                             <form action="delete_facture" method="post">
                                                             <div class="modal-body">
+                                                             <select class="form-control" name="entreprise" style="display:none;">
+                                                                    @if($id_entreprise == "all")
+                                                                    <option value="all">Entreprises</option>
+                                                                    @else
+
+                                                                    @php
+                                                                        $le_nom_entreprise = (new EntrepriseController())->GetById($id_entreprise);
+                                                                    @endphp
+                                                                    
+                                                                    @foreach($le_nom_entreprise as $le_nom_entreprise)
+                                                                        <option value={{$le_nom_entreprise->id}}>{{$le_nom_entreprise->nom_entreprise}}</option>
+                                                                        
+                                                                    @endforeach
+                                                                    <option value="all">Entreprises</option>
+                                                                    
+                                                                    @endif
+                                                                    
+                                                                    @php
+                                                                    
+                                                                    $get = (new EntrepriseController())->GetAll();
+                                                                    
+                                                                    @endphp
+                                                                
+                                                                    @foreach($get as $entreprise)
+                                                                        <option value={{$entreprise->id}}>{{$entreprise->nom_entreprise}}</option>
+                                                                        
+                                                                    @endforeach
+                                                                    
+                                                                </select>   
+                                                                                                                
+                                                                <select class="form-control" name="etat" style="display:none;">
+                                                                    @if($etat == "c")
+                                                                    <option value="c">Etat</option>
+                                                                    <option value="0">Non réglé</option>
+                                                                    <option value="1">Réglé</option>
+
+                                                                    @else
+                                                                    @if($etat == 0)
+                                                                    <option value="0">Non réglé</option>
+                                                                    <option value="1">Réglé</option>
+                                                                    <option value="c">--Rétablir--</option>
+                                                                    @else
+                                                                        <option value="1">Réglé</option>
+                                                                        <option value="0">Non réglé</option>
+                                                                        <option value="c">--Rétablir--</option>
+                                                                    @endif
+                                                                    @endif
+                                                                </select>
                                                                 <p>Voulez-vous supprimer la facture {{$factures->numero_facture}}?</p>
                                                                 @csrf
                                                                 <input type="text" value={{$factures->id}} style="display:none;" name="id_facture">
@@ -839,9 +990,9 @@
                         <thead>
                         <tr>
                             <th>Facture N°</th>
-                            <th>Client</th>
                             <th>Emise le:</th>
                             <th>Date de règlement</th>
+                             <th>Client</th>
                             <th>Montant</th>
                             <th>Afficher les paiements</th>
                             <th>Fichier</th>
@@ -855,7 +1006,7 @@
                         </thead>
                         <tbody>
                             @php
-                                 $total = 0;
+                                $total = 0;
                                 $my_own = $facturecontroller->GetAll();
                                 $date_aujourdhui = strtotime(date('Y-m-d'));
                             @endphp
@@ -873,9 +1024,10 @@
                                     
                                         <tr class="bg-red">
                                             <td class="bg-red">{{$my_own->numero_facture}}</td>
-                                            <td class="bg-red">{{$my_own->nom_entreprise}}</td>
+                                           
                                             <td class="bg-red">@php echo date('d/m/Y',strtotime($my_own->date_emission)) @endphp</td>
                                             <td class="bg-red">@php echo date('d/m/Y',strtotime($my_own->date_reglement)) @endphp</td>
+                                             <td class="bg-red">{{$my_own->nom_entreprise}}</td>
                                             <td class="bg-red">
                                                 @php
                                                     echo  number_format($my_own->montant_facture, 2, ".", " ")." XOF";
@@ -892,7 +1044,7 @@
                                         
                                             <td class="bg-red">
                                             
-                                                <form action="download_file_facture" method="post" enctype="multipart/form-data">
+                                                <form action="download_file_facture" method="post" enctype="multipart/form-data" target="blank">
                                                     @csrf
                                                    
                                                     <input type="text" value={{$my_own->id}} style="display:none;" name="id_facture">
@@ -963,6 +1115,24 @@
                                                             </div>
                                                             <form action="delete_facture" method="post">
                                                             <div class="modal-body">
+                                                             <select class="form-control" name="entreprise" style="display:none;">
+                                                                        <option value="all">Entreprises</option>
+                                                                        @php
+                                                                            $get = (new EntrepriseController())->GetAll();
+                                                                        @endphp
+                                                                    
+                                                                        @foreach($get as $entreprise)
+                                                                            <option value={{$entreprise->id}}>{{$entreprise->nom_entreprise}}</option>
+                                                                            
+                                                                        @endforeach
+                                                                        
+                                                                    </select>   
+                                                                     <select class="form-control" name="etat" style="display:none;">
+                                
+                                                                        <option value="c">Etat</option>
+                                                                        <option value="1">Réglé</option>
+                                                                        <option value="0">non-reglé</option>
+                                                                    </select>            
                                                                 <p>Voulez-vous supprimer la facture {{$my_own->numero_facture}}?</p>
                                                                 @csrf
                                                                 <input type="text" value={{$my_own->id}} style="display:none;" name="id_facture">
@@ -989,16 +1159,17 @@
                                         
                                             <tr class="bg-warning">
                                                 <td class="bg-warning">{{$my_own->numero_facture}}</td>
-                                                <td class="bg-warning">{{$my_own->nom_entreprise}}</td>
+                                               
                                                 <td class="bg-warning">@php echo date('d/m/Y',strtotime($my_own->date_emission)) @endphp</td>
-                                                <td class="bg-warning">@php echo date('d/m/Y',strtotime($my_own->date_reglement)) @endphp</td>
+                                                
+                                                 <td class="bg-warning">{{$my_own->nom_entreprise}}</td><td class="bg-warning">@php echo date('d/m/Y',strtotime($my_own->date_reglement)) @endphp</td>
                                                 <td class="bg-warning">
                                                     @php
                                                         echo  number_format($my_own->montant_facture, 2, ".", " ")." XOF";
                                                     @endphp
                                                 </td>
                                                 <td class="bg-warning">
-                                                    <form action="paiement_by_facture" method="post">
+                                                    <form action="paiement_by_facture" method="post" target="blank">
                                                             @csrf
                                                             <input type="text" value={{$my_own->id}} style="display:none;" name="id_facture">
                                                             <button type="submit" class="btn btn-success"><i class="fa fa-money"></i>AFFICHER</button>
@@ -1007,7 +1178,7 @@
                                             
                                                 <td class="bg-warning">
                                                 
-                                                    <form action="download_file_facture" method="post" enctype="multipart/form-data">
+                                                    <form action="download_file_facture" method="post" enctype="multipart/form-data" target="blank">
                                                         @csrf
                                                         
                                                         <input type="text" value={{$my_own->id}} style="display:none;" name="id_facture">
@@ -1021,7 +1192,7 @@
 
                                                         @if($my_own->reglee == 0)
                                                             @if(auth()->user()->id_role == 2)
-                                                            <form action="paiement_form" method="post">
+                                                            <form action="paiement_form" method="post" target="blank">
                                                                 @csrf
                                                                 <input type="text" value={{$my_own->id}} style="display:none;" name="id_facture">
                                                                 <button type="submit" class="btn btn-success"><i class="fa fa-money"></i></button>
@@ -1080,6 +1251,55 @@
                                                                 <div class="modal-body">
                                                                     <p>Voulez-vous supprimer la facture {{$my_own->numero_facture}}?</p>
                                                                     @csrf
+
+                                                                    <select class="form-control" name="entreprise" style="display:none;">
+                                                                    @if($id_entreprise == "all")
+                                                                    <option value="all">Entreprises</option>
+                                                                    @else
+
+                                                                    @php
+                                                                        $le_nom_entreprise = (new EntrepriseController())->GetById($id_entreprise);
+                                                                    @endphp
+                                                                    
+                                                                    @foreach($le_nom_entreprise as $le_nom_entreprise)
+                                                                        <option value={{$le_nom_entreprise->id}}>{{$le_nom_entreprise->nom_entreprise}}</option>
+                                                                        
+                                                                    @endforeach
+                                                                    <option value="all">Entreprises</option>
+                                                                    
+                                                                    @endif
+                                                                    
+                                                                    @php
+                                                                    
+                                                                    $get = (new EntrepriseController())->GetAll();
+                                                                    
+                                                                    @endphp
+                                                                
+                                                                    @foreach($get as $entreprise)
+                                                                        <option value={{$entreprise->id}}>{{$entreprise->nom_entreprise}}</option>
+                                                                        
+                                                                    @endforeach
+                                                                    
+                                                                </select>   
+                                                                                                                
+                                                                <select class="form-control" name="etat" style="display:none;">
+                                                                    @if($etat == "c")
+                                                                    <option value="c">Etat</option>
+                                                                    <option value="0">Non réglé</option>
+                                                                    <option value="1">Réglé</option>
+
+                                                                    @else
+                                                                    @if($etat == 0)
+                                                                    <option value="0">Non réglé</option>
+                                                                    <option value="1">Réglé</option>
+                                                                    <option value="c">--Rétablir--</option>
+                                                                    @else
+                                                                        <option value="1">Réglé</option>
+                                                                        <option value="0">Non réglé</option>
+                                                                        <option value="c">--Rétablir--</option>
+                                                                    @endif
+                                                                    @endif
+                                                                </select>
                                                                     <input type="text" value={{$my_own->id}} style="display:none;" name="id_facture">
                                                                 </div>
                                                                 
@@ -1103,9 +1323,10 @@
                                         @else
                                              <tr class="bg-warning">
                                                 <td class="bg-warning">{{$my_own->numero_facture}}</td>
-                                                <td class="bg-warning">{{$my_own->nom_entreprise}}</td>
+                                               
                                                 <td class="bg-warning">@php echo date('d/m/Y',strtotime($my_own->date_emission)) @endphp</td>
                                                 <td class="bg-warning">@php echo date('d/m/Y',strtotime($my_own->date_reglement)) @endphp</td>
+                                                <td class="bg-warning">{{$my_own->nom_entreprise}}</td>
                                                 <td class="bg-warning">
                                                     @php
                                                         echo  number_format($my_own->montant_facture, 2, ".", " ")." XOF";
@@ -1121,7 +1342,7 @@
                                             
                                                 <td class="bg-warning">
                                                 
-                                                    <form action="download_file_facture" method="post" enctype="multipart/form-data">
+                                                    <form action="download_file_facture" method="post" enctype="multipart/form-data" target="blank">
                                                         @csrf
                                                       
                                                         <input type="text" value={{$my_own->id}} style="display:none;" name="id_facture">
@@ -1222,9 +1443,10 @@
                                
                                     <tr>
                                         <td >{{$my_own->numero_facture}}</td>
-                                        <td>{{$my_own->nom_entreprise}}</td>
+                                        
                                         <td>@php echo date('d/m/Y',strtotime($my_own->date_emission)) @endphp</td>
                                         <td>@php echo date('d/m/Y',strtotime($my_own->date_reglement)) @endphp</td>
+                                        <td>{{$my_own->nom_entreprise}}</td>
                                         <td>
                                             @php
                                                 echo  number_format($my_own->montant_facture, 2, ".", " ")." XOF";
@@ -1241,7 +1463,7 @@
                                        
                                         <td>
                                         
-                                            <form action="download_file_facture" method="post" enctype="multipart/form-data">
+                                            <form action="download_file_facture" method="post" enctype="multipart/form-data" target="blank">
                                                 @csrf
                                                
                                                 <input type="text" value={{$my_own->id}} style="display:none;" name="id_facture">
@@ -1251,7 +1473,7 @@
                                         </td>
                                         @if(auth()->user()->id_role == 3)
                                         @else
-                                            <td class="bg-warning">
+                                            <td>
 
                                                 @if($my_own->reglee == 0)
                                                     @if(auth()->user()->id_role == 2)
