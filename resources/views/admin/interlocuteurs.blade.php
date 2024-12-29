@@ -196,7 +196,7 @@ $all =  $interlocuteurcontroller-> GetAll();
                                                 <label>Fonction</label>
                                                     <select class="form-control select2"  maxlength="60" name="fonction" required>
                                                     @php
-                                                        $f = DB::table('professions')->get();
+                                                        $f = DB::table('professions')->orderBy('id', 'asc')->get();
                                                     @endphp
                                                     @foreach($f as $f)
                                                         <option value="{{$f->intitule}}">{{$f->intitule}}</option>

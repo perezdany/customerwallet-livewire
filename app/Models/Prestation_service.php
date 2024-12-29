@@ -12,6 +12,6 @@ class Prestation_service extends Model
     public $timestamps = true;
     
     protected $fillable = [
-         'service_id', 'prestation_id', 
+         'service_id', 'contrat_id', 
     ];
 }

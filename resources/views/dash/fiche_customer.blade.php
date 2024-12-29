@@ -187,9 +187,10 @@
                                             @endphp
                                         </td>
                                         <td>
-                                           @php 
-                                            echo date('d/m/Y',strtotime($contrats->montant)) ;
+                                            @php
+                                                        echo  number_format($contrats->montant, 2, ".", " ")." XOF";
                                             @endphp
+                                           
                                         </td>
 
                                         @if(auth()->user()->id_role == 1 OR auth()->user()->id_role == 2 OR auth()->user()->id_role == 4 )	

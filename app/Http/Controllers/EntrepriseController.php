@@ -56,6 +56,8 @@ use App\Models\Proposition;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 
+use App\Http\Livewire\Entreprises;
+
 class EntrepriseController extends Controller
 {
     //Hendle Entreporise
@@ -620,7 +622,8 @@ class EntrepriseController extends Controller
         ->where('entreprises.id_statutentreprise', 1)
         ->join('statutentreprises', 'entreprises.id_statutentreprise', '=', 'statutentreprises.id')
         ->join('utilisateurs', 'entreprises.created_by', '=', 'utilisateurs.id')
-        ->get(['entreprises.*', 'statutentreprises.libele_statut', 'utilisateurs.nom_prenoms']);
+        ->join('pays', 'entreprises.id_pays', '=', 'pays.id')
+        ->get(['entreprises.*', 'statutentreprises.libele_statut', 'utilisateurs.nom_prenoms', 'pays.nom_pays']);
 
         return $get;
     }
@@ -904,11 +907,29 @@ class EntrepriseController extends Controller
                
             }
          
+        }       
+    }
+
+    public function FilterByClt()
+    {
+       /* $entrepriseQuery = Entreprise::query()->where("id_statutentreprise", $this->categorie);
+
+        $go = Entreprises->render()*/
+
+    }
+    public function TryDelete($id)
+    {
+        $contrats = DB::table('contrats')->where('id_entreprise', '=', $id)->get();
+        $count_contrat = $contrats->count();
+        if($count_contrat != 0)
+        {
+            $message_error = "Vous ne pouvez pas supprimer une entreprise qui a des contrats.";
+            return false;
         }
-
-       
-      
-
+        else
+        {
+            return true;
+        }
        
     }
 

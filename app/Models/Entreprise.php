@@ -12,9 +12,8 @@ class Entreprise extends Model
     public $timestamps = true;
     
     protected $fillable = [
-       'nom_entreprise', 'client_depuis', 'id_statutentreprise', 
-       'chiffre_affaire', 'nb_employes', 'adresse', 'id_pays',
-       'etat', 'telephone', 'activite', 'adresse_email',
-       'created_by', 'updated_at'
+       'nom_entreprise', 'client_depuis', 'adresse', 'id_statutentreprise', 
+       'chiffre_affaire', 'nb_employes', 'telephone',  'etat', 'id_pays',
+        'activite', 'adresse_email', 'created_by',
     ];
 }

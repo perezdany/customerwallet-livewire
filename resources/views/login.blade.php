@@ -3,7 +3,7 @@
 @section('content')
     <p class="login-box-msg">Veuillez vous connecter</p>
 
-    <form action="go_login" method="post">
+    <form action="go_login" method="post"> 
     @csrf
          @if(session('error'))
                 <p class="bg-warning">{{session('error')}}</p>

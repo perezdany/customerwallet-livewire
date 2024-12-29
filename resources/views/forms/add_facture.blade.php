@@ -6,6 +6,7 @@
 
     use App\Http\Controllers\PaiementController;
      use App\Http\Controllers\FactureController;
+       use App\Http\Controllers\ContratController;
 
      use App\Http\Controllers\Calculator;
 
@@ -15,12 +16,12 @@
    
     $paiementcontroller = new PaiementController();
     $facturecontroller = new FactureController();
+     
+    $contratcontroller = new ContratController();
 
 
   //LES DIFFERENTES REQUETES EN FONCTION DU DEPARTEMENT
   //$my_own = $prestationcontroller->MyOwnPrestation(auth()->user()->id);
-
-  $all = $prestationcontroller-> GetAll();
 
 
 @endphp
@@ -77,23 +78,23 @@
                                 <input type="text" value="{{$facture_edit->id}}" name="id_facture" style="display:none;">
                                 <div class="form-group">
                                     <label>Numéro de la facture (*)</label>
-                                    <input type="text" name="numero_facture" value="{{$facture_edit->numero_facture}}" required class="form-control input-lg" maxlength="30" onkeyup="this.value=this.value.toUpperCase()">
+                                    <input type="text" name="numero_facture" value="{{$facture_edit->numero_facture}}" required class="form-control " maxlength="30" onkeyup="this.value=this.value.toUpperCase()">
                                 </div>
                             
                                 
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Date d'emission de la facture:</label>
-                                    <input type="date" class="form-control  input-lg" required name="date_emission" value="{{$facture_edit->date_emission}}">
+                                    <input type="date" class="form-control  " required name="date_emission" value="{{$facture_edit->date_emission}}">
                                 </div>
                                     
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Montant de la facture:</label>
-                                    <input type="number" class="form-control  input-lg" value="{{$facture_edit->montant_facture}}" required name="montant_facture" maxlength="13">
+                                    <input type="number" class="form-control  " value="{{$facture_edit->montant_facture}}" required name="montant_facture" maxlength="13">
                                 </div>
                                     
                                 <div class="form-group">
                                     <label>Prestation/Contrat:</label>
-                                    <select class="form-control  input-lg" name="id_prestation" required>
+                                    <select class="form-control  " name="id_prestation" required>
                                             @php
                                                 $contrats = $prestationcontroller->getAllNoReglee();
                                                 
@@ -138,29 +139,29 @@
                         <div class="box-body">
                             <div class="form-group">
                                 <label>Numéro de la facture (*)</label>
-                                <input type="text" name="numero_facture" required value="{{old('numero_facture')}}" class="form-control input-lg" maxlength="30" onkeyup="this.value=this.value.toUpperCase()">
+                                <input type="text" name="numero_facture" required value="{{old('numero_facture')}}" class="form-control " maxlength="30" onkeyup="this.value=this.value.toUpperCase()">
                             </div>
 
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Date d'emission de la facture:</label>
-                                <input type="date" class="form-control  input-lg" value="{{old('date_emission')}}" required name="date_emission">
+                                <input type="date" class="form-control  " value="{{old('date_emission')}}" required name="date_emission">
                             </div>
                                 
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Montant de la facture:</label>
-                                <input type="number" class="form-control  input-lg" required name="montant_facture" maxlength="13">
+                                <input type="number" class="form-control  " required name="montant_facture" maxlength="13">
                             </div>
                                 
                             <div class="form-group">
-                                <label>Prestation/Contrat:</label>
-                            <select class="form-control  input-lg" name="id_prestation" required>
+                                <label>Contrat:</label>
+                            <select class="form-control  " name="id_contrat" required>
                                     @php
-                                        $contrats = $prestationcontroller->getAllNoReglee();
+                                        $contrats = $contratcontroller->getAllNoReglee();
                                         
                                     @endphp
-                                <option value="0">--Sélectionnez la prestation--</option>
+                                <option value="0">--Sélectionnez le contrat--</option>
                                     @foreach($contrats as $contrats)
-                                        <option value="{{$contrats->id}}">--Date:{{$contrats->date_prestation}}<b>--Contrat:</b>{{$contrats->titre_contrat}}</option>
+                                        <option value="{{$contrats->id}}">--Date:{{$contrats->debut_contrat}}<b>--Contrat:</b>{{$contrats->titre_contrat}}</option>
                                     @endforeach
 
                             </select>

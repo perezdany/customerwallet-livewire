@@ -1,4 +1,4 @@
-@extends('layouts/dash')
+@extends('layouts/base')
 @php
     use App\Http\Controllers\ServiceController;
 
@@ -18,6 +18,8 @@
 
     use App\Http\Controllers\Calculator;
 
+    use App\Http\Controllers\PaysController;
+
     $calculator = new Calculator();
 
     $facturecontroller = new FactureController();
@@ -36,24 +38,14 @@
 
     $my_own =  $facturecontroller->FactureDateDepassee();
     $count_non_reglee = $calculator->CountFactureNonRegleDepasse();
-
+    $payscontroller = new PaysController();
      
 @endphp
 
 @section('content')
    
     <div class="row">
-         @if(session('success'))
-            <div class="col-md-12 box-header" style="font-size:13px;">
-              <p class="bg-success" >{{session('success')}}</p>
-            </div>
-        @endif
-        @if(session('error'))
-            <div class="col-md-12 box-header" style="font-size:13px;">
-              <p class="bg-danger" >{{session('error')}}</p>
-            </div>
-        @endif
-        <!-- CODE POUR LES RESTRICTIONS-->
+
 
         <div class="row">
              <div class="col-md-2"></div>
@@ -74,11 +66,11 @@
                             
                                 <div class="form-group">
                                     <label >Date de la prospection (*)</label>
-                                    <input type="date" class="form-control  input-lg" name="date_prospect" required>
+                                    <input type="date" class="form-control  " name="date_prospect" required>
                                 </div>
                                 <div class="form-group">
                                     <label>Services Proposés (*)</label>
-                                    <select class="form-control input-lg select2" data-placeholder ="--Selctionner un service--" multiple="multiple" name="service_propose[]" required>
+                                    <select class="form-control  select2" data-placeholder ="--Selctionner un service--" multiple="multiple" name="service_propose[]" required>
                                     
                                         <!--liste des services a choisir -->
                                     
@@ -106,7 +98,7 @@
                             
                                 <!--<div class="form-group">
                                     <label for="exampleInputFile">Durée de la prospection (Jr)</label>
-                                    <input type="number" max="31" min="1" class="form-control input-lg" name="duree" required>
+                                    <input type="number" max="31" min="1" class="form-control " name="duree" required>
                                 </div>-->
                                     <!--CALCULER LA DATE DE FIN DE LA PROSPECTION ET AJOUTER-->
                                 <div class="box-header">
@@ -114,7 +106,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputFile">Choisissez l'entreprise si existant ou sélectionnez Autre:</label>
-                                    <select class="form-control input-lg" id="mySelectEnt" name="entreprise" onchange="griseFunction1()">
+                                    <select class="form-control " id="mySelectEnt" name="entreprise" onchange="griseFunction1()">
                                         @php
                                             $get = $entreprisecontroller->GetAll();
                                         @endphp
@@ -130,27 +122,40 @@
 
                                 <div class="form-group">
                                         <label >Nom :</label>
-                                        <input type="text" id="ent" required disabled="disabled" maxlength="50" class="form-control  input-lg" name="nom_entreprise" onkeyup="this.value=this.value.toUpperCase()">
+                                        <input type="text" id="ent" required disabled="disabled" maxlength="50" class="form-control  " name="nom_entreprise" onkeyup="this.value=this.value.toUpperCase()">
                                 </div>
 
                                 <div class="form-group">
                                         <label >Chiffre d'affaire (FCFA):</label>
-                                        <input type="text" id="ca" disabled="disabled" maxlength="18" class="form-control  input-lg" name="chiffre" placeholder="1000000">
+                                        <input type="text" id="ca" disabled="disabled" maxlength="18" class="form-control  " name="chiffre" placeholder="1000000">
                                 </div>
 
                                 <div class="form-group">
                                         <label >Nombre d'employés:</label>
-                                        <input type="text" id="ne" disabled="disabled" maxlength="18" class="form-control  input-lg" name="nb_emp" placeholder="5">
+                                        <input type="text" id="ne" disabled="disabled" maxlength="18" class="form-control  " name="nb_emp" placeholder="5">
                                 </div>
 
                                 <div class="form-group">
                                         <label >Adresse (géographique):</label>
-                                        <input type="text" id="adresse" disabled="disabled" maxlength="60" class="form-control  input-lg" name="adresse" placeholder="COCODY DANGA" onkeyup="this.value=this.value.toUpperCase()">
+                                        <input type="text" id="adresse" disabled="disabled" maxlength="60" class="form-control  " name="adresse" placeholder="COCODY DANGA" onkeyup="this.value=this.value.toUpperCase()">
                                 </div>
 
                                  <div class="form-group">
                                         <label >Activité :</label>
-                                        <input type="text" id="activite" disabled="disabled" maxlength="60" class="form-control  input-lg" name="activite" placeholder="TRANSIT" onkeyup="this.value=this.value.toUpperCase()">
+                                        <input type="text" id="activite" disabled="disabled" maxlength="60" class="form-control  " name="activite" placeholder="TRANSIT" onkeyup="this.value=this.value.toUpperCase()">
+                                </div>
+                                <div class="form-group">
+                                    <label>Pays :</label>
+                                    <select class="form-control " name="pays" id="pays" disabled>
+                                        @php
+                                            $pays = $payscontroller->DisplayAll();
+                                        @endphp
+                                        @foreach($pays as $pays)
+                                            <option value={{$pays->id}}>{{$pays->nom_pays}}</option>
+                                            
+                                        @endforeach
+                                        
+                                    </select>
                                 </div>
 
                                 <script>
@@ -165,6 +170,7 @@
                                             document.getElementById("ne").removeAttribute("disabled");
                                             document.getElementById("adresse").removeAttribute("disabled");
                                             document.getElementById("activite").removeAttribute("disabled");
+                                            document.getElementById("pays").removeAttribute("disabled");
                                         }
                                         else{
                                             document.getElementById("ent").setAttribute("disabled", "disabled");
@@ -172,6 +178,7 @@
                                             document.getElementById("ne").setAttribute("disabled", "disabled");
                                             document.getElementById("adresse").setAttribute("disabled", "disabled");
                                             document.getElementById("activite").setAttribute("disabled", "disabled");
+                                            document.getElementById("pays").setAttribute("disabled", "disabled");
                                         }
                                     
                                     }
@@ -188,7 +195,7 @@
                             
                                     <div class="form-group">
                                         <label for="exampleInputFile">Choisissez l'interlocuteur si existant ou sélectionnez Autre:</label>
-                                        <select class="form-control input-lg" name="interlocuteur" id="mySelect" onchange="griseFunction()" onfocus="griseFunction()">
+                                        <select class="form-control " name="interlocuteur" id="mySelect" onchange="griseFunction()" onfocus="griseFunction()">
                                             @php
                                                 $interlocuteur = $interlocuteurcontroller->GetAll();
                                                 
@@ -207,7 +214,7 @@
 
                                     <div class="form-group">
                                         <label for="exampleInputFile">Titre :</label>
-                                        <select class="form-control input-lg" name="titre" id="grise1" disabled="disabled">
+                                        <select class="form-control " name="titre" id="grise1" disabled="disabled">
                                             <option value="M">M</option>
                                             <option value="Mme">Mme</option>
                                             <option value="Mlle">Mlle</option>
@@ -216,22 +223,22 @@
                                     </div>
                                     <div class="form-group">
                                             <label >Nom & Prénom(s)</label>
-                                            <input type="text" disabled="disabled" maxlength="100" required id="grise2" class="form-control  input-lg" name="nom" onkeyup="this.value=this.value.toUpperCase()">
+                                            <input type="text" disabled="disabled" maxlength="100" required id="grise2" class="form-control  " name="nom" onkeyup="this.value=this.value.toUpperCase()">
                                     </div>
 
                                     <div class="form-group">
                                             <label>Email</label>
-                                            <input type="email" disabled="disabled" id="grise5" maxlength="30" class="form-control input-lg" name="email" >
+                                            <input type="email" disabled="disabled" id="grise5" maxlength="30" class="form-control " name="email" >
                                     </div>
 
                                     <div class="form-group">
                                             <label>Téléphone (*)</label>
-                                            <input type="text" disabled="disabled" required id="grise3" maxlength="30"   class="form-control input-lg" name="tel" placeholder="(+225)0214578931" >
+                                            <input type="text" disabled="disabled" required id="grise3" maxlength="30"   class="form-control " name="tel" placeholder="(+225)0214578931" >
                                         </div>
 
                                     <div class="form-group">
                                             <label>Fonction</label>
-                                            <input disabled="disabled" required type="text" class="form-control input-lg"  id="grise4" maxlength="60" name="fonction" onkeyup="this.value=this.value.toUpperCase()">
+                                            <input disabled="disabled" required type="text" class="form-control "  id="grise4" maxlength="60" name="fonction" onkeyup="this.value=this.value.toUpperCase()">
                                     </div>  
                             
                             </div>

@@ -37,6 +37,11 @@
     $my_own =  $facturecontroller->FactureDateDepassee();
     $count_non_reglee = $calculator->CountFactureNonRegleDepasse();
 
+    use App\Models\Contrat;
+    use App\Models\Facture;
+    use App\Models\Paiement;
+    use App\Models\Prestation;
+ 
      
 @endphp
 
@@ -77,123 +82,67 @@
             }
         }
     @endphp
-    @if(auth()->user()->id_role == 1 OR auth()->user()->id_role == 4 OR auth()->user()->id_role == 2)
-        @if(auth()->user()->id_departement != 1)
-            <div class="row">
-                <div class="col-md-8">
-                <!-- TABLE: LATEST ORDERS LES FACTURES QUI N'ONT PAS ETE REGLEES ET LADATE EST DEPASS2E-->
-                @if($count_non_reglee != 0)
-                        <div class="box box-info">
-                            <div class="box-header with-border">
-                            <h3 class="box-title">Attention! Ces factures ne sont pas réglées et la date de règlement est dépassée</h3>
 
-                            <div class="box-tools pull-right">
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                                </button>
-                                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-                            </div>
-                            </div>
-                            <!-- /.box-header -->
-                            <div class="box-body">
-                            <div class="table-responsive">
-                                <table class="table no-margin">
-                                <thead>
-                                    <tr>
-                                        <th>Facture N°</th>
+    @php
+        //CODE POUR INSERER LES DATES DES TABLES PRESTATIONS CES CODES SONT A SUPPRIMER APRES
+        /*$contrats = Contrat::all();
+        foreach($contrats as $contrats)
+        {
+            $prestation = DB::table('prestations')
+            ->join('contrats', 'prestations.id_contrat', '=', 'contrats.id')
+            ->where('prestations.id_contrat', $contrats->id)->get();
 
-                                    
-                                        <th>Date de règlement</th>
-                                        <th>Montant</th>
-                                        @if(auth()->user()->id_role == 2)<th>Afficher les paiements</th>@endif
-                                        <th>Contrat</th>
-                                        <th>Etat facture</th>
-                                        @if(auth()->user()->id_role == 2)Action</th>@endif
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach($my_own as $my_own)
-                                            <tr>
-                                            <td>{{$my_own->numero_facture}}</td>
-                                            
-                                            <td>@php echo date('d/m/Y',strtotime($my_own->date_reglement)) @endphp</td>
-                                            <td>
-                                                @php
-                                                    echo  number_format($my_own->montant_facture, 2, ".", " ")." XOF";
-                                                @endphp
-                                            </td>
-                                            @if(auth()->user()->id_role == 2)
-                                                <td>
-                                                    <form action="paiement_by_facture" method="post">
-                                                            @csrf
-                                                            <input type="text" value={{$my_own->id}} style="display:none;" name="id_facture">
-                                                            <button type="submit" class="btn btn-success"><i class="fa fa-money"></i>AFFICHER</button>
-                                                    </form>
-                                                </td>
-                                            @endif
-                                        
-                                            <td>{{$my_own->titre_contrat}}</td>
-                                                <td>
-                                                @if($my_own->reglee == 0)
-                                                    <p class="bg-warning">
-                                                    <b>Facture non réglée</b>
-                                                    </p>
-                                                @endif
-                                                @if($my_own->reglee == 1)
-                                                    <p class="bg-success">
-                                                    <b>Facture réglée</b>
-                                                    </p>
-                                                @endif
-                                                
-                                                </td>
-                                            <td>
+            foreach($prestation as $prestation)
+            {
+                $edit = DB::table('prestations')
+                ->where('id_contrat', $contrats->id)
+                ->update([ 'date_prestation' => $contrats->debut_contrat,]);
 
-                                                @if($my_own->reglee == 0)
-                                                    @if(auth()->user()->id_role == 2)
-                                                    <form action="paiement_form" method="post">
-                                                        @csrf
-                                                        <input type="text" value={{$my_own->id}} style="display:none;" name="id_facture">
-                                                        <button type="submit" class="btn btn-success"><i class="fa fa-money"></i></button>
-                                                    </form>
-                                                    @endif
-                                                @else
-                                                
-                                                @endif
-                                            
-                                            </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                    <tfoot>
-                                        <tr>
-                                        <th>Facture N°</th>
+            }
+        }
+*/
+    @endphp
 
-                                        
-                                            <th>Date de règlement</th>
-                                            <th>Montant</th>
-                                            @if(auth()->user()->id_role == 2)<th>Afficher les paiements</th>@endif
-                                            <th>Contrat</th>
-                                            <th>Etat facture</th>
-                                            @if(auth()->user()->id_role == 2)Action</th>@endif
-                                        </tr>
-                                    </tfoot>
-                                </table>
-                            </div>
-                            <!-- /.table-responsive -->
-                            </div>
-                            <!-- /.box-body -->
+    @php
+        //CODE POUR AJOUTER LES PAIEMENTS CE CODE SERA SUPPRIME APRES LA PRESENTATION
+       /* $factures = Facture::where('reglee', 1)->get();
+        //dd($factures);
+        foreach($factures as $factures)
+        {
+          //CREER DES PAIEMENT POUR CETTE FACTURE UN PAIMENT PLUTOT
+                $Insert = Paiement::create([
+                'paiement' => $factures->montant_facture,
+             'id_facture' => $factures->id,
+              'date_paiement' => $factures->date_reglement, 
+              'updated_at' => date('Y-m-d H:i:s'), 
+              'created_by' => date('Y-m-d H:i:s'),
+              'created_by' => 1,]);
+        }*/
+        //CODE POUR TRANSFERER LES ID TYPE PRESTATION DE LA PRESTATION VERS LA TABLE CONTRAT
 
-                            <div class="box-footer clearfix">
+        $contrat = Contrat::all();
+      
+        foreach($contrat as $contrat)
+        {
+            $p = Prestation::where('id_contrat', $contrat->id)->get();
+           //echo($contrat->id)."ddd/<br>";
+           //dd($p);
+            foreach($p as $p)
+            {
+                $affected = DB::table('contrats')
+                ->where('id', $contrat->id)
+                ->update(['id_type_prestation' => $p->id_type_prestation]);
+
+               
                 
-                                @if(auth()->user()->id_role == 2)<a href="facture" class="btn btn-sm btn-primary btn-flat pull-right">Voir tout</a>@endif
-                            </div>
-                        </div>
-                        <!-- /.box -->
-                @endif
+            }
+            //dd($affected);
                 
-                </div>
-            </div>
-        @endif
-    @endif
+        }
+            
+
+    @endphp
+    @include("layouts/components/alerts")
     <div class="row">
          @if(session('success'))
             <div class="col-md-12 box-header" style="font-size:13px;">

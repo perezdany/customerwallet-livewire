@@ -55,42 +55,42 @@
                         
                         <div class="form-group">
                             <label>Désignation :</label>
-                            <input type="text" class="form-control input-lg" name="nom_entreprise" onkeyup='this.value=this.value.toUpperCase()'  required />
+                            <input type="text" class="form-control " name="nom_entreprise" onkeyup='this.value=this.value.toUpperCase()'  required />
                         </div> 
                     
                         <div class="form-group">
                         <label >Adresse:</label>
-                        <input type="text" maxlength="18" class="form-control  input-lg" name="adresse" placeholder="COCODY" onkeyup="this.value=this.value.toUpperCase()">
+                        <input type="text" maxlength="18" class="form-control  " name="adresse" placeholder="COCODY" onkeyup="this.value=this.value.toUpperCase()">
                         </div>
                         <div class="form-group">
                         <label >Téléphone (fixe/mobile):</label>
-                        <input type="text"  maxlength="18" class="form-control  input-lg" name="tel" placeholder="+225 27 47 54 45 68">
+                        <input type="text"  maxlength="18" class="form-control  " name="tel" placeholder="+225 27 47 54 45 68">
                         </div>
                         <div class="form-group">
                         <label >Chiffre d'affaire (FCFA): </label>
-                        <input type="text" id="ca" maxlength="18" class="form-control  input-lg" name="chiffre" placeholder="1000000">
+                        <input type="text" id="ca" maxlength="18" class="form-control  " name="chiffre" placeholder="1000000">
                         </div>
 
                         <div class="form-group">
                         <label >Nombre d'employés:</label>
-                        <input type="text" id="ne" maxlength="18" class="form-control  input-lg" name="nb_emp" placeholder="5">
+                        <input type="text" id="ne" maxlength="18" class="form-control  " name="nb_emp" placeholder="5">
                         </div>
 
                         <div class="form-group">
                             <label >Objet social/Activité:</label>
-                            <input type="text"  maxlength="100" class="form-control  input-lg" 
+                            <input type="text"  maxlength="100" class="form-control  " 
                             name="activite" onkeyup='this.value=this.value.toUpperCase()'>
                         </div>
 
                         <div class="form-group">
                             <label>Email:</label>
-                            <input type="email"  maxlength="30" class="form-control  input-lg" 
+                            <input type="email"  maxlength="30" class="form-control  " 
                             name="email">
                         </div>
 
                         <div class="form-group">
                             <label>Pays :</label>
-                            <select class="form-control input-lg" name="pays">
+                            <select class="form-control " name="pays">
                                 @php
                                     $pays = $payscontroller->DisplayAll();
                                 @endphp

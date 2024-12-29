@@ -86,7 +86,7 @@
                       <div class="box-body">
                         <div class="form-group">
                           <label>Entreprise:</label>
-                          <select class="form-control input-lg" name="entreprise">
+                          <select class="form-control " name="entreprise">
                             @php
                               $nom = $entreprisecontroller->GetById($id_entreprise)
                             @endphp
@@ -102,23 +102,23 @@
 
                         <div class="form-group">
                           <label>Titre</label>
-                          <input type="text"  class="form-control input-lg" name="titre"  required 
+                          <input type="text"  class="form-control " name="titre"  required 
                           onkeyup='this.value=this.value.toUpperCase()' placeholder="Ex: 202317854/SUPPORT/TTR/01"/>
                         </div>
                   
                         <div class="form-group">
                           <label >Montant (XOF)</label>
-                          <input type="text" class="form-control  input-lg" required name="montant">
+                          <input type="text" class="form-control  " required name="montant">
                         </div>
                   
                         <div class="form-group">
                           <label>Debut du contrat</label>
-                          <input type="date" class="form-control  input-lg" required name="date_debut">
+                          <input type="date" class="form-control  " required name="date_debut">
                         </div>
 
                         <div class="form-group">
                           <label>Date de solde</label>
-                          <input type="date" class="form-control  input-lg" required name="date_solde">
+                          <input type="date" class="form-control  " required name="date_solde">
                         </div>
 
                         <div class="form-group">
@@ -160,7 +160,7 @@
 
                         <div class="form-group">
                             <label>Service (*)</label>
-                            <select class="form-control input-lg select2" multiple="multiple" name="service[]"
+                            <select class="form-control  select2" multiple="multiple" name="service[]"
                                 style="width: 100%;" data-placeholder="--Selectionnez le service--" required>
                                 <!--liste des services a choisir -->
                                 
@@ -186,7 +186,7 @@
                   
                         <div class="form-group">
                             <label>Type de prestation (*)</label>
-                            <select class="form-control input-lg" name="type" required>
+                            <select class="form-control " name="type" required>
                                 <!--liste des services a choisir -->
                                 @php
                                     $get = $typeprestationcontroller->GetAll();
@@ -200,12 +200,12 @@
                         </div>
                         <div class="form-group">
                             <label for="exampleInputEmail1">Date d'exécution(*)</label>
-                            <input type="date" class="form-control  input-lg" required name="date_execute">
+                            <input type="date" class="form-control  " required name="date_execute">
                         </div>
                   
                         <div class="form-group">
                             <label>Adresse </label>
-                            <input type="text" required maxlength="100" class="form-control input-lg" 
+                            <input type="text" required maxlength="100" class="form-control " 
                             name="localisation" placeholder="Ex: Cocody Angré Cocovico" onkeyup="this.value=this.value.toUpperCase()">
                         </div>
 

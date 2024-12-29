@@ -66,7 +66,7 @@ class Calculator extends Controller
             }
             else
             {
-                return redirect('reservation_form')->with('error', 'Vous devez mettre au moins un nombre de jours.');
+                
             }
            
             //return $depart;
@@ -143,13 +143,13 @@ class Calculator extends Controller
 
     public function CountFactureNoReglee()
     {
-        $count = Facture::all()
+        $count = Facture::where('reglee', 0)
         ->count();
          return  $count;
     }
     public function CountFactureReglee()
     {
-        $count = Facture::where('reglee', 0)
+        $count = Facture::where('reglee', 1)
         ->count();
          return  $count;
     }
@@ -191,6 +191,15 @@ class Calculator extends Controller
         $today =  date('Y-m-d');
 
         $count = Contrat::where('fin_contrat', '>', $today)->count();
+
+        return $count;
+     }
+
+     public function CountContratEnd()
+     {
+        $today =  date('Y-m-d');
+
+        $count = Contrat::where('statut_solde', '=', 1)->count();
 
         return $count;
      }
@@ -244,8 +253,8 @@ class Calculator extends Controller
         $somm = 0;
         $get =  DB::table('paiements')
         ->join('factures', 'paiements.id_facture', '=', 'factures.id')
-        ->join('prestations', 'factures.id_prestation', '=', 'prestations.id')
-        ->where('prestations.id_contrat', $id_contrat)
+        ->join('contrats', 'factures.id_contrat', '=', 'contrats.id')
+        ->where('contrats.id', $id_contrat)
         ->get(['paiements.paiement']);
 
         foreach($get as $get)
@@ -467,7 +476,7 @@ class Calculator extends Controller
 
         //le mois en cours
         $month_get = date_parse($request->month);
-        //$month_get;
+        //dd($month_get);
         $month = $month_get['month'];
         //dd($month);
         //FAIRE UN TABLEAU POUR LE MOIS EN FRANCAIS
@@ -476,6 +485,7 @@ class Calculator extends Controller
 
         $francais = $mois_francais[($month-1)];
 
+        //dd($francais);
         //Le montant total des contrats réalisé
         $total = 0;
 
@@ -518,6 +528,7 @@ class Calculator extends Controller
         $totalnb_entreprise = 0;
         //CALCUL POUR LES POURCENTAGES 
 
+        //CALCUL POUR LES POURCENTAGES 
         //Prendre toutes les entreprises et pour chaque entrprise recupérer le montant des contrats dans le mois en questions
         $all_entreprises = Entreprise::all();
 
@@ -534,27 +545,34 @@ class Calculator extends Controller
                 ->where('contrats.debut_contrat', '=', $the_date)
                 ->where('contrats.id_entreprise', '=', $all_entreprises->id)
                 ->get();
-
+                
                 foreach($contrats as $contrats)
                 {
+                   
                     $montant = $montant + $contrats->montant;
+                    
+                    //echo"m = ".$montant."-".$contrats->titre_contrat."<br>";  
                 }
-        
+                //echo"m = ".$montant."-"."<br>"; 
+                ///dd($contrats);
            }  
 
            //METTRE LES VALLEURS DANS LES DIFFERENTS TABLEAUX
-           if($montant != 0) //Si cette entreprise a rapporter quelque il faut remplir dans le tableu pour le gaph
+           if($montant != 0) //Si cette entreprise a rapporté quelque il faut remplir dans le tableu pour le gaph
            {
-                $totalnb_entreprise = $totalnb_entreprise + 1;
-                array_push($company, $all_entreprises->nom_entreprise);
-                 //CALCULER LE POURCENTAGE ET METTRE DANS LE TABLEAU
-                $p = ($montant * 100) / $total;
-                //echo $total;
-                array_push($percent, $p);
+               //(dd($montant));
+                   $totalnb_entreprise = $totalnb_entreprise + 1;
+                   array_push($company, $all_entreprises->nom_entreprise);
+                   //CALCULER LE POURCENTAGE ET METTRE DANS LE TABLEAU
+                   $p = ($montant * 100) / $total;
+                   //dd($p);
+                   array_push($percent, $p);
 
            }
+           
         }
-
+        
+        //dd($totalnb_entreprise);
          //ON AURA $totalnb_entreprise COULEURS DONC FAIRE UN TABLEAU QUI VA AVOIR LE NOMRE TOTAL DE COULEUR DIFFERENTES
          $alpha = ['A', 'B', 'C', 'D', 'E', 'F', ];
          $colors = [];
@@ -579,50 +597,11 @@ class Calculator extends Controller
             //echo $chaine_couleur ."<br>";
              //mettre la couelur formée dans le tableau colors
              array_push($colors, $chaine_couleur);
+             
              //dd($colors);
             
-         }
-
-       
-        //CALCUL POUR LES POURCENTAGES 
-        //Prendre toutes les entreprises et pour chaque entreprise recupérer le montant des contrats dans le mois en questions
-        $all_entreprises = Entreprise::all();
-
-        foreach($all_entreprises as $all_entreprises)
-        {
-           //montant de contrat pour chaque entreprise
-           $montant = 0;
-           for($i = 1; $i <= $number; $i++)
-           {
-                $the_date = $year."-". $month."-".$i;
-                
-                $contrats =  DB::table('contrats')
-                ->join('entreprises', 'entreprises.id', '=', 'contrats.id_entreprise')
-                ->where('contrats.debut_contrat', '=', $the_date)
-                ->where('contrats.id_entreprise', '=', $all_entreprises->id)
-                ->get();
-
-                foreach($contrats as $contrats)
-                {
-                    $montant = $montant + $contrats->montant;
-                }
-        
-           }  
-
-           //METTRE LES VALLEURS DANS LES DIFFERENTS TABLEAUX
-           if($montant != 0) //Si cette entreprise a rapporté quelque chose il faut remplir dans le tableu pour le gaph
-           {
-                $totalnb_entreprise = $totalnb_entreprise + 1;
-                array_push($company, $all_entreprises->nom_entreprise);
-                 //CALCULER LE POURCENTAGE ET METTRE DANS LE TABLEAU
-                $p = ($montant * 100) / $total;
-                //echo $total;
-                array_push($percent, $p);
-
-           }
-              
-           
         }
+
         //AFFICHER LES GRAPHES PAR PRESTATIONS, PAR SERVICES
 
         //Prendre touts les services et pour chaque service recupérer le total des contrats dans le mois en questions
@@ -637,12 +616,16 @@ class Calculator extends Controller
         $first_date = $request->month."-01";
         $last_date = $request->month."-".$number;
 
+        //dd($last_date);
+
         $compte_prestations =   DB::table('prestation_services')
         ->join('prestations', 'prestation_services.prestation_id', '=', 'prestations.id')
         ->join('services', 'prestation_services.service_id', '=', 'services.id') 
         ->where('prestations.date_prestation', '>=', $first_date)
         ->where('prestations.date_prestation', '<=', $last_date)
         ->count();
+
+        //dd($compte_prestations);
          
         //PARCOURIR TOUS LES SERVICES
         $all_services = Service::all();
@@ -1180,8 +1163,10 @@ class Calculator extends Controller
         $count = Facture::where('date_reglement', '<', $today)
         ->where('reglee', 0)
         ->count();
-
+        //dd($count);
         return $count;
+
+       
     }
 
 

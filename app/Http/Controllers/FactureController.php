@@ -18,9 +18,8 @@ class FactureController extends Controller
     public function DisplayByIdPrestation($id)
     {
         $get =  DB::table('factures')
-        ->join('prestations', 'factures.id_prestation', '=', 'prestations.id')
-        ->join('contrats', 'prestations.id_contrat', '=', 'contrats.id')
-        ->where('prestations.id', $id)
+        ->join('contrats', 'factures.id_contrats', '=', 'contrats.id')
+        ->where('contrats.id', $id)
         ->get(['factures.*', 'contrats.titre_contrat']);
 
         return $get;
@@ -30,18 +29,30 @@ class FactureController extends Controller
 
     public function FactureByPrestation(Request $request)
     {
-        return view('admin/prestations',
+        return view('admin/contrats',
         [
-            'id_prestation' => $request->id_prestation,
+            'id_contrat' => $request->id_contrat,
         ]
         );
     }
 
     public function FactureByCustomer(Request $request)
     {
+        $get = DB::table('factures')
+            
+        ->join('contrats', 'factures.id_contrat', '=', 'contrats.id')
+     
+        ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')       
+        ->where('entreprises.id', $request->id_entreprise)
+        ->get(['factures.*',  'contrats.titre_contrat', 'contrats.date_solde', 
+        'contrats.montant', 'contrats.reste_a_payer',  'entreprises.nom_entreprise']);
+   
+    //dd($get);
+       // @livewire('entreprises', ['id_entreprise' => $get,]);
+        
         return view('admin/factures',
         [
-            'id_entreprise' => $request->id_entreprise,
+            'id_entreprise' => $get,
         ]
         );
     }
@@ -50,14 +61,14 @@ class FactureController extends Controller
     {
         $get = DB::table('factures')
             
-            ->join('prestations', 'factures.id_prestation', '=', 'prestations.id')
-            ->join('contrats', 'prestations.id_contrat', '=', 'contrats.id')
+            ->join('contrats', 'factures.id_contrat', '=', 'contrats.id')
+         
             
-            ->join('typeprestations', 'prestations.id_type_prestation', '=', 'typeprestations.id')
+            ->join('typeprestations', 'contrats.id_type_prestation', '=', 'typeprestations.id')
             
             ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')       
             ->where('factures.id', $id)
-            ->get(['factures.*', 'prestations.localisation', 'prestations.date_prestation', 'prestations.id_contrat',
+            ->get(['factures.*',
             'contrats.titre_contrat', 'contrats.date_solde', 
             'contrats.montant', 'contrats.reste_a_payer',  
              'typeprestations.libele',  'entreprises.nom_entreprise']);
@@ -69,14 +80,13 @@ class FactureController extends Controller
     {
         $get = DB::table('factures')
             
-            ->join('prestations', 'factures.id_prestation', '=', 'prestations.id')
-            ->join('contrats', 'prestations.id_contrat', '=', 'contrats.id')
+            ->join('contrats', 'factures.id_contrat', '=', 'contrats.id')
             
-            ->join('typeprestations', 'prestations.id_type_prestation', '=', 'typeprestations.id')
+            ->join('typeprestations', 'contrats.id_type_prestation', '=', 'typeprestations.id')
             
             ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')       
             ->where('entreprises.id', $id)
-            ->get(['factures.*', 'prestations.localisation', 'prestations.date_prestation', 'prestations.id_contrat',
+            ->get(['factures.*',
             'contrats.titre_contrat', 'contrats.date_solde', 
             'contrats.montant', 'contrats.reste_a_payer',  
              'typeprestations.libele',  'entreprises.nom_entreprise']);
@@ -90,13 +100,13 @@ class FactureController extends Controller
         //dd('ici');
         $get = DB::table('factures')
             
-            ->join('prestations', 'factures.id_prestation', '=', 'prestations.id')
+            ->join('contrats', 'factures.id_contrat', '=', 'contrats.id')
             
-            ->join('typeprestations', 'prestations.id_type_prestation', '=', 'typeprestations.id')
-            ->join('contrats', 'prestations.id_contrat', '=', 'contrats.id')
+            ->join('typeprestations', 'contrats.id_type_prestation', '=', 'typeprestations.id')
+      
             ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id') 
             
-            ->get(['factures.*', 'prestations.localisation', 'prestations.date_prestation', 'prestations.id_contrat',
+            ->get(['factures.*', 
             'contrats.titre_contrat', 'contrats.date_solde', 
             'contrats.montant', 'contrats.reste_a_payer',  
              'typeprestations.libele',  'entreprises.nom_entreprise']);
@@ -114,12 +124,12 @@ class FactureController extends Controller
             if($request->etat == "c")
             {
                 $factures = DB::table('factures')
-                ->join('prestations', 'factures.id_prestation', '=', 'prestations.id')
-                ->join('typeprestations', 'prestations.id_type_prestation', '=', 'typeprestations.id')
-                ->join('contrats', 'prestations.id_contrat', '=', 'contrats.id')
+                ->join('contrats', 'factures.id_contrat', '=', 'contrats.id')
+                ->join('typeprestations', 'contrats.id_type_prestation', '=', 'typeprestations.id')
+                
                 ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id') 
                 ->orderBy('factures.date_emission', 'desc')
-                ->get(['factures.*', 'prestations.localisation', 'prestations.date_prestation', 'prestations.id_contrat',
+                ->get(['factures.*', 
                 'contrats.titre_contrat', 'contrats.date_solde', 
                 'contrats.montant', 'contrats.reste_a_payer',  
                 'typeprestations.libele',  'entreprises.nom_entreprise']);
@@ -131,12 +141,12 @@ class FactureController extends Controller
                 //dd('ii/');
                 $factures = DB::table('factures')
                 ->where('factures.reglee', $etat)
-                ->join('prestations', 'factures.id_prestation', '=', 'prestations.id')
-                ->join('typeprestations', 'prestations.id_type_prestation', '=', 'typeprestations.id')
-                ->join('contrats', 'prestations.id_contrat', '=', 'contrats.id')
+                ->join('contrats', 'factures.id_contrat', '=', 'contrats.id')
+                ->join('typeprestations', 'contrats.id_type_prestation', '=', 'typeprestations.id')
+               
                 ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id') 
                 ->orderBy('factures.date_emission', 'desc')
-                ->get(['factures.*', 'prestations.localisation', 'prestations.date_prestation', 'prestations.id_contrat',
+                ->get(['factures.*', 
                 'contrats.titre_contrat', 'contrats.date_solde', 
                 'contrats.montant', 'contrats.reste_a_payer',  
                 'typeprestations.libele',  'entreprises.nom_entreprise']);
@@ -150,13 +160,13 @@ class FactureController extends Controller
             if($request->etat == "c")
             {
                 $factures = DB::table('factures')
-                ->join('prestations', 'factures.id_prestation', '=', 'prestations.id')
-                ->join('typeprestations', 'prestations.id_type_prestation', '=', 'typeprestations.id')
-                ->join('contrats', 'prestations.id_contrat', '=', 'contrats.id')
+                ->join('contrats', 'factures.id_contrat', '=', 'contrats.id')
+                ->join('typeprestations', 'contrats.id_type_prestation', '=', 'typeprestations.id')
+               
                 ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id') 
                 ->where('contrats.id_entreprise', $id_entreprise)
                 ->orderBy('factures.date_emission', 'desc')
-                ->get(['factures.*', 'prestations.localisation', 'prestations.date_prestation', 'prestations.id_contrat',
+                ->get(['factures.*',
                 'contrats.titre_contrat', 'contrats.date_solde', 
                 'contrats.montant', 'contrats.reste_a_payer',  
                 'typeprestations.libele',  'entreprises.nom_entreprise']);
@@ -166,14 +176,14 @@ class FactureController extends Controller
             else
             {
                 $factures = DB::table('factures')
-                ->join('prestations', 'factures.id_prestation', '=', 'prestations.id')
-                ->join('typeprestations', 'prestations.id_type_prestation', '=', 'typeprestations.id')
-                ->join('contrats', 'prestations.id_contrat', '=', 'contrats.id')
+                ->join('contrats', 'factures.id_contrat', '=', 'contrats.id')
+                ->join('typeprestations', 'contrats.id_type_prestation', '=', 'typeprestations.id')
+              
                 ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id') 
                 ->where('factures.reglee', $etat)
                 ->where('contrats.id_entreprise', $id_entreprise)
                 ->orderBy('factures.date_emission', 'desc')
-                ->get(['factures.*', 'prestations.localisation', 'prestations.date_prestation', 'prestations.id_contrat',
+                ->get(['factures.*', 
                 'contrats.titre_contrat', 'contrats.date_solde', 
                 'contrats.montant', 'contrats.reste_a_payer',  
                 'typeprestations.libele',  'entreprises.nom_entreprise']);
@@ -186,7 +196,7 @@ class FactureController extends Controller
     public function AddFacture(Request $request)
     {
         //dd($request->all());
-        if($request->id_prestation == 0)
+        if($request->id_contrat == 0)
         {
             return back()->with('error', 'Choisissez impérativement la prestation');
         }
@@ -200,8 +210,9 @@ class FactureController extends Controller
             'date_reglement' => $date_reglement,
              'date_emission' => $request->date_emission, 
              'montant_facture' => $request->montant_facture, 
-             'id_prestation' => $request->id_prestation,
+             'id_contrat' => $request->id_contrat,
               'reglee' => 0,
+              'annulee' => 0,
               'created_by' => auth()->user()->id,
        ]);
 
@@ -302,12 +313,12 @@ class FactureController extends Controller
              if($request->etat == "c")
              {
                  $factures = DB::table('factures')
-                 ->join('prestations', 'factures.id_prestation', '=', 'prestations.id')
-                 ->join('typeprestations', 'prestations.id_type_prestation', '=', 'typeprestations.id')
-                 ->join('contrats', 'prestations.id_contrat', '=', 'contrats.id')
+                 ->join('contrats', 'factures.id_contrat', '=', 'contrats.id')
+                 ->join('typeprestations', 'contrats.id_type_prestation', '=', 'typeprestations.id')
+                 
                  ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id') 
                  ->orderBy('factures.date_emission', 'desc')
-                 ->get(['factures.*', 'prestations.localisation', 'prestations.date_prestation', 'prestations.id_contrat',
+                 ->get(['factures.*', 
                  'contrats.titre_contrat', 'contrats.date_solde', 
                  'contrats.montant', 'contrats.reste_a_payer',  
                  'typeprestations.libele',  'entreprises.nom_entreprise']);
@@ -319,12 +330,12 @@ class FactureController extends Controller
                 
                  $factures = DB::table('factures')
                  ->where('factures.reglee', $etat)
-                 ->join('prestations', 'factures.id_prestation', '=', 'prestations.id')
-                 ->join('typeprestations', 'prestations.id_type_prestation', '=', 'typeprestations.id')
-                 ->join('contrats', 'prestations.id_contrat', '=', 'contrats.id')
+                 ->join('contrats', 'factures.id_contrat', '=', 'contrats.id')
+                 ->join('typeprestations', 'contrats.id_type_prestation', '=', 'typeprestations.id')
+                 
                  ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id') 
                  ->orderBy('factures.date_emission', 'desc')
-                 ->get(['factures.*', 'prestations.localisation', 'prestations.date_prestation', 'prestations.id_contrat',
+                 ->get(['factures.*', 
                  'contrats.titre_contrat', 'contrats.date_solde', 
                  'contrats.montant', 'contrats.reste_a_payer',  
                  'typeprestations.libele',  'entreprises.nom_entreprise']);
@@ -338,13 +349,13 @@ class FactureController extends Controller
              if($request->etat == "c")
              {
                  $factures = DB::table('factures')
-                 ->join('prestations', 'factures.id_prestation', '=', 'prestations.id')
-                 ->join('typeprestations', 'prestations.id_type_prestation', '=', 'typeprestations.id')
-                 ->join('contrats', 'prestations.id_contrat', '=', 'contrats.id')
+                 ->join('contrats', 'factures.id_contrat', '=', 'contrats.id')
+                 ->join('typeprestations', 'contrats.id_type_prestation', '=', 'typeprestations.id')
+                 ->join('contrats', 'contrats.id_contrat', '=', 'contrats.id')
                  ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id') 
                  ->where('contrats.id_entreprise', $id_entreprise)
                  ->orderBy('factures.date_emission', 'desc')
-                 ->get(['factures.*', 'prestations.localisation', 'prestations.date_prestation', 'prestations.id_contrat',
+                 ->get(['factures.*', 'contrats.localisation', 'contrats.date_prestation', 'contrats.id_contrat',
                  'contrats.titre_contrat', 'contrats.date_solde', 
                  'contrats.montant', 'contrats.reste_a_payer',  
                  'typeprestations.libele',  'entreprises.nom_entreprise']);
@@ -354,14 +365,14 @@ class FactureController extends Controller
              else
              {
                  $factures = DB::table('factures')
-                 ->join('prestations', 'factures.id_prestation', '=', 'prestations.id')
-                 ->join('typeprestations', 'prestations.id_type_prestation', '=', 'typeprestations.id')
-                 ->join('contrats', 'prestations.id_contrat', '=', 'contrats.id')
+                 ->join('contrats', 'factures.id_contrat', '=', 'contrats.id')
+                 ->join('typeprestations', 'contrats.id_type_prestation', '=', 'typeprestations.id')
+                 ->join('contrats', 'contrats.id_contrat', '=', 'contrats.id')
                  ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id') 
                  ->where('factures.reglee', $etat)
                  ->where('contrats.id_entreprise', $id_entreprise)
                  ->orderBy('factures.date_emission', 'desc')
-                 ->get(['factures.*', 'prestations.localisation', 'prestations.date_prestation', 'prestations.id_contrat',
+                 ->get(['factures.*', 'contrats.localisation', 'contrats.date_prestation', 'contrats.id_contrat',
                  'contrats.titre_contrat', 'contrats.date_solde', 
                  'contrats.montant', 'contrats.reste_a_payer',  
                  'typeprestations.libele',  'entreprises.nom_entreprise']);
@@ -385,7 +396,7 @@ class FactureController extends Controller
     {
         //IL FAUT SUPPRIMER L'ANCIEN FICHIER DANS LE DISQUE DUR
         $fichier = $request->file;
-        //dd($fichier);
+        //dd($request->file);
 
         if($fichier != null)
         {
@@ -441,7 +452,7 @@ class FactureController extends Controller
                     );
 
                     $affected = DB::table('factures')
-                    ->where('id', $Insert->id)
+                    ->where('id', $request->id_facture)
                     ->update([
                        'file_path'=> $path,
                         
@@ -454,10 +465,10 @@ class FactureController extends Controller
         }
         else
         {
-            return redirect('facture')->with('error', 'Vous devez choisir un fichier');
+            return back()->with('error', 'Vous devez choisir un fichier');
         }
 
-        return redirect('facture')->with('success', 'Fichier enregistré');
+        return back()->with('success', 'Fichier enregistré');
     }
 
     public function ViewFile(Request $request)
@@ -496,7 +507,7 @@ class FactureController extends Controller
             
             'date_emission' => $request->date_emission, 
             'montant_facture' => $request->montant_facture, 
-            'id_prestation' => $request->id_prestation,]);
+            'id_contrat' => $request->id_contrat,]);
 
              //ENREGISTRER LE FICHIER DE LA FACTURE
          //dd( $affected);
@@ -587,12 +598,12 @@ class FactureController extends Controller
              if($request->etat == "c")
              {
                  $factures = DB::table('factures')
-                 ->join('prestations', 'factures.id_prestation', '=', 'prestations.id')
-                 ->join('typeprestations', 'prestations.id_type_prestation', '=', 'typeprestations.id')
-                 ->join('contrats', 'prestations.id_contrat', '=', 'contrats.id')
+                 ->join('contrats', 'factures.id_contrat', '=', 'contrats.id')
+                 ->join('typeprestations', 'contrats.id_type_prestation', '=', 'typeprestations.id')
+                 ->join('contrats', 'contrats.id_contrat', '=', 'contrats.id')
                  ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id') 
                  ->orderBy('factures.date_emission', 'desc')
-                 ->get(['factures.*', 'prestations.localisation', 'prestations.date_prestation', 'prestations.id_contrat',
+                 ->get(['factures.*', 'contrats.localisation', 'contrats.date_prestation', 'contrats.id_contrat',
                  'contrats.titre_contrat', 'contrats.date_solde', 
                  'contrats.montant', 'contrats.reste_a_payer',  
                  'typeprestations.libele',  'entreprises.nom_entreprise']);
@@ -604,12 +615,12 @@ class FactureController extends Controller
                 
                  $factures = DB::table('factures')
                  ->where('factures.reglee', $etat)
-                 ->join('prestations', 'factures.id_prestation', '=', 'prestations.id')
-                 ->join('typeprestations', 'prestations.id_type_prestation', '=', 'typeprestations.id')
-                 ->join('contrats', 'prestations.id_contrat', '=', 'contrats.id')
+                 ->join('contrats', 'factures.id_contrat', '=', 'contrats.id')
+                 ->join('typeprestations', 'contrats.id_type_prestation', '=', 'typeprestations.id')
+                 ->join('contrats', 'contrats.id_contrat', '=', 'contrats.id')
                  ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id') 
                  ->orderBy('factures.date_emission', 'desc')
-                 ->get(['factures.*', 'prestations.localisation', 'prestations.date_prestation', 'prestations.id_contrat',
+                 ->get(['factures.*', 'contrats.localisation', 'contrats.date_prestation', 'contrats.id_contrat',
                  'contrats.titre_contrat', 'contrats.date_solde', 
                  'contrats.montant', 'contrats.reste_a_payer',  
                  'typeprestations.libele',  'entreprises.nom_entreprise']);
@@ -623,13 +634,13 @@ class FactureController extends Controller
              if($request->etat == "c")
              {
                  $factures = DB::table('factures')
-                 ->join('prestations', 'factures.id_prestation', '=', 'prestations.id')
-                 ->join('typeprestations', 'prestations.id_type_prestation', '=', 'typeprestations.id')
-                 ->join('contrats', 'prestations.id_contrat', '=', 'contrats.id')
+                 ->join('contrats', 'factures.id_contrat', '=', 'contrats.id')
+                 ->join('typeprestations', 'contrats.id_type_prestation', '=', 'typeprestations.id')
+                 ->join('contrats', 'contrats.id_contrat', '=', 'contrats.id')
                  ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id') 
                  ->where('contrats.id_entreprise', $id_entreprise)
                  ->orderBy('factures.date_emission', 'desc')
-                 ->get(['factures.*', 'prestations.localisation', 'prestations.date_prestation', 'prestations.id_contrat',
+                 ->get(['factures.*', 'contrats.localisation', 'contrats.date_prestation', 'contrats.id_contrat',
                  'contrats.titre_contrat', 'contrats.date_solde', 
                  'contrats.montant', 'contrats.reste_a_payer',  
                  'typeprestations.libele',  'entreprises.nom_entreprise']);
@@ -639,14 +650,14 @@ class FactureController extends Controller
              else
              {
                  $factures = DB::table('factures')
-                 ->join('prestations', 'factures.id_prestation', '=', 'prestations.id')
-                 ->join('typeprestations', 'prestations.id_type_prestation', '=', 'typeprestations.id')
-                 ->join('contrats', 'prestations.id_contrat', '=', 'contrats.id')
+                 ->join('contrats', 'factures.id_contrat', '=', 'contrats.id')
+                 ->join('typeprestations', 'contrats.id_type_prestation', '=', 'typeprestations.id')
+                 ->join('contrats', 'contrats.id_contrat', '=', 'contrats.id')
                  ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id') 
                  ->where('factures.reglee', $etat)
                  ->where('contrats.id_entreprise', $id_entreprise)
                  ->orderBy('factures.date_emission', 'desc')
-                 ->get(['factures.*', 'prestations.localisation', 'prestations.date_prestation', 'prestations.id_contrat',
+                 ->get(['factures.*', 'contrats.localisation', 'contrats.date_prestation', 'contrats.id_contrat',
                  'contrats.titre_contrat', 'contrats.date_solde', 
                  'contrats.montant', 'contrats.reste_a_payer',  
                  'typeprestations.libele',  'entreprises.nom_entreprise']);
@@ -670,17 +681,19 @@ class FactureController extends Controller
         
         $get = DB::table('factures')
             
-            ->join('prestations', 'factures.id_prestation', '=', 'prestations.id')
+            ->join('contrats', 'factures.id_contrat', '=', 'contrats.id')
            
-            ->join('typeprestations', 'prestations.id_type_prestation', '=', 'typeprestations.id')
-            ->join('contrats', 'prestations.id_contrat', '=', 'contrats.id')
+            ->join('typeprestations', 'contrats.id_type_prestation', '=', 'typeprestations.id')
+           
             ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')   
             ->where('date_reglement', '<', $today)
             ->where('reglee', 0)
             ->take(3)
-            ->get(['factures.*', 'prestations.localisation', 'prestations.date_prestation', 'contrats.titre_contrat', 'contrats.date_solde',
+            ->get(['factures.*', 'contrats.titre_contrat', 'contrats.date_solde',
             'contrats.montant', 'contrats.reste_a_payer', 
              'typeprestations.libele',  'entreprises.nom_entreprise']);
+
+        //dd($get);
 
         return $get;
     }

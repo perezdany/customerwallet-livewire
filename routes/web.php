@@ -21,6 +21,11 @@ use App\Http\Controllers\DocController;
 use App\Http\Controllers\CibleController;
 use App\Http\Controllers\PropalController;
 
+//Les livewire
+use App\Http\Livewire\Entreprises;
+
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -89,7 +94,7 @@ Route::middleware(['auth:web'])->group(function(){
 
     //CONTRATS
     Route::get('contrat', function () {
-        return view('dash/all_contrats');
+        return view('dash/contrats');
     });
 
     //AFFICHER LES CONTRATS D'UN CLIENT 
@@ -104,6 +109,18 @@ Route::middleware(['auth:web'])->group(function(){
 
     //FILTRE DANS LE TABLEAU DES CONTRATS
     Route::post('make_filter_contrat', [ContratController::class, 'TableFilter']);
+
+    //Route::get('encours', [ContratController::class, 'TableFilter']);
+    Route::get('encours', function () {
+        return view('dash/contrats_en_cours');
+    });
+
+    Route::get('end', function () {
+        return view('dash/contrats_termines');
+    });
+
+
+    //Route::get('end', [ContratController::class, 'TableFilter']);
 
     //Route::get('make_filter_contrat', [ContratController::class, 'TableFilter']);
 
@@ -189,6 +206,10 @@ Route::middleware(['auth:web'])->group(function(){
     //UPLOADER LA FACTURE PROFORMA
     route::post('upload_facture_proforma', [ProspectionController::class, 'UploadProforma']);
 
+    Route::get('cfactures', function(){
+        return view('admin/cfactures');
+    });
+
     //UPLOAD DANS FICHE PROSPECTION
     route::post('add_new_doc_proforma', [ProspectionController::class, 'AddProformaInFiche']);
 
@@ -213,6 +234,9 @@ Route::middleware(['auth:web'])->group(function(){
     Route::post('fiche_edit_contrat_form', [ContratController::class, 'EditContratFromFiche']);
 
     Route::post('edit_contrat_fiche', [ContratController::class, 'EditContratFiche']);
+
+    //FORMULAIRE AJOUT DE FICHIER 
+    route::post('add_files_contrat', [ContratController::class, 'UploadFiles']);
 
     //LES SUIVIS D'ENTREPRISE
     Route::get('suivi', function(){
@@ -276,9 +300,13 @@ Route::middleware(['auth:web'])->group(function(){
     Route::get('delete_prestation/{id}', [ServiceController::class, 'DeleteServiceInPrestation']);
 
     //ENTREPRISES
-    Route::get('entreprises', function(){
+   Route::get('entreprises', function(){
         return view('admin/entreprises');
     });
+
+   //Route::get('entreprises', Entreprises::class);
+
+
 
     //MODIFIER UNE ENTREPRISE
     Route::post('edit_entreprise_form', [EntrepriseController::class, 'EditEntrForm']);
@@ -303,6 +331,7 @@ Route::middleware(['auth:web'])->group(function(){
 
     //AFFICHER LA FICHE CLIENT 
     Route::post('display_fiche_customer', [EntrepriseController::class, 'GetFicheCustomer']);
+    Route::get('display_fiche_customer', [EntrepriseController::class, 'GetFicheCustomer']);
 
     //AFFICHER LES INFORMATIONS SUR LES PROSPECTS
     Route::post('display_about_prospect', [EntrepriseController::class, 'GetProspAboutThisTable']);
@@ -339,13 +368,18 @@ Route::middleware(['auth:web'])->group(function(){
     });
 
     //FAIRE UN FILTRE DEJA SUR LA PAGE ENTREPRISE EN ALLANT AVEC LE CHOIX ACTIF
-    Route::get('actifs', [EntrepriseController::class, 'TableFilter']);
+    Route::get('actifs', function(){
+        return view('dash/list_actifs');
+    });
+
+    Route::get('clients', function(){
+        return view('dash/customers');
+    });
 
     //MEME CHOSE POUR INACTIFS
-    Route::get('inactifs', [EntrepriseController::class, 'TableFilter']);
-    /*Route::get('inactifs', function(){
+    Route::get('inactifs', function(){
         return view('dash/list_inactifs');
-    });*/
+    });
 
 
     //POUR DEBOUCHER SUR LA FICHE CLIENT
@@ -529,12 +563,19 @@ Route::middleware(['auth:web'])->group(function(){
     });
 
     //AFFICHER LES FACTURES D'UN CLIENT'
-    Route::post('display_facture_customer', [FactureController::class, 'FactureByCustomer']);
+    Route::get('display_facture_customer', [FactureController::class, 'FactureByCustomer']);
 
     //FILTRER PAR ETAT DES FACTURES OU PAR CLIENT
     Route::post('make_filter_facture', [FactureController::class, 'TableFilter']);
-    Route::get('no_reglee', [FactureController::class, 'TableFilter']);
-    Route::get('reglee', [FactureController::class, 'TableFilter']);
+
+    Route::get('no_reglee', function(){
+        return view('admin/factures_non_reglee');
+    });
+    Route::get('reglee', function(){
+        return view('admin/factures_reglee');
+    });
+    //Route::get('no_reglee', [FactureController::class, 'TableFilter']);
+    //Route::get('reglee', [FactureController::class, 'TableFilter']);
 
     //AFFICHER LES FACTURES DE LA PRESTATION
     Route::post('display_facture', [FactureController::class, 'FactureByPrestation']);

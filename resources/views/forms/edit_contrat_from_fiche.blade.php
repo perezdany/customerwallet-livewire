@@ -53,7 +53,7 @@
                         <div class="box-body">
                             <div class="form-group">
                                 <label>Entreprise:</label>
-                                <select class="form-control input-lg" name="entreprise">
+                                <select class="form-control " name="entreprise">
                                     @php
                                         $nom = $entreprisecontroller->GetById($id_entreprise)
                                     @endphp
@@ -69,22 +69,22 @@
                     
                             <div class="form-group">
                                 <label>Titre</label>
-                                <input type="text"  maxlength="100" value="{{$contrat->titre_contrat}}" class="form-control input-lg" name="titre" placeholder="Ex: Contrat de sureté BICICI"/>
+                                <input type="text"  maxlength="100" value="{{$contrat->titre_contrat}}" class="form-control " name="titre" placeholder="Ex: Contrat de sureté BICICI"/>
                             </div>
                         
                             <div class="form-group">
                                 <label >Montant (XOF)</label>
-                                <input type="number" class="form-control  input-lg" required name="montant"  value="{{$contrat->montant}}">
+                                <input type="number" class="form-control  " required name="montant"  value="{{$contrat->montant}}">
                             </div>
                         
                             <div class="form-group">
                                 <label>Debut du contrat</label>
-                                <input type="date" class="form-control  input-lg" required name="date_debut"  value="{{$contrat->debut_contrat}}">
+                                <input type="date" class="form-control  " required name="date_debut"  value="{{$contrat->debut_contrat}}">
                             </div>
 
                             <div class="form-group">
                                 <label>Date de solde</label>
-                                <input type="date" class="form-control  input-lg" required name="date_solde"  value="{{$contrat->date_solde}}">
+                                <input type="date" class="form-control  " required name="date_solde"  value="{{$contrat->date_solde}}">
                             </div>
 
                             <div class="form-group">

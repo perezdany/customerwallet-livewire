@@ -847,6 +847,16 @@ class ContratController extends Controller
     public function AddContratPrest(Request $request)
     {
         //dd($request->all());
+         //LA PRESTATION MAINTENANT
+         if($request->type == 0)
+         {
+             return view('forms/add_contrat_fiche_prosp',
+                 [
+                     'id_entreprise' => $request->id_entreprise,
+                     'error' => 'Choissez le type!'
+                 ]
+             );
+         }
 
         if($request->entreprise == 0)
         {
@@ -890,6 +900,7 @@ class ContratController extends Controller
                          'avenant' => $request->avenant, 
                          'statut_solde' => 0,
                          'id_contrat_parent' => $request->contrat_parent,
+                         'id_type_prestation' => $request->type,
                           'created_by' => auth()->user()->id,
                     ]);
                 }
@@ -907,6 +918,7 @@ class ContratController extends Controller
                         'reconduction' => $request->reconduction, 
                         'avenant' => $request->avenant, 
                         'statut_solde' => 0,
+                        'id_type_prestation' => $request->type,
                         'created_by' => auth()->user()->id,
                     ]);
                 
@@ -933,6 +945,7 @@ class ContratController extends Controller
                      'avenant' => $request->avenant, 
                      'statut_solde' => 0,
                      'id_contrat_parent' => $request->contrat_parent,
+                     'id_type_prestation' => $request->type,
                       'created_by' => auth()->user()->id,
                 ]);
             }
@@ -950,6 +963,7 @@ class ContratController extends Controller
                     'reconduction' => $request->reconduction, 
                     'avenant' => $request->avenant, 
                     'statut_solde' => 0,
+                    'id_type_prestation' => $request->type,
                     'created_by' => auth()->user()->id,
                 ]);
             
@@ -1212,14 +1226,14 @@ class ContratController extends Controller
        
         //AJOUTER LA PREMIERE PRESTATION DE CE CONTRAT
         
-        $insert_prestation = Prestation::create([
+        /**$insert_prestation = Prestation::create([
              'date_prestation' => $date_debut, 
              'id_type_prestation' => $request->type,
             'localisation' => $request->localisation, 
               'id_contrat' => $Insert->id, 
               
                'created_by' => auth()->user()->id,
-        ]);
+        ]);*/
 
         //IMPLEMENTATION DE LA RELATION PLUSIEURS A PLUSIEURS
         //Etant donné qu'on peut sélectionner plusieurs services lors de l'enregistrement de la prospection
@@ -1230,7 +1244,7 @@ class ContratController extends Controller
             $insert_services = Prestation_service::create([
     
                 'service_id' =>  $request->service[$a],
-                'prestation_id' => $insert_prestation->id,
+                'contrat_id' => $Insert->id,
 
             ]);
         }
@@ -1256,6 +1270,17 @@ class ContratController extends Controller
                 ]
             );
         }
+
+         //LA PRESTATION MAINTENANT
+         if($request->type == 0)
+         {
+             return view('forms/add_contrat_fiche_prosp',
+                 [
+                     'id_entreprise' => $request->id_entreprise,
+                     'error' => 'Choissez le type!'
+                 ]
+             );
+         }
         $calculator = new Calculator();
         //dd($jours);
         //Calcul de la date de fin de contrat
@@ -1278,6 +1303,7 @@ class ContratController extends Controller
                      'id_entreprise' => $add->id,
                      'date_solde' => $request->date_solde, 
                      'statut_solde' => 0,
+                     'id_type_prestation' => $request->type,
                       'created_by' => auth()->user()->id,
                 ]);
         
@@ -1296,6 +1322,7 @@ class ContratController extends Controller
                  'id_entreprise' => $request->entreprise,
                  'date_solde' => $request->date_solde, 
                  'statut_solde' => 0,
+                 'id_type_prestation' => $request->type,
                   'created_by' => auth()->user()->id,
             ]);
     
@@ -1461,16 +1488,7 @@ class ContratController extends Controller
         
         }
 
-        //LA PRESTATION MAINTENANT
-        if($request->type == 0)
-        {
-            return view('forms/add_contrat_fiche_prosp',
-                [
-                    'id_entreprise' => $request->id_entreprise,
-                    'error' => 'Choissez le type!'
-                ]
-            );
-        }
+       
 
        
         //VERIFIER SI IL N'EST PAS CLIENT CHANGE SONT STATUT A MEME TEMPS
@@ -1497,14 +1515,14 @@ class ContratController extends Controller
         }
         
 
-        $insert_prestation = Prestation::create([
+        /*$insert_prestation = Prestation::create([
              'date_prestation' => $request->date_execute, 
              'id_type_prestation' => $request->type,
               'localisation' => $request->localisation, 
               'id_contrat' => $Insert->id, 
               
                'created_by' => auth()->user()->id,
-        ]);
+        ]);*/
 
         //IMPLEMENTATION DE LA RELATION PLUSIEURS A PLUSIEURS
         //Etant donné qu'on peut sélectionner plusieurs services lors de l'enregistrement de la prospection
@@ -1515,7 +1533,7 @@ class ContratController extends Controller
             $insert_services = Prestation_service::create([
     
                 'service_id' =>  $request->service[$a],
-                'prestation_id' => $insert_prestation->id,
+                'contrat_id' => $insert_prestation->id,
 
             ]);
         }
@@ -1544,7 +1562,7 @@ class ContratController extends Controller
         $get = DB::table('contrats')
         ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')
         ->join('utilisateurs', 'contrats.created_by', '=', 'utilisateurs.id')
-        
+        ->orderBy('contrats.created_at', 'DESC')
         ->get(['contrats.*', 'utilisateurs.nom_prenoms', 'entreprises.nom_entreprise', ]);
 
    
@@ -1763,7 +1781,7 @@ class ContratController extends Controller
 
                         //SUPPRESSION DE L'ANCIEN FICHIER
                         //dd($get_path->path);
-                        $get_path_prof = Contrat::where('id', $Insert->id)->get();
+                        $get_path_prof = Contrat::where('id', $request->id_contrat)->get();
                         foreach($get_path_prof as $get_path_prof)
                         {
                             Storage::delete($get_path_prof->proforma_file);
@@ -1778,7 +1796,7 @@ class ContratController extends Controller
                         );
     
                         $affected = DB::table('contrats')
-                        ->where('id', $Insert->id)
+                        ->where('id', $request->id_contrat)
                         ->update([
                             'proforma_file'=> $path,
                             
@@ -2330,6 +2348,223 @@ class ContratController extends Controller
 
     }
 
+    public function UploadFiles(Request $request)
+    {
+        //dd($request->file);
+        //ENREGISTRER LE FICHIER DU CONTRAT
+        //IL FAUT SUPPRIMER L'ANCIEN FICHIER DANS LE DISQUE DUR
+        $fichier = $request->file;
+        if( $fichier != null)
+        {
+            //VERFIFIER LE FORMAT 
+            $extension = pathinfo($fichier->getClientOriginalName(), PATHINFO_EXTENSION);
+
+            if($extension != "pdf")
+            {
+                return back()->with('error', '  LE FORMAT DE FICHIER DOIT ETRE PDF!!');
+                //redirect('contrat')->with('error', 'Modification effectuée');
+            }
+            //VERIFIER SI L'ENREGISTREMENT A UN CHEMIN D'ACCES ENREGISTRE
+            $get_path = Contrat::where('id', $request->id_contrat)->get();
+            foreach($get_path as $get_path)
+            {
+                if($get_path->path == null)
+                {
+                    //enregistrement de fichier dans la base
+                    $file_name = $fichier->getClientOriginalName();
+                    
+                            
+                    $path = $request->file('file')->storeAs(
+                        'fichiers/contrat', $file_name
+                    );
+
+                    $affected = DB::table('contrats')
+                    ->where('id', $request->id_contrat)
+                    ->update([
+                        'path'=> $path,
+                        
+                    ]);
+
+                    
+                }
+                else
+                {
+                    //SUPPRESSION DE L'ANCIEN FICHIER
+                    //dd($get_path->path);
+                    Storage::delete($get_path->path);
+
+
+                    $file_name = $fichier->getClientOriginalName();
+                    
+                            
+                    $path = $request->file('file')->storeAs(
+                        'fichiers', $file_name
+                    );
+
+                    $affected = DB::table('contrats')
+                    ->where('id', $request->id_contrat)
+                    ->update([
+                        'path'=> $path,
+                        
+                    ]);
+
+                    
+                }
+            }
+            
+        }
+        else
+        {
+        
+        }
+
+        //ENREGISTRER LA FACTURE PROFORMA
+        //IL FAUT SUPPRIMER L'ANCIEN FICHIER DANS LE DISQUE DUR
+        $fichier_proforma = $request->proforma_file;
+        if( $fichier_proforma != null)
+        {
+                
+                //VERFIFIER LE FORMAT 
+                $extension = pathinfo($fichier_proforma->getClientOriginalName(), PATHINFO_EXTENSION);
+
+                if($extension != "pdf")
+                {
+                    return back()->with('error', '  LE FORMAT DE FICHIER DOIT ETRE PDF!!');
+                }
+                //VERIFIER SI L'ENREGISTREMENT A UN CHEMIN D'ACCES ENREGISTRE
+                $get_path_prof = Contrat::where('id', $request->id_contrat)->get();
+                foreach($get_path_prof as $get_path_prof)
+                {
+                    if($get_path_prof->proforma_file == null)
+                    {
+                        //enregistrement de fichier dans la base
+                        $file_name_prof = $fichier_proforma->getClientOriginalName();
+                    
+                                
+                        $path = $request->file('file')->storeAs(
+                            'factures/proforma', $file_name_prof
+                        );
+    
+                        $affected = DB::table('contrats')
+                        ->where('id', $request->id_contrat)
+                        ->update([
+                            'proforma_file'=> $path,
+                            
+                        ]);
+    
+                        
+                    }
+                    else
+                    {
+
+                        //SUPPRESSION DE L'ANCIEN FICHIER
+                        //dd($get_path->path);
+                        $get_path_prof = Contrat::where('id', $request->id_contrat)->get();
+                        foreach($get_path_prof as $get_path_prof)
+                        {
+                            Storage::delete($get_path_prof->proforma_file);
+                        }
+
+    
+                        $file_name_prof = $fichier_proforma->getClientOriginalName();
+                        
+                                
+                        $path = $request->file('file')->storeAs(
+                            'factures/proforma', $file_name_prof
+                        );
+    
+                        $affected = DB::table('contrats')
+                        ->where('id', $request->id_contrat)
+                        ->update([
+                            'proforma_file'=> $path,
+                            
+                        ]);
+    
+                        
+                    }
+                }
+            
+        }
+        else
+        {
+        
+        }
+
+        //LE FICHIER DE BON DE COMMANDE
+        $fichier_commande = $request->bon_commande;  
+        if($fichier_commande != null)
+        {
+            //VERFIFIER LE FORMAT 
+            
+            //VERFIFIER LE FORMAT 
+            $extension = pathinfo($fichier_commande->getClientOriginalName(), PATHINFO_EXTENSION);
+            
+            if($extension != "pdf")
+            {
+                return back()->with('error', '  LE FORMAT DE FICHIER DOIT ETRE PDF!!');
+            }
+            //VERIFIER SI L'ENREGISTREMENT A UN CHEMIN D'ACCES ENREGISTRE
+            $get_bon_commande = Contrat::where('id', $request->id_contrat)->get();
+            foreach($get_bon_commande as $get_bon_commande)
+            {
+                if($get_bon_commande->bon_commande == null)
+                {
+                    //enregistrement de fichier dans la base
+                    $file_name = $fichier_commande->getClientOriginalName();
+                
+                            
+                    $path = $request->file('bon_commande')->storeAs(
+                        'fichiers/bon_commande', $file_name
+                    );
+
+                    $affected = DB::table('contrats')
+                    ->where('id', $request->id_contrat)
+                    ->update([
+                        'bon_commande'=> $path,
+                        
+                    ]);
+
+                    
+                }
+                else
+                {
+
+                    //SUPPRESSION DE L'ANCIEN FICHIER
+                    //dd($get_path->path);
+                    $get_path = Contrat::where('id', $request->id_contrat)->get();
+                    foreach($get_path as $get_path)
+                    {
+                        Storage::delete($get_path->bon_commande);
+                    }
+
+
+                    $file_name = $fichier_commande->getClientOriginalName();
+                
+                            
+                    $path = $request->file('bon_commande')->storeAs(
+                        'fichiers/bon_commande', $file_name
+                    );
+
+                    $affected = DB::table('contrats')
+                    ->where('id', $request->id_contrat)
+                    ->update([
+                        'bon_commande'=> $path,
+                        
+                    ]);
+
+                    
+                }
+            }
+            
+        }
+        else
+        {
+        
+        }
+
+        return back()->with('success', 'MODIFICATION EFFECTUEE');
+    }
+
     public function EditContratFiche(Request $request)
     {
         $jours = $request->jours;
@@ -2642,8 +2877,9 @@ class ContratController extends Controller
     }
 
     public function DownloadContrat(Request $request)
-    {
-        //dd($request->file);
+    {   
+        //return response()->file(Storage::path($request->file));
+        //return response()->download(str_replace("/", "\"", storage_path($request->file)));
         if(Storage::disk('local')->exists($request->file))
         {
             return response()->file(Storage::path($request->file));
@@ -2681,5 +2917,14 @@ class ContratController extends Controller
             return redirect('contrat')->with('error', 'Le fichier n\'existe pas');
         }
 
+    }
+
+    public function getAllNoReglee()
+    {
+        $get = DB::table('contrats')
+          ->where('contrats.statut_solde', '=', 0)
+          ->get();
+        
+           return $get;
     }
 }
