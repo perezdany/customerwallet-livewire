@@ -34,6 +34,8 @@
     $categoriecontroller = new CategorieController();
     $servicecontroller = new ServiceController();
     $propalcontroller = new PropalController();
+
+   
   
 @endphp
 
@@ -85,35 +87,6 @@
             $count_prospection = $prospections->count();
             
         @endphp
-
-        
-        <div class="row">
-            @if(session('success'))
-                <div class="col-md-12 box-header">
-                <p class="bg-success" style="font-size:13px;">{{session('success')}}</p>
-                </div>
-            @endif
-
-             @if(session('error'))
-                <div class="col-md-12 box-header">
-                <p class="bg-danger" style="font-size:13px;">{{session('error')}}</p>
-                </div>
-            @endif
-
-            @if(isset($error))
-                <div class="col-md-12 box-header">
-                <p class="bg-danger" style="font-size:13px;">{{$error}}</p>
-                </div>
-            @endif
-
-             @if(isset($success))
-                <div class="col-md-12 box-header">
-                <p class="bg-success" style="font-size:13px;">{{$success}}</p>
-                </div>
-            @endif
-           
-        </div>
-  
 
         <div class="row">
           

@@ -9,7 +9,7 @@
     //LES DIFFERENTES REQUETES EN FONCTION DU DEPARTEMENT
     $my_own = $prospectioncontroller->MyOwnprospection(auth()->user()->id);
 
-    $all = $prospectioncontroller-> GetAll();
+    $all = $prospectioncontroller->GetAll();
 @endphp
 
 @section('content')
@@ -21,17 +21,7 @@
                 
                 </div>
         @endif
-        @if(session('success'))
-            <div class="col-md-12 box-header">
-                <p class="bg-green" style="font-size:13px;">{{session('success')}}</p>
-            </div>
-        @endif
-
-        @if(session('error'))
-        <div class="col-md-12 box-header">
-            <p class="bg-warning" style="font-size:13px;">{{session('error')}}</p>
-        </div>
-        @endif
+      
     </div>
     
     <div class="row">
@@ -109,7 +99,7 @@
                                    
                                     <td>
                                         
-                                        <form action="download_facture_proforma" method="post" enctype="multipart/form-data">
+                                        <form action="download_facture_proforma" method="post" enctype="multipart/form-data" target="blank">
                                             @csrf
                                             <label>Télécharger</label>
                                             <input type="text" value={{$all->id}} style="display:none;" name="id_prospection">
@@ -124,7 +114,7 @@
                                         @else
                                             <td>
 
-                                                <form action="download_prospect" method="post" enctype="multipart/form-data">
+                                                <form action="download_prospect" method="post" enctype="multipart/form-data" target="blank">
                                                     @csrf
                                                     <label>Télécharger</label>
                                                     <input type="text" value={{$all->id}} style="display:none;" name="id_prospection">

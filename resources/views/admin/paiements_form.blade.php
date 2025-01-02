@@ -112,8 +112,8 @@
                         <div class="box-body">
 
                             <div class="form-group">
-                                <label>PRESTATION DU :</label>
-                                <p><h3>@php echo date('d/m/Y',strtotime($retrive->date_prestation)) @endphp</h3></p>
+                                <label>CONTRAT DU :</label>
+                                <p><h3>@php echo date('d/m/Y',strtotime($retrive->debut_contrat)) @endphp</h3></p>
                             </div>
                             <!--<div class="form-group">
                                 <label>SERVICE :</label>
@@ -244,7 +244,7 @@
 
                                 <div class="form-group">
                                     <label>PRESTATION DU :</label>
-                                    <p><h3>@php echo date('d/m/Y',strtotime($retrive->date_prestation)) @endphp</h3></p>
+                                    <p><h3>@php echo date('d/m/Y',strtotime($retrive->debut_contrat)) @endphp</h3></p>
                                 </div>
                                 <div class="form-group">
                                     <label>SERVICE :</label>

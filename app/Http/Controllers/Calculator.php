@@ -415,10 +415,10 @@ class Calculator extends Controller
         $last_date = $year."-".$month."-".$number;
 
         $compte_prestations =  DB::table('prestation_services')
-        ->join('prestations', 'prestation_services.prestation_id', '=', 'prestations.id')
+        ->join('contrats', 'prestation_services.contrat_id', '=', 'contrats.id')
         ->join('services', 'prestation_services.service_id', '=', 'services.id') 
-        ->where('prestations.date_prestation', '>=', $first_date)
-        ->where('prestations.date_prestation', '<=', $last_date)
+        ->where('contrats.debut_contrat', '>=', $first_date)
+        ->where('contrats.debut_contrat', '<=', $last_date)
         ->count();
          
         //PARCOURIR TOUS LES SERVICES
@@ -430,10 +430,10 @@ class Calculator extends Controller
             $compte_prestations_service  = 0;
            
            $compte_prestations_service = DB::table('prestation_services')
-           ->join('prestations', 'prestation_services.prestation_id', '=', 'prestations.id')
+           ->join('contrats', 'prestation_services.contrat_id', '=', 'contrats.id')
            ->join('services', 'prestation_services.service_id', '=', 'services.id') 
-           ->where('prestations.date_prestation', '>=', $first_date)
-           ->where('prestations.date_prestation', '<=', $last_date)
+           ->where('contrats.debut_contrat', '>=', $first_date)
+           ->where('contrats.debut_contrat', '<=', $last_date)
            ->where('prestation_services.service_id', '=', $all_services->id)
            ->count();
 
@@ -619,10 +619,10 @@ class Calculator extends Controller
         //dd($last_date);
 
         $compte_prestations =   DB::table('prestation_services')
-        ->join('prestations', 'prestation_services.prestation_id', '=', 'prestations.id')
+        ->join('contrats', 'prestation_services.contrat_id', '=', 'contrats.id')
         ->join('services', 'prestation_services.service_id', '=', 'services.id') 
-        ->where('prestations.date_prestation', '>=', $first_date)
-        ->where('prestations.date_prestation', '<=', $last_date)
+        ->where('contrats.debut_contrat', '>=', $first_date)
+        ->where('contrats.debut_contrat', '<=', $last_date)
         ->count();
 
         //dd($compte_prestations);
@@ -636,10 +636,10 @@ class Calculator extends Controller
             $compte_prestations_service  = 0;
            
            $compte_prestations_service =   DB::table('prestation_services')
-           ->join('prestations', 'prestation_services.prestation_id', '=', 'prestations.id')
+           ->join('contrats', 'prestation_services.contrat_id', '=', 'contrats.id')
            ->join('services', 'prestation_services.service_id', '=', 'services.id') 
-           ->where('prestations.date_prestation', '>=', $first_date)
-           ->where('prestations.date_prestation', '<=', $last_date)
+           ->where('contrats.debut_contrat', '>=', $first_date)
+           ->where('contrats.debut_contrat', '<=', $last_date)
            ->where('prestation_services.service_id', '=', $all_services->id)
            ->count();
 
@@ -852,9 +852,9 @@ class Calculator extends Controller
         ->where('prestation_id', $all->id)    
         ->get(['services.libele_service', 'prestation_service.*']);*/
 
-        $compte_prestations =  DB::table('prestations')
-        ->where('prestations.date_prestation', '>=', $first_date)
-        ->where('prestations.date_prestation', '<=', $last_date)
+        $compte_prestations =  DB::table('contrats')
+        ->where('contrats.debut_contrat', '>=', $first_date)
+        ->where('contrats.debut_contrat', '<=', $last_date)
         ->count();
          
         //PARCOURIR TOUS LES SERVICES
@@ -866,10 +866,10 @@ class Calculator extends Controller
             $compte_prestations_service  = 0;
            
            $compte_prestations_service =  DB::table('prestation_services')
-           ->join('prestations', 'prestation_services.prestation_id', '=', 'prestations.id')
+           ->join('contrats', 'prestation_services.contrat_id', '=', 'contrats.id')
            ->join('services', 'prestation_services.service_id', '=', 'services.id') 
-           ->where('prestations.date_prestation', '>=', $first_date)
-           ->where('prestations.date_prestation', '<=', $last_date)
+           ->where('contrats.debut_contrat', '>=', $first_date)
+           ->where('contrats.debut_contrat', '<=', $last_date)
            
            ->where('prestation_services.service_id', '=', $all_services->id)
            ->count();
@@ -1075,10 +1075,10 @@ class Calculator extends Controller
         $last_date = $year."-12-31";
 
         $compte_prestations =  DB::table('prestation_services')
-        ->join('prestations', 'prestation_services.prestation_id', '=', 'prestations.id')
+        ->join('contrats', 'prestation_services.contrat_id', '=', 'contrats.id')
         ->join('services', 'prestation_services.service_id', '=', 'services.id') 
-        ->where('prestations.date_prestation', '>=', $first_date)
-        ->where('prestations.date_prestation', '<=', $last_date)
+        ->where('contrats.debut_contrat', '>=', $first_date)
+        ->where('contrats.debut_contrat', '<=', $last_date)
         ->count();
          
         //PARCOURIR TOUS LES SERVICES
@@ -1090,10 +1090,10 @@ class Calculator extends Controller
             $compte_prestations_service  = 0;
            
            $compte_prestations_service =   DB::table('prestation_services')
-           ->join('prestations', 'prestation_services.prestation_id', '=', 'prestations.id')
+           ->join('contrats', 'prestation_services.contrat_id', '=', 'contrats.id')
            ->join('services', 'prestation_services.service_id', '=', 'services.id') 
-           ->where('prestations.date_prestation', '>=', $first_date)
-           ->where('prestations.date_prestation', '<=', $last_date)
+           ->where('contrats.debut_contrat', '>=', $first_date)
+           ->where('contrats.debut_contrat', '<=', $last_date)
            ->where('prestation_services.service_id', '=', $all_services->id)
            ->count();
 

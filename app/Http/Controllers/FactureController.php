@@ -212,7 +212,7 @@ class FactureController extends Controller
              'montant_facture' => $request->montant_facture, 
              'id_contrat' => $request->id_contrat,
               'reglee' => 0,
-              'annulee' => 0,
+            
               'created_by' => auth()->user()->id,
        ]);
 

@@ -18,17 +18,7 @@ $all =  $interlocuteurcontroller-> GetAll();
 @section('content')
     <div class="row">
       
-         @if(session('success'))
-            <div class="col-md-12 box-header">
-              <p class="bg-green" style="font-size:13px;">{{session('success')}}</p>
-            </div>
-          @endif
-
-           @if(session('error'))
-            <div class="col-md-12 box-header">
-              <p class="bg-warning" style="font-size:13px;">{{session('error')}}</p>
-            </div>
-          @endif
+        
           
                 <div class="col-md-12">
                 <!--AJOUT AVEC POPUP-->
@@ -87,21 +77,21 @@ $all =  $interlocuteurcontroller-> GetAll();
                                                 </div>    
                                                 <div class="col-xs-3">
                                                     <select class="form-control" name="fonction" style="display:none;">
-                                                    @if($id_entreprise == "all")
+                                                    @if($fonction == "all")
 
                                                     <option value="all">Fonctions</option>
                                                     @else
-                            
-                                                    @php
-                                                        $le_nom= DB::table('professions')->where('intitule', $fonction)->get();
+                                
+                                                        @php
+                                                            $le_nom= DB::table('professions')->where('intitule', $fonction)->get();
+                                                            
+                                                        @endphp
                                                         
-                                                    @endphp
-                                                    
-                                                    @foreach($le_nom as $le_nom)
-
-                                                        <option value={{$le_nom->id}}>{{$le_nom->nom_entreprise}}</option>
-                                                        
-                                                    @endforeach
+                                                        @foreach($le_nom as $le_nom)
+    
+                                                            <option value="{{$le_nom->id}}">{{$le_nom->intitule}}</option>
+                                                            
+                                                        @endforeach
                                                     @endif
                                                     
                                                         <option value="all">Fonctions</option>
@@ -110,7 +100,7 @@ $all =  $interlocuteurcontroller-> GetAll();
                                                         @endphp
                                                     
                                                         @foreach($get as $f)
-                                                            <option value={{$f->intitule}}>{{$f->intitule}}</option>
+                                                            <option value="{{$f->intitule}}">{{$f->intitule}}</option>
                                                             
                                                         @endforeach
                                                     
@@ -140,7 +130,7 @@ $all =  $interlocuteurcontroller-> GetAll();
                                                         @endphp
                                                     
                                                         @foreach($get as $f)
-                                                            <option value={{$f->intitule}}>{{$f->intitule}}</option>
+                                                            <option value="{{$f->intitule}}">{{$f->intitule}}</option>
                                                             
                                                         @endforeach
                                                         
@@ -272,7 +262,7 @@ $all =  $interlocuteurcontroller-> GetAll();
 
                             <div class="col-xs-3">
                                   <select class="form-control select2" name="fonction">
-                                @if($id_entreprise == "all")
+                                @if($fonction == "all")
 
                                   <option value="all">Fonctions</option>
                                 @else
@@ -284,7 +274,7 @@ $all =  $interlocuteurcontroller-> GetAll();
                                   
                                   @foreach($le_nom as $le_nom)
 
-                                    <option value={{$le_nom->id}}>{{$le_nom->nom_entreprise}}</option>
+                                    <option value="{{$le_nom->id}}">{{$le_nom->intitule}}</option>
                                      
                                   @endforeach
                                 @endif
@@ -295,7 +285,7 @@ $all =  $interlocuteurcontroller-> GetAll();
                                     @endphp
                                 
                                     @foreach($get as $f)
-                                        <option value={{$f->intitule}}>{{$f->intitule}}</option>
+                                        <option value="{{$f->intitule}}">{{$f->intitule}}</option>
                                         
                                     @endforeach
                                 
@@ -755,7 +745,7 @@ $all =  $interlocuteurcontroller-> GetAll();
                                     @endphp
                                 
                                     @foreach($get as $f)
-                                        <option value={{$f->intitule}}>{{$f->intitule}}</option>
+                                        <option value="{{$f->intitule}}">{{$f->intitule}}</option>
                                         
                                     @endforeach
                                     

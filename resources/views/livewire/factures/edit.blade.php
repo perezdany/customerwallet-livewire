@@ -29,7 +29,7 @@
                         </div>
                             
                         <div class="form-group">
-                            <label>Prestation/Contrat:</label>
+                            <label>Contrat:</label>
                             <select class="form-control" wire:model="editFacture.id_contrat" required>
                                     @php
                                         $contrats = $prestationcontroller->getAllNoReglee();
@@ -56,7 +56,7 @@
                                     @endphp
                                     
                                     <option value="0">NON</option>
-                                    <option value="1">OUI</option>
+                                    <option value="2">OUI</option>
                                     
                             </select>
                         </div>

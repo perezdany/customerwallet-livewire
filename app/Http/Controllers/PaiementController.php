@@ -48,7 +48,7 @@ class PaiementController extends Controller
         $get_montants = DB::table('paiements')
         ->where('paiements.id_facture', $request->id_facture)
         ->join('factures', 'paiements.id_facture', '=', 'factures.id')
-        ->join('contrats', 'contrats.id_contrat', '=', 'contrats.id')
+        ->join('contrats', 'factures.id_contrat', '=', 'contrats.id')
         
         ->get(['paiements.paiement']);
 
@@ -247,13 +247,13 @@ class PaiementController extends Controller
     {
         $get = DB::table('paiements')
             ->join('factures', 'paiements.id_facture', '=', 'factures.id')
-            ->join('contrats', 'contrats.id_contrat', '=', 'contrats.id')
+            ->join('contrats', 'factures.id_contrat', '=', 'contrats.id')
             ->join('typeprestations', 'contrats.id_type_prestation', '=', 'typeprestations.id') 
             ->where('paiements.id', $id)
             ->get(['paiements.*', 'contrats.montant', 'factures.id_contrat', 
-                'factures.numero_facture', 'factures.id_prestation',
+                'factures.numero_facture', 'contrats.debut_contrat',
               'typeprestations.libele', 'contrats.reste_a_payer', 'contrats.date_solde']);
-
+        //dd($get);
         return $get;
     }
 }

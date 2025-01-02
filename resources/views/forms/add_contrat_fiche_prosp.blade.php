@@ -117,11 +117,6 @@
                         </div>
 
                         <div class="form-group">
-                          <label>Date de solde</label>
-                          <input type="date" class="form-control  " required name="date_solde">
-                        </div>
-
-                        <div class="form-group">
                           <label>Durée du contrat</label>
                           <!--FAIRE DES CALCULS POUR DETERMINER LA FIN DU CONTRAT-->
                             <div class="row">
@@ -185,7 +180,7 @@
                         </div>
                   
                         <div class="form-group">
-                            <label>Type de prestation (*)</label>
+                            <label>Type de facturation (*)</label>
                             <select class="form-control " name="type" required>
                                 <!--liste des services a choisir -->
                                 @php
@@ -198,17 +193,6 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">Date d'exécution(*)</label>
-                            <input type="date" class="form-control  " required name="date_execute">
-                        </div>
-                  
-                        <div class="form-group">
-                            <label>Adresse </label>
-                            <input type="text" required maxlength="100" class="form-control " 
-                            name="localisation" placeholder="Ex: Cocody Angré Cocovico" onkeyup="this.value=this.value.toUpperCase()">
-                        </div>
-
 
                       </div>
 

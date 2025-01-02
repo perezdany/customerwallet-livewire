@@ -229,11 +229,11 @@ class Factures extends Component
             $factureQuery->where("reglee",  $this->etat);
         }
 
-        if($this->annulee != "")
+        /*if($this->annulee != "")
         {
             //sdd($this->search);
             $factureQuery->where("annulee",  $this->annulee);
-        }
+        }*/
 
         if($this->id_contrat != "")
         {

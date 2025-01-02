@@ -18,7 +18,7 @@ class InterlocuteurController extends Controller
           ->join('utilisateurs', 'interlocuteurs.created_by', '=', 'utilisateurs.id')
           ->join('entreprises', 'interlocuteurs.id_entreprise', '=', 'entreprises.id')
           ->orderBy('updated_at', 'desc')
-          ->limit(5)
+         
           ->get(['entreprises.nom_entreprise', 'utilisateurs.nom_prenoms', 'interlocuteurs.*', ]);
      
           return $get;

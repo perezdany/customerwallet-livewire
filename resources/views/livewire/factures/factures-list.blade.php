@@ -30,11 +30,11 @@
                             <th>Montant</th>
                             <th>Afficher les paiements</th>
                             <th>Fichier</th>
-                            @if(auth()->user()->id_role == 3)
+                             @if(auth()->user()->id_role == 3)
                             @else
                             
-                                <th>Modifier/Paiement</th>
-                                <th>Supprimer</th>
+                                <th>Paiements</th>
+                              
                             @endif
                         </tr>
                         </thead>
@@ -105,20 +105,10 @@
                                                     
                                                     @endif
 
-                                                    <button type="button" class="btn btn-primary" wire:click="EditFacture('{{$facture->id}}')">
-                                                    <i class="fa fa-edit"></i>
-                                                    </button>
+                                                    
                                                     
                                                 </td>
 
-                                                <td class="bg-red">
-                                                    <!--SUPPRESSION AVEC POPUP-->
-                                                    <!--<button type="button" class="btn btn-danger" data-toggle="modal" data-target="@php echo "#".$facture->id.""; @endphp">
-                                                    <i class="fa fa-trash"></i>
-                                                    </button>-->
-                                                
-                                
-                                                </td>
                                             @endif
                                         
                                         </tr>
@@ -169,24 +159,11 @@
                                                         @else
                                                         
                                                         @endif
-                                                        <div class="popup" id="popup">
-                                                            
-                                                            <div class="popup-contenu"><b>Cliquez et le formulaire s'affiche en dessous</b><br/>
-                                                                <a href="#" id="popup-fermeture" onclick="togglePopup();">Fermer</a>
-                                                            </div>
-                                                        </div>
-                                                        <button type="button" class="btn btn-primary" wire:click="EditFacture('{{$facture->id}}')">
-                                                        <i class="fa fa-edit"></i>
-                                                        </button>
+                                                      
                                                     
                                                     </td>
 
-                                                    <td class="bg-warning">
-
-                                                        <!--<button type="button" class="btn btn-danger" data-toggle="modal" data-target="@php echo "#".$facture->id.""; @endphp">
-                                                        <i class="fa fa-trash"></i>
-                                                        </button>-->
-                                                    </td>
+                                                   
                                                 @endif
                                             
                                             </tr>
@@ -236,25 +213,11 @@
                                                         @else
                                                         
                                                         @endif
-                                                        <div class="popup" id="popup">
-                                                            
-                                                            <div class="popup-contenu"><b>Cliquez et le formulaire s'affiche en dessous</b><br/>
-                                                                <a href="#" id="popup-fermeture" onclick="togglePopup();">Fermer</a>
-                                                            </div>
-                                                        </div>
-                                                        <button type="button" class="btn btn-primary" wire:click="EditFacture('{{$facture->id}}')">
-                                                        <i class="fa fa-edit"></i>
-                                                        </button>
+                                                       
                                                         
                                                     </td>
 
-                                                    <td class="bg-warning">
-                                                        <!--<button type="button" class="btn btn-danger" data-toggle="modal" data-target="@php echo "#".$facture->id.""; @endphp">
-                                                        <i class="fa fa-trash"></i>
-                                                        </button>-->
-                                                    
-
-                                                    </td>
+                                                 
                                                 @endif
                                             
                                             </tr>
@@ -308,24 +271,10 @@
                                                 @else
                                                 
                                                 @endif
-                                                <div class="popup" id="popup">
-                                                    
-                                                    <div class="popup-contenu"><b>Cliquez et le formulaire s'affiche en dessous</b><br/>
-                                                        <a href="#" id="popup-fermeture" onclick="togglePopup();">Fermer</a>
-                                                    </div>
-                                                </div>
-                                            
-                                                <button type="button" class="btn btn-primary" wire:click="EditFacture('{{$facture->id}}')">
-                                                <i class="fa fa-edit"></i>
-                                                </button>
+                                               
                                             </td>
 
-                                            <td >
-                                                <!--<button type="button" class="btn btn-danger" data-toggle="modal" data-target="@php echo "#".$facture->id.""; @endphp">
-                                                <i class="fa fa-trash"></i>
-                                                </button>-->
-                                            
-                                            </td>
+                                           
                                         @endif
                                     
                                     </tr>
@@ -333,7 +282,7 @@
                                 
                             @empty
 
-                                <tr colspan="9">
+                                <tr colspan="7">
                                     <div class="alert alert-info alert-dismissible">
                                         
                                         <h4><i class="icon fa fa-ban"></i> Oups!</h4>
@@ -368,7 +317,7 @@
             
             <div class="box">
                 <div class="box-header">
-                    <h3 class="box-title">Listes des factures/<a href="cfactures">Liste des facutres par clients</a></h3>
+                    <h3 class="box-title">Listes des factures<!--<a href="cfactures" style="color:blue">Liste des facutres par clients</a>--></h3>
                     <br><br>
                     <a href="facture" style="color:blue"><u>Rétablir<i class="fa fa-refresh" aria-hidden="true"></i></u></a>&emsp;&emsp;&emsp;&emsp;<label>Filtrer par:</label>
                 
@@ -381,6 +330,7 @@
                                 <option value="">Etat</option>
                                 <option value="1">Réglé</option>
                                 <option value="0">non-reglé</option>
+                                 <option value="2">Annulé</option>
                             </select>
                                                         
                         </div>
@@ -394,22 +344,13 @@
                                 @endphp
                                 
                                 @foreach($contrats as $contrats)
-                                    <option value="{{$contrats->id}}">{{$contrats->titre_contrat}}</option>
+                                    <option value="{{$contrats->id}}">{{$contrats->titre_contrat}}({{$contrats->nom_entreprise}})</option>
                                 @endforeach
                             </select>
                                                         
                         </div>
 
-                        <div class="col-xs-3">
-                    
-                            <select class="form-control" wire:model.change="annulee" id="annulee">
-                                
-                                <option value="">Annulée?</option>
-                                <option value="1">OUI</option>
-                                <option value="0">NON</option>
-                            </select>
-                                                        
-                        </div>
+                       
 
                     </div>
 
