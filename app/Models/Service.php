@@ -18,6 +18,10 @@ class Service extends Model
         'updated_at',
     ];
 
-
+    public function contrats()
+    {
+        //return $this->belongsTomany('App\Models\Service');
+        return $this->belongsToMany(Contrat::class);
+    }
    
 }

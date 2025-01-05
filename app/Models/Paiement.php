@@ -14,4 +14,11 @@ class Paiement extends Model
     protected $fillable = [
         'paiement', 'id_facture', 'date_paiement', 'updated_at', 'created_by'
     ];
+
+    public function factures()
+    {
+        return $this->belongsTo(Facture::class, 'id_facture', 'id');
+    }
+
+    
 }

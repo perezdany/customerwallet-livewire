@@ -20,88 +20,58 @@
           <ul class="treeview-menu">
             <li><a href="welcome"><i class="fa fa-circle-o"></i>Accueil</a></li>
 
-            @if(auth()->user()->id_role == 1 OR auth()->user()->id_role == 3)
-              <li><a href="entreprises"><i class="fa fa-circle-o"></i> Entreprises</a></li> 
-              <li><a href="interlocuteurs"><i class="fa fa-circle-o"></i>Interlocuteurs</a></li>
-              <li class="active"><a href="prospection"><i class="fa fa-circle-o"></i>Prospections</a></li>
-              <li><a href="contrat"><i class="fa fa-circle-o"></i>Contrats</a></li>
-              <li class="active"><a href="facture"><i class="fa fa-circle-o"></i>Factures</a></li>
-              <li class="active"><a href="fiche"><i class="fa fa-circle-o"></i>Fiche clients</a></li>
-              
-            @endif
-
-            @if(auth()->user()->id_role == 4 )
+           
+            @can("admin")
              <li><a href="entreprises"><i class="fa fa-circle-o"></i> Entreprises</a></li> 
               <li><a href="interlocuteurs"><i class="fa fa-circle-o"></i>Interlocuteurs</a></li>
+              <li><a href="contrat"><i class="fa fa-circle-o"></i>Contrats</a></li>
+              <li class="active"><a href="facture"><i class="fa fa-circle-o"></i>Factures</a></li>
               <li class="active"><a href="prospection"><i class="fa fa-circle-o"></i>Prospections</a></li>
+              <li class="active"><a href="fiche"><i class="fa fa-circle-o"></i>Fiche clients</a></li>
+            @endcan
+            @can("manager")
+             <li><a href="entreprises"><i class="fa fa-circle-o"></i> Entreprises</a></li> 
+              <li><a href="interlocuteurs"><i class="fa fa-circle-o"></i>Interlocuteurs</a></li>
               <li><a href="contrat"><i class="fa fa-circle-o"></i>Contrats</a></li>
               <li class="active"><a href="facture"><i class="fa fa-circle-o"></i>Factures</a></li>
               <li class="active"><a href="fiche"><i class="fa fa-circle-o"></i>Fiche clients</a></li>
-            @endif
+               <li class="active"><a href="prospection"><i class="fa fa-circle-o"></i>Prospections</a></li>
+            @endcan
 
-            @if(auth()->user()->id_role == null)
+             @can("commercial")
+             <li><a href="entreprises"><i class="fa fa-circle-o"></i> Entreprises</a></li> 
+              <li><a href="interlocuteurs"><i class="fa fa-circle-o"></i>Interlocuteurs</a></li>
+              <li class="active"><a href="fiche"><i class="fa fa-circle-o"></i>Fiche clients</a></li>
+               <li class="active"><a href="prospection"><i class="fa fa-circle-o"></i>Prospections</a></li>
+            @endcan
 
-              <li class="active"><a href="prospection"><i class="fa fa-circle-o"></i>Prospections</a></li>
+             @can("comptable")
+              <li><a href="entreprises"><i class="fa fa-circle-o"></i> Entreprises</a></li> 
+              <li><a href="interlocuteurs"><i class="fa fa-circle-o"></i>Interlocuteurs</a></li>
+              <li><a href="contrat"><i class="fa fa-circle-o"></i>Contrats</a></li>
+              <li class="active"><a href="facture"><i class="fa fa-circle-o"></i>Factures</a></li>
+             
+            @endcan
+            @can("employe")
+             <li><a href="entreprises"><i class="fa fa-circle-o"></i> Entreprises</a></li> 
+              <li><a href="interlocuteurs"><i class="fa fa-circle-o"></i>Interlocuteurs</a></li>
+              <li class="active"><a href="fiche"><i class="fa fa-circle-o"></i>Fiche clients</a></li>
+            @endcan
+
+            @can("standard")
+              <li><a href="entreprises"><i class="fa fa-circle-o"></i> Entreprises</a></li> 
+              <li><a href="interlocuteurs"><i class="fa fa-circle-o"></i>Interlocuteurs</a></li>
               <li class="active"><a href="fiche"><i class="fa fa-circle-o"></i>Fiche clients</a></li>
 
-            @endif
+            @endcan
 
-            @if(auth()->user()->id_role == 5)
-            
-                @if(auth()->user()->id_departement == 1)
-                  <li><a href="entreprises"><i class="fa fa-circle-o"></i>Entreprises</a></li>
-                   <li><a href="interlocuteurs"><i class="fa fa-circle-o"></i>Interlocuteurs</a></li>
-                   <li class="active"><a href="prospection"><i class="fa fa-circle-o"></i>Prospections</a></li>
-                  <li class="active"><a href="fiche"><i class="fa fa-circle-o"></i>Fiche clients</a></li>
-                  <li ><a href="prestation"><i class="fa fa-circle-o"></i>Prestations</a></li>
-                   
-                @endif
-
-                @if(auth()->user()->id_departement == 4)
-                 <li><a href="entreprises"><i class="fa fa-circle-o"></i>Entreprises</a></li>
-                 <li><a href="interlocuteurs"><i class="fa fa-circle-o"></i>Interlocuteurs</a></li>
-                  <li class="active"><a href="fiche"><i class="fa fa-circle-o"></i>Fiche clients</a></li>
-                 
-                   
-                @endif
-
-                @if(auth()->user()->id_departement == 5)
-                  <li><a href="entreprises"><i class="fa fa-circle-o"></i>Entreprises</a></li>
-                  <li><a href="interlocuteurs"><i class="fa fa-circle-o"></i>Interlocuteurs</a></li>
-                    <li><a href="contrat"><i class="fa fa-circle-o"></i>Contrats</a></li>
-                    <li class="active"><a href="facture"><i class="fa fa-circle-o"></i>Factures</a></li>
-                    <li class="active"><a href="fiche"><i class="fa fa-circle-o"></i>Fiche clients</a></li>
-                  
-                @endif
-
-                @if(auth()->user()->id_departement > 5)
-                    <li><a href="entreprises"><i class="fa fa-circle-o"></i>Entreprises</a></li>
-                     <li><a href="interlocuteurs"><i class="fa fa-circle-o"></i>Interlocuteurs</a></li>
-                   
-                    <li class="active"><a href="prospection"><i class="fa fa-circle-o"></i>Prospections</a></li>
-                   
-                  
-                @endif
-            @endif
-
-             @if(auth()->user()->id_role == 2)
-                
-                @if(auth()->user()->id_departement == 5)
-                    <li><a href="entreprises"><i class="fa fa-circle-o"></i>Entreprises</a></li>
-                     <li><a href="interlocuteurs"><i class="fa fa-circle-o"></i>Interlocuteurs</a></li>
-                    <li><a href="contrat"><i class="fa fa-circle-o"></i>Contrats</a></li>
-                    <li class="active"><a href="facture"><i class="fa fa-circle-o"></i>Factures</a></li>
-                   
-                @endif
-            @endif
-
+           
             
            
           </ul>
         </li>
 
-        @if(auth()->user()->id_role == 4)
-
+        @can("admin")
           <li class="treeview">
             <a href="#" style="background-color: #FFFFFF">
               <i class="fa fa-files-o"></i>
@@ -138,26 +108,43 @@
               
             </ul>
           </li>
-        @else
-            @if(auth()->user()->id_role == 1 OR auth()->user()->id_role == 3 OR auth()->user()->id_role == 2)
-              <li class="treeview">
-                <a href="#" style="background-color: #FFFFFF">
-                  <i class="fa fa-pie-chart"></i>
-                  <span>Graphs</span>
-                  <span class="pull-right-container">
-                    <i class="fa fa-angle-left pull-right"></i>
-                  </span>
-                </a>
-                <ul class="treeview-menu">
-                  <li><a href="monthly"><i class="fa fa-circle-o"></i> Chiffre d'affaire mensuel</a></li>
-                  <li><a href="yearly"><i class="fa fa-circle-o"></i> Chiffre d'affaire annuel</a></li>
-                  
-                </ul>
-              </li>
-            @endif
-        @endif
+        @endcan
+        @can("manager")
+          <li class="treeview">
+              <a href="#" style="background-color: #FFFFFF">
+                <i class="fa fa-pie-chart"></i>
+                <span>Graphs</span>
+                <span class="pull-right-container">
+                  <i class="fa fa-angle-left pull-right"></i>
+                </span>
+              </a>
+              <ul class="treeview-menu">
+                <li><a href="monthly"><i class="fa fa-circle-o"></i> Chiffre d'affaire mensuel</a></li>
+                <li><a href="yearly"><i class="fa fa-circle-o"></i> Chiffre d'affaire annuel</a></li>
+                
+              </ul>
+          </li>
+        @endcan
+
+        @can("comptable")
+          <li class="treeview">
+              <a href="#" style="background-color: #FFFFFF">
+                <i class="fa fa-pie-chart"></i>
+                <span>Graphs</span>
+                <span class="pull-right-container">
+                  <i class="fa fa-angle-left pull-right"></i>
+                </span>
+              </a>
+              <ul class="treeview-menu">
+                <li><a href="monthly"><i class="fa fa-circle-o"></i> Chiffre d'affaire mensuel</a></li>
+                <li><a href="yearly"><i class="fa fa-circle-o"></i> Chiffre d'affaire annuel</a></li>
+                
+              </ul>
+          </li>
+        @endcan
+      
         
-         <li class="">
+          <li class="">
             <a href="#" style="background-color: #FFFFFF">
               
               

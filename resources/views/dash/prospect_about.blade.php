@@ -43,21 +43,40 @@
         <div class="col-md-8">
              
              
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <a href="prospects"><button class="btn btn-default"> <b>RETOUR</b></button></a>
             </div>
             
-            @if(auth()->user()->id_role != NULL )
-                <div class="col-md-3">
-                    <a href="prospection"><button class="btn btn-warning"> <b>PROSPECTIONS</b></button></a>
-                </div>
-                <div class="col-md-3">
+            @can("manager-commercial")
+                <div class="col-md-4">
                     <a href="form_add_prospection"><button class="btn btn-primary"> <b><i class="fa fa-plus"></i>PROSPECTION</b></button></a>
                 </div>
-            @endif
+               
+            @endcan
+
+             @can("commercial")
+                <div class="col-md-4">
+                    <a href="form_add_prospection"><button class="btn btn-primary"> <b><i class="fa fa-plus"></i>PROSPECTION</b></button></a>
+                </div>
+               
+            @endcan
+
+            @can("manager")
+                <div class="col-md-4">
+                    <a href="form_add_prospection"><button class="btn btn-primary"> <b><i class="fa fa-plus"></i>PROSPECTION</b></button></a>
+                </div>
+            
+            @endcan
+
+            @can("admin")
+                <div class="col-md-4">
+                    <a href="form_add_prospection"><button class="btn btn-primary"> <b><i class="fa fa-plus"></i>PROSPECTION</b></button></a>
+                </div>
+               
+            @endcan
             
 
-             <div class="col-md-3"><a href="form_add_prospection">
+             <div class="col-md-4"><a href="form_add_prospection">
                 @if(isset($id_entreprise))
 
                   <form method="post" action="go_print_rapport" target="blank"> 

@@ -15,4 +15,9 @@ class Facture extends Model
          'numero_facture', 'date_reglement', 'date_emission', 
          'montant_facture', 'id_contrat', 'reglee', 'created_by', 'file_path',
     ];
+
+    public function paiements()
+    {
+        return $this->hasMany(Paiement::class);
+    }
 }

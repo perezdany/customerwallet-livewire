@@ -788,130 +788,9 @@ $all =  $interlocuteurcontroller-> GetAll();
                                     <td>{{$all->nom_entreprise}}</td>
                                     <td>{{$all->nom_prenoms}}</td>
                                     <td>
-                                        @if(auth()->user()->id_departement == 1)
-                                            <form action="edit_interlocuteur_form" method="post">
-                                                @csrf
-                                                <input type="text" value={{$all->id}} style="display:none;" name="id_interlocuteur">
-                                                <button type="submit" class="btn btn-primary"><i class ="fa fa-edit"></i></button>
-                                            </form>
-                                            @if(auth()->user()->id_role == 5)
-                                                
-                                               <!--SUPPRESSION AVEC POPUP-->
-                                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="@php echo "#".$all->id.""; @endphp">
-                                                    <i class="fa fa-trash"></i>
-                                                    </button>
-                                                <div class="modal modal-danger fade" id="@php echo "".$all->id.""; @endphp">
-                                                    <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span></button>
-                                                        <h4 class="modal-title">Supprimer </h4>
-                                                        </div>
-                                                        <form action="delete_interlocuteur" method="post">
-                                                        <div class="modal-body">
-                                                            <p>Voulez-vous supprimer {{$all->nom}}?</p>
-                                                            @csrf
-                                                            <input type="text" value="{{$all->id}}" style="display:none;" name="id_interlocuteur">
-                                                        </div>
-                                                        
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Fermer</button>
-                                                            <button type="submit" class="btn btn-outline">Supprimer</button>
-                                                        </div>
-                                                        </form>
-                                                    </div>
-                                                    <!-- /.modal-content -->
-                                                    </div>
-                                                    <!-- /.modal-dialog -->
-                                                </div>
-                                                <!-- /.modal -->
-                                            @endif
-
-                                            @if(auth()->user()->id_role == 3)
-                                            
-                                            
-                                            @endif
-                                            @if(auth()->user()->id_role == 1)
-
-                                                <form action="edit_interlocuteur_form" method="post">
-                                                    @csrf
-                                                    <input type="text" value={{$all->id}} style="display:none;" name="id_interlocuteur">
-                                                    <button type="submit" class="btn btn-primary"><i class ="fa fa-edit"></i></button>
-                                                </form>
-                                              <!--SUPPRESSION AVEC POPUP-->
-                                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="@php echo "#".$all->id.""; @endphp">
-                                                    <i class="fa fa-trash"></i>
-                                                    </button>
-                                                <div class="modal modal-danger fade" id="@php echo "".$all->id.""; @endphp">
-                                                    <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span></button>
-                                                        <h4 class="modal-title">Supprimer </h4>
-                                                        </div>
-                                                        <form action="delete_interlocuteur" method="post">
-                                                        <div class="modal-body">
-                                                            <p>Voulez-vous supprimer {{$all->nom}}?</p>
-                                                            @csrf
-                                                            <input type="text" value="{{$all->id}}" style="display:none;" name="id_interlocuteur">
-                                                        </div>
-                                                        
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Fermer</button>
-                                                            <button type="submit" class="btn btn-outline">Supprimer</button>
-                                                        </div>
-                                                        </form>
-                                                    </div>
-                                                    <!-- /.modal-content -->
-                                                    </div>
-                                                    <!-- /.modal-dialog -->
-                                                </div>
-                                                <!-- /.modal -->
-                                            @endif
-                                        @else
-                                           
-                                            @if(auth()->user()->id_role == 5)
+                                       
+                                            @can("delete")
                                                
-                                               <!--SUPPRESSION AVEC POPUP-->
-                                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="@php echo "#".$all->id.""; @endphp">
-                                                    <i class="fa fa-trash"></i>
-                                                    </button>
-                                                <div class="modal modal-danger fade" id="@php echo "".$all->id.""; @endphp">
-                                                    <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span></button>
-                                                        <h4 class="modal-title">Supprimer </h4>
-                                                        </div>
-                                                        <form action="delete_interlocuteur" method="post">
-                                                        <div class="modal-body">
-                                                            <p>Voulez-vous supprimer {{$all->nom}}?</p>
-                                                            @csrf
-                                                            <input type="text" value="{{$all->id}}" style="display:none;" name="id_interlocuteur">
-                                                        </div>
-                                                        
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Fermer</button>
-                                                            <button type="submit" class="btn btn-outline">Supprimer</button>
-                                                        </div>
-                                                        </form>
-                                                    </div>
-                                                    <!-- /.modal-content -->
-                                                    </div>
-                                                    <!-- /.modal-dialog -->
-                                                </div>
-                                                <!-- /.modal -->
-                                            @endif
-
-                                            @if(auth()->user()->id_role == 4)
-                                                <form action="edit_interlocuteur_form" method="post">
-                                                    @csrf
-                                                    <input type="text" value={{$all->id}} style="display:none;" name="id_interlocuteur">
-                                                    <button type="submit" class="btn btn-primary"><i class ="fa fa-edit"></i></button>
-                                                </form>
                                                  <!--SUPPRESSION AVEC POPUP-->
                                                 <button type="button" class="btn btn-danger" data-toggle="modal" data-target="@php echo "#".$all->id.""; @endphp">
                                                     <i class="fa fa-trash"></i>
@@ -943,53 +822,19 @@ $all =  $interlocuteurcontroller-> GetAll();
                                                 </div>
                                                 <!-- /.modal -->
                                             
-                                            @endif
+                                            @endcan
 
-                                            @if(auth()->user()->id_role == 3)
-                                           
-                                            
-                                            @endif
-                                            @if(auth()->user()->id_role == 1)
+                                    
+                                            @can("edit")
 
                                                 <form action="edit_interlocuteur_form" method="post">
                                                     @csrf
                                                     <input type="text" value={{$all->id}} style="display:none;" name="id_interlocuteur">
                                                     <button type="submit" class="btn btn-primary"><i class ="fa fa-edit"></i></button>
                                                 </form>
-                                               <!--SUPPRESSION AVEC POPUP-->
-                                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="@php echo "#".$all->id.""; @endphp">
-                                                    <i class="fa fa-trash"></i>
-                                                    </button>
-                                                <div class="modal modal-danger fade" id="@php echo "".$all->id.""; @endphp">
-                                                    <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span></button>
-                                                        <h4 class="modal-title">Supprimer </h4>
-                                                        </div>
-                                                        <form action="delete_interlocuteur" method="post">
-                                                        <div class="modal-body">
-                                                            <p>Voulez-vous supprimer {{$all->nom}}?</p>
-                                                            @csrf
-                                                            <input type="text" value="{{$all->id}}" style="display:none;" name="id_interlocuteur">
-                                                        </div>
-                                                        
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Fermer</button>
-                                                            <button type="submit" class="btn btn-outline">Supprimer</button>
-                                                        </div>
-                                                        </form>
-                                                    </div>
-                                                    <!-- /.modal-content -->
-                                                    </div>
-                                                    <!-- /.modal-dialog -->
-                                                </div>
-                                                <!-- /.modal -->
+                                               
                                             
-                                            @endif
-                                        @endif
-                            
+                                            @endcan
                                        
                                         
                                     </td>

@@ -12,7 +12,12 @@ class Departement extends Model
     public $timestamps = true;
     
     protected $fillable = [
-        'libele_departement', 'update_at',
+        'libele_departement',
 
     ];
+
+    public function utilisateurs()
+    {
+        return $this->hasMany(Utilisateur::class);
+    }
 }

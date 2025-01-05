@@ -249,8 +249,6 @@
                                 
                                 </table>
                             </div>
-                           
-                        
                              <hr>
 
                             <div class="box-header with-border">
@@ -307,133 +305,52 @@
                                 </table>
                             </div>
 
-                    @endforeach
-                    <div class="box-header">
-                        <h3 class="box-title"><b>PRESTATIONS REALISEES</b></h3>
+                         <div class="box-header with-border">
+                        <h3 class="box-title"><b>PRESTATIONS DU CONTRAT {{$contrats->titre_contrat}}</b></h3>
                     </div> 
                     <div class="no-padding">
+                         @php
+                            //On va écrire un code pour detecter tous les services offerts
+                            $se = DB::table('prestation_services')
+                            ->join('contrats', 'prestation_services.contrat_id', '=', 'contrats.id')
+                            ->join('services', 'prestation_services.service_id', '=', 'services.id') 
+                            ->where('contrat_id', $contrats->id)    
+                            ->get(['services.libele_service', 'prestation_services.*',]);
 
+                          
+                        @endphp
                             <!-- /.box-header -->
-                        <div class="box-body">
-                            <table  class="table table-hover box-body">
-                                <thead>
+                        <div class="box-body table-responsive">
+                            <table  class="table box-body">
+                            
                                 <tr>
-                                <th>Date </th>
-                                <th>Type de prestation</th>
-                                <th>Lieu</th>
-                                
-                                <th>Fin de contrat</th>
-                                <th>Prestation</th>
-                                 
-                                <!--LES RESTRICTIONS -->
-                                @if(auth()->user()->id_role == 1 OR auth()->user()->id_role == 2 OR auth()->user()->id_role == 4 )	
-                                    <th>Action</th>
-                                    
-                                @else
-                                    @if(auth()->user()->id_role == 5)
-                                        @if(auth()->user()->id_departement == 1 OR auth()->user()->id_departement >=5)
-                                            <th>Action</th>
-                                        @else
-                                        @endif
-                                        
-                                    @endif
-                                @endif
+                                <th>Service </th>
+                                <th>Action</th>
                                 </tr>
-                                </thead>
+                           
                                 <tbody>
-                                    @foreach($prestations as $prestations)
+                                     @foreach($se as $se_get)
                                         <tr>
-                                            <td>@php echo date('d/m/Y',strtotime($prestations->date_prestation)) @endphp</td>
-                                            <td>{{$prestations->libele}}</td>
-                                            <td>{{$prestations->localisation}}</td>
-                                            
-                                            <td>@php echo date('d/m/Y',strtotime($prestations->fin_contrat));  @endphp</td>
-                                            <td>
-                                                @php
-                                                    //On va écrire un code pour detecter tous les services offerts
-                                                    $se = DB::table('prestation_services')
-                                                    ->join('prestations', 'prestation_services.prestation_id', '=', 'prestations.id')
-                                                    ->join('services', 'prestation_services.service_id', '=', 'services.id') 
-                                                    ->where('prestation_id',$prestations->id)    
-                                                    ->get(['services.libele_service', 'prestation_services.*']);
-                                                @endphp
-                                                <ul>
-                                                @foreach($se as $se_get)
-                                                    <li>{{$se_get->libele_service}}</li>
-                                                    @if(auth()->user()->id_role == 1 OR auth()->user()->id_role == 2 OR auth()->user()->id_role == 4 )	
-                                                        <form action="delete_service_fiche_customer" method="post" >
-                                                            @csrf
-                                                            <div class="box-body">
-                                                                <div class="form-group col-sm-6">
-                                                                    <input type="text" value="{{$contrats->id}}" style="display:none;" name="id_prospection">
-                                                                    <input type="text" value="{{$se_get->id}}" style="display:none;" name="id_service">
-                                                                    <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
-                                                                    <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i></button>
-                                                                </div>
+                                            <td>{{$se_get->libele_service}}</td>
 
+                                                @can("delete")	
+                                                    <form action="delete_service_fiche_customer" method="post" >
+                                                        @csrf
+                                                        <div class="box-body">
+                                                            <div class="form-group col-sm-6">
+                                                                <input type="text" value="{{$contrats->id}}" style="display:none;" name="id_prospection">
+                                                                <input type="text" value="{{$se_get->id}}" style="display:none;" name="id_service">
+                                                                <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
+                                                                <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i></button>
                                                             </div>
-                                                        </form>
-                                                    
-                                                    @else
-                                                        @if(auth()->user()->id_role == 5)
-                                                            @if(auth()->user()->id_departement == 1 OR auth()->user()->id_departement >=5)
 
-                                                            @else
-                                                            @endif
-                                                            
-                                                        @endif
-                                                    @endif
-                                                  
-                                                @endforeach
-                                                </ul>
-                                            
-                                            </td>
-                                            
-                                            
-                                            
-                                                @if(auth()->user()->id_role == 3)
+                                                        </div>
+                                                    </form>
                                                 
-                                                @else
-                                                <td>
-                                                    
+                                                @endcan
 
-                                                    @if(auth()->user()->id_role == 1 OR auth()->user()->id_role == 2 OR auth()->user()->id_role == 4 )	
-                                                        @if(auth()->user()->id_role == 2)
-                                                            <form action="display_facture" method="post">
-                                                                @csrf
-                                                                <input type="text" value={{$prestations->id}} style="display:none;" name="id_prestation">
-                                                                <button type="submit" class="btn btn-success"><i class="fa fa-ticket"></i></button>
-                                                            </form>
+                                            </td>
 
-                                                            <form action="edit_prestation_form" method="post">
-                                                                @csrf
-                                                                <input type="text" value={{$prestations->id}} style="display:none;" name="id_prestation">
-                                                                <button type="submit" class="btn btn-primary"><i class="fa fa-edit"></i></button>
-                                                            </form>
-                                                        @else
-
-                                                        @endif
-                                                       
-                                                        
-                                                    @else
-                                                        @if(auth()->user()->id_role == 5)
-                                                            @if(auth()->user()->id_departement == 1 OR auth()->user()->id_departement >=5)
-                                                                <form action="edit_prestation_form" method="post">
-                                                                    @csrf
-                                                                    <input type="text" value={{$prestations->id}} style="display:none;" name="id_prestation">
-                                                                    <button type="submit" class="btn btn-primary"><i class="fa fa-edit"></i></button>
-                                                                </form>
-                                                            @else
-                                                            @endif
-                                                            
-                                                        @endif
-                                                    @endif
-                                                   
-
-                                                </td>
-                                                @endif
-
-                                            
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -443,6 +360,9 @@
                             <!-- /.box-body -->
                  
                     </div>
+                    <hr><hr>
+                    @endforeach
+                    
                      <div class="box-header" >
                             <h3 class="box-title"><b>PROSPECTIONS</b></h3>
                     </div> 

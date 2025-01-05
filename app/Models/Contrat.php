@@ -16,4 +16,10 @@ class Contrat extends Model
         'fin_contrat', 'id_entreprise', 'created_by', 'statut_solde',  'path', 'proforma_file',
         'bon_commande', 'reconduction', 'avenant', 'id_contrat_parent', 'id_type_prestation'
     ];
+
+    public function services()
+    {
+        //return $this->belongsTomany('App\Models\Service');
+        return $this->belongsToMany(Service::class);
+    }
 }

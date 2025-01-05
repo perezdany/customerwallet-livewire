@@ -21,6 +21,7 @@ use App\Http\Controllers\DocController;
 use App\Http\Controllers\CibleController;
 use App\Http\Controllers\PropalController;
 
+use App\Models\Utilisateur;
 //Les livewire
 use App\Http\Livewire\Entreprises;
 
@@ -71,6 +72,7 @@ Route::middleware(['guest:web'])->group(function(){
 
     Route::post('update_pass_firstlog', [UserController::class, 'EditPasswordFristLog']);
 
+
     //DECONNEXION
     //Route::get('logout', [AuthController::class, 'logoutUser']);
 });
@@ -82,13 +84,13 @@ Route::middleware(['auth:web'])->group(function(){
 
 
     //TABLEAU DE BORD
-    Route::get('welcome', function () {
+   Route::get('welcome', function () {
         return view('welcome');
     })->name('home');
     
-    Route::get('welcome', function () {
-        return view('welcome');
-    })->name('home');
+    /*Route::get('welcome', function () {
+        return Utilisateur::with("roles")->with("departements")->paginate(5);
+    })->name('home');*/
     
     //PAGES TABLEAU DE BORD
 
@@ -160,7 +162,7 @@ Route::middleware(['auth:web'])->group(function(){
     Route::post('profile', [UserController::class, 'GoProfil']);
 
     //PROFIL UTILISATEUR
-    Route::post('edit_user_form', [UserController::class, 'GoProfil']);
+    Route::post('edit_user_form', [UserController::class, 'EditForm']);
 
 
     //MODIFIER L'UTILISATEUR
@@ -168,6 +170,12 @@ Route::middleware(['auth:web'])->group(function(){
 
     //MODIFIER MOT DE PASSE
     Route::post('edit_password', [UserController::class, 'EditPassword']);
+
+    //REINITIALISER LE MOT DE PASSE
+    Route::post('reset_password', [UserController::class, 'ResetPassword']);
+
+    //MODIFIER LES PERMISSION
+    Route::post('update_permissions', [UserController::class, 'UpdatePermissions']);
 
     //DESACTIVER L'UTILISATEUR
     Route::post('disable_user', [UserController::class, 'DisableUser']);
@@ -238,51 +246,38 @@ Route::middleware(['auth:web'])->group(function(){
     //FORMULAIRE AJOUT DE FICHIER 
     route::post('add_files_contrat', [ContratController::class, 'UploadFiles']);
 
-    //LES SUIVIS D'ENTREPRISE
-    Route::get('suivi', function(){
-        return view('admin/suivis');
-    });
-
-    //AJOUTER UN SUIVI
-    Route::post('add_suivi', [SuiviController::class, 'AddSuivi']);
-
-    //M%ODIIFIR LE SUIVI
-    Route::post('edit_suivi_form', [SuiviController::class, 'EditSuiviForm']);
-
-    Route::post('edit_suivi', [SuiviController::class, 'EditSuivi']);
-
     //UTILISATEURS
     Route::get('utilisateurs', function(){
         return view('admin/users');
-    });
+    })->middleware('auth.admin');
 
 
     //DEPARTEMENT AJOUTER MODIFIER 
     Route::get('departements', function(){
         return view('admin/departements');
-    });
+    })->middleware('can:admin');
 
-    Route::post('edit_depart_form', [DepartementController::class, 'EditDepForm']);
+    Route::post('edit_depart_form', [DepartementController::class, 'EditDepForm'])->middleware('auth.admin');
 
-    Route::post('add_departement', [DepartementController::class, 'AddDepartement']);
+    Route::post('add_departement', [DepartementController::class, 'AddDepartement'])->middleware('auth.admin');
     
-    Route::post('edit_departement', [DepartementController::class, 'EditDepartement']);
+    Route::post('edit_departement', [DepartementController::class, 'EditDepartement'])->middleware('auth.admin');
 
 
     //SERVICES
     Route::get('services', function(){
         return view('admin/services');
-    });
+    })->middleware('auth.admin');
     
     //MODIFIER LE SERVICE
-    Route::post('edit_service_form', [ServiceController::class, 'EditServiceForm']);
-    Route::post('edit_service', [ServiceController::class, 'EditService']);
+    Route::post('edit_service_form', [ServiceController::class, 'EditServiceForm'])->middleware('auth.admin');
+    Route::post('edit_service', [ServiceController::class, 'EditService'])->middleware('auth.admin');
 
     //AJOUTER UN SERVICE
-    Route::post('add_service', [ServiceController::class, 'AddService']);
+    Route::post('add_service', [ServiceController::class, 'AddService'])->middleware('auth.admin');
 
     //SUPPRIMER SERVICE 
-    Route::post('delete_service', [ServiceController::class, 'DeleteService']);
+    Route::post('delete_service', [ServiceController::class, 'DeleteService'])->middleware('auth.admin');
 
     //SUPPRIMER LE SERVICE DANS LA TABLE DES PROSPECTIONS
     Route::get('delete/{id}', [ServiceController::class, 'DeleteServiceInProspection']);
@@ -535,7 +530,7 @@ Route::middleware(['auth:web'])->group(function(){
     //LES TYPES DE PRESTATIONS
     Route::get('type_prestation', function(){
         return view('admin/type_prestation');
-    });
+    })->middleware('auth.admin');
 
     //AJOUTER UN TYPE DE PRESTATION
     Route::post('add_type_prestation', [TypePrestationController::class, 'AddTypePrestation']);
@@ -601,6 +596,11 @@ Route::middleware(['auth:web'])->group(function(){
     Route::get('roles', function(){
         return view('admin/roles');
     });
+
+    //FORMULAIRE AJOUT UTILISATEUR
+    Route::get('form_add_user', function(){
+        return view('forms/add_user');
+    });
     
     //AJOUTER ROLE
     Route::post('add_role', [RoleController::class, 'AddRole']);
@@ -615,9 +615,9 @@ Route::middleware(['auth:web'])->group(function(){
 
 
      //LES ROLES D'UTILISATEURS
-     Route::get('test', function(){
+     /*Route::get('test', function(){
         return view('dash/test');
-    });
+    });*/
 
     //LES FORMULAIRES 
     Route::get('form_add_contrat', function(){

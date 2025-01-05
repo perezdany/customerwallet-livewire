@@ -12,6 +12,6 @@ class Prospection_service extends Model
     public $timestamps = true;
     
     protected $fillable = [
-         'service_id', 'prospection_id', 
+        'service_id', 'prospection_id', 
     ];
 }
