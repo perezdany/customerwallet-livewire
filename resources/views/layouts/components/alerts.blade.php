@@ -1,6 +1,6 @@
 
 @can("manager")
-    <div class="row">
+   <div class="row">
         <div class="col-md-8">
         <!-- TABLE: LATEST ORDERS LES FACTURES QUI N'ONT PAS ETE REGLEES ET LADATE EST DEPASS2E-->
         @if($count_non_reglee != 0)
@@ -25,64 +25,84 @@
                                 <th>Client</th>
                                 <th>Date de règlement</th>
                                 <th>Montant</th>
-                                
-                                @if(auth()->user()->id_role == 2)<th>Afficher les paiements</th>@endif
+                               
+                                @can("manager")<th>Afficher les paiements</th>@endcan
+                                @can("comptable")<th>Afficher les paiements</th>@endcan
+                                @can("admin")<th>Afficher les paiements</th>@endcan
                                 <th>Contrat</th>
                                 <th>Etat facture</th>
-                                @if(auth()->user()->id_role == 2)Action</th>@endif
+                                @can("comptable")<th>Action</th>@endcan
                             </tr>
                             </thead>
                             <tbody>
                                 
                                 @foreach($my_own as $my_own)
                                     <tr>
-                                    <td>{{$my_own->numero_facture}}</td>
-                                    <td>{{$my_own->nom_entreprise}}</td>
-                                    <td>@php echo date('d/m/Y',strtotime($my_own->date_reglement)) @endphp</td>
-                                    <td>
-                                        @php
-                                            echo  number_format($my_own->montant_facture, 2, ".", " ")." XOF";
-                                        @endphp
-                                    </td>
-                                    @if(auth()->user()->id_role == 2)
+                                        <td>{{$my_own->numero_facture}}</td>
+                                        <td>{{$my_own->nom_entreprise}}</td>
+                                        <td>@php echo date('d/m/Y',strtotime($my_own->date_reglement)) @endphp</td>
                                         <td>
-                                            <form action="paiement_by_facture" method="post">
+                                            @php
+                                                echo  number_format($my_own->montant_facture, 2, ".", " ")." XOF";
+                                            @endphp
+                                        </td>
+                                        @can("manager")
+                                            <td>
+                                                <form action="paiement_by_facture" method="post">
+                                                        @csrf
+                                                        <input type="text" value={{$my_own->id}} style="display:none;" name="id_facture">
+                                                        <button type="submit" class="btn btn-success"><i class="fa fa-money"></i>AFFICHER</button>
+                                                </form>
+                                            </td>
+                                        @endcan
+                                        @can("comptable")
+                                            <td>
+                                                <form action="paiement_by_facture" method="post">
+                                                        @csrf
+                                                        <input type="text" value={{$my_own->id}} style="display:none;" name="id_facture">
+                                                        <button type="submit" class="btn btn-success"><i class="fa fa-money"></i>AFFICHER</button>
+                                                </form>
+                                            </td>
+                                        @endcan
+                                        @can("admin")
+                                            <td>
+                                                <form action="paiement_by_facture" method="post">
+                                                        @csrf
+                                                        <input type="text" value={{$my_own->id}} style="display:none;" name="id_facture">
+                                                        <button type="submit" class="btn btn-success"><i class="fa fa-money"></i>AFFICHER</button>
+                                                </form>
+                                            </td>
+                                        @endcan
+                                
+                                        <td>{{$my_own->titre_contrat}}</td>
+                                            <td>
+                                            @if($my_own->reglee == 0)
+                                                <p class="bg-warning">
+                                                <b>Facture non réglée</b>
+                                                </p>
+                                            @endif
+                                            @if($my_own->reglee == 1)
+                                                <p class="bg-success">
+                                                <b>Facture réglée</b>
+                                                </p>
+                                            @endif
+                                            
+                                        </td>
+                                    
+                                        @can("comptable")
+                                            <td>
+                                            
+                                                    
+                                                <form action="paiement_form" method="post">
                                                     @csrf
                                                     <input type="text" value={{$my_own->id}} style="display:none;" name="id_facture">
-                                                    <button type="submit" class="btn btn-success"><i class="fa fa-money"></i>AFFICHER</button>
-                                            </form>
-                                        </td>
-                                    @endif
-                                
-                                    <td>{{$my_own->titre_contrat}}</td>
-                                        <td>
-                                        @if($my_own->reglee == 0)
-                                            <p class="bg-warning">
-                                            <b>Facture non réglée</b>
-                                            </p>
-                                        @endif
-                                        @if($my_own->reglee == 1)
-                                            <p class="bg-success">
-                                            <b>Facture réglée</b>
-                                            </p>
-                                        @endif
-                                        
-                                        </td>
-                                    <td>
+                                                    <button type="submit" class="btn btn-success"><i class="fa fa-money"></i></button>
+                                                </form>
 
-                                        @if($my_own->reglee == 0)
-                                            @if(auth()->user()->id_role == 2)
-                                            <form action="paiement_form" method="post">
-                                                @csrf
-                                                <input type="text" value={{$my_own->id}} style="display:none;" name="id_facture">
-                                                <button type="submit" class="btn btn-success"><i class="fa fa-money"></i></button>
-                                            </form>
-                                            @endif
-                                        @else
-                                        
-                                        @endif
+                                                
+                                            </td>
+                                        @endcan
                                     
-                                    </td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -131,64 +151,84 @@
                                 <th>Client</th>
                                 <th>Date de règlement</th>
                                 <th>Montant</th>
-                                
-                                @if(auth()->user()->id_role == 2)<th>Afficher les paiements</th>@endif
+                               
+                                @can("manager")<th>Afficher les paiements</th>@endcan
+                                @can("comptable")<th>Afficher les paiements</th>@endcan
+                                @can("admin")<th>Afficher les paiements</th>@endcan
                                 <th>Contrat</th>
                                 <th>Etat facture</th>
-                                @if(auth()->user()->id_role == 2)Action</th>@endif
+                                @can("comptable")<th>Action</th>@endcan
                             </tr>
                             </thead>
                             <tbody>
                                 
                                 @foreach($my_own as $my_own)
                                     <tr>
-                                    <td>{{$my_own->numero_facture}}</td>
-                                    <td>{{$my_own->nom_entreprise}}</td>
-                                    <td>@php echo date('d/m/Y',strtotime($my_own->date_reglement)) @endphp</td>
-                                    <td>
-                                        @php
-                                            echo  number_format($my_own->montant_facture, 2, ".", " ")." XOF";
-                                        @endphp
-                                    </td>
-                                    @if(auth()->user()->id_role == 2)
+                                        <td>{{$my_own->numero_facture}}</td>
+                                        <td>{{$my_own->nom_entreprise}}</td>
+                                        <td>@php echo date('d/m/Y',strtotime($my_own->date_reglement)) @endphp</td>
                                         <td>
-                                            <form action="paiement_by_facture" method="post">
+                                            @php
+                                                echo  number_format($my_own->montant_facture, 2, ".", " ")." XOF";
+                                            @endphp
+                                        </td>
+                                        @can("manager")
+                                            <td>
+                                                <form action="paiement_by_facture" method="post">
+                                                        @csrf
+                                                        <input type="text" value={{$my_own->id}} style="display:none;" name="id_facture">
+                                                        <button type="submit" class="btn btn-success"><i class="fa fa-money"></i>AFFICHER</button>
+                                                </form>
+                                            </td>
+                                        @endcan
+                                        @can("comptable")
+                                            <td>
+                                                <form action="paiement_by_facture" method="post">
+                                                        @csrf
+                                                        <input type="text" value={{$my_own->id}} style="display:none;" name="id_facture">
+                                                        <button type="submit" class="btn btn-success"><i class="fa fa-money"></i>AFFICHER</button>
+                                                </form>
+                                            </td>
+                                        @endcan
+                                        @can("admin")
+                                            <td>
+                                                <form action="paiement_by_facture" method="post">
+                                                        @csrf
+                                                        <input type="text" value={{$my_own->id}} style="display:none;" name="id_facture">
+                                                        <button type="submit" class="btn btn-success"><i class="fa fa-money"></i>AFFICHER</button>
+                                                </form>
+                                            </td>
+                                        @endcan
+                                
+                                        <td>{{$my_own->titre_contrat}}</td>
+                                            <td>
+                                            @if($my_own->reglee == 0)
+                                                <p class="bg-warning">
+                                                <b>Facture non réglée</b>
+                                                </p>
+                                            @endif
+                                            @if($my_own->reglee == 1)
+                                                <p class="bg-success">
+                                                <b>Facture réglée</b>
+                                                </p>
+                                            @endif
+                                            
+                                        </td>
+                                    
+                                        @can("comptable")
+                                            <td>
+                                            
+                                                    
+                                                <form action="paiement_form" method="post">
                                                     @csrf
                                                     <input type="text" value={{$my_own->id}} style="display:none;" name="id_facture">
-                                                    <button type="submit" class="btn btn-success"><i class="fa fa-money"></i>AFFICHER</button>
-                                            </form>
-                                        </td>
-                                    @endif
-                                
-                                    <td>{{$my_own->titre_contrat}}</td>
-                                        <td>
-                                        @if($my_own->reglee == 0)
-                                            <p class="bg-warning">
-                                            <b>Facture non réglée</b>
-                                            </p>
-                                        @endif
-                                        @if($my_own->reglee == 1)
-                                            <p class="bg-success">
-                                            <b>Facture réglée</b>
-                                            </p>
-                                        @endif
-                                        
-                                        </td>
-                                    <td>
+                                                    <button type="submit" class="btn btn-success"><i class="fa fa-money"></i></button>
+                                                </form>
 
-                                        @if($my_own->reglee == 0)
-                                            @if(auth()->user()->id_role == 2)
-                                            <form action="paiement_form" method="post">
-                                                @csrf
-                                                <input type="text" value={{$my_own->id}} style="display:none;" name="id_facture">
-                                                <button type="submit" class="btn btn-success"><i class="fa fa-money"></i></button>
-                                            </form>
-                                            @endif
-                                        @else
-                                        
-                                        @endif
+                                                
+                                            </td>
+                                        @endcan
                                     
-                                    </td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -237,64 +277,84 @@
                                 <th>Client</th>
                                 <th>Date de règlement</th>
                                 <th>Montant</th>
-                                
-                                @if(auth()->user()->id_role == 2)<th>Afficher les paiements</th>@endif
+                               
+                                @can("manager")<th>Afficher les paiements</th>@endcan
+                                @can("comptable")<th>Afficher les paiements</th>@endcan
+                                @can("admin")<th>Afficher les paiements</th>@endcan
                                 <th>Contrat</th>
                                 <th>Etat facture</th>
-                                @if(auth()->user()->id_role == 2)Action</th>@endif
+                                @can("comptable")<th>Action</th>@endcan
                             </tr>
                             </thead>
                             <tbody>
                                 
                                 @foreach($my_own as $my_own)
                                     <tr>
-                                    <td>{{$my_own->numero_facture}}</td>
-                                    <td>{{$my_own->nom_entreprise}}</td>
-                                    <td>@php echo date('d/m/Y',strtotime($my_own->date_reglement)) @endphp</td>
-                                    <td>
-                                        @php
-                                            echo  number_format($my_own->montant_facture, 2, ".", " ")." XOF";
-                                        @endphp
-                                    </td>
-                                    @if(auth()->user()->id_role == 2)
+                                        <td>{{$my_own->numero_facture}}</td>
+                                        <td>{{$my_own->nom_entreprise}}</td>
+                                        <td>@php echo date('d/m/Y',strtotime($my_own->date_reglement)) @endphp</td>
                                         <td>
-                                            <form action="paiement_by_facture" method="post">
+                                            @php
+                                                echo  number_format($my_own->montant_facture, 2, ".", " ")." XOF";
+                                            @endphp
+                                        </td>
+                                        @can("manager")
+                                            <td>
+                                                <form action="paiement_by_facture" method="post">
+                                                        @csrf
+                                                        <input type="text" value={{$my_own->id}} style="display:none;" name="id_facture">
+                                                        <button type="submit" class="btn btn-success"><i class="fa fa-money"></i>AFFICHER</button>
+                                                </form>
+                                            </td>
+                                        @endcan
+                                        @can("comptable")
+                                            <td>
+                                                <form action="paiement_by_facture" method="post">
+                                                        @csrf
+                                                        <input type="text" value={{$my_own->id}} style="display:none;" name="id_facture">
+                                                        <button type="submit" class="btn btn-success"><i class="fa fa-money"></i>AFFICHER</button>
+                                                </form>
+                                            </td>
+                                        @endcan
+                                        @can("admin")
+                                            <td>
+                                                <form action="paiement_by_facture" method="post">
+                                                        @csrf
+                                                        <input type="text" value={{$my_own->id}} style="display:none;" name="id_facture">
+                                                        <button type="submit" class="btn btn-success"><i class="fa fa-money"></i>AFFICHER</button>
+                                                </form>
+                                            </td>
+                                        @endcan
+                                
+                                        <td>{{$my_own->titre_contrat}}</td>
+                                            <td>
+                                            @if($my_own->reglee == 0)
+                                                <p class="bg-warning">
+                                                <b>Facture non réglée</b>
+                                                </p>
+                                            @endif
+                                            @if($my_own->reglee == 1)
+                                                <p class="bg-success">
+                                                <b>Facture réglée</b>
+                                                </p>
+                                            @endif
+                                            
+                                        </td>
+                                    
+                                        @can("comptable")
+                                            <td>
+                                            
+                                                    
+                                                <form action="paiement_form" method="post">
                                                     @csrf
                                                     <input type="text" value={{$my_own->id}} style="display:none;" name="id_facture">
-                                                    <button type="submit" class="btn btn-success"><i class="fa fa-money"></i>AFFICHER</button>
-                                            </form>
-                                        </td>
-                                    @endif
-                                
-                                    <td>{{$my_own->titre_contrat}}</td>
-                                        <td>
-                                        @if($my_own->reglee == 0)
-                                            <p class="bg-warning">
-                                            <b>Facture non réglée</b>
-                                            </p>
-                                        @endif
-                                        @if($my_own->reglee == 1)
-                                            <p class="bg-success">
-                                            <b>Facture réglée</b>
-                                            </p>
-                                        @endif
-                                        
-                                        </td>
-                                    <td>
+                                                    <button type="submit" class="btn btn-success"><i class="fa fa-money"></i></button>
+                                                </form>
 
-                                        @if($my_own->reglee == 0)
-                                            @if(auth()->user()->id_role == 2)
-                                            <form action="paiement_form" method="post">
-                                                @csrf
-                                                <input type="text" value={{$my_own->id}} style="display:none;" name="id_facture">
-                                                <button type="submit" class="btn btn-success"><i class="fa fa-money"></i></button>
-                                            </form>
-                                            @endif
-                                        @else
-                                        
-                                        @endif
+                                                
+                                            </td>
+                                        @endcan
                                     
-                                    </td>
                                     </tr>
                                 @endforeach
                             </tbody>

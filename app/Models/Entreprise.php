@@ -16,4 +16,11 @@ class Entreprise extends Model
        'chiffre_affaire', 'nb_employes', 'telephone',  'etat', 'id_pays',
         'activite', 'adresse_email', 'created_by',
     ];
+
+
+    public function contrats()
+    {
+        return $this->hasMany(Contrat::class);
+    }
+
 }

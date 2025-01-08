@@ -46,20 +46,18 @@
         <div class="col-md-8">
              
              
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <a href="fiche"><button class="btn btn-default"> <b>RETOUR</b></button></a>
             </div>
              
-            @if(auth()->user()->id_role != NULL )
-                <div class="col-md-3">
-                    <a href="prestation"><button class="btn btn-warning"> <b>PRESTAIONS</b></button></a>
-                </div>
-                <div class="col-md-3">
+            @if(auth()->user()->id_role != 7)
+               
+                <div class="col-md-4">
                     <a href="form_add_contrat"><button class="btn btn-primary"> <b><i class="fa fa-plus"></i>CONTRAT</b></button></a>
                 </div>
             @endif
 
-            <div class="col-md-3"><a href="form_add_prospection">
+            <div class="col-md-4"><a href="form_add_prospection">
                 @if(isset($id_entreprise))
 
                   <form method="post" action="go_print_rapport_clt" target="blank">
@@ -132,18 +130,8 @@
                                         <th>Fin du contrat</th>
                                         <th>Montant</th>
                                         <!--LES RESTRICTIONS -->
-                                        @if(auth()->user()->id_role == 1 OR auth()->user()->id_role == 2 OR auth()->user()->id_role == 4 )	
-                                            <th>Action</th>
-                                            
-                                        @else
-                                            @if(auth()->user()->id_role == 5)
-                                                @if(auth()->user()->id_departement == 1 OR auth()->user()->id_departement >=5)
-
-                                                @else
-                                                @endif
-                                                
-                                            @endif
-                                        @endif
+                                          <th>Action</th>
+                                      
                                         
                                     </tr>
                                     <!--LES FICHIERS ET LES FACTURES-->
@@ -166,26 +154,16 @@
                                            
                                         </td>
 
-                                        @if(auth()->user()->id_role == 1 OR auth()->user()->id_role == 2 OR auth()->user()->id_role == 4 )	
-                                            <td>
-
-                                                <form action="fiche_edit_contrat_form" method="post" >
-                                                    @csrf
-                                                    <input type="text" value={{$contrats->id}} style="display:none;" name="id_contrat">
-                                                    <input type="text" value={{$id_entreprise}} style="display:none;" name="id_entreprise">
-                                                    <button type="submit" class="btn btn-success"><i class="fa fa-edit"></i></button>
-                                                </form>
-                                            </td>
-                                            
-                                        @else
-                                            @if(auth()->user()->id_role == 5)
-                                                @if(auth()->user()->id_departement == 1 OR auth()->user()->id_departement >=5)
-
-                                                @else
-                                                @endif
-                                                
-                                            @endif
-                                        @endif
+                                        <td>
+                                            @can("edit")
+                                            <form action="fiche_edit_contrat_form" method="post" >
+                                                @csrf
+                                                <input type="text" value={{$contrats->id}} style="display:none;" name="id_contrat">
+                                                <input type="text" value={{$id_entreprise}} style="display:none;" name="id_entreprise">
+                                                <button type="submit" class="btn btn-success"><i class="fa fa-edit"></i></button>
+                                            </form>
+                                            @endcan
+                                        </td>
                                  
                                        
                                     </tr>
@@ -331,13 +309,14 @@
                                 <tbody>
                                      @foreach($se as $se_get)
                                         <tr>
+                                        
                                             <td>{{$se_get->libele_service}}</td>
-
+                                            <td>
                                                 @can("delete")	
                                                     <form action="delete_service_fiche_customer" method="post" >
                                                         @csrf
                                                         <div class="box-body">
-                                                            <div class="form-group col-sm-6">
+                                                            <div class="form-group">
                                                                 <input type="text" value="{{$contrats->id}}" style="display:none;" name="id_prospection">
                                                                 <input type="text" value="{{$se_get->id}}" style="display:none;" name="id_service">
                                                                 <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">

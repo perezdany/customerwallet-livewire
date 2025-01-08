@@ -143,17 +143,22 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="exampleInputEmail1">Date d'emission de la facture:</label>
+                                <label for="exampleInputEmail1">Date d'emission de la facture(*):</label>
                                 <input type="date" class="form-control  " value="{{old('date_emission')}}" required name="date_emission">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Date de règlement:</label>
+                                <input type="date" class="form-control  " name="date_reglement">
                             </div>
                                 
                             <div class="form-group">
-                                <label for="exampleInputEmail1">Montant de la facture:</label>
+                                <label for="exampleInputEmail1">Montant de la facture(*):</label>
                                 <input type="number" class="form-control  " required name="montant_facture" maxlength="13">
                             </div>
                                 
                             <div class="form-group">
-                                <label>Contrat:</label>
+                                <label>Contrat(*):</label>
                             <select class="form-control  " name="id_contrat" required>
                                     @php
                                         $contrats = $contratcontroller->getAllNoReglee();
@@ -161,7 +166,9 @@
                                     @endphp
                                 <option value="0">--Sélectionnez le contrat--</option>
                                     @foreach($contrats as $contrats)
-                                        <option value="{{$contrats->id}}">--Date:{{$contrats->debut_contrat}}<b>--Contrat:</b>{{$contrats->titre_contrat}}</option>
+                                        <option value="{{$contrats->id}}">--Date: @php 
+                                            echo date('d/m/Y',strtotime($contrats->debut_contrat)) ;
+                                            @endphp<b>--Contrat:</b>{{$contrats->titre_contrat}}/Client:{{$contrats->nom_entreprise}}</option>
                                     @endforeach
 
                             </select>

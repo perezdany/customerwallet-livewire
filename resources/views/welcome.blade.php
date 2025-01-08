@@ -57,26 +57,32 @@
                 //LE CONTRAT EST FINI, VERIFIONS SI IL EST RECONDUIT
                 if($contrats->reconduction == 0)//Pas reconduit
                 {
-
+                   
                 }
                 else
                 {
-                    $date_debut = strtotime($contrats->debut_contrat);
-                    $date_fin = strtotime($contrats->fin_contrat);
-                    $diff_in_days = floor(($date_fin - $date_debut ) / (60 * 60 * 24));//on obtient ca en jour
+                   
+                    if($contrats->reconduction == 1)//Pas reconduit
+                    {
+                         //echo $contrats->titre_contrat."--".$contrats->fin_contrat."<br>";
+                        $date_debut = strtotime($contrats->debut_contrat);
+                        $date_fin = strtotime($contrats->fin_contrat);
+                        $diff_in_days = floor(($date_fin - $date_debut ) / (60 * 60 * 24));//on obtient ca en jour
 
-                    //ACTUALISATION DE LA DATE
-                    $timestamp = strtotime($contrats->debut_contrat);
-                    $departtime1 = strtotime('+'.$diff_in_days.' days', $timestamp);
-    
-                    $nouvelle_date_fin = date("Y-m-d", $departtime1);
+                        //ACTUALISATION DE LA DATE
+                        $timestamp = strtotime($contrats->fin_contrat);
+                        $departtime1 = strtotime('+'.$diff_in_days.' days', $timestamp);
+        
+                        $nouvelle_date_fin = date("Y-m-d", $departtime1);
 
-                    //MISE A JOUR DE L'ENREGISTREMENT DANS LA TABLE
-                    $affected = DB::table('contrats')
-                    ->where('id', $contrats->id)
-                    ->update([
-                        'fin_contrat'=> $nouvelle_date_fin,  
-                    ]);
+                        //MISE A JOUR DE L'ENREGISTREMENT DANS LA TABLE
+                        $affected = DB::table('contrats')
+                        ->where('id', $contrats->id)
+                        ->update([
+                            'fin_contrat'=> $nouvelle_date_fin,  
+                        ]);
+                    }
+                   
                 }
                 
             }
@@ -120,7 +126,7 @@
         }*/
         //CODE POUR TRANSFERER LES ID TYPE PRESTATION DE LA PRESTATION VERS LA TABLE CONTRAT
 
-        $contrat = Contrat::all();
+        /*$contrat = Contrat::all();
       
         foreach($contrat as $contrat)
         {
@@ -138,27 +144,13 @@
             }
             //dd($affected);
                 
-        }
+        }*/
             
 
     @endphp
        
     @include("layouts/components/alerts")
-    <div class="row">
-         @if(session('success'))
-            <div class="col-md-12 box-header" style="font-size:13px;">
-              <p class="bg-success" >{{session('success')}}</p>
-            </div>
-        @endif
-        @if(session('error'))
-            <div class="col-md-12 box-header" style="font-size:13px;">
-              <p class="bg-danger" >{{session('error')}}</p>
-            </div>
-        @endif
-       
-
-           
-    </div>
+   
     <!-- Main row -->  
 
 @endsection

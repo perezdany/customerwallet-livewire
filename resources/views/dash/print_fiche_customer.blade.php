@@ -57,50 +57,6 @@
   <!-- Select2 -->
   <link rel="stylesheet" href="bower_components/select2/dist/css/select2.min.css">
 
-  <style type="text/css">
-      .defilement {
-      height: 3000px;
-    }
-
-    .popup {
-      display: none;
-    }
-
-    #popup.open {
-      display: flex !important;
-    }
-    .popup-encart {
-      position: fixed;
-      left: 90%;
-      background: rgba( 0, 0, 0, .25 )
-    }
-    .popup-contenu {
-      position: fixed;
-      left: 90%;
-      padding: 25px;
-      background: #fff;
-      /*transform: translate(-50%, -50%)*/
-      max-width: 250 px
-    }
-
-    #popup-fermeture{
-      color: #138AED;
-      position:absolute;
-      right:0;
-      bottom:-3px
-    }
-
-    thead{
-    background-color: rgb(161, 157, 157);
-    }
-
-    tfoot{
-      background-color: rgb(169, 164, 164);
-      }
-
-  </style>
-
-
 </head>
 
 <body onload="window.print();">
@@ -127,8 +83,6 @@
 
             $count_contrat = $contrats->count();
 
-            $prestations = $prestationcontroller->GetPrestationByIdEntr($id_entreprise);
-
         @endphp
 
 
@@ -136,10 +90,10 @@
           
             <div class="col-md-2"></div>
             <!-- left column -->
-            <div class="col-md-8">
+            <div class="col-md-8" >
                 <!-- Horizontal Form -->
-                <div class="box ">
-                    <div class="box-header" style="text-align:center">
+                <div class="box "  style="text-align:center">
+                    <div class="box-header">
                         <h3 class="box-title"><b>Contrats</b></h3>
                     </div>
                     @if($count_contrat == 0)
@@ -148,19 +102,20 @@
                             <hr>
                         </div> 
                     @endif
-                    @foreach($contrats as $contrats)
-                        <!--Contrats-->
-                        <div class="no-padding">
-                            <table class="table table-hover box-body">
-                            
-                                <tr>
-                                    <th>Titre de contrat</th>
-                                    <th>Début du contrat</th>
-                                    <th>Fin du contrat</th>
-                                    <th>Montant</th>	
-                                 
-                                </tr>
-                                <!--LES FICHIERS ET LES FACTURES-->
+                  
+                    <!--Contrats-->
+                    <div class="no-padding"  style="text-align:center">
+                        <table class="table table-hover box-body">
+                        
+                            <tr>
+                                <th>Titre de contrat</th>
+                                <th>Début du contrat</th>
+                                <th>Fin du contrat</th>
+                                <th>Montant</th>	
+                                
+                            </tr>
+                            <!--LES FICHIERS ET LES FACTURES-->
+                            @foreach($contrats as $contrats)
                                 <tr>
                                     <td> {{$contrats->titre_contrat}}  </td>
                                     <td>
@@ -174,79 +129,20 @@
                                         @endphp
                                     </td>
                                     <td>
-                                        @php 
-                                        echo date('d/m/Y',strtotime($contrats->montant)) ;
+                                        @php
+                                            echo  number_format($contrats->montant, 2, ".", " ")." XOF";
                                         @endphp
+                                    
                                     </td>
                                 
-                                  
-                                </tr>
-                            
-                            </table>
-                        </div>
-
-                    @endforeach
-                    <div class="box-header">
-                        <h3 class="box-title"><b>PRESTATIONS REALISEES</b></h3>
-                    </div> 
-                    <div class="no-padding">
-
-                            <!-- /.box-header -->
-                        <div class="box-body">
-                            <table  class="table table-hover box-body">
-                                <thead>
-                                <tr>
-                                <th>Date </th>
-                                <th>Type de prestation</th>
-                                <th>Lieu</th>
-                                
-                                <th>Fin de contrat</th>
-                                <th>Prestation</th>
-                                 
-                               
                                 
                                 </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($prestations as $prestations)
-                                        <tr>
-                                            <td>@php echo date('d/m/Y',strtotime($prestations->date_prestation)) @endphp</td>
-                                            <td>{{$prestations->libele}}</td>
-                                            <td>{{$prestations->localisation}}</td>
-                                            
-                                            <td>@php echo date('d/m/Y',strtotime($prestations->fin_contrat));  @endphp</td>
-                                            <td>
-                                                @php
-                                                    //On va écrire un code pour detecter tous les services offerts
-                                                    $se = DB::table('prestation_services')
-                                                    ->join('prestations', 'prestation_services.prestation_id', '=', 'prestations.id')
-                                                    ->join('services', 'prestation_services.service_id', '=', 'services.id') 
-                                                    ->where('prestation_id',$prestations->id)    
-                                                    ->get(['services.libele_service', 'prestation_services.*']);
-                                                @endphp
-                                                <ul>
-                                                @foreach($se as $se_get)
-                                                    
-                                                    <li>{{$se_get->libele_service}}</li>
-                                                       
-                                                @endforeach
-                                                </ul>
-                                            
-                                            </td>
-                                            
-                                            
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                                
-                            </table>
-                        </div>
-                            <!-- /.box-body -->
-                 
+                            @endforeach
+                
+                        </table>
                     </div>
-                  
-                    
-                    <hr>
+
+                
                     @php
                             
                         $interlocuteurs =  $interlocuterController->InterlocuteurWithIdEntreprise($id_entreprise);

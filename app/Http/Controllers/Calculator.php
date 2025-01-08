@@ -190,7 +190,7 @@ class Calculator extends Controller
      {
         $today =  date('Y-m-d');
 
-        $count = Contrat::where('fin_contrat', '>', $today)->count();
+        $count = Contrat::where('reconduction', '=', 1)->count();
 
         return $count;
      }
@@ -199,7 +199,7 @@ class Calculator extends Controller
      {
         $today =  date('Y-m-d');
 
-        $count = Contrat::where('statut_solde', '=', 1)->count();
+        $count = Contrat::where('reconduction', '=', 0)->orwhere('reconduction', '=', 2)->count();
 
         return $count;
      }
@@ -285,6 +285,13 @@ class Calculator extends Controller
 
         //le mois en cours
         $month = date('m');
+
+         //FAIRE UN TABLEAU POUR LE MOIS EN FRANCAIS
+         $mois_francais = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 
+         'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
+ 
+         $francais = $mois_francais[($month-1)];
+ 
 
         //Le montant total des contrats réalisé
         $total = 0;
@@ -453,8 +460,7 @@ class Calculator extends Controller
 
         
         
-
-        return view('graph/monthly', compact('data', 'company', 'percent', 'data_serv', 'serv', 'colors'));
+        return view('graph/monthly', compact('data', 'company', 'percent', 'data_serv', 'francais', 'serv', 'colors'));
     }
     
     public function SearchMonth(Request $request)
@@ -471,13 +477,15 @@ class Calculator extends Controller
         //LE TABLEAU POUR LES POURCENTAGE DE CHAQUE ENTREPRISE CE MOIS CI
         $percent = [];
 
-        //l'année en cours
-        $year = date('Y');
-
+       
         //le mois en cours
         $month_get = date_parse($request->month);
         //dd($month_get);
         $month = $month_get['month'];
+
+         //l'année recherchée
+         $year = $month_get['year'];
+
         //dd($month);
         //FAIRE UN TABLEAU POUR LE MOIS EN FRANCAIS
         $mois_francais = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 
@@ -491,14 +499,14 @@ class Calculator extends Controller
 
         //nombre de jours dans le mois
         $number = cal_days_in_month(CAL_GREGORIAN, $month, $year);
-       
+        
         //LA BOUCLE DES JOURS DU MOIS
-        for($i = 0; $i < $number; $i++)
+        for($i = 1; $i <= $number; $i++)
         {
             $somme = 0;   
             //$first_date = $year."-".$i."01";
             $the_date = $request->month."-".$i;
-            
+            //echo  $the_date."<br><br>";
             //LA REQUETE MAINTENANT
             $get = DB::table('contrats')
                 ->join('entreprises', 'entreprises.id', '=', 'contrats.id_entreprise')
@@ -517,7 +525,6 @@ class Calculator extends Controller
            
             $total = $total + $somme;
 
-           
             //METTRE DANS LE TABLEAU data
             array_push($data, $somme);
           
@@ -528,50 +535,52 @@ class Calculator extends Controller
         $totalnb_entreprise = 0;
         //CALCUL POUR LES POURCENTAGES 
 
-        //CALCUL POUR LES POURCENTAGES 
         //Prendre toutes les entreprises et pour chaque entrprise recupérer le montant des contrats dans le mois en questions
         $all_entreprises = Entreprise::all();
-
+       
         foreach($all_entreprises as $all_entreprises)
         {
            //montant de contrat pour chaque entreprise
            $montant = 0;
-           for($i = 0; $i < $number; $i++)
+           for($i = 1; $i <= $number; $i++)
            {
                 $the_date = $year."-". $month."-".$i;
-                
+                //echo "entreprise:". $all_entreprises->id."<br>";
                 $contrats =  DB::table('contrats')
                 ->join('entreprises', 'entreprises.id', '=', 'contrats.id_entreprise')
                 ->where('contrats.debut_contrat', '=', $the_date)
                 ->where('contrats.id_entreprise', '=', $all_entreprises->id)
                 ->get();
-                
+                //dump($the_date);
+               
                 foreach($contrats as $contrats)
-                {
-                   
-                    $montant = $montant + $contrats->montant;
-                    
-                    //echo"m = ".$montant."-".$contrats->titre_contrat."<br>";  
+                {    
+                    $montant = $montant + $contrats->montant; 
+                   //echo"m = ".$montant."-".$contrats->titre_contrat."<br>";  
                 }
                 //echo"m = ".$montant."-"."<br>"; 
                 ///dd($contrats);
+                //echo "JOUR".$i." ent:".$all_entreprises->id."/".$montant."<br><br>";
            }  
-
+          
            //METTRE LES VALLEURS DANS LES DIFFERENTS TABLEAUX
-           if($montant != 0) //Si cette entreprise a rapporté quelque il faut remplir dans le tableu pour le gaph
+           if($montant != 0) //Si cette entreprise a rapporté quelque chose il faut remplir dans le tableu pour le gaph
            {
-               //(dd($montant));
-                   $totalnb_entreprise = $totalnb_entreprise + 1;
-                   array_push($company, $all_entreprises->nom_entreprise);
-                   //CALCULER LE POURCENTAGE ET METTRE DANS LE TABLEAU
-                   $p = ($montant * 100) / $total;
-                   //dd($p);
-                   array_push($percent, $p);
+                //(dd($montant));
+                $totalnb_entreprise = $totalnb_entreprise + 1;
+                array_push($company, $all_entreprises->nom_entreprise);
+                //CALCULER LE POURCENTAGE ET METTRE DANS LE TABLEAU
+                $p = ($montant * 100) / $total;
+                //dd($p);
+                array_push($percent, $p);
 
            }
+
+          // echo $montant."<br>";
            
         }
         
+       // dd($percent);
         //dd($totalnb_entreprise);
          //ON AURA $totalnb_entreprise COULEURS DONC FAIRE UN TABLEAU QUI VA AVOIR LE NOMRE TOTAL DE COULEUR DIFFERENTES
          $alpha = ['A', 'B', 'C', 'D', 'E', 'F', ];
@@ -598,10 +607,10 @@ class Calculator extends Controller
              //mettre la couelur formée dans le tableau colors
              array_push($colors, $chaine_couleur);
              
-             //dd($colors);
+           
             
         }
-
+       // dd($colors);
         //AFFICHER LES GRAPHES PAR PRESTATIONS, PAR SERVICES
 
         //Prendre touts les services et pour chaque service recupérer le total des contrats dans le mois en questions
@@ -657,7 +666,7 @@ class Calculator extends Controller
         }
         
 
-        return view('graph/search_monthly', compact('data', 'company', 'percent', 'francais', 'serv', 'data_serv'));
+        return view('graph/search_monthly', compact('data', 'company', 'percent', 'francais', 'serv', 'colors', 'data_serv'));
     }
 
 
@@ -761,7 +770,7 @@ class Calculator extends Controller
 
                 //$last_date = $year."-".$i."-".$number;
                 
-                for($j = 1; $j<$number; $j++)
+                for($j = 1; $j<=$number; $j++)
                 {
                 
                     $the_date = $year."-".$i."-".$j;
@@ -914,7 +923,6 @@ class Calculator extends Controller
 
         $year = $year_get['year'];
         
-
         //LA BOUCLE DES 12 MOIS
         for($i = 1; $i <= 12; $i++)
         {
@@ -993,7 +1001,7 @@ class Calculator extends Controller
 
                 //$last_date = $year."-".$i."-".$number;
                 
-                for($j = 1; $j<$number; $j++)
+                for($j = 1; $j<=$number; $j++)
                 {
                 
                     $the_date = $year."-".$i."-".$j;
@@ -1028,7 +1036,6 @@ class Calculator extends Controller
 
             }
 
-           
            
         }
 
@@ -1109,7 +1116,7 @@ class Calculator extends Controller
         }
       
        
-       return view('graph/search_yearly', compact('data', 'mois_francais', 'percent', 'company', 'data_serv', 'serv', 'year'));
+       return view('graph/search_yearly', compact('data', 'mois_francais', 'percent', 'company', 'data_serv', 'serv', 'year', 'colors'));
     }
 
     public function VerifyIfFactureRegle($id_facture, $montant)

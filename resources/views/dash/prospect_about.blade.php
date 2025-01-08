@@ -219,12 +219,12 @@
                                             
                                             <th style="width: 40px">Ajouté le :</th>
                                             <!--LES RESTRICTIONS -->
-                                            @if(auth()->user()->id_role == 1 OR auth()->user()->id_role == 5 OR auth()->user()->id_role == 4 )	
+                                            @can("delete")	
                                                <th>Supprimer</th>
                                                 
-                                            @else
+                                            @endcan
                                                 
-                                            @endif
+                                      
                                             
                                         </tr>
                                         <!--LES FICHIERS ET LES FACTURES-->
@@ -240,8 +240,8 @@
                                                 
                                                     @endphp
                                                 </td>
-                                                <td>
-                                                    @if(auth()->user()->id_role == 1 OR auth()->user()->id_role == 5 OR auth()->user()->id_role == 4 )	
+                                                @can("delete")
+                                                    <td>
                                                         <form action="delete_service_many_to_many" method="post" >
 
                                                             @csrf
@@ -256,13 +256,8 @@
                                                             </div>
                                                         
                                                         </form>
-                                                        
-                                                    @else
-                                                        
-                                                    @endif
-                                                   
-
-                                                </td>
+                                                    </td>
+                                                @endcan
                                             </tr>
                                         
                                         @endforeach

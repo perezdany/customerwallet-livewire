@@ -282,12 +282,17 @@ Route::middleware(['auth:web'])->group(function(){
     //SUPPRIMER LE SERVICE DANS LA TABLE DES PROSPECTIONS
     Route::get('delete/{id}', [ServiceController::class, 'DeleteServiceInProspection']);
 
+    //SUPPRIMER DANS LA LISTE DES CONTRATS
+    Route::get('delprest/{id}', [ServiceController::class, 'DeleteServiceInContrat']);
+
     //QUAND ON EST DANS LA FICHE DE PROSPECT
     Route::post('delete_service_many_to_many', [ServiceController::class, 'DeleteServiceInFicheProspection']);
 
     //QUAND ON EST DANS LA FICHE CLIENT
     Route::post('delete_service_fiche_customer', [ServiceController::class, 'DeleteServiceInFicheCustomer']);
 
+    //AJOUTER UN SERVICE DANS LE TABLEAU DES CONTRATS
+    Route::post('edit_the_serv', [ServiceController::class, 'AddServiceInContrat']);
     //AJOUTER UN SERVICE QUAND ON SUR LA FICHE
     Route::post('add_service_in_fiche', [ServiceController::class, 'AddServiceInFiche']);
 

@@ -848,15 +848,10 @@ class ContratController extends Controller
     {
         //dd($request->all());
          //LA PRESTATION MAINTENANT
-         if($request->type == 0)
-         {
-             return view('forms/add_contrat_fiche_prosp',
-                 [
-                     'id_entreprise' => $request->id_entreprise,
-                     'error' => 'Choissez le type!'
-                 ]
-             );
-         }
+        if($request->type == 0)
+        {
+            return back()->with('error', 'Choisissez le type de facturation');
+        }
 
         if($request->entreprise == 0)
         {
@@ -2398,7 +2393,7 @@ class ContratController extends Controller
                     
                             
                     $path = $request->file('file')->storeAs(
-                        'fichiers', $file_name
+                        'fichiers/contrats', $file_name
                     );
 
                     $affected = DB::table('contrats')
@@ -2922,8 +2917,10 @@ class ContratController extends Controller
     public function getAllNoReglee()
     {
         $get = DB::table('contrats')
-          ->where('contrats.statut_solde', '=', 0)
-          ->get();
+
+          ->where('contrats.reconduction', '=', 1)
+          ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')
+          ->get(['contrats.*', 'entreprises.nom_entreprise']);
         
            return $get;
     }

@@ -22,4 +22,10 @@ class Contrat extends Model
         //return $this->belongsTomany('App\Models\Service');
         return $this->belongsToMany(Service::class);
     }
+
+    public function entreprises()
+    {
+        //return $this->belongsTomany('App\Models\Service');
+        return $this->belongsTo(Entreprise::class);
+    }
 }

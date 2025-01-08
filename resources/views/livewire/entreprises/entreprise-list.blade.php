@@ -91,7 +91,7 @@
                                 <form method="get" action="display_fiche_customer">
                                     @csrf
                                     <input type="text" value="{{$entreprise->id}}" style="display:none;" name="id_entreprise">
-                                    <button class="btn btn-default"> <b>Fiche</b></button>
+                                    <button class="btn btn-default"> <b>Fiche Client</b></button>
                                 </form>
                                 @endif
                             </td>
@@ -113,18 +113,21 @@
                                 <!--<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#edit{{ $entreprise->id }}">
                                     <i class="fa fa-edit"></i>
                                 </button>-->
+                                @can("edit")
                                 <button type="button" class="btn btn-primary"  wire:click="EditEntreprise(' {{ $entreprise->id }} ')">
                                     <i class="fa fa-edit"></i>
                                 </button>
+                                @endcan
                                 
                             </td>
                             <td>
                                 <!--SUPPRESSION AVEC POPUP-->
+                                @can("delete")
                                 <button type="button" class="btn btn-danger"  wire:click="confirmDelete(' {{ $entreprise->nom_entreprise }} '
                                 , {{ $entreprise->id }} )">
                                     <i class="fa fa-trash"></i>
                                 </button>
-                                
+                                @endcan
 
                             </td>
                             <td>

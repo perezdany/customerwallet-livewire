@@ -50,6 +50,10 @@ class AuthServiceProvider extends ServiceProvider
             return $user->hasRole("commercial");
         });
 
+        Gate::define("manager-commercial", function(Utilisateur $user){
+            return $user->hasRole("manager-commercial");
+        });
+
         Gate::define("comptable", function(Utilisateur $user){
             return $user->hasRole("comptable");
         });

@@ -70,7 +70,7 @@ class FactureController extends Controller
             ->where('factures.id', $id)
             ->get(['factures.*',
             'contrats.titre_contrat', 'contrats.date_solde', 
-            'contrats.montant', 'contrats.reste_a_payer',  
+            'contrats.montant', 'contrats.reste_a_payer',  'contrats.debut_contrat' ,
              'typeprestations.libele',  'entreprises.nom_entreprise']);
        
         return $get;
@@ -203,16 +203,19 @@ class FactureController extends Controller
 
         //LA DATE DE REGLEMENT EST PAR DEFAUT TROIS JOURS APRES
         $timestamp = strtotime($request->date_emission);
-        $date_reglement = date('Y-m-d', strtotime('+3 days',  $timestamp));
+
+        //POUR DES RAISONS TEMPORAIRES POUR LE REMPLISSAGE JE COMMENTE LA LIGNE CI DESSOUS
+        //$date_reglement = date('Y-m-d', strtotime('+3 days',  $timestamp));
+        
         //dd($date_reglement);
         $Insert = Facture::create([
             'numero_facture' => $request->numero_facture, 
-            'date_reglement' => $date_reglement,
+            'date_reglement' => $request->date_reglement,
              'date_emission' => $request->date_emission, 
              'montant_facture' => $request->montant_facture, 
              'id_contrat' => $request->id_contrat,
               'reglee' => 0,
-            
+                'annulee' => 0,
               'created_by' => auth()->user()->id,
        ]);
 

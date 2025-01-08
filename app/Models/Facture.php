@@ -13,11 +13,18 @@ class Facture extends Model
 
     protected $fillable = [
          'numero_facture', 'date_reglement', 'date_emission', 
-         'montant_facture', 'id_contrat', 'reglee', 'created_by', 'file_path',
+         'montant_facture', 'id_contrat', 'reglee', 'created_by', 'file_path', 'annulee'
     ];
 
     public function paiements()
     {
         return $this->hasMany(Paiement::class);
     }
+
+    public function contrats()
+    {
+        return $this->belongsTo(Contrat::class);
+    }
+
+   
 }

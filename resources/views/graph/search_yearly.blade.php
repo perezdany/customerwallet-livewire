@@ -76,7 +76,7 @@
            
         </div>
        
-        <div class="col-md-4">
+        <div class="col-md-5">
              <!--ON VA ESSAYER D' AFFICHER LES POURCENTAGE DE CHAQUE ENTREPRISE-->
             <div class="box">
                 <div class="box-body">
@@ -104,16 +104,9 @@
                                 //LE LABELS POUR LES ABSCISSES DU GRAPHE
                                 labels: @json($company),
                                 datasets: [{
-                                    label: "p",
+                                    label: "Pourcentage",
                                     data: @json($percent),
-                                    backgroundColor: ["#A55A5A", "#47C526", "#A9CCE3 ", "#BFC9CA", "#7E5109",
-                                    "#D0D3D4", "#1D8348", "#A93226", "#F4D03F", "#1A5276",
-                                    "#9B59B6", "#F6DDCC", "#979A9A", "#7E5109", "#1D8348", "#A93226", "#F4D03F", "#1A5276",
-                                    "#9B59B6", "#F6DDCC", "#979A9A", "#7E5109",
-                                     "#A55A5A", "#47C526", "#A9CCE3 ", "#BFC9CA", "#F6DDCC", "#979A9A", "#7E5109", "#1D8348", "#A93226", "#F4D03F", "#1A5276",
-                                    "#9B59B6", "#F6DDCC", "#979A9A", "#7E5109",
-                                     "#A55A5A", "#47C526", "#A9CCE3 ", "#BFC9CA", "#F6DDCC", "#979A9A", 
-                                  "#F6DDCC", "#979A9A", "#7E5109", "#9B59B6", "#F6DDCC", "#979A9A", "#7E5109",],
+                                    backgroundColor: @json($colors),
                                 }]
                             },
                             options: {
@@ -129,7 +122,7 @@
             </div>
         </div>
         <!--POURCENTAGE PAR SERVICE-->
-        <div class="col-md-4">
+        <div class="col-md-5">
              
             <div class="box">
                 <div class="box-body">
@@ -157,7 +150,7 @@
                                 //LE LABELS POUR LES ABSCISSES DU GRAPHE
                                 labels: @json($serv),
                                 datasets: [{
-                                    label: "p",
+                                    label: "Répartition",
                                     data: @json($data_serv),
                                     backgroundColor: ["#A55A5A", "#47C526", "#A9CCE3 ", "#BFC9CA", "#7E5109",
                                     "#D0D3D4", "#1D8348", "#A93226", "#F4D03F", "#1A5276",
@@ -181,7 +174,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-2">
             
             <div class="box">
                 <div class="box-body">

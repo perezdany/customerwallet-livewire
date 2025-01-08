@@ -3,7 +3,8 @@
 @php
     
     use App\Http\Controllers\ServiceController;
-
+  use App\Http\Controllers\CategorieController;
+  $categoriecontroller = new CategorieController();
     $servicecontroller = new ServiceController();
 
     $all = $servicecontroller->GetAll();
@@ -12,12 +13,7 @@
 
 @section('content')
      <div class="row">
-         @if(session('success'))
-            <div class="col-md-12 box-header">
-              <p class="bg-success" style="font-size:13px;">{{session('success')}}</p>
-            </div>
-          @endif
-        
+
             <div class="col-md-12">
               <div class="box">
                 <div class="box-header">

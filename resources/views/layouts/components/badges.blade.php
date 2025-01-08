@@ -730,8 +730,6 @@
             </a>
           </div>
         </div>
-      
-       
 
         <div class="col-lg-3 col-xs-6">
           <!-- small box -->
@@ -760,7 +758,7 @@
         <!-- ./col -->
       
         <div class="row">
-              <div class="col-lg-3 col-xs-6">
+          <div class="col-lg-3 col-xs-6">
           <!-- small box -->
             <div class="small-box bg-green">
               <div class="inner">
@@ -799,5 +797,154 @@
       <!-- /.row -->
     
     @endcan
+
+    @can("standard")
+
+      <!-- Small boxes (Stat box) -->
+      <div class="row">
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-aqua">
+            <div class="inner">
+                @php
+                  $count = $calculator->CountCustomer();
+                  $countactif = $calculator-> CountActif();
+                  $countinactif = $calculator-> CountInactif();
+                  //dd($count);
+                @endphp
+              <form method="get" action="clients">
+                @csrf
+            
+                <button class="btn bg-aqua"><p><h3>{{$count}}</h3> </p></button>  
+              </form>
+              
+              <form method="get" action="clients">
+                @csrf
+              
+                <button class="btn bg-aqua"> <p>CLIENTS</p></button>  
+              </form>
+              
+            
+
+              <form method="get" action="actifs">
+                @csrf
+                
+                <button class="btn bg-aqua"><p>Actifs : {{$countactif}}  </p></button>  
+              </form>
+              <form method="get" action="inactifs">
+                @csrf
+                
+                <button class="btn bg-aqua"><p style="color:red">Inactifs : {{$countinactif}}  </p></button>  
+              </form>
+            
+            </div>
+            <div class="icon">
+              <i class="fa fa-building"></i>
+            </div>
+            <a href="customers" class="small-box-footer">
+              Plus d'infos <i class="fa fa-arrow-circle-right"></i>
+            </a>
+          </div>
+        </div>
+      
+     
+      
+      </div>
+      <!-- /.row -->
+
+      <div class="row">
+        
+          
+      </div>
+      <!-- /.row -->
+    
+    @endcan
+    
+
+    @can("employe")
+
+      <!-- Small boxes (Stat box) -->
+      <div class="row">
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-aqua">
+            <div class="inner">
+                @php
+                  $count = $calculator->CountCustomer();
+                  $countactif = $calculator-> CountActif();
+                  $countinactif = $calculator-> CountInactif();
+                  //dd($count);
+                @endphp
+              <form method="get" action="clients">
+                @csrf
+            
+                <button class="btn bg-aqua"><p><h3>{{$count}}</h3> </p></button>  
+              </form>
+              
+              <form method="get" action="clients">
+                @csrf
+              
+                <button class="btn bg-aqua"> <p>CLIENTS</p></button>  
+              </form>
+              
+            
+
+              <form method="get" action="actifs">
+                @csrf
+                
+                <button class="btn bg-aqua"><p>Actifs : {{$countactif}}  </p></button>  
+              </form>
+              <form method="get" action="inactifs">
+                @csrf
+                
+                <button class="btn bg-aqua"><p style="color:red">Inactifs : {{$countinactif}}  </p></button>  
+              </form>
+            
+            </div>
+            <div class="icon">
+              <i class="fa fa-building"></i>
+            </div>
+            <a href="customers" class="small-box-footer">
+              Plus d'infos <i class="fa fa-arrow-circle-right"></i>
+            </a>
+          </div>
+        </div>
+      
+         <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+            <div class="small-box bg-green">
+              <div class="inner">
+                  @php
+                    $count = $calculator->CountCible();
+                  @endphp
+                <h3><a href="cibles" style="color:#fff">{{$count}}</a></h3>
+                      <a href="cibles" style="color:#fff"><p>CIBLES</p></a><br>
+                      <p> </p>
+                      <p></p>  <br><br>
+                        <p></p>  
+                        <br>
+                        <p></p>  
+              
+              </div>
+              <div class="icon">
+                <i class="fa fa-bullseye"></i>
+              </div>
+              <a href="cibles" class="small-box-footer">
+                Plus d'infos<i class="fa fa-arrow-circle-right"></i>
+              </a>
+            </div>
+          </div>
+      
+      </div>
+      <!-- /.row -->
+
+      <div class="row">
+        
+          
+      </div>
+      <!-- /.row -->
+    
+    @endcan
+    
       
     

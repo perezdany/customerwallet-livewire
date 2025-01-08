@@ -1,42 +1,22 @@
 @php
-  //header("Refresh:0");
-    use App\Http\Controllers\ServiceController;
+   
+use App\Http\Controllers\InterlocuteurController;
 
-    use App\Http\Controllers\ControllerController;
+$interlocuteurcontroller = new InterlocuteurController();
 
-    use App\Http\Controllers\EntrepriseController;
+use App\Http\Controllers\EntrepriseController;
+use App\Http\Controllers\UserController;
 
-    use App\Http\Controllers\ContratController;
-    use App\Http\Controllers\StatutEntrepriseController;
-    
-    use App\Http\Controllers\TypePrestationController;
+$entreprisecontroller = new EntrepriseController();
+$usercontroller = new UserController();
 
-    use App\Http\Controllers\FactureController;
+$all =  $interlocuteurcontroller-> GetAll();
 
-    use App\Http\Controllers\CategorieController;
-
-    $statutentreprisecontroller = new StatutEntrepriseController();
-
-    $contratcontroller = new ContratController();
-
-    $categoriecontroller = new CategorieController();
-
-    $servicecontroller = new ServiceController();
-
-    $entreprisecontroller = new EntrepriseController();
-    
-    $typeprestationcontroller = new TypePrestationController();
-
-    $all = $contratcontroller->RetriveAll();
-
-
-    /*IMPORTANT ! ECRIRE UN CODE ICI POUR SI A CETTE DATE LE CONTRAT DOIT ETRE RECONDUIT ON ACTUALISE LA DATE DE FIN */
+  //dd($all);
 @endphp
-
 <div class="row">
-    @include('livewire.contrats.edit')
-
-    @include('livewire.contrats.contrats-list')
+    @include('livewire.interlocuteurs.add')
+    @include('livewire.interlocuteurs.interlocuteurs-list')
 
 
     <script>
@@ -68,7 +48,7 @@
             cancelButtonText: "Annuler!",
             }).then((result) => {
             if (result.isConfirmed) {
-            @this.deleteEntreprise(event.detail.message.data.id_entreprise)
+            @this.deleteFacture(event.detail.message.data.id_facture)
             }
             });
 
@@ -87,16 +67,16 @@
 
             //Message d'erreur
             window.addEventListener("showErrorMessage",  event=>{
-        Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                background: "#ff3362" ,
-                color: "#fff",
-                position: "top",
-                text: event.detail.message,
-            
-                });
-            })
+            Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    background: "#ff3362" ,
+                    color: "#fff",
+                    position: "top",
+                    text: event.detail.message,
+                
+                    });
+                })
         })
 
 
@@ -136,5 +116,4 @@
 
         
     </script>   
-
 </div>

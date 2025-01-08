@@ -26,7 +26,8 @@
                             @php
                                 echo 'Chiffre d\'affaire au mois de ';
                                 setlocale(LC_TIME, ['fr', 'fra', 'fr_FR']);
-                                 echo utf8_encode(strftime( '%B ')). '<br>';
+                                 //echo utf8_encode(strftime( '%B ')). '<br>';
+                                  echo $francais. '<br>';
                             @endphp
                         </h3><br>
                         
@@ -156,7 +157,7 @@
             </div>
            
         </div>
-        <div class="col-md-4">
+        <div class="col-md-5">
              <!--ON VA ESSAYER D' AFFICHER LES POURCENTAGE DE CHAQUE ENTREPRISE-->
             <div class="box">
                 <div class="box-body">
@@ -203,7 +204,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-5">
             
             <div class="box">
                 <div class="box-body">
@@ -233,7 +234,7 @@
                                 //LE LABELS POUR LES ABSCISSES DU GRAPHE
                                 labels: @json($serv),
                                 datasets: [{
-                                    label: 'Repartition',
+                                    label: 'Répartition',
                                     data: @json($data_serv),
                                     backgroundColor: ["#A09ABC", "#173753", "#1B4353", "#F6BD60", "#7E5109",
                                     "#D0D3D4", "#1D8348", "#A93226", "#F4D03F", "#1A5276",
@@ -258,7 +259,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-2">
              <!--ON VA ESSAYER D' AFFICHER LES POURCENTAGE DE CHAQUE ENTREPRISE-->
             <div class="box">
                 <div class="box-body">

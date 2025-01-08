@@ -184,7 +184,9 @@
                                     <label class="col-sm-6 control-label"><b>MONTANT :</b></label>
                                 
                                     <div class="col-sm-6">
-                                    <input class="form-control" disabled type="text" value="{{$contrats->montant}}" >
+                                    <input class="form-control" disabled type="text" value="  @php
+                                            echo  number_format($contrats->montant, 2, ".", " ")." XOF";
+                                        @endphp" >
                                     </div>
                             
                                 </div>
@@ -194,64 +196,7 @@
                         </form>
 
                     @endforeach
-                    <div class="box-header">
-                        <h3 class="box-title"><b>PRESTATIONS REALISEES</b></h3>
-                    </div> 
-                    <div class="no-padding">
-
-                            <!-- /.box-header -->
-                        <div class="box-body">
-                            <table  class="table table-hover box-body">
-                                <thead>
-                                <tr>
-                                <th>Date </th>
-                                <th>Type de prestation</th>
-                                <th>Lieu</th>
-                                
-                                <th>Fin de contrat</th>
-                                <th>Prestation</th>
-                                 
-                               
-                                
-                                </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($prestations as $prestations)
-                                        <tr>
-                                            <td>@php echo date('d/m/Y',strtotime($prestations->date_prestation)) @endphp</td>
-                                            <td>{{$prestations->libele}}</td>
-                                            <td>{{$prestations->localisation}}</td>
-                                            
-                                            <td>@php echo date('d/m/Y',strtotime($prestations->fin_contrat));  @endphp</td>
-                                            <td>
-                                                @php
-                                                    //On va écrire un code pour detecter tous les services offerts
-                                                    $se = DB::table('prestation_services')
-                                                    ->join('prestations', 'prestation_services.prestation_id', '=', 'prestations.id')
-                                                    ->join('services', 'prestation_services.service_id', '=', 'services.id') 
-                                                    ->where('prestation_id',$prestations->id)    
-                                                    ->get(['services.libele_service', 'prestation_services.*']);
-                                                @endphp
-                                                <ul>
-                                                @foreach($se as $se_get)
-                                                    
-                                                    <li>{{$se_get->libele_service}}</li>
-                                                       
-                                                @endforeach
-                                                </ul>
-                                            
-                                            </td>
-                                            
-                                            
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                                
-                            </table>
-                        </div>
-                            <!-- /.box-body -->
-                 
-                    </div>
+                    
                     @php
                         $c = $prospections->count();
                         
@@ -354,8 +299,7 @@
                                         @foreach($se as $se_get)
                                             <tr>
                                                 <td>  <span class="text"><b>{{$se_get->libele_service}}</b></span></td>
-                                            
-                                                
+
                                             </tr>
                                         
                                         @endforeach
@@ -369,14 +313,6 @@
                                 </ul>
                             </div>
                         </div>
-
-                     
-
-
-                        
-                       
-                       
-                        
                     @endforeach
                    
                     

@@ -24,9 +24,9 @@
                         <b>
                         <h3 class="box-title"> 
                             @php
-                                echo 'Chiffre d\'affaire au mois de ';
+                                 echo 'Chiffre d\'affaire au mois de ';
                                 setlocale(LC_TIME, ['fr', 'fra', 'fr_FR']);
-                                //dd($month);
+                                 //echo utf8_encode(strftime( '%B ')). '<br>';
 
                                 echo $francais. '<br>';
                             @endphp
@@ -125,13 +125,15 @@
                                 //LE LABELS POUR LES ABSCISSES DU GRAPHE
                                 labels: tableau,
                                 datasets: [{
-                                    label: 'Chiffre d\'affaire mensuel',
+                                    label: 'Total contrat du jour',
                                     data: @json($data),
-                                    backgroundColor: ["#A55A5A", "#47C526", "#A9CCE3 ", "#BFC9CA",
-                                    "#D0D3D4", "#1D8348", "#A93226", "#F4D03F", "#1A5276",
-                                    "#9B59B6", "#F6DDCC", "#979A9A", "#7E5109", "#1D8348", "#A93226", "#F4D03F", "#1A5276",
-                                    "#9B59B6", "#F6DDCC", "#979A9A", "#7E5109",
-                                     "#A55A5A", "#47C526", "#A9CCE3 ", "#BFC9CA", "#F6DDCC", "#979A9A"],
+                                    backgroundColor: ["#9B59B6", "#F6DDCC", "#A57548", "#7E5109", "#1D8348", 
+                                    "#A93226", "#F4D03F", "#1A5276", "#82DDF0", "#040F0F",
+                                    "#9B59B6", "#F6DDCC", "#979A9A", "#7E5109", "#2BA84A",
+                                     "#A55A5A", "#47C526", "#A9CCE3 ", "#BFC9CA", "#F6DDCC",
+                                      "#979A9A", "#FCFFFC", "#696D7D", "#138A36", "#D4DF9E",
+                                      "#34403A", "#12100E", "#4A4B2F", "#FA198B", "#256EFF",
+                                      "#FF495C", "#46237A", "#EC7505", "#5B5B5B", "#FCB0B3"],
                                 }]
                             },
                             options: {
@@ -146,7 +148,7 @@
             </div>
            
         </div>
-        <div class="col-md-4">
+        <div class="col-md-5">
              <!--ON VA ESSAYER D' AFFICHER LES POURCENTAGE DE CHAQUE ENTREPRISE-->
             <div class="box">
                 <div class="box-body">
@@ -178,11 +180,7 @@
                                 datasets: [{
                                     label: 'Pourcentage par entreprise ',
                                     data: @json($percent),
-                                    backgroundColor: ["#A55A5A", "#47C526", "#A9CCE3 ", "#BFC9CA", "#7E5109",
-                                    "#D0D3D4", "#1D8348", "#A93226", "#F4D03F", "#1A5276",
-                                    "#9B59B6", "#F6DDCC", "#979A9A", "#7E5109", "#1D8348", "#A93226", "#F4D03F", "#1A5276",
-                                    "#9B59B6", "#F6DDCC", "#979A9A", "#7E5109",
-                                     "#A55A5A", "#47C526", "#A9CCE3 ", "#BFC9CA", "#F6DDCC", "#979A9A"],
+                                    backgroundColor: @json($colors),
                                 }]
                             },
                             options: {
@@ -197,7 +195,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-5">
             
             <div class="box">
                 <div class="box-body">
@@ -227,13 +225,17 @@
                                 //LE LABELS POUR LES ABSCISSES DU GRAPHE
                                 labels: @json($serv),
                                 datasets: [{
-                                    label: 'Pourcentage',
+                                    label: 'Répartition',
                                     data: @json($data_serv),
-                                    backgroundColor: ["#A55A5A", "#47C526", "#A9CCE3 ", "#BFC9CA", "#7E5109",
+                                    backgroundColor: ["#A09ABC", "#173753", "#1B4353", "#F6BD60", "#7E5109",
                                     "#D0D3D4", "#1D8348", "#A93226", "#F4D03F", "#1A5276",
-                                    "#9B59B6", "#F6DDCC", "#979A9A", "#7E5109", "#1D8348", "#A93226", "#F4D03F", "#1A5276",
-                                    "#9B59B6", "#F6DDCC", "#979A9A", "#7E5109",
-                                     "#A55A5A", "#47C526", "#A9CCE3 ", "#BFC9CA", "#F6DDCC", "#979A9A"],
+                                    "#9B59B6", "#F6DDCC", "#A57548", "#7E5109", "#1D8348", 
+                                    "#A93226", "#F4D03F", "#1A5276", "#82DDF0", "#040F0F",
+                                    "#9B59B6", "#F6DDCC", "#979A9A", "#7E5109", "#2BA84A",
+                                     "#A55A5A", "#47C526", "#A9CCE3 ", "#BFC9CA", "#F6DDCC",
+                                      "#979A9A", "#FCFFFC", "#696D7D", "#138A36", "#D4DF9E",
+                                      "#34403A", "#12100E", "#4A4B2F", "#FA198B", "#256EFF",
+                                      "#FF495C", "#46237A", "#EC7505", "#5B5B5B", "#FCB0B3"],
                                 }]
                             },
                             options: {
@@ -248,7 +250,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-2">
              <!--ON VA ESSAYER D' AFFICHER LES POURCENTAGE DE CHAQUE ENTREPRISE-->
             <div class="box">
                 <div class="box-body">

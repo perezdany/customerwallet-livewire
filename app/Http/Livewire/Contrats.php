@@ -69,7 +69,12 @@ class Contrats extends Component
             $this->editContrat['avenant'] != $this->editOldValues['avenant'] OR
             $this->editContrat['path'] != $this->editOldValues['path'] OR
             $this->editContrat['proforma_file'] != $this->editOldValues['proforma_file'] OR
-            $this->editContrat['bon_commande'] != $this->editOldValues['bon_commande']
+            $this->editContrat['bon_commande'] != $this->editOldValues['bon_commande'] OR 
+            $this->editContrat['fin_contrat'] != $this->editOldValues['fin_contrat']
+            /*OR
+            $this->editContrat['jours'] != $this->editOldValues['jours'] OR
+            $this->editContrat['mois'] != $this->editOldValues['mois'] OR
+            $this->editContrat['annee'] != $this->editOldValues['annee']*/
            
         )
         {
@@ -96,244 +101,23 @@ class Contrats extends Component
 
         //Faire la différence pour le reste_a_payer
         $rest = $this->editContrat['montant'] - $tot_paiement;
-       
-         //Calcul de la date de fin de contrat
-         if($this->jours == "null" AND $this->mois == "null" AND $this->annee == "null")
-         {
-            $date_fin = "NULL";
-         }
-         else
-         {
+       // dd($this->mois);
+        //Calcul de la date de fin de contrat
+        if($this->jours == "null" AND $this->mois == "null" AND $this->annee == "null")
+        {
+            //$date_fin = "NULL";
+        }
+        else
+        {
             $date_fin = $calculator->FinContrat($this->jours, $this->editContrat['debut_contrat'], $this->mois, $this->annee);
-         }
+           
+        }
         //dd($editContrat['montan']);
         //ENREGISTRER LE FICHIER DU CONTRAT
         //IL FAUT SUPPRIMER L'ANCIEN FICHIER DANS LE DISQUE DUR
         $fichier = $this->editContrat['path'];
        
-         /*
-        if($fichier != null)
-        {   $expl = explode("/", $fichier);
-            //dd($expl[2]);
-           
         
-            //VERIFIER SI L'ENREGISTREMENT A UN CHEMIN D'ACCES ENREGISTRE
-            $get_path = Contrat::where('id', $this->editContrat['id'])->get();
-            foreach($get_path as $get_path)
-            {
-                if($get_path->path == null)
-                {
-                    if(Storage::disk('local')->exists($this->editContrat['path']))
-                    {
-                        $extension = pathinfo($expl[2]->getClientOriginalName(), PATHINFO_EXTENSION);
-                        //dd($fichier->getClientOriginalName());
-                        if($extension != "pdf")
-                        {
-                            $this->dispatchBrowserEvent('showErrorMessage', ["message" => "Le format de fichier doit être PDF"]);
-                        }
-                        //enregistrement de fichier dans la base
-                        $file_name = $expl[2]->getClientOriginalName();
-                        
-                        $path = $this->editContrat['path']->storeAs('fichiers/contrat',  $file_name);
-                        
-                        $affected = DB::table('contrats')
-                        ->where('id', $this->editContrat['id'])
-                        ->update([
-                            'path'=> $path,
-                            
-                        ]);
-                        //dd($affected);
-                        
-                    }
-                    else
-                    {
-
-                    }
-                }
-                else
-                {
-                    if(Storage::disk('local')->exists($this->editContrat['path']))
-                    {
-                       
-                    }
-                    else
-                    {
-                        //dd($expl[2]);
-                        $extension = pathinfo($expl[2]->getClientOriginalName(), PATHINFO_EXTENSION);
-                        //dd($fichier->getClientOriginalName());
-                        if($extension != "pdf")
-                        {
-                            $this->dispatchBrowserEvent('showErrorMessage', ["message" => "Le format de fichier doit être PDF"]);
-                        }
-                        $file_name = $expl[2]->getClientOriginalName();
-                        
-                        $path = $this->editContrat['path']->storeAs('fichiers/contrat',  $file_name);
-    
-                        $affected = DB::table('contrats')
-                        ->where('id', $this->editContrat['id'])
-                        ->update([
-                            'path'=> $path,
-                            
-                        ]);
-                        
-                    } 
-                    
-                    
-                }
-            }
-            
-           
-            
-        }
-        else
-        {
-           
-        }
-
-        //ENREGISTRER LA FACTURE PROFORMA
-        //IL FAUT SUPPRIMER L'ANCIEN FICHIER DANS LE DISQUE DUR
-        $fichier_proforma = $this->editContrat['proforma_file'];
-        if( $fichier_proforma != null)
-        {
-            if(Storage::disk('local')->exists($this->editContrat['proforma_file']))
-            {
-                $expl = explode("/", $fichier_proforma);
-                //VERFIFIER LE FORMAT 
-                $extension = pathinfo($expl[2]->getClientOriginalName(), PATHINFO_EXTENSION);
-
-                if($extension != "pdf")
-                {
-                    $this->dispatchBrowserEvent('showErrorMessage', ["message" => "Le format de fichier doit être PDF"]);
-                }
-                //VERIFIER SI L'ENREGISTREMENT A UN CHEMIN D'ACCES ENREGISTRE
-                $get_path_prof = Contrat::where('id', $this->editContrat['id'])->get();
-                foreach($get_path_prof as $get_path_prof)
-                {
-                    if($get_path_prof->proforma_file == null)
-                    {
-                        //enregistrement de fichier dans la base
-                        $file_name_prof =$expl[2]->getClientOriginalName();
-                    
-                      
-
-                        $affected = DB::table('contrats')
-                        ->where('id',  $this->editContrat['id'])
-                        ->update([
-                            'proforma_file'=> $path,
-                            
-                        ]);
-
-                    }
-                    else
-                    {
-
-                        //SUPPRESSION DE L'ANCIEN FICHIER
-                        //dd($get_path->path);
-                        $get_path_prof = Contrat::where('id', $this->editContrat['id'])->get();
-                        foreach($get_path_prof as $get_path_prof)
-                        {
-                            Storage::delete($get_path_prof->proforma_file);
-                        }
-
-
-                        $file_name_prof = $expl[2]->getClientOriginalName();
-                        
-                        $path = $this->editContrat['proforma_file']->storeAs('factures/proforma',  $file_name);    
-                    
-                        $affected = DB::table('contrats')
-                        ->where('id',  $this->editContrat['id'])
-                        ->update([
-                            'proforma_file'=> $path,
-                            
-                        ]);
-
-
-                        
-                    }
-                }
-            }
-            else
-            {
-
-            }
-        
-        }
-        else
-        {
-        
-        }
-
-        //LE FICHIER DE BON DE COMMANDE
-        $fichier_commande = $this->editContrat['bon_commande'] ;
-        if($fichier_commande != null)
-        {
-            if(Storage::disk('local')->exists($this->editContrat['bon_commande']))
-            {
-                //VERFIFIER LE FORMAT 
-                $expl = explode("/", $fichier_commande);
-                //VERFIFIER LE FORMAT 
-                $extension = pathinfo( $expl[2]->getClientOriginalName(), PATHINFO_EXTENSION);
-                
-                if($extension != "pdf")
-                {
-                    $this->dispatchBrowserEvent('showErrorMessage', ["message" => "Le format de fichier doit être PDF"]);
-                }
-                //VERIFIER SI L'ENREGISTREMENT A UN CHEMIN D'ACCES ENREGISTRE
-                $get_bon_commande = Contrat::where('id', $this->editContrat['id'])->get();
-                foreach($get_bon_commande as $get_bon_commande)
-                {
-                    if($get_bon_commande->bon_commande == null)
-                    {
-                        //enregistrement de fichier dans la base
-                        $file_name =  $expl[2]->getClientOriginalName();
-                    
-                        $path = $this->editContrat['bon_commande']->storeAs('fichiers/bon_commande',  $file_name);    
-                        
-                        $affected = DB::table('contrats')
-                        ->where('id',  $this->editContrat['id'])
-                        ->update([
-                            'bon_commande'=> $path,
-                            
-                        ]);      
-                        
-                    }
-                    else
-                    {
-
-                        //SUPPRESSION DE L'ANCIEN FICHIER
-                        //dd($get_path->path);
-                        $get_path = Contrat::where('id', $this->editContrat['id'])->get();
-                        foreach($get_path as $get_path)
-                        {
-                            Storage::delete($get_path->bon_commande);
-                        }
-
-                        $file_name =  $expl[2]->getClientOriginalName();
-                        
-                        $path = $this->editContrat['bon_commande']->storeAs('fichiers/bon_commande',  $file_name);    
-                    
-                        $affected = DB::table('contrats')
-                        ->where('id',  $this->editContrat['id'])
-                        ->update([
-                            'bon_commande'=> $path,
-                            
-                        ]);                          
-                    }
-                }
-            }
-            else
-            {
-
-            }
-            
-        }
-        else
-        {
-        
-        }*/
-
-        //$contrat->fill($this->editContrat);
-
         $affected = DB::table('contrats')
         ->where('id',  $this->editContrat['id'])
         ->update([
@@ -341,7 +125,7 @@ class Contrats extends Component
             'montant' =>  $this->editContrat['montant'], 
             'reste_a_payer' => $rest, 
             'debut_contrat' =>  $this->editContrat['debut_contrat'],
-            'fin_contrat' => $date_fin,
+            'fin_contrat' => $this->editContrat['fin_contrat'],
             'id_entreprise' =>  $this->editContrat['id_entreprise'],
             'reconduction' =>  $this->editContrat['reconduction'],
             'avenant' =>  $this->editContrat['avenant'],

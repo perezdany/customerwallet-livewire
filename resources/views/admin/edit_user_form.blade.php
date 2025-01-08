@@ -63,6 +63,7 @@
                             <div class="form-group">
                                 <label>Rôle:</label>
                                 <select class="form-control " name="role">
+                                  <option value={{$user->roles_id}}>{{$user->intitule}}</option>
                                 @php
                                         $role = $rolecontroller->GetAll();
                                     @endphp

@@ -214,8 +214,8 @@ class Factures extends Component
         }
 
 
-        $factureQuery = Facture::query();
-
+        $factureQuery = Facture::query()->with('contrats');
+        //dump($factureQuery);
 
         if($this->search != "")
         {

@@ -29,9 +29,34 @@
                         </div>
                     </div><br>
 
-                      <div class="form-group">
+                     <div class="row"> 
+                        <div class="col-sm-6"><label >Fin du contrat:</label></div>
+                        <div class="col-sm-6">
+                        <input type="date" class="form-control " wire:model="editContrat.fin_contrat">
+                        </div>
+                    </div><br>
+                    
+                     <div class="row"> 
+                        <div class="col-sm-6"><label >Type de Facturation</label></div>
+                        <div class="col-sm-6">
+                         <select class="form-control " name="type" wire:model="editContrat.id_type_prestation">
+                                  <!--liste des services a choisir -->
+                                  @php
+                                      $get = $typeprestationcontroller->GetAll();
+                                  @endphp
+                                 
+                                  @foreach($get as $type)
+                                      <option value={{$type->id}}>{{$type->libele}}</option>
+                                      
+                                  @endforeach
+                              </select>
+                        </div>
+                       
+                    </div><br>
+
+                      <!--<div class="form-group">
                             <label>Durée du contrat</label>
-                            <!--FAIRE DES CALCULS POUR DETERMINER LA FIN DU CONTRAT-->
+                          
                               <div class="row">
                                 <div class="col-md-3">
                                   <input type="number" class="form-control" placeholder="jours" min="1" max="365" wire.model="jours" >
@@ -43,7 +68,7 @@
                                   <input type="number" class="form-control" placeholder="année" min="1" max="10" wire.model="annee">
                                 </div>
                               </div>
-                          </div>
+                          </div>-->
 
                     <div class=" row">
                         <div class="col-sm-6"><label>Entreprise:</label></div>
@@ -138,11 +163,14 @@
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Fermer</button>
-                           @if($editHasChanged)
+                       
+                        @if($editHasChanged)
 
                                 <button type="submit" class="btn btn-success">Valider la modification</button>
                                     
-                            @endif
+                        @endif
+                                    
+                           
                     </div>
                 </div>
             </form>

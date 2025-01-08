@@ -38,20 +38,29 @@
                <li class="active"><a href="prospection"><i class="fa fa-circle-o"></i>Prospections</a></li>
             @endcan
 
-             @can("commercial")
+            @can("commercial")
+             <li><a href="entreprises"><i class="fa fa-circle-o"></i> Entreprises</a></li> 
+              <li><a href="interlocuteurs"><i class="fa fa-circle-o"></i>Interlocuteurs</a></li>
+              <li class="active"><a href="fiche"><i class="fa fa-circle-o"></i>Fiche clients</a></li>
+               <li class="active"><a href="prospection"><i class="fa fa-circle-o"></i>Prospections</a></li>
+            @endcan
+            @can("manager-commercial")
              <li><a href="entreprises"><i class="fa fa-circle-o"></i> Entreprises</a></li> 
               <li><a href="interlocuteurs"><i class="fa fa-circle-o"></i>Interlocuteurs</a></li>
               <li class="active"><a href="fiche"><i class="fa fa-circle-o"></i>Fiche clients</a></li>
                <li class="active"><a href="prospection"><i class="fa fa-circle-o"></i>Prospections</a></li>
             @endcan
 
-             @can("comptable")
+
+            @can("comptable")
               <li><a href="entreprises"><i class="fa fa-circle-o"></i> Entreprises</a></li> 
               <li><a href="interlocuteurs"><i class="fa fa-circle-o"></i>Interlocuteurs</a></li>
               <li><a href="contrat"><i class="fa fa-circle-o"></i>Contrats</a></li>
               <li class="active"><a href="facture"><i class="fa fa-circle-o"></i>Factures</a></li>
              
             @endcan
+
+            
             @can("employe")
              <li><a href="entreprises"><i class="fa fa-circle-o"></i> Entreprises</a></li> 
               <li><a href="interlocuteurs"><i class="fa fa-circle-o"></i>Interlocuteurs</a></li>
@@ -142,7 +151,25 @@
               </ul>
           </li>
         @endcan
+
+        @can("manager-commercial")
+          <li class="treeview">
+              <a href="#" style="background-color: #FFFFFF">
+                <i class="fa fa-pie-chart"></i>
+                <span>Graphs</span>
+                <span class="pull-right-container">
+                  <i class="fa fa-angle-left pull-right"></i>
+                </span>
+              </a>
+              <ul class="treeview-menu">
+                <li><a href="monthly"><i class="fa fa-circle-o"></i> Chiffre d'affaire mensuel</a></li>
+                <li><a href="yearly"><i class="fa fa-circle-o"></i> Chiffre d'affaire annuel</a></li>
+                
+              </ul>
+          </li>
+        @endcan
       
+
         
           <li class="">
             <a href="#" style="background-color: #FFFFFF">
@@ -156,7 +183,7 @@
                   @foreach($get_guide as $all)
                     <input type="text" value={{$all->id}} style="display:none;" name="id_doc">
                     <input type="text" class="form-control" name="file" value="{{$all->	path_doc}}" style="display:none;">
-                    <button type="submit" class="btn btn-default "><i class="fa fa-files-o"></i>Guide Utilisateur</button>
+                    <!--<button type="submit" class="btn btn-default "><i class="fa fa-files-o"></i>Guide Utilisateur</button>-->
                   @endforeach
                   
               </form>

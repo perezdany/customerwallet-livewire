@@ -172,7 +172,7 @@
                                       
                                       <optgroup label="{{$categorie->libele_categorie}}">{{$categorie->libele_categorie}}</optgroup>
                                       @php
-                                          $get = $servicecontroller->GetByCategorieNoSusp($categorie->id);
+                                          $get = $servicecontroller->GetByCategorie($categorie->id);
                                           
                                       @endphp
                                       @foreach($get as $service)

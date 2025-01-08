@@ -61,7 +61,7 @@ class UserController extends Controller
             'roles_id' => $request->role, ]);
         
 
-        return redirect('welcome')->with('success', 'Modification Effectuée avec succès');
+        return redirect('utilisateurs')->with('success', 'Modification Effectuée avec succès');
     }
 
     public function UpdatePermissions(Request $request)
@@ -220,11 +220,12 @@ class UserController extends Controller
 
     public function ResetPassword(Request $request)
     {
-        //dd($request->all());
-        $user_password = Hash::make("123456");
+       
+        $user_password = Hash::make(123456);
+        //dd($user_password);
+        //dd( DB::table('utilisateurs')->where('id', $request->id_user));
 
-        $affected = DB::table('utilisateurs')
-        ->where('id', $request->id)
+        $affected = DB::table('utilisateurs')->where('id', $request->id_user)
         ->update(['password' =>  $user_password, 'count_login' => 0]);
 
         return redirect('utilisateurs')->with('success', 'Réinitialisation Effectuée avec succès');

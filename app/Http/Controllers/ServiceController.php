@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Service;
 
 use App\Models\Prospection_service;
+use App\Models\Prestation_service;
 
 use DB;
 
@@ -89,6 +90,15 @@ class ServiceController extends Controller
         $deleted = DB::table('services')->where('id', '=', $request->id_service)->delete();
 
         return redirect('services')->with('success', 'Elément supprimé');
+    }
+
+    public function DeleteServiceInContrat(Request $request)
+    {
+        //dd($request->id);
+       // dd(DB::table('prestation_services')->where('id', '=', $request->id)->get());
+        $deleted = DB::table('prestation_services')->where('id', '=', $request->id)->delete();
+
+        return back()->with('success', 'Elément supprimé');
     }
 
     public function DeleteServiceInProspection(Request $request)
@@ -183,5 +193,31 @@ class ServiceController extends Controller
                 'success' => 'Service ajouté'
             ]
         );
+    }
+
+    public function AddServiceInContrat(Request $request)
+    {
+      //dd($request->all());
+        if($request->service == false)//L'utilisateur peut ne pas rempli
+        {
+           //dd('d');
+        }
+        else
+        {
+            //dd('ici');
+            for($a = 0; $a < count($request->service); $a++)
+            {
+                
+                $Insert = Prestation_service::create([
+        
+                    'service_id' =>  $request->service[$a],
+                    'contrat_id' => $request->id_contrat,
+
+                ]);
+            }
+            //dd($Insert);
+        }
+
+        return back()->with('success', 'Le service a été ajouté');
     }
 }

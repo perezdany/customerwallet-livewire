@@ -307,17 +307,11 @@
         
         </div>
     @else
-
-    @endif
-        
-        
-@endif
-
-<div class="col-xs-12">
-            
+        <div class="col-xs-12">
+                    
             <div class="box">
                 <div class="box-header">
-                    <h3 class="box-title">Listes des factures<!--<a href="cfactures" style="color:blue">Liste des facutres par clients</a>--></h3>
+                    <h3 class="box-title">Listes des factures/<a href="cfactures" target="blank" style="color:blue">Liste des facutres par clients</a></h3>
                     <br><br>
                     <a href="facture" style="color:blue"><u>Rétablir<i class="fa fa-refresh" aria-hidden="true"></i></u></a>&emsp;&emsp;&emsp;&emsp;<label>Filtrer par:</label>
                 
@@ -330,7 +324,7 @@
                                 <option value="">Etat</option>
                                 <option value="1">Réglé</option>
                                 <option value="0">non-reglé</option>
-                                 <option value="2">Annulé</option>
+                                    <option value="2">Annulé</option>
                             </select>
                                                         
                         </div>
@@ -342,7 +336,7 @@
                                     $contrats = $contratcontroller->RetriveAll();
                                     
                                 @endphp
-                                
+                                <option value="">Contrats</option>
                                 @foreach($contrats as $contrats)
                                     <option value="{{$contrats->id}}">{{$contrats->titre_contrat}}({{$contrats->nom_entreprise}})</option>
                                 @endforeach
@@ -350,7 +344,7 @@
                                                         
                         </div>
 
-                       
+                        
 
                     </div>
 
@@ -368,7 +362,7 @@
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body table-responsive">
-               
+                
                     <table class="table table-bordered table-striped ">
                         <thead>
                         <tr>
@@ -405,7 +399,7 @@
                                         //dd(gettype($date_aujourdhui));
                                         $diff_in_days = floor(($date_aujourdhui - strtotime($facture->date_reglement)) / (60 * 60 * 24));//on obtient ca en jour
                                         //dump($total);
-                                       
+                                        
                                     @endphp
                                     @if($diff_in_days >= 60)
                                     
@@ -440,9 +434,11 @@
                                                 </form>
                                             </td>
                                             <td class="bg-red">
+                                                @can("edit")
                                                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="@php echo "#add".$facture->id.""; @endphp">
                                                 <i class="fa fa-upload"></i>
                                                 </button>
+                                                @endcan
                                                 <div class="modal modal-default fade" id="@php echo "add".$facture->id.""; @endphp">
                                                     <div class="modal-dialog">
                                                     <div class="modal-content">
@@ -485,37 +481,33 @@
                                                 <!-- /.modal -->
                                             
                                             </td>
-                                            @if(auth()->user()->id_role == 3)
-                                            @else
-                                                <td class="bg-red">
+                                            <td class="bg-red">
 
-                                                    @if($facture->reglee == 0)
-                                                        @if(auth()->user()->id_role == 2)
-                                                        <form action="paiement_form" method="post">
-                                                            @csrf
-                                                            <input type="text" value={{$facture->id}} style="display:none;" name="id_facture">
-                                                            <button type="submit" class="btn btn-success"><i class="fa fa-money"></i></button>
-                                                        </form>
-                                                        @endif
-                                                    @else
+                                                @can("comptable")
+                                                    <form action="paiement_form" method="post">
+                                                        @csrf
+                                                        <input type="text" value={{$facture->id}} style="display:none;" name="id_facture">
+                                                        <button type="submit" class="btn btn-success"><i class="fa fa-money"></i></button>
+                                                    </form>
                                                     
-                                                    @endif
+                                                @endcan
+                                                @can("edit")
+                                                <button type="button" class="btn btn-primary" wire:click="EditFacture('{{$facture->id}}')">
+                                                <i class="fa fa-edit"></i>
+                                                </button>
+                                                @endcan
+                                                
+                                            </td>
 
-                                                    <button type="button" class="btn btn-primary" wire:click="EditFacture('{{$facture->id}}')">
-                                                    <i class="fa fa-edit"></i>
+                                            <td class="bg-red">
+                                                @can("delete")
+                                                    <button type="button" class="btn btn-danger"  wire:click="confirmDelete(' {{ $facture->numero_facture }} '
+                                                    , {{ $facture->id }} )">
+                                                        <i class="fa fa-trash"></i>
                                                     </button>
-                                                    
-                                                </td>
-
-                                                <td class="bg-red">
-                                                   <button type="button" class="btn btn-danger"  wire:click="confirmDelete(' {{ $facture->numero_facture }} '
-                                                        , {{ $facture->id }} )">
-                                                            <i class="fa fa-trash"></i>
-                                                        </button>
-                                
-                                                </td>
-                                            @endif
-                                        
+                                                @endcan
+                            
+                                            </td>
                                         </tr>
                                     @else
                                         @if($diff_in_days == 30)
@@ -539,7 +531,7 @@
                                                 </td>
                                             
                                                 <td class="bg-warning">
-                                                
+                                                    
                                                     <form action="download_file_facture" method="post" enctype="multipart/form-data" target="blank">
                                                         @csrf
                                                         
@@ -548,10 +540,12 @@
                                                         <button type="submit" class="btn btn-warning"><i class="fa fa-download"></i></button>
                                                     </form>
                                                 </td>
-                                                 <td class="bg-warning">
+                                                <td class="bg-warning">
+                                                    @can("edit")
                                                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="@php echo "#add".$facture->id.""; @endphp">
                                                     <i class="fa fa-upload"></i>
                                                     </button>
+                                                    @endcan
                                                     <div class="modal modal-default fade" id="@php echo "add".$facture->id.""; @endphp">
                                                         <div class="modal-dialog">
                                                         <div class="modal-content">
@@ -595,41 +589,38 @@
                                                 
                                                 </td>
                                                 
-                                                @if(auth()->user()->id_role == 3)
-                                                @else
-                                                    <td class="bg-warning">
+                                                <td class="bg-warning">
 
-                                                        @if($facture->reglee == 0)
-                                                            @if(auth()->user()->id_role == 2)
-                                                            <form action="paiement_form" method="post" target="blank">
-                                                                @csrf
-                                                                <input type="text" value={{$facture->id}} style="display:none;" name="id_facture">
-                                                                <button type="submit" class="btn btn-success"><i class="fa fa-money"></i></button>
-                                                            </form>
-                                                            @endif
-                                                        @else
+                                                    @can("comptable")
+                                                        <form action="paiement_form" method="post" target="blank">
+                                                            @csrf
+                                                            <input type="text" value={{$facture->id}} style="display:none;" name="id_facture">
+                                                            <button type="submit" class="btn btn-success"><i class="fa fa-money"></i></button>
+                                                        </form>
+                                                    @endcan
+
+                                                    <div class="popup" id="popup">
                                                         
-                                                        @endif
-                                                        <div class="popup" id="popup">
-                                                            
-                                                            <div class="popup-contenu"><b>Cliquez et le formulaire s'affiche en dessous</b><br/>
-                                                                <a href="#" id="popup-fermeture" onclick="togglePopup();">Fermer</a>
-                                                            </div>
+                                                        <div class="popup-contenu"><b>Cliquez et le formulaire s'affiche en dessous</b><br/>
+                                                            <a href="#" id="popup-fermeture" onclick="togglePopup();">Fermer</a>
                                                         </div>
-                                                        <button type="button" class="btn btn-primary" wire:click="EditFacture('{{$facture->id}}')">
-                                                        <i class="fa fa-edit"></i>
-                                                        </button>
+                                                    </div>
+                                                    @can("edit")
+                                                    <button type="button" class="btn btn-primary" wire:click="EditFacture('{{$facture->id}}')">
+                                                    <i class="fa fa-edit"></i>
+                                                    </button>
+                                                    @endcan
                                                     
-                                                    </td>
+                                                </td>
 
-                                                    <td class="bg-warning">
-
-                                                      <button type="button" class="btn btn-danger"  wire:click="confirmDelete(' {{ $facture->numero_facture }} '
-                                                        , {{ $facture->id }} )">
-                                                            <i class="fa fa-trash"></i>
-                                                        </button>
-                                                    </td>
-                                                @endif
+                                                <td class="bg-warning">
+                                                    @can("delete")
+                                                    <button type="button" class="btn btn-danger"  wire:click="confirmDelete(' {{ $facture->numero_facture }} '
+                                                    , {{ $facture->id }} )">
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
+                                                    @endcan
+                                                </td>
                                             
                                             </tr>
                                         @else
@@ -646,9 +637,9 @@
                                                 </td>
                                                 <td class="bg-warning">
                                                     <form action="paiement_by_facture" method="post">
-                                                            @csrf
-                                                            <input type="text" value={{$facture->id}} style="display:none;" name="id_facture">
-                                                            <button type="submit" class="btn btn-success"><i class="fa fa-money"></i>AFFICHER</button>
+                                                        @csrf
+                                                        <input type="text" value={{$facture->id}} style="display:none;" name="id_facture">
+                                                        <button type="submit" class="btn btn-success"><i class="fa fa-money"></i>AFFICHER</button>
                                                     </form>
                                                 </td>
                                             
@@ -663,9 +654,11 @@
                                                     </form>
                                                 </td>
                                                 <td class="bg-warning">
+                                                    @can("edit")
                                                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="@php echo "#add".$facture->id.""; @endphp">
                                                     <i class="fa fa-upload"></i>
                                                     </button>
+                                                    @endcan
                                                     <div class="modal modal-default fade" id="@php echo "add".$facture->id.""; @endphp">
                                                         <div class="modal-dialog">
                                                         <div class="modal-content">
@@ -708,42 +701,39 @@
                                                     <!-- /.modal -->
                                                 
                                                 </td>
-                                                @if(auth()->user()->id_role == 3)
-                                                @else
-                                                    <td class="bg-warning">
+                                                <td class="bg-warning">
 
-                                                        @if($facture->reglee == 0)
-                                                            @if(auth()->user()->id_role == 2)
-                                                            <form action="paiement_form" method="post">
-                                                                @csrf
-                                                                <input type="text" value={{$facture->id}} style="display:none;" name="id_facture">
-                                                                <button type="submit" class="btn btn-success"><i class="fa fa-money"></i></button>
-                                                            </form>
-                                                            @endif
-                                                        @else
-                                                        
-                                                        @endif
-                                                        <div class="popup" id="popup">
-                                                            
-                                                            <div class="popup-contenu"><b>Cliquez et le formulaire s'affiche en dessous</b><br/>
-                                                                <a href="#" id="popup-fermeture" onclick="togglePopup();">Fermer</a>
-                                                            </div>
-                                                        </div>
-                                                        <button type="button" class="btn btn-primary" wire:click="EditFacture('{{$facture->id}}')">
-                                                        <i class="fa fa-edit"></i>
-                                                        </button>
-                                                        
-                                                    </td>
-
-                                                    <td class="bg-warning">
-                                                        <button type="button" class="btn btn-danger"  wire:click="confirmDelete(' {{ $facture->numero_facture }} '
-                                                        , {{ $facture->id }} )">
-                                                            <i class="fa fa-trash"></i>
-                                                        </button>
+                                                    @can("comptable")
+                                                        <form action="paiement_form" method="post">
+                                                            @csrf
+                                                            <input type="text" value={{$facture->id}} style="display:none;" name="id_facture">
+                                                            <button type="submit" class="btn btn-success"><i class="fa fa-money"></i></button>
+                                                        </form>
+                                                    @endcan
                                                     
+                                                    <div class="popup" id="popup">
+                                                        
+                                                        <div class="popup-contenu"><b>Cliquez et le formulaire s'affiche en dessous</b><br/>
+                                                            <a href="#" id="popup-fermeture" onclick="togglePopup();">Fermer</a>
+                                                        </div>
+                                                    </div>
+                                                    @can("edit")
+                                                    <button type="button" class="btn btn-primary" wire:click="EditFacture('{{$facture->id}}')">
+                                                    <i class="fa fa-edit"></i>
+                                                    </button>
+                                                    @endcan
+                                                    
+                                                </td>
 
-                                                    </td>
-                                                @endif
+                                                <td class="bg-warning">
+                                                    @can("delete")
+                                                    <button type="button" class="btn btn-danger"  wire:click="confirmDelete(' {{ $facture->numero_facture }} '
+                                                    , {{ $facture->id }} )">
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
+                                                    @endcan
+
+                                                </td>
                                             
                                             </tr>
                                             
@@ -781,86 +771,85 @@
                                             </form>
                                         </td>
                                         <td>
+                                            @can("edit")
                                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="@php echo "#add".$facture->id.""; @endphp">
-                                                    <i class="fa fa-upload"></i>
-                                                    </button>
-                                                    <div class="modal modal-default fade" id="@php echo "add".$facture->id.""; @endphp">
-                                                        <div class="modal-dialog">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                <span aria-hidden="true">&times;</span></button>
-                                                            <h4 class="modal-title">Fichiers de la facture {{$facture->numero_facture}}</h4>
-                                                            </div>
-                                                            <!-- form start -->
-                                                            <form role="form" method="post" action="upload_file_facture" enctype="multipart/form-data">
-                                                                <div class="modal-body">
-                                                                    <div class="box-body">
-                                                                        @csrf
-                                                                        <input type="text" name="id_facture" value="{{$facture->id}}" style="display:none;">
-                                                                    
-                                                                        
-                                                                            <div class="form-group">
-                                                                                <label>Fichier de la facture(PDF)</label>
-                                                                                <input type="file" class="form-control" name="file" >
-                                                                            </div>
-                                                                        <div class="modal-footer">
-                                                        
-                                                                            <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Fermer</button>
-                                                                        
-                                                                            <button type="submit" class="btn btn-success">Valider la modification</button>
-                                                                            
-                                                                        </div> 
-                                                                    
-                                                                        
-                                                                    </div>
-                                                                    
-                                                                </div>
-                                                            
-                                                            </form>
-                                                        </div>
-                                                        <!-- /.modal-content -->
-                                                        </div>
-                                                        <!-- /.modal-dialog -->
+                                            <i class="fa fa-upload"></i>
+                                            </button>
+                                            @endcan
+                                            <div class="modal modal-default fade" id="@php echo "add".$facture->id.""; @endphp">
+                                                <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span></button>
+                                                    <h4 class="modal-title">Fichiers de la facture {{$facture->numero_facture}}</h4>
                                                     </div>
-                                                    <!-- /.modal -->
+                                                    <!-- form start -->
+                                                    <form role="form" method="post" action="upload_file_facture" enctype="multipart/form-data">
+                                                        <div class="modal-body">
+                                                            <div class="box-body">
+                                                                @csrf
+                                                                <input type="text" name="id_facture" value="{{$facture->id}}" style="display:none;">
+                                                            
+                                                                
+                                                                    <div class="form-group">
+                                                                        <label>Fichier de la facture(PDF)</label>
+                                                                        <input type="file" class="form-control" name="file" >
+                                                                    </div>
+                                                                <div class="modal-footer">
+                                                
+                                                                    <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Fermer</button>
+                                                                
+                                                                    <button type="submit" class="btn btn-success">Valider la modification</button>
+                                                                    
+                                                                </div> 
+                                                            
+                                                                
+                                                            </div>
+                                                            
+                                                        </div>
+                                                    
+                                                    </form>
+                                                </div>
+                                                <!-- /.modal-content -->
+                                                </div>
+                                                <!-- /.modal-dialog -->
+                                            </div>
+                                            <!-- /.modal -->
                                                 
                                         </td>
-                                        @if(auth()->user()->id_role == 3)
-                                        @else
-                                            <td>
+                                        <td>
 
-                                                @if($facture->reglee == 0)
-                                                    @if(auth()->user()->id_role == 2)
-                                                    <form action="paiement_form" method="post">
-                                                        @csrf
-                                                        <input type="text" value={{$facture->id}} style="display:none;" name="id_facture">
-                                                        <button type="submit" class="btn btn-success"><i class="fa fa-money"></i></button>
-                                                    </form>
-                                                    @endif
-                                                @else
+                                            @can("comptable")
+                                                <form action="paiement_form" method="post">
+                                                    @csrf
+                                                    <input type="text" value={{$facture->id}} style="display:none;" name="id_facture">
+                                                    <button type="submit" class="btn btn-success"><i class="fa fa-money"></i></button>
+                                                </form>
+                                            @endcan
+                                            
+                                            <div class="popup" id="popup">
                                                 
-                                                @endif
-                                                <div class="popup" id="popup">
-                                                    
-                                                    <div class="popup-contenu"><b>Cliquez et le formulaire s'affiche en dessous</b><br/>
-                                                        <a href="#" id="popup-fermeture" onclick="togglePopup();">Fermer</a>
-                                                    </div>
+                                                <div class="popup-contenu"><b>Cliquez et le formulaire s'affiche en dessous</b><br/>
+                                                    <a href="#" id="popup-fermeture" onclick="togglePopup();">Fermer</a>
                                                 </div>
-                                            
-                                                <button type="button" class="btn btn-primary" wire:click="EditFacture('{{$facture->id}}')">
-                                                <i class="fa fa-edit"></i>
-                                                </button>
-                                            </td>
+                                            </div>
+                                            @can("edit")
+                                            <button type="button" class="btn btn-primary" wire:click="EditFacture('{{$facture->id}}')">
+                                            <i class="fa fa-edit"></i>
+                                            </button>
+                                            @endcan
+                                        </td>
+                                        
+                                        <td >
+                                                @can("delete")
+                                            <button type="button" class="btn btn-danger"  wire:click="confirmDelete(' {{ $facture->numero_facture }} '
+                                                    , {{ $facture->id }} )">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                            @endcan
+                                        </td>
 
-                                            <td >
-                                              <button type="button" class="btn btn-danger"  wire:click="confirmDelete(' {{ $facture->numero_facture }} '
-                                                        , {{ $facture->id }} )">
-                                                            <i class="fa fa-trash"></i>
-                                                        </button>
-                                            
-                                            </td>
-                                        @endif
                                     
                                     </tr>
                                 @endif
@@ -890,7 +879,7 @@
                         
                 </div>
                 <div class="box-footer">
-                  
+                    
                     @php
                         //echo '<h3>TOTAL DES FACTURES ECHUES:'.$total." XOF</h3>";
                     @endphp
@@ -898,8 +887,14 @@
             </div>
             
             <!-- /.box -->
-        
+
         </div>
+    @endif
+        
+        
+@endif
+
+
 
       
      

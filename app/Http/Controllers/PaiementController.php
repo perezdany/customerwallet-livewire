@@ -86,28 +86,53 @@ class PaiementController extends Controller
             //echo $total_montant_facture."---";
             $total_montant_facture = $total_montant_facture + $get_montant_facture->montant_facture;
         }
-        
+
+        //Vérifier que le reste est zéro et mettre a jour pour dire que le contrat est soldé ou clos
         //Prendre le montant du contrat en question
         $le_contrat = Contrat::where('id', $request->id_contrat)->get();
 
         foreach($le_contrat as $le_contrat)
         {
+            //SI LE CONTRAT EST RECONDUIT, ET QUE LE RESTE A POAYER DANS LA TABLE EST ZERO ON REMET LE MONTANT DU CONTRAT DANS LE CHAMP
             //dd( $total_montant_facture);
             $rest_a_payer =  $le_contrat->montant -  $total_montant_facture ;
-            
-            $affected = DB::table('contrats')
-            ->where('id', $le_contrat->id)
-            ->update(['reste_a_payer' => $rest_a_payer, ]);
 
-            //Vérifier que le reste est zéro et mettre a jour pour dire que le contrat est soldé ou clos
-
-            if($rest_a_payer == 0)
+            if($le_contrat->reconduction == 1)
             {
+                //ALORS ON NE METS PAS LE RESTE A PAYER 0 ON REMET LE MONTANT DU CONTRAT
+               
+                if($rest_a_payer == 0)
+                {
+                    $affected = DB::table('contrats')
+                    ->where('id', $le_contrat->id)
+                    ->update(['reste_a_payer' => $le_contrat->montant, ]);
+
+                }
+                else
+                {
+                    //ON REMET LE RESTE QU'IL FAUT PARCE QUE LE RESTE N'EST PAS NULL
+                    $affected = DB::table('contrats')
+                    ->where('id', $le_contrat->id)
+                    ->update(['reste_a_payer' => $rest_a_payer, ]);
+                }
+            }
+            else
+            {
+                
                 $affected = DB::table('contrats')
                 ->where('id', $le_contrat->id)
-                ->update(['statut_solde' => 1, 
-                    'date_solde' => Date('Y-m-d')
-                ]);
+                ->update(['reste_a_payer' => $rest_a_payer, ]);
+                
+                if($rest_a_payer == 0)
+                {
+                    //METTRE A JOUR LA DATE DE SOLDE
+                    $affected = DB::table('contrats')
+                    ->where('id', $le_contrat->id)
+                    ->update(['statut_solde' => 1, 
+                        'date_solde' => Date('Y-m-d')
+                    ]);
+                }
+              
             }
         }
 
