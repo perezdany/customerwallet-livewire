@@ -25,6 +25,9 @@ class Entreprises extends Component
 
     public $categorie= "", $etat="";
 
+    public $orderField = 'created_at';
+    public $orderDirection = 'DESC';
+
     protected $rules = [
         'editEntreprise.nom_entreprise' => 'required|max:100|string|unique:nom_entreprise',
         'editEntreprise.adresse' => 'required|max:60|string',
@@ -35,6 +38,32 @@ class Entreprises extends Component
     
     public $editHasChanged;
     public $editOldValues = [];
+
+    
+    //FONCTION POUR FAIRE ORDRE DECROISSANT
+    public function setOrderField($champ)
+    {
+        
+        if($champ == $this->orderField)
+        {
+        
+            //$this->reset('orderDirection');
+            $this->orderDirection =  $this->orderDirection = 'DESC' ? 'ASC' : 'DESC';
+            
+        }
+        else
+        {
+            //dd('ici');
+
+            $this->orderField = $champ;
+            $this->orderDirection =  $this->orderDirection = 'DESC' ? 'ASC' : 'DESC';
+            //dump($this->orderDirection);
+            $this->reset('orderDirection');
+
+        }
+        //return $la;
+    }
+
   
     public function showUpdateButton()
     {
@@ -84,13 +113,7 @@ class Entreprises extends Component
             //dd('o');
             $entrepriseQuery->where("etat", $this->etat);
         }
-        else
-        {   
-            
-
-        }
-
-        
+      
        
         if($this->editEntreprise != []) 
         {
@@ -100,7 +123,7 @@ class Entreprises extends Component
         
     
         return view('livewire.entreprises.index',  
-            ['entreprises' => $entrepriseQuery->latest()->paginate(8)])
+            ['entreprises' => $entrepriseQuery->orderBy($this->orderField, $this->orderDirection)->paginate(8)])
             ->extends('layouts.base')
             ->section('content');
            

@@ -55,9 +55,9 @@
                 <table id="" class="table table-bordered table-striped">
                     <thead>
                     <tr>
-                        <th>Nom</th>
-                        <th>Adresse</th>
-                        <th>Statut</th>
+                        <th wire:click="setOrderField('nom_entreprise')">Nom</th>
+                        <th wire:click="setOrderField('adresse')">Adresse</th>
+                        <th wire:click="setOrderField('etat')">Statut</th>
                         <th style="display:none">EatEntreprise</th>
                     
                         <th>Fiche</th>

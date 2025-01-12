@@ -22,10 +22,10 @@
     $contratcontroller  = new ContratController();
 
 
-  //LES DIFFERENTES REQUETES EN FONCTION DU DEPARTEMENT
-  //$my_own = $prestationcontroller->MyOwnPrestation(auth()->user()->id);
+    //LES DIFFERENTES REQUETES EN FONCTION DU DEPARTEMENT
+    //$my_own = $prestationcontroller->MyOwnPrestation(auth()->user()->id);
 
-  $all = $prestationcontroller-> GetAll();
+    $all = $prestationcontroller-> GetAll();
 
 
 @endphp

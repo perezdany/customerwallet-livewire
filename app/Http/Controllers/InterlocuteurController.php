@@ -17,9 +17,10 @@ class InterlocuteurController extends Controller
         $get = DB::table('interlocuteurs')
           ->join('utilisateurs', 'interlocuteurs.created_by', '=', 'utilisateurs.id')
           ->join('entreprises', 'interlocuteurs.id_entreprise', '=', 'entreprises.id')
+          ->join('professions', 'interlocuteurs.fonction', '=', 'professions.id')
           ->orderBy('updated_at', 'desc')
          
-          ->get(['entreprises.nom_entreprise', 'utilisateurs.nom_prenoms', 'interlocuteurs.*', ]);
+          ->get(['entreprises.nom_entreprise', 'utilisateurs.nom_prenoms', 'interlocuteurs.*', 'professions.intitule']);
      
           return $get;
     }
@@ -161,11 +162,8 @@ class InterlocuteurController extends Controller
 
     public function DeleteInterlocuteurFicheCustomer(Request $request)
     {
-
-        //dd('iflz');
         $delete =  DB::table('interlocuteurs')->where('id', '=', $request->id_interlocuteur)->delete();
 
-       
        return view('dash/fiche_customer',
                 [
                     'id_entreprise' => $request->id_entreprise,
@@ -178,8 +176,9 @@ class InterlocuteurController extends Controller
         $get = DB::table('interlocuteurs')
         ->join('utilisateurs', 'interlocuteurs.created_by', '=', 'utilisateurs.id')
         ->join('entreprises', 'interlocuteurs.id_entreprise', '=', 'entreprises.id')
+        ->join('professions', 'interlocuteurs.fonction', '=', 'professions.id')
         ->where('interlocuteurs.id', $id)
-        ->get(['entreprises.nom_entreprise', 'utilisateurs.nom_prenoms', 'interlocuteurs.*',]);
+        ->get(['entreprises.nom_entreprise', 'utilisateurs.nom_prenoms', 'interlocuteurs.*', 'intitule']);
    
         return $get;
     }
@@ -380,7 +379,9 @@ class InterlocuteurController extends Controller
 
     public function InterlocuteurWithIdEntreprise($id)
     {
-        $interloc = Interlocuteur::where('id_entreprise', $id)->get();
+        $interloc = DB::table('interlocuteurs')
+        ->join('professions', 'interlocuteurs.fonction', '=', 'professions.id')
+        ->where('id_entreprise', $id)->get(['interlocuteurs.*', 'professions.intitule']);
 
         return $interloc;
     }

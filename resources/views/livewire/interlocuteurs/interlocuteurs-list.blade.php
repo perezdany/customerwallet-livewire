@@ -35,7 +35,7 @@
                             @endphp
                         
                             @foreach($get as $f)
-                                <option value="{{$f->intitule}}">{{$f->intitule}}</option>
+                                <option value="{{$f->id}}">{{$f->intitule}}</option>
                                 
                             @endforeach
                             
@@ -60,14 +60,15 @@
         <div class="box-body table-responsive">
             <table class="table table-bordered table-striped table-hover">
                 <thead>
+               
                 <tr>
-                    <th>Nom & Prénom(s)</th>
-                    <th>Téléphone</th>
-                    <th>Email</th>
-                    <th>Fonction</th>
-                    <th>Entreprise</th>
+                    <th wire:click="setOrderField('nom')">Nom & Prénom(s)</th>
+                    <th wire:click="setOrderField('tel')">Téléphone</th>
+                    <th wire:click="setOrderField('email')">Email</th>
+                    <th wire:click="setOrderField('fonction')">Fonction</th>
+                    <th wire:click="setOrderField('nom_entreprise')">Entreprise</th>
                 
-                    <th>Ajouté par</th>
+                    <th wire:click="setOrderField('nom_prenoms')">Ajouté par</th>
                         
                     <th>Action</th>
                 </tr>
@@ -79,24 +80,12 @@
                             <td>{{$interlocuteur->titre}} {{$interlocuteur->nom}}</td>
                             <td>{{$interlocuteur->tel}}</td>
                             <td>{{$interlocuteur->email}}</td>
-                            <td>{{$interlocuteur->fonction}}</td>
+                            <td>{{$interlocuteur->intitule}}</td>
                             <td>
-                                @php
-                                    $getentreprise = $entreprisecontroller->GetById($interlocuteur->id);
-                                @endphp
-                                @foreach($getentreprise as $getentreprise)
-                                    {{$getentreprise->nom_entreprise}}
-                                @endforeach
-                                
+                               {{$interlocuteur->nom_entreprise}}
                             </td>
                             <td>
-                                @php
-                                    $user = $usercontroller->GetById($interlocuteur->created_by);
-                                @endphp
-                                @foreach($user as $user)
-                                    {{$user->nom_prenoms}}
-                                @endforeach
-                              
+                               {{$interlocuteur->nom_prenoms}}
                             </td>
                             <td>
                                 <div class="col-xs-6 no-padding">

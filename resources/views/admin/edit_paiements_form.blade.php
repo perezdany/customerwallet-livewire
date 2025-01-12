@@ -65,7 +65,7 @@
                         <!-- form start -->
                         <form role="form" action="edit_paiement" method="post">
                             @csrf
-                            
+                            <input type="text" value="{{$retrive->id}}" name="id_paiement" style="display:none;">
                             <input type="text" value="{{$retrive->montant}}" name="montant" style="display:none;">
                             <input type="text" value="{{$retrive->id_contrat}}" name="id_contrat" style="display:none;">
                         

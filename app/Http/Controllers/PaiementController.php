@@ -25,6 +25,7 @@ class PaiementController extends Controller
 
     public function DoPaiement(Request $request)
     {
+        
         $ch = strval($request->paiement);
         if(strlen($ch) > 13)
         {
@@ -38,13 +39,13 @@ class PaiementController extends Controller
         $total_montant_facture = 0;
 
         $Insert = Paiement::create([
-            'paiement' => $request->paiement, 
+            'paiement' => $request->paiement, //c'est le montant
             'id_facture' => $request->id_facture, 
             'date_paiement' => $request->date_paiement, 
             'created_by' => auth()->user()->id, 
         ]);
 
-        //Récuper tous les anciens montants
+        //Récuper tous les anciens montants POUR DEFINIR SI LA FACTURE EST REGLEE TOTALEMENT
         $get_montants = DB::table('paiements')
         ->where('paiements.id_facture', $request->id_facture)
         ->join('factures', 'paiements.id_facture', '=', 'factures.id')
@@ -56,22 +57,22 @@ class PaiementController extends Controller
         {
             $total_paiement = $total_paiement + $get_montants->paiement;
         }
-
+    
         //Calcul du nouveau reste 
         $rest = $request->montant_facture - $total_paiement;
-        
+        //dd($rest);
         //MISE A JOUR DE LA TABLE FACTURE
         if($rest == 0)
         {
             $affected = DB::table('factures')
             ->where('id', $request->id_facture)
-            ->update([ 'reglee' => 1, 'date_reglement' => date('Y-m-d')]); //LA FACTURE DEVIENT REGLEE DEFINITIVEMENT
+            ->update([ 'reglee' => 1, ]); //LA FACTURE DEVIENT REGLEE DEFINITIVEMENT aprs je mets ce code 'date_reglement' => date('Y-m-d')
         }
         
 
         //MISE A JOUR DE LA TABLE CONTRAT EN MODIFIANT LE reste_a_payer DE LA TABLE
         //Récuper toutes les factures réglée
-
+        /*
         $get_montant_facture = DB::table('factures')
             
             ->join('contrats', 'factures.id_contrat', '=', 'contrats.id')
@@ -134,7 +135,7 @@ class PaiementController extends Controller
                 }
               
             }
-        }
+        }*/
 
         return redirect('facture')->with('success', 'Paiement enregistré');
 
@@ -142,6 +143,7 @@ class PaiementController extends Controller
 
     public function EditPaiement(Request $request)
     {
+        //dd($request->all());
         $ch = strval($request->paiement);
         if(strlen($ch) > 13)
         {
@@ -154,11 +156,11 @@ class PaiementController extends Controller
 
         $total_montant_facture = 0;
 
-        $Insert =DB::table('paiements')
+       $affected = DB::table('paiements')
         ->where('id', $request->id_paiement)
         ->update([
             'paiement' => $request->paiement, 
-            'id_facture' => $request->id_facture, 
+           
             'date_paiement' => $request->date_paiement, 
             'created_by' => auth()->user()->id, 
         ]);
@@ -190,7 +192,7 @@ class PaiementController extends Controller
 
         //MISE A JOUR DE LA TABLE CONTRAT EN MODIFIANT LE reste_a_payer DE LA TABLE
         //Récuper toutes les factures réglée
-
+        /*
         $get_montant_facture = DB::table('factures')
             
             ->join('contrats', 'factures.id_contrat', '=', 'contrats.id')
@@ -224,7 +226,7 @@ class PaiementController extends Controller
                 ->where('id', $le_contrat->id)
                 ->update(['statut_solde' => 1, ]);
             }
-        }
+        }*/
 
         return redirect('facture')->with('success', 'Paiement modifié');
 

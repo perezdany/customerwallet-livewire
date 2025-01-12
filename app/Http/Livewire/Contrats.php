@@ -44,6 +44,35 @@ class Contrats extends Component
     public $editHasChanged;
     public $editOldValues = [];
 
+    public $orderField = 'created_at';
+    public $orderDirection = 'DESC';
+
+    //FONCTION POUR FAIRE ORDRE DECROISSANT
+    public function setOrderField($champ)
+    {
+        
+        if($champ == $this->orderField)
+        {
+            if($this->orderDirection = 'ASC')
+            {
+                $this->orderDirection = 'DESC';
+            }
+            $this->orderDirection =  $this->orderDirection = 'DESC' ? 'ASC' : 'DESC';
+            
+        }
+        else
+        {
+  
+            $this->orderField = $champ;
+            $this->orderDirection =  $this->orderDirection = 'DESC' ? 'ASC' : 'DESC';
+            
+            $this->reset('orderDirection');
+
+        }
+        //return $la;
+    }
+ 
+
     //FUNCIOTN DE MODIFICATION
     public function EditContrat( Contrat $contrat)
     {
@@ -70,8 +99,11 @@ class Contrats extends Component
             $this->editContrat['path'] != $this->editOldValues['path'] OR
             $this->editContrat['proforma_file'] != $this->editOldValues['proforma_file'] OR
             $this->editContrat['bon_commande'] != $this->editOldValues['bon_commande'] OR 
-            $this->editContrat['fin_contrat'] != $this->editOldValues['fin_contrat']
+            $this->editContrat['fin_contrat'] != $this->editOldValues['fin_contrat'] OR
+            $this->editContrat['id_type_prestation'] != $this->editOldValues['id_type_prestation'] OR
+            $this->editContrat['etat'] != $this->editOldValues['etat']
             /*OR
+            
             $this->editContrat['jours'] != $this->editOldValues['jours'] OR
             $this->editContrat['mois'] != $this->editOldValues['mois'] OR
             $this->editContrat['annee'] != $this->editOldValues['annee']*/
@@ -129,7 +161,9 @@ class Contrats extends Component
             'id_entreprise' =>  $this->editContrat['id_entreprise'],
             'reconduction' =>  $this->editContrat['reconduction'],
             'avenant' =>  $this->editContrat['avenant'],
-            'id_contrat_parent' =>  $this->editContrat['id_contrat_parent']
+            'etat' =>  $this->editContrat['etat'],
+            'id_contrat_parent' =>  $this->editContrat['id_contrat_parent'],
+             'id_type_prestation' =>  $this->editContrat['id_type_prestation']
         ]);
 
  
@@ -148,7 +182,7 @@ class Contrats extends Component
        //dd($this->etat_contrat);
         $contratQuery = Contrat::query()
         //->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')
-        ->orderBy('contrats.created_at', 'DESC');
+       ;
 
         //dump($contratQuery);
 
@@ -187,12 +221,12 @@ class Contrats extends Component
             if($this->etat_contrat == 1)
             {
                 //dd('p');
-                $contratQuery->where("contrats.fin_contrat", "<", date('Y-m-d'));
+                $contratQuery->where('etat', $this->etat_contrat);
             }
             else
             {
                //dd('pi');
-                $contratQuery->where("contrats.fin_contrat", ">", date('Y-m-d'));
+                $contratQuery->where('etat', $this->etat_contrat);
             }
            
         
@@ -201,14 +235,15 @@ class Contrats extends Component
 
         if($this->service != "")
         {
+            $this->orderField = "contrats.created_at";
             //dd($this->service);
             $prestationQuery = Prestation_service::query()
             ->join('contrats', 'prestation_services.contrat_id', '=', 'contrats.id')
            // ->join('services', 'prestation_services.service_id', '=', 'services.id')
             ->where('prestation_services.service_id', $this->service)
-            ->orderBy('contrats.created_at', 'DESC');
+            ->orderBy($this->orderField, $this->orderDirection);
             //sdump($prestationQuery);
-            return view('livewire.contrats.index',  ['prestations' => $prestationQuery->paginate(8)])
+            return view('livewire.contrats.index',  ['prestations' => $prestationQuery->orderBy($this->orderField, $this->orderDirection)->paginate(8)])
             ->extends('layouts.base')
             ->section('content');
         }
@@ -219,7 +254,7 @@ class Contrats extends Component
         }
 
 
-        return view('livewire.contrats.index',  ['contrats' => $contratQuery->paginate(8)])
+        return view('livewire.contrats.index',  ['contrats' => $contratQuery->orderBy($this->orderField, $this->orderDirection)->paginate(8)])
         ->extends('layouts.base')
         ->section('content');
     }

@@ -62,9 +62,9 @@
                 else
                 {
                    
-                    if($contrats->reconduction == 1)//Pas reconduit
+                    if($contrats->reconduction == 1 AND $contrats->etat == 1)//Reconduit
                     {
-                         //echo $contrats->titre_contrat."--".$contrats->fin_contrat."<br>";
+                        //echo $contrats->titre_contrat."--".$contrats->fin_contrat."<br>";
                         $date_debut = strtotime($contrats->debut_contrat);
                         $date_fin = strtotime($contrats->fin_contrat);
                         $diff_in_days = floor(($date_fin - $date_debut ) / (60 * 60 * 24));//on obtient ca en jour

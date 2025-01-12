@@ -64,16 +64,16 @@
 
                                 <div class="form-group">
                                     <label>Fonction</label>
-                                    <select class="form-control select2"  maxlength="60" name="fonction" required>
-                                    <option value="{{$interlocuteur->fonction}}">{{$interlocuteur->fonction}}</option>
-                                                    @php
-                                                        $f = DB::table('professions')->get();
-                                                    @endphp
-                                                    @foreach($f as $f)
-                                                        <option value="{{$f->intitule}}">{{$f->intitule}}</option>
-                                                    @endforeach
-                                                </select>
-                                   
+                                        <select class="form-control select2"  maxlength="60" name="fonction" required>
+                                            <option value="{{$interlocuteur->fonction}}">{{$interlocuteur->intitule}}</option>
+                                            @php
+                                                $f = DB::table('professions')->orderBy('id', 'asc')->get();
+                                            @endphp
+                                            @foreach($f as $f)
+                                                <option value="{{$f->id}}">{{$f->intitule}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>  
                                 </div>
 
                                 <div class="form-group">

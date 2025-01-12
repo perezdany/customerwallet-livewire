@@ -27,7 +27,9 @@
                                 echo 'Chiffre d\'affaire Année: '.$year. '<br>';
                             @endphp
                         </h3><br>
-                        
+                        @php
+                            echo  number_format($total_annuel, 2, ".", " ")." XOF";
+                        @endphp
                     </div>
                     <!--my chart-->
                     <canvas id="mychart" aria-label="chart" style="height:580px;"></canvas>

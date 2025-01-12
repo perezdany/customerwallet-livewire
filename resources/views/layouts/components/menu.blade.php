@@ -49,6 +49,7 @@
               <li><a href="interlocuteurs"><i class="fa fa-circle-o"></i>Interlocuteurs</a></li>
               <li class="active"><a href="fiche"><i class="fa fa-circle-o"></i>Fiche clients</a></li>
                <li class="active"><a href="prospection"><i class="fa fa-circle-o"></i>Prospections</a></li>
+               <li class="active"><a href="facture"><i class="fa fa-circle-o"></i>Factures</a></li>
             @endcan
 
 

@@ -31,7 +31,9 @@
                                 echo $francais. '<br>';
                             @endphp
                         </h3><br>
-                        
+                         @php
+                            echo  number_format($total, 2, ".", " ")." XOF";
+                        @endphp
                     </div>
                     <!--my chart-->
                     <canvas id="mychart" aria-label="chart" style="height:580px;"></canvas>
@@ -161,7 +163,7 @@
                                  echo $francais. '<br>';
                             @endphp
                         </h3><br>
-                        
+                         
                     </div>
                     <!--my chart-->
                     <canvas id="percentchart" aria-label="chart" style="height:580px;"></canvas>

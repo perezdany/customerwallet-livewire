@@ -103,6 +103,7 @@ class ContratController extends Controller
                      'fin_contrat' => $date_fin,
                      'id_entreprise' => $add->id,
                      'reconduction' => $request->reconduction, 
+                     'etat' => 1, 
                      'statut_solde' => 0,
                       'created_by' => auth()->user()->id,
                 ]);
@@ -145,6 +146,7 @@ class ContratController extends Controller
                  'fin_contrat' => $date_fin,
                  'id_entreprise' => $request->entreprise,
                  'reconduction' => $request->reconduction, 
+                 'etat' => 1,
                  'statut_solde' => 0,
                   'created_by' => auth()->user()->id,
             ]);
@@ -894,6 +896,7 @@ class ContratController extends Controller
                          'reconduction' => $request->reconduction, 
                          'avenant' => $request->avenant, 
                          'statut_solde' => 0,
+                         'etat' => 1,
                          'id_contrat_parent' => $request->contrat_parent,
                          'id_type_prestation' => $request->type,
                           'created_by' => auth()->user()->id,
@@ -912,6 +915,7 @@ class ContratController extends Controller
                         'id_entreprise' => $add->id,
                         'reconduction' => $request->reconduction, 
                         'avenant' => $request->avenant, 
+                        'etat' => 1,
                         'statut_solde' => 0,
                         'id_type_prestation' => $request->type,
                         'created_by' => auth()->user()->id,
@@ -938,6 +942,7 @@ class ContratController extends Controller
                      'id_entreprise' => $request->entreprise,
                      'reconduction' => $request->reconduction, 
                      'avenant' => $request->avenant, 
+                     'etat' => 1,
                      'statut_solde' => 0,
                      'id_contrat_parent' => $request->contrat_parent,
                      'id_type_prestation' => $request->type,
@@ -957,6 +962,7 @@ class ContratController extends Controller
                     'id_entreprise' => $request->entreprise,
                     'reconduction' => $request->reconduction, 
                     'avenant' => $request->avenant, 
+                    'etat' => 1,
                     'statut_solde' => 0,
                     'id_type_prestation' => $request->type,
                     'created_by' => auth()->user()->id,
@@ -1297,6 +1303,7 @@ class ContratController extends Controller
                      'fin_contrat' => $date_fin,
                      'id_entreprise' => $add->id,
                      'date_solde' => $request->date_solde, 
+                     'etat' => 1,
                      'statut_solde' => 0,
                      'id_type_prestation' => $request->type,
                       'created_by' => auth()->user()->id,
@@ -1316,6 +1323,7 @@ class ContratController extends Controller
                  'fin_contrat' => $date_fin,
                  'id_entreprise' => $request->entreprise,
                  'date_solde' => $request->date_solde, 
+                 'etat' => 1,
                  'statut_solde' => 0,
                  'id_type_prestation' => $request->type,
                   'created_by' => auth()->user()->id,
@@ -2345,7 +2353,7 @@ class ContratController extends Controller
 
     public function UploadFiles(Request $request)
     {
-        //dd($request->file);
+        //dd($request->all());
         //ENREGISTRER LE FICHIER DU CONTRAT
         //IL FAUT SUPPRIMER L'ANCIEN FICHIER DANS LE DISQUE DUR
         $fichier = $request->file;
@@ -2421,7 +2429,7 @@ class ContratController extends Controller
                 
                 //VERFIFIER LE FORMAT 
                 $extension = pathinfo($fichier_proforma->getClientOriginalName(), PATHINFO_EXTENSION);
-
+               
                 if($extension != "pdf")
                 {
                     return back()->with('error', '  LE FORMAT DE FICHIER DOIT ETRE PDF!!');
@@ -2431,15 +2439,16 @@ class ContratController extends Controller
                 foreach($get_path_prof as $get_path_prof)
                 {
                     if($get_path_prof->proforma_file == null)
-                    {
+                    {   
+                        
                         //enregistrement de fichier dans la base
                         $file_name_prof = $fichier_proforma->getClientOriginalName();
-                    
+                        //dd($file_name_prof);
                                 
-                        $path = $request->file('file')->storeAs(
+                        $path = $request->file('proforma_file')->storeAs(
                             'factures/proforma', $file_name_prof
                         );
-    
+                        //dd($path);
                         $affected = DB::table('contrats')
                         ->where('id', $request->id_contrat)
                         ->update([
@@ -2464,7 +2473,7 @@ class ContratController extends Controller
                         $file_name_prof = $fichier_proforma->getClientOriginalName();
                         
                                 
-                        $path = $request->file('file')->storeAs(
+                        $path = $request->file('proforma_file')->storeAs(
                             'factures/proforma', $file_name_prof
                         );
     
@@ -2917,11 +2926,11 @@ class ContratController extends Controller
     public function getAllNoReglee()
     {
         $get = DB::table('contrats')
-
+            
           ->where('contrats.reconduction', '=', 1)
           ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')
           ->get(['contrats.*', 'entreprises.nom_entreprise']);
-        
+          
            return $get;
     }
 }

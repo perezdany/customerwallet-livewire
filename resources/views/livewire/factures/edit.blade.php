@@ -29,15 +29,16 @@
                         </div>
                             
                         <div class="form-group">
+                       
                             <label>Contrat:</label>
                             <select class="form-control" wire:model="editFacture.id_contrat" required>
-                                    @php
-                                        $contrats = $prestationcontroller->getAllNoReglee();
-                                        
+                                   
+                                       @php
+                                        $contrats = $contratcontroller->RetriveAll();
+                                         //dd($contrats);
                                     @endphp
-                                    
                                     @foreach($contrats as $contrats)
-                                        <option value="{{$contrats->id}}">Contrat:{{$contrats->titre_contrat}}/Date:@php echo date('d/m/Y',strtotime($contrats->date_prestation));  @endphp</option>
+                                        <option value="{{$contrats->id}}">Contrat:{{$contrats->titre_contrat}}/Date:@php echo date('d/m/Y',strtotime($contrats->debut_contrat));  @endphp/{{$contrats->nom_entreprise}}</option>
                                     @endforeach
                             </select>
                         </div>
@@ -66,7 +67,7 @@
                             <!-- /.box-body -->
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Fermer</button>
-                           @if($editHasChanged)
+                            @if($editHasChanged)
 
                                 <button type="submit" class="btn btn-success">Valider la modification</button>
                                     

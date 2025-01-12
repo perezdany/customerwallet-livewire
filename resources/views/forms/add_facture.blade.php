@@ -161,7 +161,7 @@
                                 <label>Contrat(*):</label>
                             <select class="form-control  " name="id_contrat" required>
                                     @php
-                                        $contrats = $contratcontroller->getAllNoReglee();
+                                        $contrats = $contratcontroller->RetriveAll();
                                         
                                     @endphp
                                 <option value="0">--Sélectionnez le contrat--</option>

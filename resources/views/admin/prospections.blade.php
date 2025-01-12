@@ -15,12 +15,12 @@
 @section('content')
       
     <div class="row">
-        @if(auth()->user()->id_role != 7)
-                <div class="col-md-3">
-                    <a href="form_add_prospection"><button class="btn btn-primary"> <b><i class="fa fa-plus"></i> PROSPECTION</b></button></a>
-                
-                </div>
-        @endif
+        @can("edit")
+            <div class="col-md-3">
+                <a href="form_add_prospection"><button class="btn btn-primary"> <b><i class="fa fa-plus"></i> PROSPECTION</b></button></a>
+            
+            </div>
+        @endcan
       
     </div>
     

@@ -90,9 +90,9 @@
         <!-- right column -->
         <div class="col-md-6">
             @php
-                $retrive = $facturecontroller->GetById($id)
+                $retrive = $facturecontroller->GetById($id);
                 
-                
+                //dd($retrive);
             @endphp
             <div class="box box-aeneas">
                 <div class="box-header with-border">
@@ -138,10 +138,7 @@
                                     
                                 </p>
                             </div>
-                            <div class="form-group">
-                                <label >DATE DE REGLEMENT</label>
-                                <p><h3>@php echo date('d/m/Y',strtotime($retrive->date_reglement)) @endphp</h3></p>
-                            </div>
+                           
 
                             <div class="form-group">
                                 <label>Entrer le montant du paiement</label>
@@ -174,7 +171,7 @@
                                     var button = document.getElementById("bt")
 
                                     var diff = val - val2;
-                                    
+                                    //alert(diff)
 
                                     if((diff < 0))
                                     {  

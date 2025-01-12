@@ -202,7 +202,7 @@
                                             @endphp
                                             
                                             @foreach($interlocuteur as $interlocuteur)
-                                                <option value={{$interlocuteur->id}}>{{$interlocuteur->nom}}/{{$interlocuteur->fonction}}/{{$interlocuteur->tel}}</option>
+                                                <option value={{$interlocuteur->id}}>{{$interlocuteur->nom}}/{{$interlocuteur->intitule}}/{{$interlocuteur->tel}}</option>
                                                 
                                             @endforeach
 
@@ -237,8 +237,15 @@
                                         </div>
 
                                     <div class="form-group">
-                                            <label>Fonction</label>
-                                            <input disabled="disabled" required type="text" class="form-control "  id="grise4" maxlength="60" name="fonction" onkeyup="this.value=this.value.toUpperCase()">
+                                        <label>Fonction</label>
+                                            <select class="form-control select2"  maxlength="60" name="fonction" id="grise4" disabled="disabled" required>
+                                            @php
+                                                $f = DB::table('professions')->orderBy('id', 'asc')->get();
+                                            @endphp
+                                            @foreach($f as $f)
+                                                <option value="{{$f->id}}">{{$f->intitule}}</option>
+                                            @endforeach
+                                        </select>
                                     </div>  
                             
                             </div>

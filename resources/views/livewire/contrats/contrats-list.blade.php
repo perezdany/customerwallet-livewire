@@ -38,8 +38,8 @@
             
                     <select class="form-control" id="etat_contrat"  wire:model.change="etat_contrat">
                         <option value="">Etat</option>
-                        <option value="0">En cours</option>
-                        <option value="1">Terminé</option>
+                        <option value="1">En cours</option>
+                        <option value="0">Terminé</option>
                     </select>
                                             
                 </div>
@@ -100,10 +100,8 @@
                 <th>Fichier du contrat</th>
                 <th>Bond de commande</th>
                 <th>Ajouter un Fichier</th>
-                @if(auth()->user()->id_role == 3)
-                @else
                 <th>Modifier</th>
-                @endif
+                
             
             </tr>
             </thead>
@@ -154,6 +152,72 @@
                                     <li>{{$se_get->libele_service}}</li>
                                 @endforeach
                                 </ul>
+                            </td>
+                             <td>
+                                @can("edit")
+                                    <button type="button" class="table-row" data-toggle="modal" data-target="@php echo "#addprest".$prestation->id; @endphp">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                @endcan
+                                <div class="modal modal-default fade" id="@php echo "addprest".$prestation->id; @endphp">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span></button>
+                                                <h4 class="modal-title">Services</h4>
+                                            </div>
+                                            
+                                            <div class="modal-body">
+                                                <!-- form start -->
+                                                <form role="form" action="edit_the_serv" method="post">
+                                                    @csrf
+                                                    <input type="text" value="{{$prestation->id}}" style="display:none"; name="id_contrat">
+                                                    <!-- /.box-body -->
+                                                   
+                                                    <div class="box-body">
+                                                        <div class="form-group">
+                                                            <label>Service (*)</label>
+                                                            <select class="form-control select2" multiple="multiple" name="service[]"
+                                                                style="width: 100%;" data-placeholder="--Selectionnez le service--" required>
+                                                                <!--liste des services a choisir -->
+                                                                
+                                                                @php
+                                                                    $get = $servicecontroller->GetAllNoSusp();
+                                                                    $categorie = $categoriecontroller->DisplayAll();
+                                                                @endphp
+                                                                @foreach( $categorie as $categorie)
+                                                                    
+                                                                    <optgroup label="{{$categorie->libele_categorie}}">{{$categorie->libele_categorie}}</optgroup>
+                                                                    @php
+                                                                        $get = $servicecontroller->GetByCategorie($categorie->id);
+                                                                        
+                                                                    @endphp
+                                                                    @foreach($get as $service)
+                                                                        
+                                                                        <option value={{$service->id}}>{{$service->libele_service}}</option>
+                                                                        
+                                                                    @endforeach
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn  pull-left" data-dismiss="modal">Fermer</button>
+                                                        <button type="submit" class="btn btn-primary">Valider</button>
+                                                    </div>
+                                                </form>
+                                                                
+                                            
+                                            </div>
+                                        
+                                            
+                                        </div>
+                                        <!-- /.modal-content -->
+                                    </div>
+                                </div> 
+                                <!-- /.modal-dialog -->
                             </td>
                             <td>
                                 <form action="download" method="post" enctype="multipart/form-data" target="blank">
@@ -233,9 +297,9 @@
                             <td>
                                 <!--MODIFICATION AVEC POPUP-->
                                 @can("edit")
-                                <button type="button" class="btn btn-primary" wire:click="EditContrat('{{$prestation->id}}')">
-                                <i class="fa fa-edit"></i>
-                                </button>
+                                    <button type="button" class="btn btn-primary" wire:click="EditContrat('{{$prestation->id}}')">
+                                    <i class="fa fa-edit"></i>
+                                    </button>
                                 @endcan
                             </td>
                         </tr>

@@ -63,7 +63,7 @@
                                     $f = DB::table('professions')->orderBy('id', 'asc')->get();
                                 @endphp
                                 @foreach($f as $f)
-                                    <option value="{{$f->intitule}}">{{$f->intitule}}</option>
+                                    <option value="{{$f->id}}">{{$f->intitule}}</option>
                                 @endforeach
                             </select>
                         </div>  

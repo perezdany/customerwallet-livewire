@@ -113,9 +113,9 @@
                   
                       <div class="box-header with-border" style="text-align:center">
                       @php
-                        $nom = $entreprisecontroller->GetById($id_entreprise)
+                        $nom = $entreprisecontroller->GetById($id_entreprise);
 
-
+                       
                       @endphp
                       @foreach($nom as $nom)
                             <h3 class="box-title"><b>{{$nom->nom_entreprise}}</b>
@@ -172,6 +172,15 @@
                                     </div>
                                    
                                 </div>
+                                 <div class="form-group">
+                                    <label class="col-sm-6 control-label"> <b>ACTIVITE :</b></label>
+                                  
+                                
+                                    <div class="col-sm-6">
+                                     <input type="text" value="{{$prospections->activite}}" class="form-control" disabled>
+                                    </div>
+                                   
+                                </div>
                                 <div class="form-group">
                                       <label class="col-sm-6 control-label"><b>EN CHARGE DE LA PROSPECTION :</b></label>
                                 
@@ -184,7 +193,7 @@
                             </div>
                
                         </div>
-                        @if(auth()->user()->id_role != NULL)
+                        @can("edit")
                             <div class="box-body">
                                 <form action="go_contrat_form" method="post" >
                                         @csrf
@@ -192,7 +201,7 @@
                                         <button type="submit" class="btn btn-success"><i class="fa fa-edit">AJOUTER UN CONTRAT</i></button>
                                 </form>
                             </div>
-                        @endif
+                        @endcan
                       
                        
                         <div class="box-header">
@@ -219,12 +228,12 @@
                                             
                                             <th style="width: 40px">Ajouté le :</th>
                                             <!--LES RESTRICTIONS -->
-                                            @can("delete")	
+                                            @can("delete")
                                                <th>Supprimer</th>
                                                 
                                             @endcan
                                                 
-                                      
+
                                             
                                         </tr>
                                         <!--LES FICHIERS ET LES FACTURES-->
@@ -240,8 +249,8 @@
                                                 
                                                     @endphp
                                                 </td>
-                                                @can("delete")
-                                                    <td>
+                                                <td>
+                                                    @can("delete")	
                                                         <form action="delete_service_many_to_many" method="post" >
 
                                                             @csrf
@@ -256,8 +265,13 @@
                                                             </div>
                                                         
                                                         </form>
-                                                    </td>
-                                                @endcan
+                                                        
+                                                    @endcan
+                                                        
+                                                   
+                                                   
+
+                                                </td>
                                             </tr>
                                         
                                         @endforeach
@@ -268,7 +282,7 @@
                             </div>
                         </div>
 
-                        @if(auth()->user()->id_role != NULL)
+                        @can("edit")
                              <div class="box-body">
                                 <form action="add_service_in_fiche" method="post" class="col-sm-12">
                                     @csrf
@@ -276,7 +290,7 @@
                                     <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
                                     <div class="form-group">
                                         <label>Ajouter un service</label>
-                                        <select class="form-control input-lg select2" data-placeholder ="--Selctionner un service--" multiple="multiple" name="service_propose[]" required>
+                                        <select class="form-control  select2" data-placeholder ="--Selctionner un service--" multiple="multiple" name="service_propose[]" required>
                                         
                                             <!--liste des services a choisir -->
                                         
@@ -304,7 +318,7 @@
                                     <button class="btn btn-primary">Ajouter</button>
                                 </form>
                             </div>
-                        @endif
+                        @endcan
                            
                         <hr>
 
@@ -320,9 +334,9 @@
                                 <tr>
                                     <th>Nom</th>
                                     <th>Ajouté le:</th>
-                                   @if(auth()->user()->id_role != NULL)
+                                   @can("delete")
                                         <th>Supprimer</th>
-                                   @endif
+                                   @endcan
                                     <th style="width: 40px">Aperçu</th>
                                 </tr>
                                 <!--LES FICHIERS ET LES FACTURES-->
@@ -341,7 +355,7 @@
                                                 echo "<b>".date('d/m/Y',strtotime($prospections->created_at))."</b> à <b>".date('H:i:s',strtotime($se_get->created_at))."</b>" ;
                                             @endphp
                                         </td>
-                                        @if(auth()->user()->id_role != NULL)
+                                        @can("edit")
                                             <td>
                                                 <form action="edit_prospect_form" method="post">
                                                     @csrf
@@ -349,7 +363,7 @@
                                                     <button type="submit" class="btn btn-success"><i class="fa fa-edit">Aller a la page prospections pour modifier</i></button>
                                                 </form>
                                             </td>
-                                         @endif
+                                         @endcan
                                         
                                         <td>
                                             
@@ -389,7 +403,12 @@
                                 @foreach($select as $select)
                                     <tr>
                                         <td>  <span class="text">{{$select->libele}}</span> </td>
-                                        @if(auth()->user()->id_role != NULL)
+                                         <td>
+                                            @php 
+                                                echo "<b>".date('d/m/Y',strtotime($select->created_at))."</b> à <b>".date('H:i:s',strtotime($select->created_at))."</b>" ;
+                                            @endphp
+                                        </td>
+                                        @can("delete")
                                             <td>
                                                 <form action="delete_prof_in_fiche" method="post" >
 
@@ -407,7 +426,7 @@
                                                 
                                                 </form>
                                             </td>
-                                         @endif
+                                         @endcan
                                        
                                         <td>
                                             
@@ -434,7 +453,7 @@
                             </table>
                         </div>
 
-                        @if(auth()->user()->id_role != NULL)
+                        @can("edit")
                              <!--SI ON VEUT AJOUETR UN AUTRE DOCUMENT de FACTURE PROFORMA -->
                             <div class="box-body">
                                 <form action="add_new_doc_proforma" method="post" enctype="multipart/form-data" class="col-sm-12">
@@ -453,7 +472,7 @@
                                     
                                 </form>
                             </div>
-                        @endif
+                        @endcan
                         
 
                         <!--LES CR DE VISITE DANS LA TABLE PROPSECTION-->
@@ -461,21 +480,17 @@
                             <h3 class="box-title"><b>COMPTE RENDU DE VISITE</b></h3>
                         </div>
                          
-                        <div class="form-group no-padding">
+                        <div class="form-group ">
                             <table class="table table-hover box-body">
                                
                                 <tr>
                             
-                                    <th>Nom</th>
-                                    <th>Ajouté le :</th>
-                                    @if(auth()->user()->id_role != NULL)
-                                        <th>Supprimer</th>
-                                    @endif
+                                    <th>Nom du fichier</th>
+    
                                     
-                                    <th style="width: 40px">Aperçu</th>
                                 </tr>
                                
-                                <tr>
+                                <tr class="no-padding">
                                     @if($prospections->path_cr == null)
                                         
                                     @else
@@ -493,7 +508,7 @@
                                                 echo "<b>".date('d/m/Y',strtotime($prospections->created_at))."</b> à <b>".date('H:i:s',strtotime($prospections->created_at))."</b>" ;
                                             @endphp
                                         </td>
-                                        @if(auth()->user()->id_role != NULL)
+                                        @can("edit")
                                               <td>
                                                 <form action="edit_prospect_form" method="post">
                                                     @csrf
@@ -501,7 +516,7 @@
                                                     <button type="submit" class="btn btn-success"><i class="fa fa-edit">Aller a la page prospections pour modifier</i></button>
                                                 </form>
                                             <td>
-                                        @endif
+                                        @endcan
                                        
                                         <td>    
                                             <form action="download_prospect" method="post" enctype="multipart/form-data">
@@ -540,7 +555,8 @@
                                 @foreach($select as $select)
                                     <tr>
                                         <td>  <span class="text">{{$select->libele}}</span> </td>
-                                        @if(auth()->user()->id_role != NULL)
+                                        
+                                        @can("delete")
                                             <td>
                                                 <form action="delete_cr_in_fiche" method="post" >
 
@@ -559,7 +575,7 @@
                                                 </form>
                                                 
                                             </td>
-                                        @endif
+                                        @endcan
                                       
                                         <td>
                                             
@@ -588,7 +604,7 @@
 
 
                          <!--SI ON VEUT AJOUETR UN AUTRE DOCUMENT -->
-                        @if(auth()->user()->id_role)
+                        @can("edit")
                             <div class="box-body">
                                 <form action="add_new_doc_cr" method="post" enctype="multipart/form-data" class="col-sm-12">
 
@@ -607,7 +623,7 @@
                                 </form>
                             </div>
 
-                        @endif
+                        @endcan
                         
                         <!--AUTRE DOCS-->
                         @php
@@ -622,10 +638,7 @@
                             
                                     <th>Nom</th>
                                     <th>Ajouté le :</th>
-                                    @if(auth()->user()->id_role != NULL)
-                                         <th>Supprimer</th>
-                                    @endif
-                                   
+                                    <th>Supprimer</th>
                                     <th style="width: 40px">Aperçu</th>
                                 </tr>
                                 @foreach($docs as $docs)
@@ -637,7 +650,7 @@
                                             echo "<b>".date('d/m/Y',strtotime($docs->created_at))."</b> à <b>".date('H:i:s',strtotime($docs->created_at))."</b>" ;
                                         @endphp
                                     </td>
-                                    @if(auth()->user()->id_role != NULL)
+                                    @can("delete")
                                         <td>
                                             <form action="delete_doc" method="post" enctype="multipart/form-data">
 
@@ -649,7 +662,7 @@
                                                 <button type="submit" class="btn btn-sx btn-danger"><i class="fa fa-trash-o"></i></button>
                                             </form>
                                         </td>
-                                    @endif
+                                    @endcan
                                   
                                     <td>
                                         
@@ -671,7 +684,7 @@
                        
                         
                         <!--SI ON VEUT AJOUETR UN AUTRE DOCUMENT -->
-                        @if(auth()->user()->id_role != NULL)
+                        @can("edit")
                             <div class="box-body">
                                 <form action="add_new_doc" method="post" enctype="multipart/form-data" class="col-sm-12">
 
@@ -689,7 +702,7 @@
                                     
                                 </form>
                             </div>
-                        @endif
+                        @endcan
                      
 
                         
@@ -708,10 +721,7 @@
                             
                                     <th>Nom</th>
                                     <th>Ajouté le :</th>
-                                    @if(auth()->user()->id_role != NULL)
-                                         <th>Supprimer</th>
-                                    @endif
-                                   
+                                    <th>Supprimer</th>
                                     <th style="width: 40px">Aperçu</th>
                                 </tr>
                                 @foreach($propal as $propal)
@@ -723,7 +733,7 @@
                                             echo "<b>".date('d/m/Y',strtotime($propal->created_at))."</b> à <b>".date('H:i:s',strtotime($propal->created_at))."</b>" ;
                                         @endphp
                                     </td>
-                                    @if(auth()->user()->id_role != NULL)
+                                    @can("delete")
                                         <td>
                                             <form action="delete_doc_propal" method="post" enctype="multipart/form-data">
 
@@ -735,7 +745,7 @@
                                                 <button type="submit" class="btn btn-sx btn-danger"><i class="fa fa-trash-o"></i></button>
                                             </form>
                                         </td>
-                                    @endif
+                                    @endcan
                                     
                                     <td>
                                         
@@ -757,7 +767,7 @@
 
                           <!--SI ON VEUT AJOUETR UNE PROPOSITION -->
                        
-                        @if(auth()->user()->id_role != NULL)
+                        @can("edit")
                             <div class="box-body">
                                 <form action="add_doc_proposition" method="post" enctype="multipart/form-data" class="col-sm-12">
 
@@ -776,7 +786,7 @@
                                 </form>
                             </div>
 
-                        @endif
+                        @endcan
                       
                                 <hr>
                         @php
@@ -807,262 +817,54 @@
                                         {{$interlocuteurs->tel}}
                                     </td>
                                     <td>{{$interlocuteurs->email}}</td>
-                                    <td>{{$interlocuteurs->fonction}}</td>
+                                    <td>{{$interlocuteurs->intitule}}</td>
 
                                     <td>
-                                        @if(auth()->user()->id_departement == 1)
                                     
+                                        @can("edit")
+                                            <form action="edit_interlocuteur_form_fiche" method="post">
+                                                @csrf
+                                                <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
+                                                <input type="text" value={{$interlocuteurs->id}} style="display:none;" name="id_interlocuteur">
+                                                <button type="submit" class="btn btn-primary"><i class ="fa fa-edit"></i></button>
+                                            </form> 
 
-                                            @if(auth()->user()->id_role == 5)
-                                                <form action="edit_interlocuteur_form_fiche" method="post">
-                                                    @csrf
-                                                    <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
-                                                    <input type="text" value={{$interlocuteurs->id}} style="display:none;" name="id_interlocuteur">
-                                                    <button type="submit" class="btn btn-primary"><i class ="fa fa-edit"></i></button>
-                                                </form> 
-                                                 <!--SUPPRESSION AVEC POPUP-->
-                                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="@php echo "#interloc".$interlocuteurs->id.""; @endphp">
-                                                    <i class="fa fa-trash"></i>
-                                                  </button>
-                                                <div class="modal modal-danger fade" id="@php echo "".$interlocuteurs->id.""; @endphp">
-                                                  <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                      <div class="modal-header">
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                          <span aria-hidden="true">&times;</span></button>
-                                                        <h4 class="modal-title">Supprimer </h4>
-                                                      </div>
-                                                        <form action="delete_interlocuteur_from_fiche" method="post">
-                                                        <div class="modal-body">
-                                                          <p>Voulez-vous supprimer {{$interlocuteurs->nom}}?</p>
-                                                          @csrf
-                                                          <input type="text" value="{{$interlocuteurs->id_entreprise}}" name="id_entreprise" style="display:none;">
-                                                        <input type="text" value={{$interlocuteurs->id}} style="display:none;" name="id_interlocuteur">
-                                                        </div>
-                                                      
-                                                        <div class="modal-footer">
-                                                          <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Fermer</button>
-                                                          <button type="submit" class="btn btn-outline">Supprimer</button>
-                                                        </div>
-                                                      </form>
-                                                    </div>
-                                                    <!-- /.modal-content -->
+                                        @endcan
+                                        @can("delete")
+                                             <!--SUPPRESSION AVEC POPUP-->
+                                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="@php echo "#interloc".$interlocuteurs->id.""; @endphp">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                            <div class="modal modal-danger fade" id="@php echo "".$interlocuteurs->id.""; @endphp">
+                                              <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                  <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                      <span aria-hidden="true">&times;</span></button>
+                                                    <h4 class="modal-title">Supprimer </h4>
                                                   </div>
-                                                  <!-- /.modal-dialog -->
-                                                </div>
-                                                <!-- /.modal -->
-                                               
-                                            @endif
-
-                                            @if(auth()->user()->id_role == 3)
-                                            
-                                            
-                                            @endif
-                                            @if(auth()->user()->id_role == 1)
-
-                                                <form action="edit_interlocuteur_form_fiche" method="post">
-                                                    @csrf
-                                                    <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
+                                                    <form action="delete_interlocuteur_from_fiche" method="post">
+                                                    <div class="modal-body">
+                                                      <p>Voulez-vous supprimer {{$interlocuteurs->nom}}?</p>
+                                                      @csrf
+                                                      <input type="text" value="{{$interlocuteurs->id_entreprise}}" name="id_entreprise" style="display:none;">
                                                     <input type="text" value={{$interlocuteurs->id}} style="display:none;" name="id_interlocuteur">
-                                                    <button type="submit" class="btn btn-primary"><i class ="fa fa-edit"></i></button>
-                                                </form>
-                                                 <!--SUPPRESSION AVEC POPUP-->
-                                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="@php echo "#interloc".$interlocuteurs->id.""; @endphp">
-                                                    <i class="fa fa-trash"></i>
-                                                  </button>
-                                                <div class="modal modal-danger fade" id="@php echo "".$interlocuteurs->id.""; @endphp">
-                                                  <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                      <div class="modal-header">
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                          <span aria-hidden="true">&times;</span></button>
-                                                        <h4 class="modal-title">Supprimer </h4>
-                                                      </div>
-                                                        <form action="delete_interlocuteur_from_fiche" method="post">
-                                                        <div class="modal-body">
-                                                          <p>Voulez-vous supprimer {{$interlocuteurs->nom}}?</p>
-                                                          @csrf
-                                                          <input type="text" value="{{$interlocuteurs->id_entreprise}}" name="id_entreprise" style="display:none;">
-                                                        <input type="text" value={{$interlocuteurs->id}} style="display:none;" name="id_interlocuteur">
-                                                        </div>
-                                                      
-                                                        <div class="modal-footer">
-                                                          <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Fermer</button>
-                                                          <button type="submit" class="btn btn-outline">Supprimer</button>
-                                                        </div>
-                                                      </form>
                                                     </div>
-                                                    <!-- /.modal-content -->
-                                                  </div>
-                                                  <!-- /.modal-dialog -->
+                                                  
+                                                    <div class="modal-footer">
+                                                      <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Fermer</button>
+                                                      <button type="submit" class="btn btn-outline">Supprimer</button>
+                                                    </div>
+                                                  </form>
                                                 </div>
-                                                <!-- /.modal -->
+                                                <!-- /.modal-content -->
+                                              </div>
+                                              <!-- /.modal-dialog -->
+                                            </div>
+                                            <!-- /.modal -->
                                             
                                             
-                                            @endif
-                                        @else
-                                            @if(auth()->user()->id_role == 2)
-                                                <form action="edit_interlocuteur_form_fiche" method="post">
-                                                    @csrf
-                                                    <input type="text" value={{$interlocuteurs->id}} style="display:none;" name="id_interlocuteur">
-                                                    <button type="submit" class="btn btn-primary"><i class ="fa fa-edit"></i></button>
-                                                </form>
-                                                 <!--SUPPRESSION AVEC POPUP-->
-                                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="@php echo "#interloc".$interlocuteurs->id.""; @endphp">
-                                                    <i class="fa fa-trash"></i>
-                                                  </button>
-                                                <div class="modal modal-danger fade" id="@php echo "".$interlocuteurs->id.""; @endphp">
-                                                  <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                      <div class="modal-header">
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                          <span aria-hidden="true">&times;</span></button>
-                                                        <h4 class="modal-title">Supprimer </h4>
-                                                      </div>
-                                                        <form action="delete_interlocuteur_from_fiche" method="post">
-                                                        <div class="modal-body">
-                                                          <p>Voulez-vous supprimer {{$interlocuteurs->nom}}?</p>
-                                                          @csrf
-                                                          <input type="text" value="{{$interlocuteurs->id_entreprise}}" name="id_entreprise" style="display:none;">
-                                                        <input type="text" value={{$interlocuteurs->id}} style="display:none;" name="id_interlocuteur">
-                                                        </div>
-                                                      
-                                                        <div class="modal-footer">
-                                                          <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Fermer</button>
-                                                          <button type="submit" class="btn btn-outline">Supprimer</button>
-                                                        </div>
-                                                      </form>
-                                                    </div>
-                                                    <!-- /.modal-content -->
-                                                  </div>
-                                                  <!-- /.modal-dialog -->
-                                                </div>
-                                                <!-- /.modal -->
-                                            @endif
-
-                                            @if(auth()->user()->id_role == 5)
-                                                <form action="edit_interlocuteur_form_fiche" method="post">
-                                                    @csrf
-                                                    <input type="text" value={{$interlocuteurs->id}} style="display:none;" name="id_interlocuteur">
-                                                    <button type="submit" class="btn btn-primary"><i class ="fa fa-edit"></i></button>
-                                                </form>
-                                                <  <!--SUPPRESSION AVEC POPUP-->
-                                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="@php echo "#interloc".$interlocuteurs->id.""; @endphp">
-                                                    <i class="fa fa-trash"></i>
-                                                  </button>
-                                                <div class="modal modal-danger fade" id="@php echo "".$interlocuteurs->id.""; @endphp">
-                                                  <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                      <div class="modal-header">
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                          <span aria-hidden="true">&times;</span></button>
-                                                        <h4 class="modal-title">Supprimer </h4>
-                                                      </div>
-                                                        <form action="delete_interlocuteur_from_fiche" method="post">
-                                                        <div class="modal-body">
-                                                          <p>Voulez-vous supprimer {{$interlocuteurs->nom}}?</p>
-                                                          @csrf
-                                                          <input type="text" value="{{$interlocuteurs->id_entreprise}}" name="id_entreprise" style="display:none;">
-                                                        <input type="text" value={{$interlocuteurs->id}} style="display:none;" name="id_interlocuteur">
-                                                        </div>
-                                                      
-                                                        <div class="modal-footer">
-                                                          <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Fermer</button>
-                                                          <button type="submit" class="btn btn-outline">Supprimer</button>
-                                                        </div>
-                                                      </form>
-                                                    </div>
-                                                    <!-- /.modal-content -->
-                                                  </div>
-                                                  <!-- /.modal-dialog -->
-                                                </div>
-                                                <!-- /.modal -->
-                                            @endif
-
-                                            @if(auth()->user()->id_role == 4)
-                                                <form action="edit_interlocuteur_form_fiche" method="post">
-                                                    @csrf
-                                                    <input type="text" value={{$interlocuteurs->id}} style="display:none;" name="id_interlocuteur">
-                                                    <button type="submit" class="btn btn-primary"><i class ="fa fa-edit"></i></button>
-                                                </form>
-                                                 <!--SUPPRESSION AVEC POPUP-->
-                                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="@php echo "#interloc".$interlocuteurs->id.""; @endphp">
-                                                    <i class="fa fa-trash"></i>
-                                                  </button>
-                                                <div class="modal modal-danger fade" id="@php echo "".$interlocuteurs->id.""; @endphp">
-                                                  <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                      <div class="modal-header">
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                          <span aria-hidden="true">&times;</span></button>
-                                                        <h4 class="modal-title">Supprimer </h4>
-                                                      </div>
-                                                        <form action="delete_interlocuteur_from_fiche" method="post">
-                                                        <div class="modal-body">
-                                                          <p>Voulez-vous supprimer {{$interlocuteurs->nom}}?</p>
-                                                          @csrf
-                                                          <input type="text" value="{{$interlocuteurs->id_entreprise}}" name="id_entreprise" style="display:none;">
-                                                        <input type="text" value={{$interlocuteurs->id}} style="display:none;" name="id_interlocuteur">
-                                                        </div>
-                                                      
-                                                        <div class="modal-footer">
-                                                          <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Fermer</button>
-                                                          <button type="submit" class="btn btn-outline">Supprimer</button>
-                                                        </div>
-                                                      </form>
-                                                    </div>
-                                                    <!-- /.modal-content -->
-                                                  </div>
-                                                  <!-- /.modal-dialog -->
-                                                </div>
-                                                <!-- /.modal -->
-                                            @endif
-
-                                            @if(auth()->user()->id_role == 3)
-                                            
-                                            
-                                            @endif
-                                            @if(auth()->user()->id_role == 1)
-
-                                                <form action="edit_interlocuteur_form_fiche" method="post">
-                                                    @csrf
-                                                    <input type="text" value={{$interlocuteurs->id}} style="display:none;" name="id_interlocuteur">
-                                                    <button type="submit" class="btn btn-primary"><i class ="fa fa-edit"></i></button>
-                                                </form>
-                                                  <!--SUPPRESSION AVEC POPUP-->
-                                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="@php echo "#interloc".$interlocuteurs->id.""; @endphp">
-                                                    <i class="fa fa-trash"></i>
-                                                  </button>
-                                                <div class="modal modal-danger fade" id="@php echo "".$interlocuteurs->id.""; @endphp">
-                                                  <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                      <div class="modal-header">
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                          <span aria-hidden="true">&times;</span></button>
-                                                        <h4 class="modal-title">Supprimer </h4>
-                                                      </div>
-                                                        <form action="delete_interlocuteur_from_fiche" method="post">
-                                                        <div class="modal-body">
-                                                          <p>Voulez-vous supprimer {{$interlocuteurs->nom}}?</p>
-                                                          @csrf
-                                                          <input type="text" value="{{$interlocuteurs->id_entreprise}}" name="id_entreprise" style="display:none;">
-                                                        <input type="text" value={{$interlocuteurs->id}} style="display:none;" name="id_interlocuteur">
-                                                        </div>
-                                                      
-                                                        <div class="modal-footer">
-                                                          <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Fermer</button>
-                                                          <button type="submit" class="btn btn-outline">Supprimer</button>
-                                                        </div>
-                                                      </form>
-                                                    </div>
-                                                    <!-- /.modal-content -->
-                                                  </div>
-                                                  <!-- /.modal-dialog -->
-                                                </div>
-                                                <!-- /.modal -->
-                                            
-                                            @endif
-                                        @endif
+                                        @endcan
                                 
                                     </td>
                                 </tr>
@@ -1072,7 +874,7 @@
                         </table>
        
                         <hr>
-                        @if(auth()->user()->id_role != NULL)
+                        @can("edit")
                             <div class="box-body">
                                 <form action="add_doc_proposition" method="post" enctype="multipart/form-data" class="col-sm-12">
 
@@ -1090,10 +892,10 @@
                                     
                                 </form>
                             </div>
-                        @endif
+                        @endcan
                             
 
-                        @if(auth()->user()->id_role)
+                        @can("edit")
                             <div class="box-body">
                                 <!--DEUXIEMEN PARTIE DU FORMULAIRE-->
                                 <form action="add_referant_in_fiche" method="post">         
@@ -1108,7 +910,7 @@
                                         @endphp
                                     
                                                 
-                                        <select class="form-control input-lg" name="entreprise" style="display:none;">
+                                        <select class="form-control " name="entreprise" style="display:none;">
                                             @foreach($nom as $nom)
                                                 <option value={{$id_entreprise}}>{{$nom->nom_entreprise}}</option>
 
@@ -1120,7 +922,7 @@
 
                                     <div class="form-group">
                                         <label for="exampleInputFile">Titre :</label>
-                                        <select class="form-control input-lg" name="titre" id="grise1" >
+                                        <select class="form-control " name="titre" id="grise1" >
                                             <option value="M">M</option>
                                             <option value="Mme">Mme</option>
                                             <option value="Mlle">Mlle</option>
@@ -1129,39 +931,39 @@
                                     </div>
                                     <div class="form-group">
                                             <label >Nom & Prénom(s)</label>
-                                            <input type="text" maxlength="100" required id="grise2" class="form-control  input-lg" name="nom" onkeyup="this.value=this.value.toUpperCase()">
+                                            <input type="text" maxlength="100" required id="grise2" class="form-control  " name="nom" onkeyup="this.value=this.value.toUpperCase()">
                                     </div>
 
                                     <div class="form-group">
                                             <label>Email</label>
-                                            <input type="email" id="grise5" maxlength="30" class="form-control input-lg" name="email" >
+                                            <input type="email" id="grise5" maxlength="30" class="form-control " name="email" >
                                     </div>
 
                                     <div class="form-group">
                                             <label>Téléphone (*)</label>
-                                            <input type="text" required id="grise3" maxlength="30"   class="form-control input-lg" name="tel" placeholder="(+225)0214578931" >
+                                            <input type="text" required id="grise3" maxlength="30"   class="form-control " name="tel" placeholder="(+225)0214578931" >
                                         </div>
 
                                     <div class="form-group">
-                                            <label>Fonction</label>
-                                            <input required type="text" class="form-control input-lg"  id="grise4" maxlength="60" name="fonction" onkeyup="this.value=this.value.toUpperCase()">
+                                        <label>Fonction</label>
+                                            <select class="form-control select2"  maxlength="60" name="fonction" required>
+                                            @php
+                                                $f = DB::table('professions')->orderBy('id', 'asc')->get();
+                                            @endphp
+                                            @foreach($f as $f)
+                                                <option value="{{$f->id}}">{{$f->intitule}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>  
                                     </div>
 
                                     <button class="btn btn-primary" >Valider</button>  
                                 </form>
                             </div>
-                        @endif
-
-                        
-                        @endforeach
-                    
-                @else
-               
-                 @endif
-                    
-                   
-                   
-                    
+                        @endcan
+                    @endforeach
+              
+                @endif    
                 </div>
         
             </div>

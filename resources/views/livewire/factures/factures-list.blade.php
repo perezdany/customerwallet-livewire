@@ -3,10 +3,11 @@
     @php
         $total = 0;
         $date_aujourdhui = date('Y-m-d');
+       
+       
     @endphp
 @if(isset($id_entreprise))
 
-        
     @if($id_entreprise != "")
        
         <div class="col-xs-12">
@@ -311,7 +312,7 @@
                     
             <div class="box">
                 <div class="box-header">
-                    <h3 class="box-title">Listes des factures/<a href="cfactures" target="blank" style="color:blue">Liste des facutres par clients</a></h3>
+                    <h3 class="box-title">Listes des factures<!--/<a href="cfactures" target="blank" style="color:blue">Liste des facutres par clients</a>--></h3>
                     <br><br>
                     <a href="facture" style="color:blue"><u>Rétablir<i class="fa fa-refresh" aria-hidden="true"></i></u></a>&emsp;&emsp;&emsp;&emsp;<label>Filtrer par:</label>
                 
@@ -324,7 +325,7 @@
                                 <option value="">Etat</option>
                                 <option value="1">Réglé</option>
                                 <option value="0">non-reglé</option>
-                                    <option value="2">Annulé</option>
+                                <option value="2">Annulé</option>
                             </select>
                                                         
                         </div>
@@ -333,18 +334,31 @@
                     
                             <select class="form-control" wire:model.change="id_contrat" id="id_contrat">
                                 @php
-                                    $contrats = $contratcontroller->RetriveAll();
+                                    $contrats_liste = $contratcontroller->RetriveAll();
                                     
                                 @endphp
                                 <option value="">Contrats</option>
-                                @foreach($contrats as $contrats)
-                                    <option value="{{$contrats->id}}">{{$contrats->titre_contrat}}({{$contrats->nom_entreprise}})</option>
+                                @foreach($contrats_liste as $contrats_liste)
+                                    <option value="{{$contrats_liste->id}}">{{$contrats_liste->titre_contrat}}({{$contrats_liste->nom_entreprise}})</option>
                                 @endforeach
                             </select>
                                                         
                         </div>
 
-                        
+                        <div class="col-xs-3">
+                            <select class="form-control"  wire:model.debounce.250ms="entreprise" id="entreprise">
+                                <option value="">Entreprises</option>
+                                @php
+                                    $get =  $entreprisecontroller->GetAll();
+                                @endphp
+                                
+                                @foreach($get as $entreprise)
+                                    <option value={{$entreprise->id}}>{{$entreprise->nom_entreprise}}</option>
+                                    
+                                @endforeach
+                                
+                            </select>   
+                        </div>
 
                     </div>
 
@@ -366,37 +380,33 @@
                     <table class="table table-bordered table-striped ">
                         <thead>
                         <tr>
-                            <th>Facture N°</th>
-                            <th>Emise le:</th>
-                            <th>Date de règlement</th>
-                            <!--<th>Contrat</th>-->
-                            <!--<th>Client</th>-->
-                            <th>Montant</th>
-                            <th>Afficher les paiements</th>
+                            <th wire:click="setOrderField('numero_facture')">Facture N° </th>
+                            <th wire:click="setOrderField('date_emission')">Emise le:</th>
+                            <th wire:click="setOrderField('date_reglement')">Date de règlement</th>
+                            <th wire:click="setOrderField('titre_contrat')">Contrat</th>
+                            <th wire:click="setOrderField('nom_entreprise')">Client</th>
+                            <th wire:click="setOrderField('montant_facture')">Montant</th>
+                            <th>Paiements</th>
                             <th>Fichier</th>
                             <th>Modifier le Fichier</th>
-                            @if(auth()->user()->id_role == 3)
-                            @else
-                            
-                                <th>Modifier/Paiement</th>
-                                <th>Supprimer</th>
-                            @endif
+                            <th>Modifier/Paiement</th>
+                            <th>Supp</th>
                         </tr>
                         </thead>
                         <tbody>
                             @php
-                                $total = 0;
-                                
+                                $total_non_reglee = 0;
+                                $total_by_entreprise = 0;
                                 $date_aujourdhui = strtotime(date('Y-m-d'));
                             @endphp
-                        
+                               
                             @forelse($factures as $facture)
-                                @if($facture->reglee == 0)
+                                @if($facture->reglee == 0 AND $facture->annulee == 0)
                                     @php
-                                    //dd('idi');
+                                        
+                                        $total_non_reglee = $total_non_reglee + $facture->montant_facture;
+                                        
                                         //LES FACTURE ECHUE DEPUIS UN MOMENT
-                                        $total = $total + $facture->montant;
-                                        //dd(gettype($date_aujourdhui));
                                         $diff_in_days = floor(($date_aujourdhui - strtotime($facture->date_reglement)) / (60 * 60 * 24));//on obtient ca en jour
                                         //dump($total);
                                         
@@ -408,7 +418,15 @@
                                             
                                             <td class="bg-red">@php echo date('d/m/Y',strtotime($facture->date_emission)) @endphp</td>
                                             <td class="bg-red">@php echo date('d/m/Y',strtotime($facture->date_reglement)) @endphp</td>
-                                            
+                                            @php
+                                                //Afficher les infos du contrat et le nom de l'entreprise
+                                                $disp = DB::table('contrats')
+                                                ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')
+                                                ->where('contrats.id', $facture->id_contrat)->get(['contrats.titre_contrat', 'entreprises.nom_entreprise']);
+
+                                            @endphp
+                                            <td class="bg-red">{{$facture->titre_contrat}}</td>
+                                            <td class="bg-red">{{$facture->nom_entreprise}}</td>
                                             <td class="bg-red">
                                                 @php
                                                     echo  number_format($facture->montant_facture, 2, ".", " ")." XOF";
@@ -484,11 +502,13 @@
                                             <td class="bg-red">
 
                                                 @can("comptable")
-                                                    <form action="paiement_form" method="post">
-                                                        @csrf
-                                                        <input type="text" value={{$facture->id}} style="display:none;" name="id_facture">
-                                                        <button type="submit" class="btn btn-success"><i class="fa fa-money"></i></button>
-                                                    </form>
+                                                    @if($facture->annulee == 0)
+                                                        <form action="paiement_form" method="post">
+                                                            @csrf
+                                                            <input type="text" value={{$facture->id}} style="display:none;" name="id_facture">
+                                                            <button type="submit" class="btn btn-success"><i class="fa fa-money"></i></button>
+                                                        </form>
+                                                    @endif
                                                     
                                                 @endcan
                                                 @can("edit")
@@ -517,6 +537,9 @@
                                                 <td class="bg-warning">@php echo date('d/m/Y',strtotime($facture->date_emission)) @endphp</td>
                                         
                                                 <td class="bg-warning">@php echo date('d/m/Y',strtotime($facture->date_reglement)) @endphp</td>
+                                                        
+                                                <td class="bg-warning">{{$facture->titre_contrat}}</td>
+                                                <td class="bg-warning">{{$facture->nom_entreprise}}</td>
                                                 <td class="bg-warning">
                                                     @php
                                                         echo  number_format($facture->montant_facture, 2, ".", " ")." XOF";
@@ -548,40 +571,40 @@
                                                     @endcan
                                                     <div class="modal modal-default fade" id="@php echo "add".$facture->id.""; @endphp">
                                                         <div class="modal-dialog">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                <span aria-hidden="true">&times;</span></button>
-                                                            <h4 class="modal-title">Fichiers de la facture {{$facture->numero_facture}}</h4>
-                                                            </div>
-                                                            <!-- form start -->
-                                                            <form role="form" method="post" action="upload_file_facture" enctype="multipart/form-data">
-                                                                <div class="modal-body">
-                                                                    <div class="box-body">
-                                                                        @csrf
-                                                                        <input type="text" name="id_facture" value="{{$facture->id}}" style="display:none;">
-                                                                    
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span></button>
+                                                                <h4 class="modal-title">Fichiers de la facture {{$facture->numero_facture}}</h4>
+                                                                </div>
+                                                                <!-- form start -->
+                                                                <form role="form" method="post" action="upload_file_facture" enctype="multipart/form-data">
+                                                                    <div class="modal-body">
+                                                                        <div class="box-body">
+                                                                            @csrf
+                                                                            <input type="text" name="id_facture" value="{{$facture->id}}" style="display:none;">
                                                                         
-                                                                            <div class="form-group">
-                                                                                <label>Fichier de la facture(PDF)</label>
-                                                                                <input type="file" class="form-control" name="file" >
-                                                                            </div>
-                                                                        <div class="modal-footer">
-                                                        
-                                                                            <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Fermer</button>
-                                                                        
-                                                                            <button type="submit" class="btn btn-success">Valider la modification</button>
                                                                             
-                                                                        </div> 
-                                                                    
+                                                                                <div class="form-group">
+                                                                                    <label>Fichier de la facture(PDF)</label>
+                                                                                    <input type="file" class="form-control" name="file" >
+                                                                                </div>
+                                                                            <div class="modal-footer">
+                                                            
+                                                                                <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Fermer</button>
+                                                                            
+                                                                                <button type="submit" class="btn btn-success">Valider la modification</button>
+                                                                                
+                                                                            </div> 
+                                                                        
+                                                                            
+                                                                        </div>
                                                                         
                                                                     </div>
-                                                                    
-                                                                </div>
-                                                            
-                                                            </form>
-                                                        </div>
-                                                        <!-- /.modal-content -->
+                                                                
+                                                                </form>
+                                                            </div>
+                                                            <!-- /.modal-content -->
                                                         </div>
                                                         <!-- /.modal-dialog -->
                                                     </div>
@@ -592,11 +615,13 @@
                                                 <td class="bg-warning">
 
                                                     @can("comptable")
-                                                        <form action="paiement_form" method="post" target="blank">
-                                                            @csrf
-                                                            <input type="text" value={{$facture->id}} style="display:none;" name="id_facture">
-                                                            <button type="submit" class="btn btn-success"><i class="fa fa-money"></i></button>
-                                                        </form>
+                                                        @if($facture->annulee == 0)
+                                                            <form action="paiement_form" method="post">
+                                                                @csrf
+                                                                <input type="text" value={{$facture->id}} style="display:none;" name="id_facture">
+                                                                <button type="submit" class="btn btn-success"><i class="fa fa-money"></i></button>
+                                                            </form>
+                                                        @endif
                                                     @endcan
 
                                                     <div class="popup" id="popup">
@@ -630,13 +655,15 @@
                                                 <td class="bg-warning">@php echo date('d/m/Y',strtotime($facture->date_emission)) @endphp</td>
                                                 <td class="bg-warning">@php echo date('d/m/Y',strtotime($facture->date_reglement)) @endphp</td>
                                                 
+                                                <td class="bg-warning">{{$facture->titre_contrat}}</td>
+                                                <td class="bg-warning">{{$facture->nom_entreprise}}</td>
                                                 <td class="bg-warning">
                                                     @php
                                                         echo  number_format($facture->montant_facture, 2, ".", " ")." XOF";
                                                     @endphp
                                                 </td>
                                                 <td class="bg-warning">
-                                                    <form action="paiement_by_facture" method="post">
+                                                    <form action="paiement_by_facture" method="post" target="blank">
                                                         @csrf
                                                         <input type="text" value={{$facture->id}} style="display:none;" name="id_facture">
                                                         <button type="submit" class="btn btn-success"><i class="fa fa-money"></i>AFFICHER</button>
@@ -704,11 +731,13 @@
                                                 <td class="bg-warning">
 
                                                     @can("comptable")
-                                                        <form action="paiement_form" method="post">
-                                                            @csrf
-                                                            <input type="text" value={{$facture->id}} style="display:none;" name="id_facture">
-                                                            <button type="submit" class="btn btn-success"><i class="fa fa-money"></i></button>
-                                                        </form>
+                                                        @if($facture->annulee == 0)
+                                                            <form action="paiement_form" method="post">
+                                                                @csrf
+                                                                <input type="text" value={{$facture->id}} style="display:none;" name="id_facture">
+                                                                <button type="submit" class="btn btn-success"><i class="fa fa-money"></i></button>
+                                                            </form>
+                                                        @endif
                                                     @endcan
                                                     
                                                     <div class="popup" id="popup">
@@ -746,13 +775,16 @@
                                         
                                         <td>@php echo date('d/m/Y',strtotime($facture->date_emission)) @endphp</td>
                                         <td>@php echo date('d/m/Y',strtotime($facture->date_reglement)) @endphp</td>
+
+                                        <td>{{$facture->titre_contrat}}</td>
+                                        <td>{{$facture->nom_entreprise}}</td>
                                         <td>
                                             @php
                                                 echo  number_format($facture->montant_facture, 2, ".", " ")." XOF";
                                             @endphp
                                         </td>
                                         <td>
-                                            <form action="paiement_by_facture" method="post">
+                                            <form action="paiement_by_facture" method="post" target="blank">
                                                     @csrf
                                                     <input type="text" value={{$facture->id}} style="display:none;" name="id_facture">
                                                     <button type="submit" class="btn btn-success"><i class="fa fa-money"></i>AFFICHER</button>
@@ -821,11 +853,13 @@
                                         <td>
 
                                             @can("comptable")
-                                                <form action="paiement_form" method="post">
-                                                    @csrf
-                                                    <input type="text" value={{$facture->id}} style="display:none;" name="id_facture">
-                                                    <button type="submit" class="btn btn-success"><i class="fa fa-money"></i></button>
-                                                </form>
+                                                @if($facture->annulee == 0)
+                                                    <form action="paiement_form" method="post">
+                                                        @csrf
+                                                        <input type="text" value={{$facture->id}} style="display:none;" name="id_facture">
+                                                        <button type="submit" class="btn btn-success"><i class="fa fa-money"></i></button>
+                                                    </form>
+                                                @endif
                                             @endcan
                                             
                                             <div class="popup" id="popup">
@@ -853,9 +887,9 @@
                                     
                                     </tr>
                                 @endif
-                                
+                            
                             @empty
-
+                                
                                 <tr colspan="9">
                                     <div class="alert alert-info alert-dismissible">
                                         
@@ -863,26 +897,37 @@
                                         Aucune donnée trouvée
                                     </div>
                                 </tr>
-                                @endforelse
+                            @endforelse
+                            
                         </tbody>
                         
                     </table>
                 </div>
                 <!-- /.box-body -->
                 <div clas="box-footer clearfix">
-                    <ul class="pagination pagination-sm no-margin pull-right">
-                    
+                      <ul class="pagination pagination-sm no-margin pull-right">
+                        @if(isset($factures))
                             {{$factures->links()}}
-                    
-                    
-                    </ul>
-                        
+                        @endif
+ 
+                     </ul>
                 </div>
-                <div class="box-footer">
-                    
+                <div class="box-footer"> 
                     @php
-                        //echo '<h3>TOTAL DES FACTURES ECHUES:'.$total." XOF</h3>";
+                         if(isset($total_by_entreprise) AND $total_by_entreprise != 0)
+                        {
+                            echo  "<h3>TOTAL DES FACTURES POUR CETTE ENTREPRISE:<b>".number_format($total_by_entreprise, 2, ".", " ")." XOF</b></h3>";
+                        }
+                        
+                        $somme = 0;
+                        $non_r = DB::table('factures')->where('reglee', 0)->get();
+                        foreach($non_r as $non_r)
+                        {
+                            $somme = $somme + $non_r->montant_facture;
+                        }
+                        echo  "<h3>TOTAL DES FACTURES NON REGLEES:<b>".number_format($somme, 2, ".", " ")." XOF</b></h3>";
                     @endphp
+                   
                 </div>
             </div>
             
@@ -894,11 +939,3 @@
         
 @endif
 
-
-
-      
-     
-
-
-   
-     

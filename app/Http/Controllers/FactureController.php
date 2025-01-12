@@ -15,6 +15,13 @@ class FactureController extends Controller
 {
     //Handle Factures
 
+    public function setQuery($id)
+    {
+        //Une fonction qui va retourner un query builder du model
+        $facture = Facture::query()->where('id_contrat', $id)->latest()->paginate(8);
+        //dd($facture);
+        return $facture;
+    }
     public function DisplayByIdPrestation($id)
     {
         $get =  DB::table('factures')

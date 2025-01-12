@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\File;
 use DB;
 use App\Models\Facture;
 use App\Models\Contrat;
+use App\Models\Entreprise;
+use App\Models\Facture_entr_clt;
 
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;//POUR IMPORTER LES FICHIERS
@@ -28,10 +30,38 @@ class Factures extends Component
     public $id_entreprise = "";
     public $search = ""; 
     public $id_contrat = "";
-
+    public $entreprise = "";
     public $etat = "";
     public $annulee = "";
 
+    public $orderField = 'created_at';
+    public $orderDirection = 'DESC';
+
+    //FONCTION POUR FAIRE ORDRE DECROISSANT
+    public function setOrderField($champ)
+    {
+        
+        if($champ == $this->orderField)
+        {
+            if($this->orderDirection = 'ASC')
+            {
+                $this->orderDirection = 'DESC';
+            }
+            $this->orderDirection =  $this->orderDirection = 'DESC' ? 'ASC' : 'DESC';
+            
+        }
+        else
+        {
+  
+            $this->orderField = $champ;
+            $this->orderDirection =  $this->orderDirection = 'DESC' ? 'ASC' : 'DESC';
+            
+            $this->reset('orderDirection');
+
+        }
+        //return $la;
+    }
+ 
 
     public function closeEditModal()
     {
@@ -214,26 +244,36 @@ class Factures extends Component
         }
 
 
-        $factureQuery = Facture::query()->with('contrats');
-        //dump($factureQuery);
+        //$factureQuery = Facture::query();
+
+        $factureQuery = Facture_entr_clt::query();
+        //dd($factureQuery);
 
         if($this->search != "")
         {
             //sdd($this->search);
-            $factureQuery->where("numero_facture", "LIKE", "%".$this->search."%");
+            $factureQuery->where("numero_facture", "LIKE", "%".$this->search."%")
+            ->orwhere("titre_contrat", "LIKE", "%".$this->search."%")
+            ->orwhere("nom_entreprise", "LIKE", "%".$this->search."%")
+            ->orwhere("montant_facture", "LIKE", "%".$this->search."%");;
         }
 
         if($this->etat != "")
         {
-            //sdd($this->search);
-            $factureQuery->where("reglee",  $this->etat);
+            if($this->etat == "2")
+            {
+                //dd('ici');
+                $factureQuery->where("annulee",  2);
+            }
+            else
+            {
+                $factureQuery->where("reglee",  $this->etat);
+            
+            }
+            
+           
         }
 
-        /*if($this->annulee != "")
-        {
-            //sdd($this->search);
-            $factureQuery->where("annulee",  $this->annulee);
-        }*/
 
         if($this->id_contrat != "")
         {
@@ -241,8 +281,17 @@ class Factures extends Component
             $factureQuery->where("id_contrat", $this->id_contrat);
         }
 
+        if($this->entreprise != "")
+        {
+            //dd('ici');
+            $factureQuery->where("id_entreprise", $this->entreprise);
+           
+
+        }
+       
+
         //dump($factureQuery);
-        return view('livewire.factures.index', ['factures' => $factureQuery->latest()->paginate(8) ])
+        return view('livewire.factures.index', ['factures' => $factureQuery->orderBy($this->orderField, $this->orderDirection)->paginate(8) ])
         ->extends('layouts.base')
         ->section('content');
     }

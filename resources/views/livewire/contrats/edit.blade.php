@@ -112,6 +112,17 @@
                             </select>
                         </div>
                     </div><br>
+                      <div class=" row">
+                        <div class="col-sm-6"><label >Etat:</label></div>
+                        <div class="col-sm-6"> 
+                            <select class="form-control" wire:model="editContrat.etat">
+                            
+                                    <option value="0">TERMINE</option>
+                                    <option value="1">EN COURS</option>
+                                    
+                            </select>
+                        </div>
+                    </div><br>
                     <div class=" row">
                         <div class="col-sm-6"><label>Avenant ?</label></div>
                         <div class="col-sm-6">
@@ -149,12 +160,12 @@
                             
                             if( val == '1')
                             {
-                            document.getElementById("contratparent").removeAttribute("disabled");
+                            document.getElementById("id_contrat_parent").removeAttribute("disabled");
                             
                             }
                             else
                             {
-                            document.getElementById("contratparent").setAttribute("disabled", "disabled");
+                            document.getElementById("id_contrat_parent").setAttribute("disabled", "disabled");
                             
                             }
                         

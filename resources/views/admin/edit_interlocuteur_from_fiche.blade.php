@@ -60,12 +60,21 @@
 
                             <div class="form-group">
                                     <label>Téléphone (*)</label>
-                                    <input type="text" maxlength="30" class="form-control input-lg" name="tel" placeholder="(+225)0214578931" value="{{$interlocuteur->tel}}"  >
+                                    <input type="text" maxlength="30" class="form-control input-lg" name="tel" placeholder="+225 0214578931" value="{{$interlocuteur->tel}}"  >
                                 </div>
 
                                 <div class="form-group">
                                     <label>Fonction</label>
-                                    <input type="text" maxlength="60" class="form-control input-lg" name="fonction" onkeyup="this.value=this.value.toUpperCase()" value="{{$interlocuteur->fonction}}" >
+                                        <select class="form-control select2"  maxlength="60" name="fonction" required>
+                                            <option value="{{$interlocuteur->fonction}}">{{$interlocuteur->intitule}}</option>
+                                            @php
+                                                $f = DB::table('professions')->orderBy('id', 'asc')->get();
+                                            @endphp
+                                            @foreach($f as $f)
+                                                <option value="{{$f->id}}">{{$f->intitule}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>  
                                 </div>
 
                                 <div class="form-group">
