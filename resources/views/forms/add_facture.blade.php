@@ -147,10 +147,10 @@
                                 <input type="date" class="form-control  " value="{{old('date_emission')}}" required name="date_emission">
                             </div>
 
-                            <div class="form-group">
+                            <!--<div class="form-group">
                                 <label for="exampleInputEmail1">Date de règlement:</label>
                                 <input type="date" class="form-control  " name="date_reglement">
-                            </div>
+                            </div>-->
                                 
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Montant de la facture(*):</label>

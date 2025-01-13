@@ -20,6 +20,8 @@ use App\Models\Service;
 
 use App\Models\Prestation;
 use App\Models\Prestation_service;
+use App\Models\Contrat_entr_service;
+use App\Models\Prest_service_contrat;
 
 use DB;
 
@@ -180,7 +182,7 @@ class Contrats extends Component
     public function render()
     {
        //dd($this->etat_contrat);
-        $contratQuery = Contrat::query()
+        $contratQuery = Contrat_entr_service::query()
         //->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')
        ;
 
@@ -235,13 +237,14 @@ class Contrats extends Component
 
         if($this->service != "")
         {
-            $this->orderField = "contrats.created_at";
+           
             //dd($this->service);
-            $prestationQuery = Prestation_service::query()
-            ->join('contrats', 'prestation_services.contrat_id', '=', 'contrats.id')
+            //dd($prestationQuery = Prest_service_contrat::query()->latest());
+            $prestationQuery = Prest_service_contrat::query()
+            //->join('contrats', 'prestation_services.contrat_id', '=', 'contrats.id')
            // ->join('services', 'prestation_services.service_id', '=', 'services.id')
-            ->where('prestation_services.service_id', $this->service)
-            ->orderBy($this->orderField, $this->orderDirection);
+            ->where('service_id', $this->service);
+            
             //sdump($prestationQuery);
             return view('livewire.contrats.index',  ['prestations' => $prestationQuery->orderBy($this->orderField, $this->orderDirection)->paginate(8)])
             ->extends('layouts.base')

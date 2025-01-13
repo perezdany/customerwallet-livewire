@@ -380,12 +380,12 @@
                     <table class="table table-bordered table-striped ">
                         <thead>
                         <tr>
-                            <th wire:click="setOrderField('numero_facture')">Facture N° </th>
-                            <th wire:click="setOrderField('date_emission')">Emise le:</th>
-                            <th wire:click="setOrderField('date_reglement')">Date de règlement</th>
-                            <th wire:click="setOrderField('titre_contrat')">Contrat</th>
-                            <th wire:click="setOrderField('nom_entreprise')">Client</th>
-                            <th wire:click="setOrderField('montant_facture')">Montant</th>
+                            <th wire:click="setOrderField('numero_facture')"><i class="fa fa-sort-amount-desc" aria-hidden="true"></i> N° </th>
+                            <th wire:click="setOrderField('date_emission')"><i class="fa fa-sort-amount-desc" aria-hidden="true"></i>Emise le:</th>
+                            <th wire:click="setOrderField('date_reglement')"><i class="fa fa-sort-amount-desc" aria-hidden="true"></i>Date de règlement</th>
+                            <th wire:click="setOrderField('titre_contrat')"><i class="fa fa-sort-amount-desc" aria-hidden="true"></i>Contrat</th>
+                            <th wire:click="setOrderField('nom_entreprise')"><i class="fa fa-sort-amount-desc" aria-hidden="true"></i>Client</th>
+                            <th wire:click="setOrderField('montant_facture')"><i class="fa fa-sort-amount-desc" aria-hidden="true"></i>Montant</th>
                             <th>Paiements</th>
                             <th>Fichier</th>
                             <th>Modifier le Fichier</th>

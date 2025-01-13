@@ -90,12 +90,12 @@
             <table class="table table-bordered table-striped table-hover">
             <thead>
             <tr>
-                <th>Titre de contrat</th>
-                <th>Entreprise</th>
-                <th>Début du contrat</th>
-                <th>Fin du contrat</th>
-                <th>Montant</th>	
-                <th>Services</th><!--LA LISTE DES SERVICES -->
+                <th wire:click="setOrderField('titre_contrat')"><i class="fa fa-sort-amount-desc" aria-hidden="true"></i>Titre de contrat</th>
+                <th wire:click="setOrderField('nom_entreprise')"><i class="fa fa-sort-amount-desc" aria-hidden="true"></i>Entreprise</th>
+                <th wire:click="setOrderField('debut_contrat')"><i class="fa fa-sort-amount-desc" aria-hidden="true"></i>Début du contrat</th>
+                <th wire:click="setOrderField('fin_contrat')"><i class="fa fa-sort-amount-desc" aria-hidden="true"></i>Fin du contrat</th>
+                <th wire:click="setOrderField('montant')"><i class="fa fa-sort-amount-desc" aria-hidden="true"></i>Montant</th>	
+                <th >Services</th><!--LA LISTE DES SERVICES -->
                 <th>Ajouter un service</th><!--LA LISTE DES SERVICES -->
                 <th>Fichier du contrat</th>
                 <th>Bond de commande</th>
@@ -117,13 +117,7 @@
                         
                             <td>{{$prestation->titre_contrat}}</td>
                             <td>
-                                    @php
-                                    $ent = $entreprisecontroller->GetById($prestation->id_entreprise)
-                                @endphp
-                                @foreach($ent as $ent)
-                                    {{$ent->nom_entreprise}}
-                                @endforeach
-                                    
+                                   {{$prestation->nom_entreprise}}
                             </td>
                             <td>@php echo date('d/m/Y',strtotime($prestation->debut_contrat)) @endphp</td>
                             <td>@php echo date('d/m/Y',strtotime($prestation->fin_contrat)) @endphp</td>
@@ -319,12 +313,8 @@
                         
                             <td>{{$contrat->titre_contrat}} </td>
                             <td>
-                                @php
-                                    $ent = $entreprisecontroller->GetById($contrat->id_entreprise)
-                                @endphp
-                                @foreach($ent as $ent)
-                                    {{$ent->nom_entreprise}}
-                                @endforeach
+                                {{$contrat->nom_entreprise}}
+                               
 
                             </td>
                             <td>@php echo date('d/m/Y',strtotime($contrat->debut_contrat)) @endphp</td>

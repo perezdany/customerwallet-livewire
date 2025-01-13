@@ -72,7 +72,7 @@
                             </div>  
                             <div class="form-group">
                             <label >Adresse:</label>
-                            <input type="text" maxlength="18" class="form-control  " name="adresse" placeholder="COCODY" onkeyup="this.value=this.value.toUpperCase()">
+                            <input type="text" maxlength="60" class="form-control  " name="adresse" placeholder="COCODY" onkeyup="this.value=this.value.toUpperCase()">
                             </div>
                             <div class="form-group">
                             <label >Téléphone (fixe/mobile):</label>
@@ -85,7 +85,7 @@
 
                             <div class="form-group">
                             <label >Nombre d'employés:</label>
-                            <input type="text" id="ne" maxlength="18" class="form-control  " name="nb_emp" placeholder="5">
+                            <input type="text" id="ne" maxlength="11" class="form-control  " name="nb_emp" placeholder="5">
                             </div>
 
                             <div class="form-group">

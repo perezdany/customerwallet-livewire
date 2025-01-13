@@ -55,12 +55,12 @@
                 <table id="" class="table table-bordered table-striped">
                     <thead>
                     <tr>
-                        <th wire:click="setOrderField('nom_entreprise')">Nom</th>
-                        <th wire:click="setOrderField('adresse')">Adresse</th>
-                        <th wire:click="setOrderField('etat')">Statut</th>
+                        <th wire:click="setOrderField('nom_entreprise')"><i class="fa fa-sort-amount-desc" aria-hidden="true"></i>Nom</th>
+                        <th wire:click="setOrderField('adresse')"><i class="fa fa-sort-amount-desc" aria-hidden="true"></i>Adresse</th>
+                        <th wire:click="setOrderField('etat')"><i class="fa fa-sort-amount-desc" aria-hidden="true"></i>Statut</th>
                         <th style="display:none">EatEntreprise</th>
                     
-                        <th>Fiche</th>
+                        <th >Fiche</th>
                         <th>Interlocuteurs: </th>
                         <th>Modifier</th>
                         <th>Supprimer</th>
@@ -91,7 +91,7 @@
                                 <form method="get" action="display_fiche_customer">
                                     @csrf
                                     <input type="text" value="{{$entreprise->id}}" style="display:none;" name="id_entreprise">
-                                    <button class="btn btn-default"> <b>Fiche Client</b></button>
+                                    <button class="btn btn-default"> <b><i class="fa fa-eye" aria-hidden="true"></i></b></button>
                                 </form>
                                 @endif
                             </td>

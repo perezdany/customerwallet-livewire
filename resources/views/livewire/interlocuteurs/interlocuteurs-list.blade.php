@@ -62,13 +62,13 @@
                 <thead>
                
                 <tr>
-                    <th wire:click="setOrderField('nom')">Nom & Prénom(s)</th>
-                    <th wire:click="setOrderField('tel')">Téléphone</th>
-                    <th wire:click="setOrderField('email')">Email</th>
-                    <th wire:click="setOrderField('fonction')">Fonction</th>
-                    <th wire:click="setOrderField('nom_entreprise')">Entreprise</th>
+                    <th wire:click="setOrderField('nom')"><i class="fa fa-sort-amount-desc" aria-hidden="true"></i>Nom & Prénom(s)</th>
+                    <th wire:click="setOrderField('tel')"><i class="fa fa-sort-amount-desc" aria-hidden="true"></i>Téléphone</th>
+                    <th wire:click="setOrderField('email')"><i class="fa fa-sort-amount-desc" aria-hidden="true"></i>Email</th>
+                    <th wire:click="setOrderField('fonction')"><i class="fa fa-sort-amount-desc" aria-hidden="true"></i>Fonction</th>
+                    <th wire:click="setOrderField('nom_entreprise')"><i class="fa fa-sort-amount-desc" aria-hidden="true"></i>Entreprise</th>
                 
-                    <th wire:click="setOrderField('nom_prenoms')">Ajouté par</th>
+                    <th wire:click="setOrderField('nom_prenoms')"><i class="fa fa-sort-amount-desc" aria-hidden="true"></i>Ajouté par</th>
                         
                     <th>Action</th>
                 </tr>

@@ -212,12 +212,12 @@ class FactureController extends Controller
         $timestamp = strtotime($request->date_emission);
 
         //POUR DES RAISONS TEMPORAIRES POUR LE REMPLISSAGE JE COMMENTE LA LIGNE CI DESSOUS
-        //$date_reglement = date('Y-m-d', strtotime('+3 days',  $timestamp));
+        $date_reglement = date('Y-m-d', strtotime('+3 days',  $timestamp));
         
         //dd($date_reglement);
         $Insert = Facture::create([
             'numero_facture' => $request->numero_facture, 
-            'date_reglement' => $request->date_reglement,
+            'date_reglement' => $request->$date_reglement,
              'date_emission' => $request->date_emission, 
              'montant_facture' => $request->montant_facture, 
              'id_contrat' => $request->id_contrat,

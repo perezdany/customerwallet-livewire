@@ -428,44 +428,59 @@ class Calculator extends Controller
         $first_date = $year."-".$month."-01";
         $last_date = $year."-".$month."-".$number;
 
-        //TOUTES LES FACTURES REGLEES DU MOIS
-        $toutes_reglees = DB::table('factures')
-        ->join('contrats', 'factures.id_contrat', '=', 'contrats.id')
-        ->join('entreprises', 'entreprises.id', '=', 'contrats.id_entreprise')
-        ->where('factures.annulee', 0)
-        ->where('factures.date_emission', '>=', $first_date)
-        ->where('factures.date_emission', '<=', $last_date)
-        ->get(['factures.*', 'contrats.id', 'contrats.titre_contrat', 'contrats.debut_contrat']);
+        
+         //PARCOURIR TOUS LES SERVICES
+        $all_services = Service::all();
+        foreach($all_services as $all_services)
+        {    
+            $compte_prestations  = 0; 
+            //TOUTES LES FACTURES EMISES NON ANNULEES DU MOIS
+            $toutes_reglees =  DB::table('factures')
+            ->join('contrats', 'factures.id_contrat', '=', 'contrats.id')
+            ->join('entreprises', 'entreprises.id', '=', 'contrats.id_entreprise')
+            ->where('factures.annulee', 0)
+            ->where('factures.date_emission', '>=', $first_date)
+            ->where('factures.date_emission', '<=', $last_date)
+            ->get();
 
-        foreach($toutes_reglees as $toutes_reglee )
-        {
-            //pour récupérer le nombre total de la prestation spécifique ce mois ci
-            $compte_prestations_service  = 0;
-            //PARCOURIR TOUS LES SERVICES
-            $all_services = Service::all();
-            //ON PARCOURS TOUTES LES FACTURES REGLEES PARCE QUE CES FACTURE LA C'EST LES SERVICES QU'ON VEUT VOIR 
-            foreach($all_services as $all_services)
-            {
-                $compte_prestations_service = DB::table('prestation_services')
+            foreach($toutes_reglees as $toutes_reglee)
+            {   
+                //pour récupérer le nombre total de la prestation spécifique ce mois ci
+                $compte_prestations_service =  DB::table('prestation_services')
                 ->join('contrats', 'prestation_services.contrat_id', '=', 'contrats.id')
                 ->join('services', 'prestation_services.service_id', '=', 'services.id') 
-                ->where('contrats.id', $toutes_reglee->id_contrat)
+                ->where('prestation_services.contrat_id', $toutes_reglee->id_contrat)
                 ->where('prestation_services.service_id', '=', $all_services->id)
                 ->count();
-
-                 //Si on a trouvé au moins une occurence de la prestation, on peut mettre dans notre tableau pour partir
+                //->get(['prestation_services.*', 'services.libele_service', 'contrats.id']);
+            
                 if($compte_prestations_service != 0)
+                {   
+                    $compte_prestations++;
+                }
+                
+            }
+            if($compte_prestations != 0)
+            {
+                //ON VA METTRE LE NOM DU SERVICE DANS LE TABLEAU
+                if($serv == null)
                 {
-                    $compte_prestations = $compte_prestations + 1;
                     array_push($serv, $all_services->libele_service);
+                }
+                else
+                {
+
+                    if(array_search($all_services->libele_service, $serv) == false)
+                    {
+                        array_push($serv, $all_services->libele_service);
+                    }   
                     
                 }
+                array_push($data_serv, $compte_prestations);    
             }
-
-            array_push($data_serv, $compte_prestations_service);
-        
+                
+            
         }
-        
         return view('graph/search_monthly', compact('data', 'company', 'percent', 'francais', 'serv', 'colors', 'data_serv', 'total'));
     }
     
@@ -639,54 +654,60 @@ class Calculator extends Controller
 
         $first_date = $request->month."-01";
         $last_date = $request->month."-".$number;
+        
+        //PARCOURIR TOUS LES SERVICES
+        $all_services = Service::all();
+        foreach($all_services as $all_services)
+        {    
+            $compte_prestations  = 0; 
+             //TOUTES LES FACTURES EMISES NON ANNULEES DU MOIS
+            $toutes_reglees =  DB::table('factures')
+            ->join('contrats', 'factures.id_contrat', '=', 'contrats.id')
+            ->join('entreprises', 'entreprises.id', '=', 'contrats.id_entreprise')
+            ->where('factures.annulee', 0)
+            ->where('factures.date_emission', '>=', $first_date)
+            ->where('factures.date_emission', '<=', $last_date)
+            ->get();
 
-        //TOUTES LES FACTURES EMISES NON ANNULEES DU MOIS
-       
-        $toutes_reglees = DB::table('factures')
-        ->join('contrats', 'factures.id_contrat', '=', 'contrats.id')
-        ->join('entreprises', 'entreprises.id', '=', 'contrats.id_entreprise')
-        ->where('factures.annulee', 0)
-        ->where('factures.date_emission', '>=', $first_date)
-        ->where('factures.date_emission', '<=', $last_date)
-        ->get(['factures.*', 'contrats.titre_contrat', 'contrats.debut_contrat']);
-        //dd($toutes_reglees);
-        foreach($toutes_reglees as $toutes_reglee)
-        {
-            //dump($toutes_reglee->id_contrat);
-            //PARCOURIR TOUS LES SERVICES
-            $all_services = Service::all();
-            //pour récupérer le nombre total de la prestation spécifique ce mois ci
-            $compte_prestations  = 0;
-            //ON PARCOURS TOUTES LES FACTURES REGLEES PARCE QUE CES FACTURE LA C'EST LES SERVICES QU'ON VEUT VOIR 
-            foreach($all_services as $all_services)
-            {
-                //dump( $toutes_reglee->id_contrat);
-                
-                $compte_prestations_service = DB::table('prestation_services')
+            foreach($toutes_reglees as $toutes_reglee)
+            {   
+                //pour récupérer le nombre total de la prestation spécifique ce mois ci
+                $compte_prestations_service =  DB::table('prestation_services')
                 ->join('contrats', 'prestation_services.contrat_id', '=', 'contrats.id')
                 ->join('services', 'prestation_services.service_id', '=', 'services.id') 
-                ->where('contrats.id', $toutes_reglee->id_contrat)
+                ->where('prestation_services.contrat_id', $toutes_reglee->id_contrat)
                 ->where('prestation_services.service_id', '=', $all_services->id)
                 ->count();
-
-                 //Si on a trouvé au moins une occurence de la prestation, on peut mettre dans notre tableau pour partir
+                //->get(['prestation_services.*', 'services.libele_service', 'contrats.id']);
+               
                 if($compte_prestations_service != 0)
-                {
-                    $compte_prestations = $compte_prestations + 1;
-                    array_push($serv, $all_services->libele_service);
-                    
+                {   
+                    $compte_prestations++;
                 }
                 
             }
-        
-           
-            array_push($data_serv, $compte_prestations);
-           
-        
+            if($compte_prestations != 0)
+            {
+                //ON VA METTRE LE NOM DU SERVICE DANS LE TABLEAU
+                if($serv == null)
+                {
+                    array_push($serv, $all_services->libele_service);
+                }
+                else
+                {
+
+                    if(array_search($all_services->libele_service, $serv) == false)
+                    {
+                        array_push($serv, $all_services->libele_service);
+                    }   
+                    
+                }
+                array_push($data_serv, $compte_prestations);    
+            }
+                
+            
         }
-        //dd($data_serv);
-    
-        //dd($total);
+       
         return view('graph/search_monthly', compact('data', 'company', 'percent', 'francais', 'serv', 'colors', 'data_serv', 'total'));
     }
 
@@ -884,22 +905,22 @@ class Calculator extends Controller
        $first_date = $year."-01-01";
        $last_date = $year."-12-31";
        
-       $toutes_reglees =  DB::table('factures')
-       ->join('contrats', 'factures.id_contrat', '=', 'contrats.id')
-       ->join('entreprises', 'entreprises.id', '=', 'contrats.id_entreprise')
-       ->where('factures.annulee', 0)
-       ->where('factures.date_emission', '>=', $first_date)
-       ->where('factures.date_emission', '<=', $last_date)
-       ->get();
-       //dd( $toutes_reglees);
-       
-        foreach($toutes_reglees as $toutes_reglee)
+        //PARCOURIR TOUS LES SERVICES
+        $all_services = Service::all();
+        foreach($all_services as $all_services)
         {    
-            $compte_prestations  = 0;
-            //PARCOURIR TOUS LES SERVICES
-            $all_services = Service::all();
-            foreach($all_services as $all_services)
-            {
+            $compte_prestations  = 0; 
+            $toutes_reglees =  DB::table('factures')
+            ->join('contrats', 'factures.id_contrat', '=', 'contrats.id')
+            ->join('entreprises', 'entreprises.id', '=', 'contrats.id_entreprise')
+            ->where('factures.annulee', 0)
+            ->where('factures.date_emission', '>=', $first_date)
+            ->where('factures.date_emission', '<=', $last_date)
+            ->get();
+
+            foreach($toutes_reglees as $toutes_reglee)
+            {   
+                //echo "contrat:".$toutes_reglee->id_contrat."<br>";
                 //pour récupérer le nombre total de la prestation spécifique ce mois ci
                 $compte_prestations_service =  DB::table('prestation_services')
                 ->join('contrats', 'prestation_services.contrat_id', '=', 'contrats.id')
@@ -907,24 +928,35 @@ class Calculator extends Controller
                 ->where('prestation_services.contrat_id', $toutes_reglee->id_contrat)
                 ->where('prestation_services.service_id', '=', $all_services->id)
                 ->count();
-                    
-                //echo $compte_prestations_service."<br>";
-                //Si on a trouvé au moins une occurence de la prestation, on peut mettre dans notre tableau pour partir
-                //dd($compte_prestations_service);
+                //->get(['prestation_services.*', 'services.libele_service', 'contrats.id']);
+                
                 if($compte_prestations_service != 0)
+                {   
+                    $compte_prestations++;
+                }
+                
+            }
+            if($compte_prestations != 0)
+            {
+                //ON VA METTRE LE NOM DU SERVICE DANS LE TABLEAU
+                if($serv == null)
                 {
                     array_push($serv, $all_services->libele_service);
-                    $compte_prestations =  $compte_prestations  + 1;
-
                 }
-               
-            
+                else
+                {
+
+                    if(array_search($all_services->libele_service, $serv) == false)
+                    {
+                        array_push($serv, $all_services->libele_service);
+                    }   
+                    
+                }
+                array_push($data_serv, $compte_prestations);
             }
-            array_push($data_serv, $compte_prestations);
-            //dd($data_serv);
+
         }
 
-           
         
         return view('graph/yearly', compact('data', 'mois_francais', 'percent', 'company', 'serv', 'data_serv', 'colors', 'total_annuel'));
     }
@@ -1107,22 +1139,22 @@ class Calculator extends Controller
        $first_date = $year."-01-01";
        $last_date = $year."-12-31";
        
-       $toutes_reglees =  DB::table('factures')
-       ->join('contrats', 'factures.id_contrat', '=', 'contrats.id')
-       ->join('entreprises', 'entreprises.id', '=', 'contrats.id_entreprise')
-       ->where('factures.annulee', 0)
-       ->where('factures.date_emission', '>=', $first_date)
-       ->where('factures.date_emission', '<=', $last_date)
-       ->get();
-       //dd( $toutes_reglees);
-       
-        foreach($toutes_reglees as $toutes_reglee)
+        //PARCOURIR TOUS LES SERVICES
+        $all_services = Service::all();
+        foreach($all_services as $all_services)
         {    
-            $compte_prestations  = 0;
-            //PARCOURIR TOUS LES SERVICES
-            $all_services = Service::all();
-            foreach($all_services as $all_services)
-            {
+            $compte_prestations  = 0; 
+            $toutes_reglees =  DB::table('factures')
+            ->join('contrats', 'factures.id_contrat', '=', 'contrats.id')
+            ->join('entreprises', 'entreprises.id', '=', 'contrats.id_entreprise')
+            ->where('factures.annulee', 0)
+            ->where('factures.date_emission', '>=', $first_date)
+            ->where('factures.date_emission', '<=', $last_date)
+            ->get();
+
+            foreach($toutes_reglees as $toutes_reglee)
+            {   
+                //echo "contrat:".$toutes_reglee->id_contrat."<br>";
                 //pour récupérer le nombre total de la prestation spécifique ce mois ci
                 $compte_prestations_service =  DB::table('prestation_services')
                 ->join('contrats', 'prestation_services.contrat_id', '=', 'contrats.id')
@@ -1130,23 +1162,36 @@ class Calculator extends Controller
                 ->where('prestation_services.contrat_id', $toutes_reglee->id_contrat)
                 ->where('prestation_services.service_id', '=', $all_services->id)
                 ->count();
-                    
-                //echo $compte_prestations_service."<br>";
-                //Si on a trouvé au moins une occurence de la prestation, on peut mettre dans notre tableau pour partir
-                //dd($compte_prestations_service);
+                //->get(['prestation_services.*', 'services.libele_service', 'contrats.id']);
+               
                 if($compte_prestations_service != 0)
+                {   
+                    $compte_prestations++;
+                }
+                
+            }
+            if($compte_prestations != 0)
+            {
+                //ON VA METTRE LE NOM DU SERVICE DANS LE TABLEAU
+                if($serv == null)
                 {
                     array_push($serv, $all_services->libele_service);
-                    $compte_prestations =  $compte_prestations  + 1;
-
                 }
-               
-            
-            }
-            array_push($data_serv, $compte_prestations);
-            //dd($data_serv);
-        }
+                else
+                {
 
+                    if(array_search($all_services->libele_service, $serv) == false)
+                    {
+                        array_push($serv, $all_services->libele_service);
+                    }   
+                    
+                }
+                array_push($data_serv, $compte_prestations);
+            }
+           
+        }
+    
+        
        return view('graph/search_yearly', compact('data', 'mois_francais', 'percent', 'company', 'data_serv', 'serv', 'year', 'colors', 'total_annuel'));
     }
 
