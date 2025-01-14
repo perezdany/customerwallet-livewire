@@ -13,6 +13,7 @@ class Contrat extends Model
 
     protected $fillable = [
         'titre_contrat', 'montant', 'reste_a_payer', 'date_solde', 'debut_contrat', 
+        'jours', 'mois', 'annees',
         'fin_contrat', 'id_entreprise', 'created_by', 'statut_solde',  'path', 'proforma_file',
         'bon_commande', 'reconduction', 'avenant',  'etat', 'id_contrat_parent', 'id_type_prestation'
     ];

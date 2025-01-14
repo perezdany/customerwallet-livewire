@@ -61,19 +61,20 @@
                 }
                 else
                 {
-                   
                     if($contrats->reconduction == 1 AND $contrats->etat == 1)//Reconduit
                     {
+                        //ON A LES DUREES DANS LA TABLE DONC ON  SERT DE CA POUR LA MISE A JOURS
+                      
                         //echo $contrats->titre_contrat."--".$contrats->fin_contrat."<br>";
                         $date_debut = strtotime($contrats->debut_contrat);
                         $date_fin = strtotime($contrats->fin_contrat);
-                        $diff_in_days = floor(($date_fin - $date_debut ) / (60 * 60 * 24));//on obtient ca en jour
-
+                        //$diff_in_days = floor(($date_fin - $date_debut ) / (60 * 60 * 24));//on obtient ca en jour
+                        $nouvelle_date_fin = $calculator->FinContrat(intval($contrats->jours), $date_fin, intval($contrats->mois), intval($contrats->annees));
                         //ACTUALISATION DE LA DATE
-                        $timestamp = strtotime($contrats->fin_contrat);
+                        /*$timestamp = strtotime($contrats->fin_contrat);
                         $departtime1 = strtotime('+'.$diff_in_days.' days', $timestamp);
         
-                        $nouvelle_date_fin = date("Y-m-d", $departtime1);
+                        $nouvelle_date_fin = date("Y-m-d", $departtime1);*/
 
                         //MISE A JOUR DE L'ENREGISTREMENT DANS LA TABLE
                         $affected = DB::table('contrats')

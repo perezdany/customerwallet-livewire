@@ -79,8 +79,8 @@ class ContratController extends Controller
        $ch = strval($request->montant);
         if(strlen($ch) > 13)
         {
-                //rediriger pour lui dire que c'est trop long
-                return redirect('contrat')->with('error', 'montant saisies trop long');
+            //rediriger pour lui dire que c'est trop long
+            return redirect('contrat')->with('error', 'montant saisies trop long');
         }
         $calculator = new Calculator();
         //dd($jours);
@@ -100,6 +100,9 @@ class ContratController extends Controller
                      'montant' => intval($request->montant), 
                      'reste_a_payer' => intval($request->montant), 
                      'debut_contrat' => $date_debut,
+                     'jours' => $request->jours,
+                     'mois' => $request->mois,
+                     'annee' => $request->annee,
                      'fin_contrat' => $date_fin,
                      'id_entreprise' => $add->id,
                      'reconduction' => $request->reconduction, 
@@ -110,7 +113,6 @@ class ContratController extends Controller
         
             }
 
-        
             //VERIFIER SI IL N'EST PAS CLIENT CHANGE SONT STATUT A MEME TEMPS ET IL DEVIENT ACTIF EN MEME TEMPS
             //RECUPER L'(ENTREPRISE)
             $recup_entreprise = (new ContratController())->GetById($Insert->id);
@@ -143,6 +145,9 @@ class ContratController extends Controller
                  'montant' => $request->montant, 
                  'reste_a_payer' => $request->montant, 
                  'debut_contrat' => $date_debut,
+                 'jours' => $request->jours,
+                'mois' => $request->mois,
+                'annee' => $request->annee,
                  'fin_contrat' => $date_fin,
                  'id_entreprise' => $request->entreprise,
                  'reconduction' => $request->reconduction, 
@@ -175,7 +180,6 @@ class ContratController extends Controller
             }
     
         }     
-        
         
         //ENREGISTRER LE FICHIER DU CONTRAT
 
@@ -331,11 +335,7 @@ class ContratController extends Controller
         {
             return redirect('contrat')->with('error', 'Choisissez impérativement le type de prestation');
         }
-
-       
-        
-        
-
+            
         $insert_prestation = Prestation::create([
              'date_prestation' => $request->date_execute, 
              'id_type_prestation' => $request->type,
@@ -859,9 +859,9 @@ class ContratController extends Controller
         {
             return back()->with('error', 'Vous n\'avez pas choisi l\'entreprise');
         }
-        $jours = $request->jour;
-        $annee = $request->annee;
-        $mois = $request->mois;
+        $jours = intval($request->jour);
+        $annee = intval($request->annee);
+        $mois = intval($request->mois);
         $date_debut = $request->date_debut;
 
        //VERIFIER LA TAILLE DE LA CHAINE MONTANT
@@ -891,6 +891,9 @@ class ContratController extends Controller
                          'montant' => intval($request->montant), 
                          'reste_a_payer' => intval($request->montant), 
                          'debut_contrat' => $date_debut,
+                         'jours' => $request->jour,
+                         'mois' => $request->mois,
+                         'annees' => $request->annee,
                          'fin_contrat' => $date_fin,
                          'id_entreprise' => $add->id,
                          'reconduction' => $request->reconduction, 
@@ -911,6 +914,9 @@ class ContratController extends Controller
                         'montant' => intval($request->montant), 
                         'reste_a_payer' => intval($request->montant), 
                         'debut_contrat' => $date_debut,
+                        'jours' => $request->jour,
+                        'mois' => $request->mois,
+                        'annees' => $request->annee,
                         'fin_contrat' => $date_fin,
                         'id_entreprise' => $add->id,
                         'reconduction' => $request->reconduction, 
@@ -922,9 +928,6 @@ class ContratController extends Controller
                     ]);
                 
                 }
-    
-                
-        
             }
 
         }  
@@ -938,6 +941,9 @@ class ContratController extends Controller
                      'montant' => intval($request->montant), 
                      'reste_a_payer' => intval($request->montant), 
                      'debut_contrat' => $date_debut,
+                     'jours' => $request->jour,
+                     'mois' => $request->mois,
+                     'annees' => $request->annee,
                      'fin_contrat' => $date_fin,
                      'id_entreprise' => $request->entreprise,
                      'reconduction' => $request->reconduction, 
@@ -958,6 +964,9 @@ class ContratController extends Controller
                     'montant' => intval($request->montant), 
                     'reste_a_payer' => intval($request->montant), 
                     'debut_contrat' => $date_debut,
+                    'jours' => $request->jour,
+                    'mois' => $request->mois,
+                    'annees' => $request->annee,
                     'fin_contrat' => $date_fin,
                     'id_entreprise' => $request->entreprise,
                     'reconduction' => $request->reconduction, 
@@ -994,7 +1003,6 @@ class ContratController extends Controller
             }
     
         }     
-        
         
         //ENREGISTRER LE FICHIER DU CONTRAT
 
@@ -1074,7 +1082,6 @@ class ContratController extends Controller
         //IL FAUT SUPPRIMER L'ANCIEN FICHIER DANS LE DISQUE DUR
         $fichier_proforma = $request->file_proforma;
 
-        
         if( $fichier_proforma != null)
         {
                 //VERFIFIER LE FORMAT 
@@ -1144,7 +1151,6 @@ class ContratController extends Controller
         {
         
         }
-
 
         //LE FICHIER DE BON DE COMMANDE
         $fichier_commande = $request->bon_commande;  
@@ -1300,6 +1306,9 @@ class ContratController extends Controller
                      'montant' => intval($request->montant), 
                      'reste_a_payer' => intval($request->montant), 
                      'debut_contrat' => $date_debut,
+                     'jours' => $request->jours,
+                     'mois' => $request->mois,
+                     'annees' => $request->annee,
                      'fin_contrat' => $date_fin,
                      'id_entreprise' => $add->id,
                      'date_solde' => $request->date_solde, 
@@ -1320,6 +1329,9 @@ class ContratController extends Controller
                  'montant' => $request->montant, 
                  'reste_a_payer' => $request->montant, 
                  'debut_contrat' => $date_debut,
+                 'jours' => $request->jours,
+                 'mois' => $request->mois,
+                 'annees' => $request->annee,
                  'fin_contrat' => $date_fin,
                  'id_entreprise' => $request->entreprise,
                  'date_solde' => $request->date_solde, 
@@ -1491,9 +1503,6 @@ class ContratController extends Controller
         
         }
 
-       
-
-       
         //VERIFIER SI IL N'EST PAS CLIENT CHANGE SONT STATUT A MEME TEMPS
         //RECUPER L'(ENTREPRISE)
         $recup_entreprise = (new ContratController())->GetById($Insert->id);
@@ -1645,8 +1654,10 @@ class ContratController extends Controller
                 'montant' => $request->montant, 
                 'reste_a_payer' => $rest, 
                 'debut_contrat' => $date_debut,
+                'jours' => $request->jours,
+                'mois' => $request->mois,
+                'annees' => $request->annee,
                 'id_entreprise' => $request->entreprise,
-                'date_solde' => $request->date_solde, 
                 'avenant' => $request->avenant,
                 'id_contrat_parent'=>$request->contrat_parent,
                 'statut_solde' => 0,
@@ -1663,6 +1674,9 @@ class ContratController extends Controller
                 'montant' => $request->montant, 
                 'reste_a_payer' => $rest, 
                 'debut_contrat' => $date_debut,
+                'jours' => $request->jours,
+                'mois' => $request->mois,
+                'annees' => $request->annee,
                 'id_entreprise' => $request->entreprise,
                 'date_solde' => $request->date_solde, 
                 'avenant' => $request->avenant,
@@ -1717,10 +1731,8 @@ class ContratController extends Controller
                     //dd($get_path->path);
                     Storage::delete($get_path->path);
 
-
                     $file_name = $fichier->getClientOriginalName();
-                    
-                            
+                           
                     $path = $request->file('file')->storeAs(
                         'fichiers', $file_name
                     );
@@ -1748,66 +1760,66 @@ class ContratController extends Controller
         if( $fichier_proforma != null)
         {
                 
-                //VERFIFIER LE FORMAT 
-                $extension = pathinfo($fichier_proforma->getClientOriginalName(), PATHINFO_EXTENSION);
+            //VERFIFIER LE FORMAT 
+            $extension = pathinfo($fichier_proforma->getClientOriginalName(), PATHINFO_EXTENSION);
 
-                if($extension != "pdf")
+            if($extension != "pdf")
+            {
+                $message_error = 'Format de Fichier incorrect';
+                return view('dash/all_contrats', compact('contrats', 'reconduction', 'etat', 'id_entreprise', 'service', 'message_error'));
+            }
+            //VERIFIER SI L'ENREGISTREMENT A UN CHEMIN D'ACCES ENREGISTRE
+            $get_path_prof = Contrat::where('id', $Insert->id)->get();
+            foreach($get_path_prof as $get_path_prof)
+            {
+                if($get_path_prof->proforma_file == null)
                 {
-                    $message_error = 'Format de Fichier incorrect';
-                    return view('dash/all_contrats', compact('contrats', 'reconduction', 'etat', 'id_entreprise', 'service', 'message_error'));
-                }
-                //VERIFIER SI L'ENREGISTREMENT A UN CHEMIN D'ACCES ENREGISTRE
-                $get_path_prof = Contrat::where('id', $Insert->id)->get();
-                foreach($get_path_prof as $get_path_prof)
-                {
-                    if($get_path_prof->proforma_file == null)
-                    {
-                        //enregistrement de fichier dans la base
-                        $file_name_prof = $fichier_proforma->getClientOriginalName();
+                    //enregistrement de fichier dans la base
+                    $file_name_prof = $fichier_proforma->getClientOriginalName();
+                
+                            
+                    $path = $request->file('file')->storeAs(
+                        'factures/proforma', $file_name_prof
+                    );
+
+                    $affected = DB::table('contrats')
+                    ->where('id', $Insert->id)
+                    ->update([
+                        'proforma_file'=> $path,
+                        
+                    ]);
+
                     
-                                
-                        $path = $request->file('file')->storeAs(
-                            'factures/proforma', $file_name_prof
-                        );
-    
-                        $affected = DB::table('contrats')
-                        ->where('id', $Insert->id)
-                        ->update([
-                            'proforma_file'=> $path,
-                            
-                        ]);
-    
-                        
-                    }
-                    else
-                    {
-
-                        //SUPPRESSION DE L'ANCIEN FICHIER
-                        //dd($get_path->path);
-                        $get_path_prof = Contrat::where('id', $request->id_contrat)->get();
-                        foreach($get_path_prof as $get_path_prof)
-                        {
-                            Storage::delete($get_path_prof->proforma_file);
-                        }
-
-    
-                        $file_name_prof = $fichier_proforma->getClientOriginalName();
-                        
-                                
-                        $path = $request->file('file')->storeAs(
-                            'factures/proforma', $file_name_prof
-                        );
-    
-                        $affected = DB::table('contrats')
-                        ->where('id', $request->id_contrat)
-                        ->update([
-                            'proforma_file'=> $path,
-                            
-                        ]);
-    
-                        
-                    }
                 }
+                else
+                {
+
+                    //SUPPRESSION DE L'ANCIEN FICHIER
+                    //dd($get_path->path);
+                    $get_path_prof = Contrat::where('id', $request->id_contrat)->get();
+                    foreach($get_path_prof as $get_path_prof)
+                    {
+                        Storage::delete($get_path_prof->proforma_file);
+                    }
+
+
+                    $file_name_prof = $fichier_proforma->getClientOriginalName();
+                    
+                            
+                    $path = $request->file('file')->storeAs(
+                        'factures/proforma', $file_name_prof
+                    );
+
+                    $affected = DB::table('contrats')
+                    ->where('id', $request->id_contrat)
+                    ->update([
+                        'proforma_file'=> $path,
+                        
+                    ]);
+
+                    
+                }
+            }
             
         }
         else
@@ -1850,7 +1862,6 @@ class ContratController extends Controller
                         
                     ]);
 
-                    
                 }
                 else
                 {
@@ -1863,10 +1874,8 @@ class ContratController extends Controller
                         Storage::delete($get_path->bon_commande);
                     }
 
-
                     $file_name = $fichier_commande->getClientOriginalName();
-                
-                            
+                     
                     $path = $request->file('bon_commande')->storeAs(
                         'fichiers/bon_commande', $file_name
                     );
@@ -2601,6 +2610,7 @@ class ContratController extends Controller
              'montant' => $request->montant, 
              'reste_a_payer' => $rest, 
              'debut_contrat' => $date_debut,
+             
              'id_entreprise' => $request->entreprise,
              'date_solde' => $request->date_solde, 
              'statut_solde' => 0,
@@ -2626,56 +2636,56 @@ class ContratController extends Controller
                         ]
                     );
                 }
-              //VERIFIER SI L'ENREGISTREMENT A UN CHEMIN D'ACCES ENREGISTRE
-              $get_path = Contrat::where('id', $request->id_contrat)->get();
-              foreach($get_path as $get_path)
-              {
-                  if($get_path->path == null)
-                  {
-                       //enregistrement de fichier dans la base
-                      $file_name = $fichier->getClientOriginalName();
-                      
-                              
-                      $path = $request->file('file')->storeAs(
-                          'fichiers', $file_name
-                      );
-  
-                      $affected = DB::table('contrats')
-                      ->where('id', $request->id_contrat)
-                      ->update([
-                          'path'=> $path,
-                          
-                      ]);
-  
-                     
-                  }
-                  else
-                  {
-                        $get_path = Contrat::where('id', $request->id_contrat)->get();
-                      //SUPPRESSION DE L'ANCIEN FICHIER
-                      //dd($get_path->path);
-                      foreach($get_path as $get_path)
-                      {
-                        Storage::delete($get_path->path);
-                      }
-  
-                      $file_name = $fichier->getClientOriginalName();
-                      
-                              
-                      $path = $request->file('file')->storeAs(
-                          'fichiers/contrat', $file_name
-                      );
-  
-                      $affected = DB::table('contrats')
-                      ->where('id', $request->id_contrat)
-                      ->update([
-                          'path'=> $path,
-                          
-                      ]);
-  
-                     
-                  }
-              }
+                //VERIFIER SI L'ENREGISTREMENT A UN CHEMIN D'ACCES ENREGISTRE
+                $get_path = Contrat::where('id', $request->id_contrat)->get();
+                foreach($get_path as $get_path)
+                {
+                    if($get_path->path == null)
+                    {
+                        //enregistrement de fichier dans la base
+                        $file_name = $fichier->getClientOriginalName();
+                        
+                                
+                        $path = $request->file('file')->storeAs(
+                            'fichiers', $file_name
+                        );
+    
+                        $affected = DB::table('contrats')
+                        ->where('id', $request->id_contrat)
+                        ->update([
+                            'path'=> $path,
+                            
+                        ]);
+    
+                        
+                    }
+                    else
+                    {
+                            $get_path = Contrat::where('id', $request->id_contrat)->get();
+                        //SUPPRESSION DE L'ANCIEN FICHIER
+                        //dd($get_path->path);
+                        foreach($get_path as $get_path)
+                        {
+                            Storage::delete($get_path->path);
+                        }
+    
+                        $file_name = $fichier->getClientOriginalName();
+                        
+                                
+                        $path = $request->file('file')->storeAs(
+                            'fichiers/contrat', $file_name
+                        );
+    
+                        $affected = DB::table('contrats')
+                        ->where('id', $request->id_contrat)
+                        ->update([
+                            'path'=> $path,
+                            
+                        ]);
+    
+                        
+                    }
+                }
              
             }
             else
@@ -2687,7 +2697,6 @@ class ContratController extends Controller
             //IL FAUT SUPPRIMER L'ANCIEN FICHIER DANS LE DISQUE DUR
             $fichier_proforma = $request->file_proforma;
 
-            
             if( $fichier_proforma != null)
             {
                     //VERFIFIER LE FORMAT 
@@ -2768,7 +2777,6 @@ class ContratController extends Controller
             {
             
             }
-
 
             return view('dash/fiche_customer',
             [
@@ -2927,7 +2935,7 @@ class ContratController extends Controller
     {
         $get = DB::table('contrats')
             
-          ->where('contrats.reconduction', '=', 1)
+          ->where('contrats.etat', '=', 0)
           ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')
           ->get(['contrats.*', 'entreprises.nom_entreprise']);
           

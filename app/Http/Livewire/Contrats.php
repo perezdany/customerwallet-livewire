@@ -78,23 +78,31 @@ class Contrats extends Component
     //FUNCIOTN DE MODIFICATION
     public function EditContrat( Contrat $contrat)
     {
-        //dd( $this->editContrat);
+        //dd($contrat->toArray());
         $this->editContrat = $contrat->toArray();
       
         $this->editOldValues = $this->editContrat; //Mettre les valeurs ancienne dedans
 
         $this->dispatchBrowserEvent('showEditModal');
     }
+    public function update()
+    {
+        //dd($this->editOldValues['annees']);
+    }
 
     public function showUpdateButton()
     {
-        //dd('ici');
+        
         $this->editHasChanged = false;
         
        if(
+            
             $this->editContrat['titre_contrat'] != $this->editOldValues['titre_contrat'] OR
             $this->editContrat['montant'] != $this->editOldValues['montant'] OR
             $this->editContrat['debut_contrat'] != $this->editOldValues['debut_contrat'] OR
+            $this->editContrat['jours'] != $this->editOldValues['jours'] OR
+            $this->editContrat['mois'] != $this->editOldValues['mois'] OR
+            $this->editContrat['annees'] != $this->editOldValues['annees'] OR
             $this->editContrat['id_entreprise'] != $this->editOldValues['id_entreprise'] OR
             $this->editContrat['reconduction'] != $this->editOldValues['reconduction']  OR
             $this->editContrat['avenant'] != $this->editOldValues['avenant'] OR
@@ -105,16 +113,20 @@ class Contrats extends Component
             $this->editContrat['id_type_prestation'] != $this->editOldValues['id_type_prestation'] OR
             $this->editContrat['etat'] != $this->editOldValues['etat']
             /*OR
-            
+            $this->editContrat['jours'] !== $this->editOldValues['jours'] OR
+            $this->editContrat['mois'] !== $this->editOldValues['mois'] OR
+            $this->editContrat['annees'] !== $this->editOldValues['annees'] OR
             $this->editContrat['jours'] != $this->editOldValues['jours'] OR
             $this->editContrat['mois'] != $this->editOldValues['mois'] OR
             $this->editContrat['annee'] != $this->editOldValues['annee']*/
            
         )
         {
+            //dd('id');
             $this->editHasChanged = true;
         }
-
+       
+        //dump($this->editContrat['annees'] == $this->editOldValues['annees']);
         return $this->editHasChanged;
    
     }
@@ -122,8 +134,11 @@ class Contrats extends Component
     //FONCTION QUI VA FAIRE LA MODIF
     public function updateContrat()
     {
-        //dd($this->editContrat);
-
+        //dd(intval($this->editContrat['annees']));
+        $jours = intval($this->editContrat['jours']);
+        $annees = intval($this->editContrat['annees']);
+        $mois = intval($this->editContrat['mois']);
+       
         $contrat = Contrat::find($this->editContrat['id']);
 
         $calculator = new Calculator();
@@ -135,7 +150,7 @@ class Contrats extends Component
 
         //Faire la différence pour le reste_a_payer
         $rest = $this->editContrat['montant'] - $tot_paiement;
-       // dd($this->mois);
+       
         //Calcul de la date de fin de contrat
         if($this->jours == "null" AND $this->mois == "null" AND $this->annee == "null")
         {
@@ -143,10 +158,10 @@ class Contrats extends Component
         }
         else
         {
-            $date_fin = $calculator->FinContrat($this->jours, $this->editContrat['debut_contrat'], $this->mois, $this->annee);
+            $date_fin = $calculator->FinContrat($jours, $this->editContrat['debut_contrat'], $mois, $annees);
            
         }
-        //dd($editContrat['montan']);
+        //dd($date_fin);
         //ENREGISTRER LE FICHIER DU CONTRAT
         //IL FAUT SUPPRIMER L'ANCIEN FICHIER DANS LE DISQUE DUR
         $fichier = $this->editContrat['path'];
@@ -159,13 +174,16 @@ class Contrats extends Component
             'montant' =>  $this->editContrat['montant'], 
             'reste_a_payer' => $rest, 
             'debut_contrat' =>  $this->editContrat['debut_contrat'],
-            'fin_contrat' => $this->editContrat['fin_contrat'],
+            'jours' => $this->editContrat['jours'],
+            'mois' =>  $this->editContrat['mois'],
+            'annees' =>  $this->editContrat['annees'],
+            'fin_contrat' => $date_fin,
             'id_entreprise' =>  $this->editContrat['id_entreprise'],
             'reconduction' =>  $this->editContrat['reconduction'],
             'avenant' =>  $this->editContrat['avenant'],
             'etat' =>  $this->editContrat['etat'],
             'id_contrat_parent' =>  $this->editContrat['id_contrat_parent'],
-             'id_type_prestation' =>  $this->editContrat['id_type_prestation']
+            'id_type_prestation' =>  $this->editContrat['id_type_prestation']
         ]);
 
  

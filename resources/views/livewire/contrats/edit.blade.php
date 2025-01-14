@@ -9,7 +9,7 @@
             <span aria-hidden="true">&times;</span></button>
             <h4 class="modal-title">Modifier le contrat</h4>
         </div>
-            <form wire:submit.prevent="updateContrat" enctype="multipart/form-data">
+            <form wire:submit.prevent="updateContrat" >
                 <div class="modal-body">
                      @csrf
                     <div class="row">
@@ -29,12 +29,12 @@
                         </div>
                     </div><br>
 
-                     <div class="row"> 
+                    <!--<div class="row"> 
                         <div class="col-sm-6"><label >Fin du contrat:</label></div>
                         <div class="col-sm-6">
                         <input type="date" class="form-control " wire:model="editContrat.fin_contrat">
                         </div>
-                    </div><br>
+                    </div><br>-->
                     
                      <div class="row"> 
                         <div class="col-sm-6"><label >Type de Facturation</label></div>
@@ -54,21 +54,23 @@
                        
                     </div><br>
 
-                      <!--<div class="form-group">
-                            <label>Durée du contrat</label>
-                          
-                              <div class="row">
-                                <div class="col-md-3">
-                                  <input type="number" class="form-control" placeholder="jours" min="1" max="365" wire.model="jours" >
-                                </div>
-                                <div class="col-md-4">
-                                  <input type="number" class="form-control" placeholder="mois" min="1" max="12" wire.model="mois">
-                                </div>
-                                <div class="col-md-5">
-                                  <input type="number" class="form-control" placeholder="année" min="1" max="10" wire.model="annee">
-                                </div>
-                              </div>
-                          </div>-->
+                    <div class="form-group">
+                        <label>Durée du contrat (Jours-Mois-Années)</label>
+                           
+                        <div class="row">
+                            
+                            <div class="col-sm-3">
+                                 <input type="number" class="form-control" max="31" wire:model="editContrat.jours" /> 
+                               <!--<input type="number" class="form-control" min="0" max="31" wire.model="editContrat.montant" />-->
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="number" class="form-control" max="12" wire:model="editContrat.mois" /> 
+                            </div>
+                            <div class="col-sm-5">
+                                <input type="number" class="form-control" max="30" wire:model="editContrat.annees" /> 
+                            </div>
+                        </div>
+                    </div>
 
                     <div class=" row">
                         <div class="col-sm-6"><label>Entreprise:</label></div>

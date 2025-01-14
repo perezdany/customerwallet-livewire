@@ -83,11 +83,6 @@
                             </div>
 
                             <div class="form-group">
-                                <label>Date de solde</label>
-                                <input type="date" class="form-control  " required name="date_solde"  value="{{$contrat->date_solde}}">
-                            </div>
-
-                            <div class="form-group">
                                 <label>Fichier du contrat(PDF)</label>
                                 <input type="file" class="form-control" name="file">
                             </div>

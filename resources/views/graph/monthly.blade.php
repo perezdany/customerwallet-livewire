@@ -17,7 +17,12 @@
     
         <!-- left column -->
         <div class="col-md-12">
-
+            <p class="bg-primary">
+                <ul>
+                    <li>Pour rechercher un mois, <b>Selectionnez le mois en question et un jour quelquonque de ce mois</b><br></li>
+                    <li>Pour rechercher une année, <b>Selectionnez l'année en question et un mois et un jours quelquonque de cette année</b><br></li>
+                </ul>
+            </p>
             <div class="box">
                 <div class="box-body">
                     <div class="box-header with-border">
@@ -277,7 +282,7 @@
                            
                             <div class="form-group">
                                     <label >Mois:</label>
-                                    <input type="month" class="form-control input-lg" name="month" required>
+                                    <input type="date" class="form-control input-lg" name="month" required>
                             </div>
 
                             <div class="box-footer">

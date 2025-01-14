@@ -20,95 +20,114 @@ class Calculator extends Controller
     //Handle Calculation
 
     public function FinContrat($jours, $date_debut, $mois, $annee)
-    {   //dd('ici');
+    {   
         $timestamp = strtotime($date_debut);
-       
+       //dd($jours." ". $date_debut." ". $mois." ". $annee);
         if($annee !=0 )//il a rempli l'annee
         {
-          
             if($mois != 0)//le mois aussi est rempli
             {
-               
-                $departtime1 = strtotime('+'.$mois.' month', $timestamp);
-                $departtime2 = strtotime('+'.$annee.' year', $departtime1);
-                $depart = date("Y-m-d", $departtime2);
-            }
-
-            if($jours != 0)//le jour aussi est rempli
-            {
-              
-                $departtime1 = strtotime('+'.$jours.' days', $timestamp);
-                $departtime2 = strtotime('+'.$annee.' year', $departtime1);
-
-                $depart = date("Y-m-d", $departtime2);
-            }
-         
-            $depart_base = strtotime('+'.$annee.' year', $timestamp);
-
-            $depart = date("Y-m-d", $depart_base);
-            
-
-            return $depart;
-        }
-
-    
-        if($jours == 0)//il a rempli uniquement le mois
-        {
+                /*$departtime2 = strtotime('+'.$annee.' year', $departtime1);
+                $depart = date("Y-m-d", $departtime2);*/
            
-            if($mois != 0) //si le mois est rempli donc et différent de zéro
-            {
-             
-                //strtotime(‘+’.$duree.’ month’, $dateDepartTimestamp )
-                $departtime = strtotime('+'.$mois.' month', $timestamp);
-                $depart = date("Y-m-d", $departtime);
+                if($jours != 0)//le jour aussi est rempli
+                {
+                    $departtime1 = strtotime('+'.$mois.' month', $timestamp);
+                    $departtime2 = strtotime('+'.$jours.' days',  $departtime1);
+                    $departtime3 = strtotime('+'.$annee.' year', $departtime2);
 
-                return $depart;
+                    $depart = date("Y-m-d", $departtime3);
+                }
+                else
+                {
+                    $departtime1 = strtotime('+'.$mois.' month', $timestamp);
+                    $departtime2 = strtotime('+'.$jours.' days', $departtime1);
+                    $depart = date("Y-m-d", $departtime2);
+                }
             }
             else
             {
-                
-            }
-           
-            //return $depart;
-        }
-        else // le jour est rempli et différent de zéro
-        {
-            if($mois != 0)// le jours est différent de 0 et le mois aussi
-            {
-              
-                if($jours == 30 OR $jours == 31) // c'est copmme ci ca fait un mois 
+                if($jours != 0)//le jour aussi est rempli
                 {
-                    
-                    $departtime =strtotime('+1 month', $timestamp);
-                    $add_month = strtotime('+'.$mois.' month', $departtime);
-                    
-                    $depart = date("Y-m-d", $add_month);
-                    return $depart;
-                    //echo $depart;
+                    $departtime1 = strtotime('+'.$mois.' month', $timestamp);
+                    $departtime2 = strtotime('+'.$jours.' days',$departtime2);
+                    $departtime3 = strtotime('+'.$annee.' year', $departtime3);
+
+                    $depart = date("Y-m-d", $departtime3);
                 }
-                else 
+            }
+
+            //$depart_base = strtotime( $timestamp);
+
+            //$depart = date("Y-m-d", $depart);
+            
+            //dd($depart);
+            return $depart;
+        }
+        else
+        {
+            if($mois != 0) //si le mois est rempli donc et différent de zéro
+            {
+                if($jours != 0)//il a rempl le jours
+                {
+                    if($jours == 30 OR $jours == 31) // c'est copmme ci ca fait un mois 
+                    {
+                        
+                        $departtime =strtotime('+1 month', $timestamp);
+                        $add_month = strtotime('+'.$mois.' month', $departtime);
+                        
+                        $depart = date("Y-m-d", $add_month);
+                        return $depart;
+                        //echo $depart;
+                    }
+                    else 
+                    {
+                        
+                        $departtime = strtotime('+'.$mois.' month', $timestamp);
+                        $the_final = strtotime('+'.$jours.' days', $departtime);
+                        $depart = date("Y-m-d", $the_final);
+                        return $depart;
+                    }
+                
+                    //return $depart;
+                }
+                else // le jour n'est pas rempli
                 {
                    
                     $departtime = strtotime('+'.$mois.' month', $timestamp);
-                    $the_final = strtotime('+'.$jours.' days', $departtime);
-                    $depart = date("Y-m-d", $the_final);
+                    $depart = date("Y-m-d", $departtime);
                     return $depart;
+                   
+                }
+             
+             
+            }
+            else
+            {
+                if($jours != 0)//il a rempl le jours
+                {
+                    if($jours == 30 OR $jours == 31) // c'est copmme ci ca fait un mois 
+                    {
+                        $departtime =strtotime('+1 month', $timestamp);
+                        $depart = date("Y-m-d", $departtime);
+                        return $depart;
+                    }
+                    else 
+                    {
+                        $the_final = strtotime('+'.$jours.' days', $timestamp);
+                        $depart = date("Y-m-d", $the_final);
+                        return $depart;
+                    }
+
+                }
+                else // le jour est rempli et différent de zéro
+                {
+                   
+                   
+                   
                 }
             }
-            else //le mois est 0 c'est le jours seul qui est différent de zéro
-            {
-                
-                $departtime = $timestamp + ($jours * 86400);
-                $depart = date("Y-m-d", $departtime); 
-           
-                return $depart;   
-            }
-
-
-           
         }
-
-        
 
     }
 
@@ -504,7 +523,7 @@ class Calculator extends Controller
         //dd($month_get);
         $month = $month_get['month'];
 
-         //l'année recherchée
+        //l'année recherchée
          $year = $month_get['year'];
 
         //dd($month);
@@ -652,8 +671,8 @@ class Calculator extends Controller
 
         //Compter toutes les prestations du mois
 
-        $first_date = $request->month."-01";
-        $last_date = $request->month."-".$number;
+        $first_date = $year."-".$month."-01";
+        $last_date = $year."-".$month."-".$number;
         
         //PARCOURIR TOUS LES SERVICES
         $all_services = Service::all();

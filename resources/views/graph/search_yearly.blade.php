@@ -14,7 +14,12 @@
 
 @section('content')
     <div class="row">
-    
+         <p class="bg-primary">
+                <ul>
+                    <li>Pour rechercher un mois, <b>Selectionnez le mois en question et un jour quelquonque de ce mois</b><br></li>
+                    <li>Pour rechercher une année, <b>Selectionnez l'année en question et un mois et un jours quelquonque de cette année</b><br></li>
+                </ul>
+            </p>
         <!-- left column -->
         <div class="col-md-12">
 
@@ -192,7 +197,7 @@
                            
                             <div class="form-group">
                                     <label >Année:</label>
-                                    <input type="month" class="form-control input-lg" name="year">
+                                    <input type="date" class="form-control input-lg" name="year">
                             </div>
 
                             <div class="box-footer">
