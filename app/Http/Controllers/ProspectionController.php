@@ -8,6 +8,8 @@ use App\Models\Prospection;
 use App\Models\Docfacture;
 use App\Models\Compterendu;
 use App\Models\Prospection_service;
+use App\Models\Profession;
+use App\Models\Interlocuteur;
 
 use App\Http\Controllers\Calculator;
 
@@ -68,25 +70,48 @@ class ProspectionController extends Controller
                 {
                     if($request->interlocuteur == "autre")//L'interlocuteur n'existe pas 
                     {
-                    
-                        $add = (new InterlocuteurController())->AddInterlocuteurWithClient($request, $client->id);
-            
-                        foreach($add as $interlocuteur)
+                        if($request->fonction == "autre")
                         {
+                            $p = Profession::create(['intitule' => $request->new_fonction]);
+                            //AJOUTER MAINTENANT L'INTERLOCUTEUR
+                            $interl = Interlocuteur::create([
+                                'titre' => $request->titre,
+                                 'nom' => $request->nom, 
+                                 'tel' => $request->tel,
+                                  'email' => $request->email, 
+                                  'fonction' => $p->id, 
+                                  'id_entreprise' => $client->id,
+                                   'created_by' => auth()->user()->id,
+                            ]);
+
                             $insert = Prospection::create([
-                                
+                                    
                                 'date_prospection' => $request->date_prospect,
                                 'date_fin' => $date_fin, 
                                 'duree_jours' => 31,
                                 'id_entreprise' => $client->id, 
-                                'interlocuteur' => $interlocuteur->id,
+                                'interlocuteur' => $interl->id,
                                 'id_utilisateur' => auth()->user()->id,
                                 
                             ]);
-
-                           
                         }
-                            
+                        else
+                        {
+                            $add = (new InterlocuteurController())->AddInterlocuteurWithClient($request, $client->id);
+                            foreach($add as $interlocuteur)
+                            {
+                                $insert = Prospection::create([
+                                    
+                                    'date_prospection' => $request->date_prospect,
+                                    'date_fin' => $date_fin, 
+                                    'duree_jours' => 31,
+                                    'id_entreprise' => $client->id, 
+                                    'interlocuteur' => $interlocuteur->id,
+                                    'id_utilisateur' => auth()->user()->id,
+                                    
+                                ]);
+                            }
+                        }
                     }
                     else //interlocuteur pas nouveau
                     {
@@ -112,25 +137,48 @@ class ProspectionController extends Controller
                 
                 if($request->interlocuteur == "autre")//L'interlocuteur n'existe pas 
                 {
-                
-                    $add = (new InterlocuteurController())->AddInterlocuteurWithClient($request, $request->entreprise);
-        
-                    foreach($add as $interlocuteur)
+                    if($request->fonction == "autre")
                     {
+                        $p = Profession::create(['intitule' => $request->new_fonction]);
+                        //AJOUTER MAINTENANT L'INTERLOCUTEUR
+                        $interl = Interlocuteur::create([
+                            'titre' => $request->titre,
+                             'nom' => $request->nom, 
+                             'tel' => $request->tel,
+                              'email' => $request->email, 
+                              'fonction' => $p->id, 
+                              'id_entreprise' => $request->entreprise,
+                               'created_by' => auth()->user()->id,
+                        ]);
+
                         $insert = Prospection::create([
-                            
+                                
                             'date_prospection' => $request->date_prospect,
                             'date_fin' => $date_fin, 
-                            'duree_jours' => 31, 
+                            'duree_jours' => 31,
                             'id_entreprise' => $request->entreprise, 
-                            'interlocuteur' => $interlocuteur->id,
+                            'interlocuteur' => $interl->id,
                             'id_utilisateur' => auth()->user()->id,
-                                
+                            
                         ]);
                     }
-
-                   
-                    
+                    else
+                    {
+                        $add = (new InterlocuteurController())->AddInterlocuteurWithClient($request, $client->id);
+                        foreach($add as $interlocuteur)
+                        {
+                            $insert = Prospection::create([
+                                
+                                'date_prospection' => $request->date_prospect,
+                                'date_fin' => $date_fin, 
+                                'duree_jours' => 31,
+                                'id_entreprise' => $request->entreprise, 
+                                'interlocuteur' => $interlocuteur->id,
+                                'id_utilisateur' => auth()->user()->id,
+                                
+                            ]);
+                        }
+                    }
                 }
                 else //interlocuteur pas nouveau
                 {
@@ -168,148 +216,148 @@ class ProspectionController extends Controller
 
         //AJOUT DU CR
 
-         //IL FAUT SUPPRIMER L'ANCIEN FICHIER DANS LE DISQUE DUR
-         $fichier = $request->file;
+        //IL FAUT SUPPRIMER L'ANCIEN FICHIER DANS LE DISQUE DUR
+        $fichier = $request->file;
 
-       
-         if( $fichier != null)
-         {
-            //VERFIFIER LE FORMAT 
-            $extension = pathinfo($fichier->getClientOriginalName(), PATHINFO_EXTENSION);
-            //dd($extension);
-            if($extension != "pdf")
-            {
-                return redirect('prospection')->with('error', 'FORMAT DE FICHIER INCORRECT');
-            }
-             //VERIFIER SI L'ENREGISTREMENT A UN CHEMIN D'ACCES ENREGISTRE
-             $get_path = Prospection::where('id', $insert->id)->get();
-             
-             foreach($get_path as $get_path)
-             {
-                 if($get_path->path_cr == null)
-                 {
-                    
-                      //enregistrement de fichier dans la base
-                     $file_name = $fichier->getClientOriginalName();
-                     
-                             
-                     $path = $request->file('file')->storeAs(
-                         'crs', $file_name
-                     );
- 
-                     $affected = DB::table('prospections')
-                     ->where('id', $insert->id)
-                     ->update([
-                         'path_cr'=> $path,
-                         
-                     ]);
- 
-                   
-
- 
-                 }
-                 else
-                 {
-                 
-                     //SUPPRESSION DE L'ANCIEN FICHIER
-                     //dd($get_path->path);
-                     Storage::delete($get_path->path_cr);
- 
- 
-                     $file_name = $fichier->getClientOriginalName();
-                     
-                             
-                     $path = $request->file('file')->storeAs(
-                         'crs', $file_name
-                     );
- 
-                     $affected = DB::table('prospections')
-                     ->where('id', $insert->id)
-                     ->update([
-                         'path_cr'=> $path,
-                         
-                     ]);
- 
-                 
-                 }
-             }
+    
+        if( $fichier != null)
+        {
+        //VERFIFIER LE FORMAT 
+        $extension = pathinfo($fichier->getClientOriginalName(), PATHINFO_EXTENSION);
+        //dd($extension);
+        if($extension != "pdf")
+        {
+            return redirect('prospection')->with('error', 'FORMAT DE FICHIER INCORRECT');
+        }
+            //VERIFIER SI L'ENREGISTREMENT A UN CHEMIN D'ACCES ENREGISTRE
+            $get_path = Prospection::where('id', $insert->id)->get();
             
-         }
-         else
-         {
-           
-         }
-
-         //AJOUT PROFORMA
-
-         $fichier_proforma = $request->fileproforma;
-
-         //dd( $fichier_proforma);
-         if( $fichier_proforma != null)
-         {
-            //VERFIFIER LE FORMAT 
-            $extension = pathinfo($fichier_proforma->getClientOriginalName(), PATHINFO_EXTENSION);
-            //dd($extension);
-            if($extension != "pdf")
+            foreach($get_path as $get_path)
             {
-                return redirect('prospection')->with('error', 'FORMAT DE FICHIER INCORRECT');
+                if($get_path->path_cr == null)
+                {
+                
+                    //enregistrement de fichier dans la base
+                    $file_name = $fichier->getClientOriginalName();
+                    
+                            
+                    $path = $request->file('file')->storeAs(
+                        'crs', $file_name
+                    );
+
+                    $affected = DB::table('prospections')
+                    ->where('id', $insert->id)
+                    ->update([
+                        'path_cr'=> $path,
+                        
+                    ]);
+
+                
+
+
+                }
+                else
+                {
+                
+                    //SUPPRESSION DE L'ANCIEN FICHIER
+                    //dd($get_path->path);
+                    Storage::delete($get_path->path_cr);
+
+
+                    $file_name = $fichier->getClientOriginalName();
+                    
+                            
+                    $path = $request->file('file')->storeAs(
+                        'crs', $file_name
+                    );
+
+                    $affected = DB::table('prospections')
+                    ->where('id', $insert->id)
+                    ->update([
+                        'path_cr'=> $path,
+                        
+                    ]);
+
+                
+                }
             }
-             //VERIFIER SI L'ENREGISTREMENT A UN CHEMIN D'ACCES ENREGISTRE
-             $get_path = Prospection::where('id', $insert->id)->get();
-             //dd( $get_path);
-             foreach($get_path as $get_path)
-             {
-                 if($get_path->facture_path == null)
-                 {
-                    //dd('ici');
-                      //enregistrement de fichier dans la base
-                     $file_name = $fichier_proforma->getClientOriginalName();
-                     
-                             
-                     $path = $request->file('fileproforma')->storeAs(
-                         'factures/proforma', $file_name
-                     );
+        
+        }
+        else
+        {
+        
+        }
 
-                    
-                     $affected = DB::table('prospections')
-                     ->where('id', $insert->id)
-                     ->update([
-                         'facture_path'=> $path,
-                         
-                     ]);
+        //AJOUT PROFORMA
 
-                     //dd( $affected);
-                 }
-                 else
-                 {
-                     //SUPPRESSION DE L'ANCIEN FICHIER
-                     //dd($get_path->path);
-                     Storage::delete($get_path->facture_path);
- 
- 
-                     $file_name = $fichier_proforma->getClientOriginalName();
-                     
-                             
-                     $path = $request->file('file')->storeAs(
-                         'factures/proforma', $file_name
-                     );
- 
-                     $affected = DB::table('prospections')
-                     ->where('id', $insert->id)
-                     ->update([
-                         'facture_path'=> $path,
-                         
-                     ]);
- 
+        $fichier_proforma = $request->fileproforma;
+
+        //dd( $fichier_proforma);
+        if( $fichier_proforma != null)
+        {
+        //VERFIFIER LE FORMAT 
+        $extension = pathinfo($fichier_proforma->getClientOriginalName(), PATHINFO_EXTENSION);
+        //dd($extension);
+        if($extension != "pdf")
+        {
+            return redirect('prospection')->with('error', 'FORMAT DE FICHIER INCORRECT');
+        }
+            //VERIFIER SI L'ENREGISTREMENT A UN CHEMIN D'ACCES ENREGISTRE
+            $get_path = Prospection::where('id', $insert->id)->get();
+            //dd( $get_path);
+            foreach($get_path as $get_path)
+            {
+                if($get_path->facture_path == null)
+                {
+                //dd('ici');
+                    //enregistrement de fichier dans la base
+                    $file_name = $fichier_proforma->getClientOriginalName();
                     
-                 }
-             }
-            
-         }
-         else
-         {
-           
-         }
+                            
+                    $path = $request->file('fileproforma')->storeAs(
+                        'factures/proforma', $file_name
+                    );
+
+                
+                    $affected = DB::table('prospections')
+                    ->where('id', $insert->id)
+                    ->update([
+                        'facture_path'=> $path,
+                        
+                    ]);
+
+                    //dd( $affected);
+                }
+                else
+                {
+                    //SUPPRESSION DE L'ANCIEN FICHIER
+                    //dd($get_path->path);
+                    Storage::delete($get_path->facture_path);
+
+
+                    $file_name = $fichier_proforma->getClientOriginalName();
+                    
+                            
+                    $path = $request->file('file')->storeAs(
+                        'factures/proforma', $file_name
+                    );
+
+                    $affected = DB::table('prospections')
+                    ->where('id', $insert->id)
+                    ->update([
+                        'facture_path'=> $path,
+                        
+                    ]);
+
+                
+                }
+            }
+        
+        }
+        else
+        {
+        
+        }
        
 
         return redirect('prospection')->with('success', 'Enregistrement effectué');
@@ -379,11 +427,20 @@ class ProspectionController extends Controller
             {
                 if($request->interlocuteur == "autre")//L'interloctueur n'existe pas 
                 {
-                
-                    $add = (new InterlocuteurController())->AddInterlocuteurWithClient($request, $client->id);
-        
-                    foreach($add as $interlocuteur)
+                    if($request->fonction == "autre")
                     {
+                        $p = Profession::create(['intitule' => $request->new_fonction]);
+                        //AJOUTER MAINTENANT L'INTERLOCUTEUR
+                        $interl = Interlocuteur::create([
+                            'titre' => $request->titre,
+                             'nom' => $request->nom, 
+                             'tel' => $request->tel,
+                              'email' => $request->email, 
+                              'fonction' => $p->id, 
+                              'id_entreprise' => $request->entreprise,
+                               'created_by' => auth()->user()->id,
+                        ]);
+
                        
                         $affected =  DB::table('prospections')
                         ->update([
@@ -392,13 +449,31 @@ class ProspectionController extends Controller
                              'date_fin' => $date_fin, 
                              'duree_jours' => $request->duree, 
                              'id_entreprise' => $client->id, 
-                             'interlocuteur' => $interlocuteur->id,
-                            
-                              
+                             'interlocuteur' => $interl->id,
                        ]);
-                      
+                    }
+                    else
+                    {
+                        $add = (new InterlocuteurController())->AddInterlocuteurWithClient($request, $client->id);
+        
+                        foreach($add as $interlocuteur)
+                        {
+                           
+                            $affected =  DB::table('prospections')
+                            ->update([
+                                 
+                                'date_prospection' => $request->date_prospect,
+                                 'date_fin' => $date_fin, 
+                                 'duree_jours' => $request->duree, 
+                                 'id_entreprise' => $client->id, 
+                                 'interlocuteur' => $interlocuteur->id,
+                           ]);
+                          
+                          
+                        }
                       
                     }
+                   
                         
                 }
                 else //interlocuteur pas nouveau
@@ -440,23 +515,53 @@ class ProspectionController extends Controller
             if($request->interlocuteur == "autre")//L'interlocuteur n'existe pas 
             {
             
-                $add = (new InterlocuteurController())->AddInterlocuteurWithClient($request, $request->entreprise);
-    
-                foreach($add as $interlocuteur)
+                if($request->fonction == "autre")
                 {
+                    $p = Profession::create(['intitule' => $request->new_fonction]);
+                    //AJOUTER MAINTENANT L'INTERLOCUTEUR
+                    $interl = Interlocuteur::create([
+                        'titre' => $request->titre,
+                         'nom' => $request->nom, 
+                         'tel' => $request->tel,
+                          'email' => $request->email, 
+                          'fonction' => $p->id, 
+                          'id_entreprise' => $request->entreprise,
+                           'created_by' => auth()->user()->id,
+                    ]);
+
+                   
                     $affected =  DB::table('prospections')
-                    ->where('id', $request->id_prospection)
                     ->update([
-                       
+                         
                         'date_prospection' => $request->date_prospect,
+                        'date_fin' => $date_fin, 
+                        'duree_jours' => $request->duree, 
+                        'id_entreprise' => $client->id, 
+                        'interlocuteur' => $interl->id,
+                   ]);
+                }
+                else
+                {
+                    $add = (new InterlocuteurController())->AddInterlocuteurWithClient($request, $client->id);
+    
+                    foreach($add as $interlocuteur)
+                    {
+                       
+                        $affected =  DB::table('prospections')
+                        ->update([
+                             
+                            'date_prospection' => $request->date_prospect,
                             'date_fin' => $date_fin, 
                             'duree_jours' => $request->duree, 
-                            'id_entreprise' => $request->entreprise, 
+                            'id_entreprise' => $client->id, 
                             'interlocuteur' => $interlocuteur->id,
-                            'id_utilisateur' => auth()->user()->id,
-                            
-                    ]);
+                       ]);
+                      
+                      
+                    }
+                  
                 }
+               
                     
             }
             else //interlocuteur pas nouveau
@@ -477,13 +582,11 @@ class ProspectionController extends Controller
                 $Interloc = DB::table('interlocuteurs')
                 ->where('id', $request->id_interlocuteur)
                 ->update([
-                 'titre' => $request->titre,
-                  'nom' => $request->nom, 
-                  'tel' => $request->tel,
-                   'email' => $request->email, 
-                   'fonction' => $request->fonction, 
-                   
-                    
+                    'titre' => $request->titre,
+                    'nom' => $request->nom, 
+                    'tel' => $request->tel,
+                    'email' => $request->email, 
+                    'fonction' => $request->fonction, 
                  ]);
 
                  //dd($affected);
@@ -512,15 +615,12 @@ class ProspectionController extends Controller
                 ]);
             }
         }
-        
-        
-
+   
         //AJOUT DU CR
 
         //IL FAUT SUPPRIMER L'ANCIEN FICHIER DANS LE DISQUE DUR
         $fichier = $request->file;
        
-
         if($fichier != null)
         {
             //VERFIFIER LE FORMAT 
@@ -594,81 +694,80 @@ class ProspectionController extends Controller
 
          //AJOUT DE PROFORMA
          
-         $fichier_proforma = $request->fileproforma;
+        $fichier_proforma = $request->fileproforma;
         
 
-         if( $fichier_proforma != null)
-         { 
-              //VERFIFIER LE FORMAT 
-              $extension = pathinfo($fichier_proforma->getFilename(), PATHINFO_EXTENSION);
+        if( $fichier_proforma != null)
+        { 
+            //VERFIFIER LE FORMAT 
+            $extension = pathinfo($fichier_proforma->getFilename(), PATHINFO_EXTENSION);
 
-              if($extension != "pdf")
-              {
-                      return view('dash/prospect_about',
-                      [
-                          'id_entreprise' => $request->id_entreprise,
-                          'error' => 'FORMAT DE FICHIER INCORRECT'
-                      ]
-                  );
-              }
+            if($extension != "pdf")
+            {
+                    return view('dash/prospect_about',
+                    [
+                        'id_entreprise' => $request->id_entreprise,
+                        'error' => 'FORMAT DE FICHIER INCORRECT'
+                    ]
+                );
+            }
 
-             //VERIFIER SI L'ENREGISTREMENT A UN CHEMIN D'ACCES ENREGISTRE
-             $get_path = Prospection::where('id', $request->id_prospection)->get();
-             foreach($get_path as $get_path)
-             {
-                 if($get_path->facture_path == null)
-                 {
+            //VERIFIER SI L'ENREGISTREMENT A UN CHEMIN D'ACCES ENREGISTRE
+            $get_path = Prospection::where('id', $request->id_prospection)->get();
+            foreach($get_path as $get_path)
+            {
+                if($get_path->facture_path == null)
+                {
+                
+                    //enregistrement de fichier dans la base
+                    $file_name = $fichier_proforma->getClientOriginalName();
+                    //dd( $file_name);
+                            
+                    $path = $request->file('fileproforma')->storeAs(
+                        'factures/proforma', $file_name
+                    );
+
+                    $affected = DB::table('prospections')
+                    ->where('id', $request->id_prospection)
+                    ->update([
+                        'facture_path'=> $path,
+                        
+                    ]);
+
                     
-                      //enregistrement de fichier dans la base
-                     $file_name = $fichier_proforma->getClientOriginalName();
-                     //dd( $file_name);
-                             
-                     $path = $request->file('fileproforma')->storeAs(
-                         'factures/proforma', $file_name
-                     );
- 
-                     $affected = DB::table('prospections')
-                     ->where('id', $request->id_prospection)
-                     ->update([
-                         'facture_path'=> $path,
-                         
-                     ]);
- 
-                     
- 
-                 }
-                 else
-                 {
-                     //SUPPRESSION DE L'ANCIEN FICHIER
-                     //dd($get_path->path);
-                     Storage::delete($get_path->facture_path);
- 
- 
-                     $file_name = $fichier_proforma->getClientOriginalName();
-                     
-                             
-                     $path = $request->file('file')->storeAs(
-                         'factures/proforma', $file_name
-                     );
- 
-                     $affected = DB::table('prospections')
-                     ->where('id', $request->id_prospection)
-                     ->update([
-                         'facture_path'=> $path,
-                         
-                     ]);
- 
+
+                }
+                else
+                {
+                    //SUPPRESSION DE L'ANCIEN FICHIER
+                    //dd($get_path->path);
+                    Storage::delete($get_path->facture_path);
+
+
+                    $file_name = $fichier_proforma->getClientOriginalName();
                     
-                 }
-             }
-            
-         }
-         else
-         {
-           
-         }
+                            
+                    $path = $request->file('file')->storeAs(
+                        'factures/proforma', $file_name
+                    );
+
+                    $affected = DB::table('prospections')
+                    ->where('id', $request->id_prospection)
+                    ->update([
+                        'facture_path'=> $path,
+                        
+                    ]);
+
+                
+                }
+            }
+        
+        }
+        else
+        {
+        
+        }
        
-
         return redirect('prospection')->with('success', 'Modification effectué');
 
     }

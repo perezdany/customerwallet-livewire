@@ -2,18 +2,18 @@
 
 @php
 
-    use App\Http\Controllers\PaysController;
+  use App\Http\Controllers\PaysController;
 
-     use App\Http\Controllers\CibleController;
-     use App\Http\Controllers\EntrepriseController;
+    use App\Http\Controllers\CibleController;
+    use App\Http\Controllers\EntrepriseController;
 
-    $entreprisecontroller = new EntrepriseController();
+  $entreprisecontroller = new EntrepriseController();
 
-    $ciblecontroller = new CibleController();
+  $ciblecontroller = new CibleController();
 
-    $payscontroller = new PaysController();
+  $payscontroller = new PaysController();
 
-    $all = $ciblecontroller->GetAll();
+  $all = $ciblecontroller->GetAll();
 
    
 @endphp
@@ -26,17 +26,7 @@
             </div>   
       </div>
       <div class="row">
-          @if(session('success'))
-            <div class="col-md-12 box-header">
-              <p class="bg-green" style="font-size:13px;">{{session('success')}}</p>
-            </div>
-          @endif
-          @if(session('error'))
-            <div class="col-md-12 box-header">
-              <p class="bg-warning" style="font-size:13px;">{{session('error')}}</p>
-            </div>
-          @endif
-      
+        
             <div class="col-md-6">
               <div class="box">
                 <div class="box-header">
@@ -430,45 +420,45 @@
                               
                                 <div class="form-group">
                                     <label>Identité :</label>
-                                    <input type="text" maxlength="50" class="form-control input-lg" value="{{$edit->nom_entreprise}}" name="nom" onkeyup='this.value=this.value.toUpperCase()'  reuqired />
+                                    <input type="text" maxlength="50" class="form-control " value="{{$edit->nom_entreprise}}" name="nom" onkeyup='this.value=this.value.toUpperCase()'  reuqired />
                                 </div> 
                                 
 
                                 <div class="form-group">
                                     <label>Adresse :</label>
-                                    <input type="text" class="form-control input-lg" value="{{$edit->adresse}}"  onkeyup='this.value=this.value.toUpperCase()' name="adresse" />
+                                    <input type="text" class="form-control " value="{{$edit->adresse}}"  onkeyup='this.value=this.value.toUpperCase()' name="adresse" />
                                 </div>
 
                             
                                 <div class="form-group">
                                   <label >Téléphone (fixe/mobile):</label>
-                                  <input type="text"  maxlength="60" class="form-control  input-lg" value="{{$edit->telephone}}" name="tel" placeholder="+225 27 47 54 45 68">
+                                  <input type="text"  maxlength="60" class="form-control  " value="{{$edit->telephone}}" name="tel" placeholder="+225 27 47 54 45 68">
                                 </div>
                       
                                 <div class="form-group">
                                   <label >Chiffre d'affaire (FCFA):</label>
-                                  <input type="tex" id="ca" value="{{$edit->chiffre_affaire}}"  maxlength="18" class="form-control  input-lg" name="chiffre" placeholder="1000000">
+                                  <input type="tex" id="ca" value="{{$edit->chiffre_affaire}}"  maxlength="18" class="form-control  " name="chiffre" placeholder="1000000">
                                 </div>
 
                                 <div class="form-group">
                                   <label >Nombre d'employés:</label>
-                                  <input type="text" id="ne" value="{{$edit->nb_employes}}" maxlength="18" class="form-control  input-lg" name="nb_emp" placeholder="5">
+                                  <input type="text" id="ne" value="{{$edit->nb_employes}}" maxlength="18" class="form-control  " name="nb_emp" placeholder="5">
                                 </div>
 
                                 <div class="form-group">
                                   <label >Objet Social/Activités:</label>
-                                  <input type="text" value="{{$edit->activite}}" maxlength="100" class="form-control  input-lg" name="activite" 
+                                  <input type="text" value="{{$edit->activite}}" maxlength="100" class="form-control  " name="activite" 
                                   placeholder="TRANSIT" onkeyup="this.value=this.value.toUpperCase()">
                                 </div>
 
                                   <div class="form-group">
                                     <label>Email:</label>
-                                    <input type="email"  maxlength="30" class="form-control  input-lg" value="{{$edit->adresse_email}}" name="email">
+                                    <input type="email"  maxlength="30" class="form-control  " value="{{$edit->adresse_email}}" name="email">
                                   </div>
 
                                 <div class="form-group">
                                     <label>Pays :</label>
-                                    <select class="form-control input-lg" name="pays" required>
+                                    <select class="form-control " name="pays" required>
                                       <option value={{$edit->id_pays}}>{{$edit->nom_pays}}</option>
                                         @php
                                             $pays = $payscontroller->DisplayAll();
@@ -593,7 +583,7 @@
                         </div>
                         <div class="form-group">
                             <label for="exampleInputFile">Choisissez l'entreprise :</label>
-                            <select class="form-control input-lg" name="entreprise">
+                            <select class="form-control " name="entreprise">
                                 @php
                                     $get = $ciblecontroller->GetAll();
                                 @endphp
@@ -612,7 +602,7 @@
                         
                         <div class="form-group">
                             <label for="exampleInputFile">Titre :</label>
-                            <select class="form-control input-lg" name="titre">
+                            <select class="form-control " name="titre">
                                 <option value="M">M</option>
                                 <option value="Mme">Mme</option>
                                 <option value="Mlle">Mlle</option>
@@ -621,24 +611,52 @@
                         </div>
                         <div class="form-group">
                                 <label >Nom & Prénom(s)</label>
-                                <input type="text"  maxlength="100" class="form-control  input-lg" name="nom" onkeyup="this.value=this.value.toUpperCase()">
+                                <input type="text"  maxlength="100" class="form-control  " name="nom" onkeyup="this.value=this.value.toUpperCase()">
                         </div>
 
                         <div class="form-group">
                                 <label>Email</label>
-                                <input type="email"  maxlength="30" class="form-control input-lg" name="email" >
+                                <input type="email"  maxlength="30" class="form-control " name="email" >
                             </div>
 
                         <div class="form-group">
                                 <label>Téléphone (*)</label>
-                                <input type="text"  maxlength="30"   class="form-control input-lg" name="tel" placeholder="(+225)0214578931" >
+                                <input type="text"  maxlength="30"   class="form-control " name="tel" placeholder="(+225)0214578931" >
                             </div>
 
-                        <div class="form-group">
-                                <label>Fonction</label>
-                                <input type="text" class="form-control input-lg"  maxlength="60" name="fonction" onkeyup="this.value=this.value.toUpperCase()">
-                            </div>  
+                          <div class="form-group">
+                              <label>Fonction (Choisir "Autre" si inexistant)</label>
+                                  <select class="form-control"  onchange="newFonction();" name="fonction" id="grise4" required>
+                                  @php
+                                      $f = DB::table('professions')->orderBy('id', 'asc')->get();
+                                  @endphp
+                                  @foreach($f as $f)
+                                      <option value="{{$f->id}}">{{$f->intitule}}</option>
+                                  @endforeach
+                                  <option value="autre">Autre</option>
+                              </select>
+                          </div>
+
+                          <div class="form-group">
+                                  <label>Fonction:(*)</label>
+                                  <input type="text" disabled="disabled" required id="newf" maxlength="60"   class="form-control " name="new_fonction" onkeyup="this.value=this.value.toUpperCase()" >
+                          </div>  
                     </div>
+                    <script>
+                      function newFonction()
+                      {
+                          
+                          var f = document.getElementById("grise4").value;
+                          //alert(f);
+                          if(f == 'autre')
+                          {
+                              document.getElementById("newf").removeAttribute("disabled");
+                          }
+                          else{
+                              document.getElementById("newf").setAttribute("disabled", "disabled");
+                          }
+                      }
+                    </script>
 
                     <div class="box-footer">
                         <button type="submit" class="btn btn-primary">VALIDER</button>

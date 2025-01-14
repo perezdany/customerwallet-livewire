@@ -22,7 +22,7 @@
 
 @section('content')
 
-      @if(auth()->user()->id_role != NULL)
+      @can("edit")
         <div class="row">
             <div class="col-md-3">
                 <a href="form_add_prospection"><button class="btn btn-primary"> <b><i class="fa fa-plus"></i>PROSPECTION</b></button></a>
@@ -34,7 +34,7 @@
             </div>
         </div>           
       
-      @endif
+      @endcan
   
       <div class="row">
       
@@ -185,40 +185,44 @@
                         </td>
                             
                         <td>
-                            @if(auth()->user()->id_role != NULL)
+                            @can("admin")
                                <!--SUPPRESSION AVEC POPUP-->
                               <button type="button" class="btn btn-danger" data-toggle="modal" data-target="@php echo "#".$all->id.""; @endphp">
                                   <i class="fa fa-trash"></i>
                                 </button>
-                              <div class="modal modal-danger fade" id="@php echo "".$all->id.""; @endphp">
-                                <div class="modal-dialog">
-                                  <div class="modal-content">
-                                    <div class="modal-header">
-                                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span></button>
-                                      <h4 class="modal-title">Supprimer </h4>
-                                    </div>
-                                    <form action="delete_prospect" method="post">
-                                      <div class="modal-body">
-                                        <p>Voulez-vous supprimer {{$all->nom_entreprise}}?</p>
-                                        @csrf
-                                        <input type="text" value="{{$all->id}}" style="display:none;" name="id_entreprise">
-                                      </div>
-                                    
-                                      <div class="modal-footer">
-                                        <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Fermer</button>
-                                        <button type="submit" class="btn btn-outline">Supprimer</button>
-                                      </div>
-                                    </form>
+                            @endcan
+                            @can("commercial")
+                               <!--SUPPRESSION AVEC POPUP-->
+                              <button type="button" class="btn btn-danger" data-toggle="modal" data-target="@php echo "#".$all->id.""; @endphp">
+                                  <i class="fa fa-trash"></i>
+                                </button>
+                            @endcan
+                            <div class="modal modal-danger fade" id="@php echo "".$all->id.""; @endphp">
+                              <div class="modal-dialog">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                      <span aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title">Supprimer </h4>
                                   </div>
-                                  <!-- /.modal-content -->
+                                  <form action="delete_prospect" method="post">
+                                    <div class="modal-body">
+                                      <p>Voulez-vous supprimer {{$all->nom_entreprise}}?</p>
+                                      @csrf
+                                      <input type="text" value="{{$all->id}}" style="display:none;" name="id_entreprise">
+                                    </div>
+                                  
+                                    <div class="modal-footer">
+                                      <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Fermer</button>
+                                      <button type="submit" class="btn btn-outline">Supprimer</button>
+                                    </div>
+                                  </form>
                                 </div>
-                                <!-- /.modal-dialog -->
+                                <!-- /.modal-content -->
                               </div>
-                              <!-- /.modal -->
-                             
-                            @endif
-                            
+                              <!-- /.modal-dialog -->
+                            </div>
+                            <!-- /.modal -->
                         </td>
 
                         <td>

@@ -1,4 +1,4 @@
-@extends('layouts/dash')
+@extends('layouts/base')
 @php
     use App\Http\Controllers\ServiceController;
 
@@ -121,7 +121,7 @@
                           <!--FAIRE DES CALCULS POUR DETERMINER LA FIN DU CONTRAT-->
                             <div class="row">
                               <div class="col-md-3">
-                                <input type="number" class="form-control" placeholder="jours" min="1" max="31" name="jour" value="31">
+                                <input type="number" class="form-control" placeholder="jours" min="1" max="31" name="jour" >
                               </div>
                               <div class="col-md-4">
                                 <input type="number" class="form-control" placeholder="mois" min="1" max="12" name="mois">

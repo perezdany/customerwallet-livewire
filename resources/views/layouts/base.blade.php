@@ -106,7 +106,7 @@
 
       @if(isset($message_success))
       <div class="col-md-12 box-header">
-          <p class="bg-success" style="font-size:13px;">{{$message_success}}</p>
+          <p class="bg-green" style="font-size:13px;">{{$message_success}}</p>
       </div>
       @endif
       @if(isset($message_error))
@@ -123,7 +123,7 @@
 
         @if(isset($success))
             <div class="col-md-12 box-header">
-            <p class="bg-success" style="font-size:13px;">{{$success}}</p>
+            <p class="bg-green" style="font-size:13px;">{{$success}}</p>
             </div>
         @endif
     

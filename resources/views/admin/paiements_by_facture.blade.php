@@ -71,13 +71,24 @@
                                 <td>{{$my_own->numero_facture}}</td>
                                 @if(auth()->user()->id_role == 3)
                                 @else
-                                    <td>
-                                        <form action="edit_paiement_form" method="post">
-                                            @csrf
-                                            <input type="text" value={{$my_own->id}} style="display:none;" name="id_paiement">
-                                            <button type="submit" class="btn btn-success"><i class="fa fa-edit"></i></button>
-                                        </form>
-                                    </td>
+                                    @can("comptable")
+                                        <td>
+                                            <form action="edit_paiement_form" method="post">
+                                                @csrf
+                                                <input type="text" value={{$my_own->id}} style="display:none;" name="id_paiement">
+                                                <button type="submit" class="btn btn-success"><i class="fa fa-edit"></i></button>
+                                            </form>
+                                        </td>
+                                    @endcan
+                                    @can("admin")
+                                        <td>
+                                            <form action="edit_paiement_form" method="post">
+                                                @csrf
+                                                <input type="text" value={{$my_own->id}} style="display:none;" name="id_paiement">
+                                                <button type="submit" class="btn btn-success"><i class="fa fa-edit"></i></button>
+                                            </form>
+                                        </td>
+                                    @endcan
                                 @endif
                                 
                                 </tr>

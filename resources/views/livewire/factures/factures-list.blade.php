@@ -452,10 +452,17 @@
                                                 </form>
                                             </td>
                                             <td class="bg-red">
-                                                @can("edit")
+                                                @can("admin")
                                                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="@php echo "#add".$facture->id.""; @endphp">
                                                 <i class="fa fa-upload"></i>
                                                 </button>
+                                                @endcan
+                                                @can("comptable")
+                                                    @can("edit")
+                                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="@php echo "#add".$facture->id.""; @endphp">
+                                                    <i class="fa fa-upload"></i>
+                                                    </button>
+                                                    @endcan
                                                 @endcan
                                                 <div class="modal modal-default fade" id="@php echo "add".$facture->id.""; @endphp">
                                                     <div class="modal-dialog">
@@ -509,22 +516,29 @@
                                                             <button type="submit" class="btn btn-success"><i class="fa fa-money"></i></button>
                                                         </form>
                                                     @endif
-                                                    
-                                                @endcan
-                                                @can("edit")
+                                                
+                                                    @can("edit")
+                                                    <button type="button" class="btn btn-primary" wire:click="EditFacture('{{$facture->id}}')">
+                                                    <i class="fa fa-edit"></i>
+                                                    </button>
+                                                    @endcan
+                                                @endcan   
+                                                
+                                                @can("admin")
                                                 <button type="button" class="btn btn-primary" wire:click="EditFacture('{{$facture->id}}')">
                                                 <i class="fa fa-edit"></i>
                                                 </button>
                                                 @endcan
-                                                
                                             </td>
 
                                             <td class="bg-red">
-                                                @can("delete")
-                                                    <button type="button" class="btn btn-danger"  wire:click="confirmDelete(' {{ $facture->numero_facture }} '
-                                                    , {{ $facture->id }} )">
-                                                        <i class="fa fa-trash"></i>
-                                                    </button>
+                                                @can("comptable")
+                                                    @can("delete")
+                                                        <button type="button" class="btn btn-danger"  wire:click="confirmDelete(' {{ $facture->numero_facture }} '
+                                                        , {{ $facture->id }} )">
+                                                            <i class="fa fa-trash"></i>
+                                                        </button>
+                                                    @endcan
                                                 @endcan
                             
                                             </td>
@@ -564,10 +578,17 @@
                                                     </form>
                                                 </td>
                                                 <td class="bg-warning">
-                                                    @can("edit")
-                                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="@php echo "#add".$facture->id.""; @endphp">
-                                                    <i class="fa fa-upload"></i>
-                                                    </button>
+                                                    @can("admin")
+                                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="@php echo "#add".$facture->id.""; @endphp">
+                                                        <i class="fa fa-upload"></i>
+                                                        </button>
+                                                    @endcan
+                                                    @can("comptable")
+                                                        @can("edit")
+                                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="@php echo "#add".$facture->id.""; @endphp">
+                                                        <i class="fa fa-upload"></i>
+                                                        </button>
+                                                        @endcan
                                                     @endcan
                                                     <div class="modal modal-default fade" id="@php echo "add".$facture->id.""; @endphp">
                                                         <div class="modal-dialog">
@@ -630,20 +651,30 @@
                                                             <a href="#" id="popup-fermeture" onclick="togglePopup();">Fermer</a>
                                                         </div>
                                                     </div>
-                                                    @can("edit")
-                                                    <button type="button" class="btn btn-primary" wire:click="EditFacture('{{$facture->id}}')">
-                                                    <i class="fa fa-edit"></i>
-                                                    </button>
+                                                    @can("admin")
+                                                        
+                                                        <button type="button" class="btn btn-primary" wire:click="EditFacture('{{$facture->id}}')">
+                                                        <i class="fa fa-edit"></i>
+                                                        </button>
+                                                    @endcan
+                                                    @can("comptable")
+                                                        @can("edit")
+                                                        <button type="button" class="btn btn-primary" wire:click="EditFacture('{{$facture->id}}')">
+                                                        <i class="fa fa-edit"></i>
+                                                        </button>
+                                                        @endcan
                                                     @endcan
                                                     
                                                 </td>
 
                                                 <td class="bg-warning">
-                                                    @can("delete")
-                                                    <button type="button" class="btn btn-danger"  wire:click="confirmDelete(' {{ $facture->numero_facture }} '
-                                                    , {{ $facture->id }} )">
-                                                        <i class="fa fa-trash"></i>
-                                                    </button>
+                                                    @can("comptable")
+                                                        @can("delete")
+                                                        <button type="button" class="btn btn-danger"  wire:click="confirmDelete(' {{ $facture->numero_facture }} '
+                                                        , {{ $facture->id }} )">
+                                                            <i class="fa fa-trash"></i>
+                                                        </button>
+                                                        @endcan
                                                     @endcan
                                                 </td>
                                             
@@ -681,7 +712,14 @@
                                                     </form>
                                                 </td>
                                                 <td class="bg-warning">
-                                                    @can("edit")
+                                                    @can("comptable")
+                                                        @can("edit")
+                                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="@php echo "#add".$facture->id.""; @endphp">
+                                                            <i class="fa fa-upload"></i>
+                                                            </button>
+                                                        @endcan
+                                                    @endcan
+                                                    @can("admin")
                                                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="@php echo "#add".$facture->id.""; @endphp">
                                                     <i class="fa fa-upload"></i>
                                                     </button>
@@ -746,20 +784,29 @@
                                                             <a href="#" id="popup-fermeture" onclick="togglePopup();">Fermer</a>
                                                         </div>
                                                     </div>
-                                                    @can("edit")
-                                                    <button type="button" class="btn btn-primary" wire:click="EditFacture('{{$facture->id}}')">
-                                                    <i class="fa fa-edit"></i>
-                                                    </button>
+                                                    @can("comptable")
+                                                        @can("edit")
+                                                        <button type="button" class="btn btn-primary" wire:click="EditFacture('{{$facture->id}}')">
+                                                        <i class="fa fa-edit"></i>
+                                                        </button>
+                                                        @endcan
+                                                    @endcan
+                                                    @can("admin")
+                                                        <button type="button" class="btn btn-primary" wire:click="EditFacture('{{$facture->id}}')">
+                                                        <i class="fa fa-edit"></i>
+                                                        </button>
                                                     @endcan
                                                     
                                                 </td>
 
                                                 <td class="bg-warning">
-                                                    @can("delete")
-                                                    <button type="button" class="btn btn-danger"  wire:click="confirmDelete(' {{ $facture->numero_facture }} '
-                                                    , {{ $facture->id }} )">
-                                                        <i class="fa fa-trash"></i>
-                                                    </button>
+                                                    @can("comptable")
+                                                        @can("delete")
+                                                        <button type="button" class="btn btn-danger"  wire:click="confirmDelete(' {{ $facture->numero_facture }} '
+                                                        , {{ $facture->id }} )">
+                                                            <i class="fa fa-trash"></i>
+                                                        </button>
+                                                        @endcan
                                                     @endcan
 
                                                 </td>
@@ -868,19 +915,28 @@
                                                     <a href="#" id="popup-fermeture" onclick="togglePopup();">Fermer</a>
                                                 </div>
                                             </div>
-                                            @can("edit")
-                                            <button type="button" class="btn btn-primary" wire:click="EditFacture('{{$facture->id}}')">
-                                            <i class="fa fa-edit"></i>
-                                            </button>
+                                            @can("admin")
+                                                <button type="button" class="btn btn-primary" wire:click="EditFacture('{{$facture->id}}')">
+                                                <i class="fa fa-edit"></i>
+                                                </button>
+                                            @endcan
+                                            @can("comptable")
+                                                @can("edit")
+                                                <button type="button" class="btn btn-primary" wire:click="EditFacture('{{$facture->id}}')">
+                                                <i class="fa fa-edit"></i>
+                                                </button>
+                                                @endcan
                                             @endcan
                                         </td>
                                         
                                         <td >
+                                            @can("comptable")
                                                 @can("delete")
-                                            <button type="button" class="btn btn-danger"  wire:click="confirmDelete(' {{ $facture->numero_facture }} '
-                                                    , {{ $facture->id }} )">
-                                                <i class="fa fa-trash"></i>
-                                            </button>
+                                                <button type="button" class="btn btn-danger"  wire:click="confirmDelete(' {{ $facture->numero_facture }} '
+                                                        , {{ $facture->id }} )">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+                                                @endcan
                                             @endcan
                                         </td>
 
@@ -920,7 +976,7 @@
                         }
                         
                         $somme = 0;
-                        $non_r = DB::table('factures')->where('reglee', 0)->get();
+                        $non_r = DB::table('factures')->where('reglee', 0)->where('annulee', 0)->get();
                         foreach($non_r as $non_r)
                         {
                             $somme = $somme + $non_r->montant_facture;

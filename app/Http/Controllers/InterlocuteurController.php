@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use DB;
 
 use App\Models\Interlocuteur;
+use App\Models\Profession;
 
 class InterlocuteurController extends Controller
 {
@@ -281,19 +282,37 @@ class InterlocuteurController extends Controller
         {
             return back()->with('error', 'Choisissez l\'entreprise ');
         }
-        
-        //dd($request->nom);
-        $Insert = Interlocuteur::create([
-            'titre' => $request->titre,
-             'nom' => $request->nom, 
-             'tel' => $request->tel,
-              'email' => $request->email, 
-              'fonction' => $request->fonction, 
-              
-              'id_entreprise' => $request->entreprise,
-               'created_by' => auth()->user()->id,
-        ]);
-        
+
+        if($request->fonction == "autre")
+        {
+            $p = Profession::create(['intitule' => $request->new_fonction]);
+            //AJOUTER MAINTENANT L'INTERLOCUTEUR
+            $interl = Interlocuteur::create([
+                'titre' => $request->titre,
+                'nom' => $request->nom, 
+                'tel' => $request->tel,
+                'email' => $request->email, 
+                'fonction' => $p->id, 
+                'id_entreprise' => $request->entreprise,
+                'created_by' => auth()->user()->id,
+            ]);
+
+        }
+        else
+        {  
+             //dd($request->nom);
+            $Insert = Interlocuteur::create([
+                'titre' => $request->titre,
+                'nom' => $request->nom, 
+                'tel' => $request->tel,
+                'email' => $request->email, 
+                'fonction' => $request->fonction, 
+                
+                'id_entreprise' => $request->entreprise,
+                'created_by' => auth()->user()->id,
+            ]);
+                
+        }
 
         return redirect('interlocuteurs')->with('success', 'Enregistrement effectué');
     }
@@ -306,19 +325,36 @@ class InterlocuteurController extends Controller
             return back()->with('error', 'Choisissez l\'entreprise ');
         }
         
-        //dd($request->nom);
-        $Insert = Interlocuteur::create([
-            'titre' => $request->titre,
-             'nom' => $request->nom, 
-             'tel' => $request->tel,
-              'email' => $request->email, 
-              'fonction' => $request->fonction, 
-              
-              'id_entreprise' => $request->entreprise,
-               'created_by' => auth()->user()->id,
-        ]);
-        
+        if($request->fonction == "autre")
+        {
+            $p = Profession::create(['intitule' => $request->new_fonction]);
+            //AJOUTER MAINTENANT L'INTERLOCUTEUR
+            $interl = Interlocuteur::create([
+                'titre' => $request->titre,
+                'nom' => $request->nom, 
+                'tel' => $request->tel,
+                'email' => $request->email, 
+                'fonction' => $p->id, 
+                'id_entreprise' => $request->entreprise,
+                'created_by' => auth()->user()->id,
+            ]);
 
+        }
+        else
+        {  
+            $Insert = Interlocuteur::create([
+                'titre' => $request->titre,
+                 'nom' => $request->nom, 
+                 'tel' => $request->tel,
+                  'email' => $request->email, 
+                  'fonction' => $request->fonction, 
+                  
+                  'id_entreprise' => $request->entreprise,
+                   'created_by' => auth()->user()->id,
+            ]);
+                
+        }
+        
         return redirect('cibles')->with('success', 'Enregistrement effectué');
     }
 
@@ -329,19 +365,37 @@ class InterlocuteurController extends Controller
             return back()->with('error', 'Choisissez l\'entreprise ');
         }
         
-        //dd($request->nom);
-        $Insert = Interlocuteur::create([
-            'titre' => $request->titre,
-             'nom' => $request->nom, 
-             'tel' => $request->tel,
-              'email' => $request->email, 
-              'fonction' => $request->fonction, 
-              
-              'id_entreprise' => $request->entreprise,
-               'created_by' => auth()->user()->id,
-        ]);
-        
+        if($request->fonction == "autre")
+        {
+            $p = Profession::create(['intitule' => $request->new_fonction]);
+            //AJOUTER MAINTENANT L'INTERLOCUTEUR
+            $interl = Interlocuteur::create([
+                'titre' => $request->titre,
+                'nom' => $request->nom, 
+                'tel' => $request->tel,
+                'email' => $request->email, 
+                'fonction' => $p->id, 
+                'id_entreprise' => $request->entreprise,
+                'created_by' => auth()->user()->id,
+            ]);
 
+        }
+        else
+        {  
+            $Insert = Interlocuteur::create([
+                'titre' => $request->titre,
+                 'nom' => $request->nom, 
+                 'tel' => $request->tel,
+                  'email' => $request->email, 
+                  'fonction' => $request->fonction, 
+                  
+                  'id_entreprise' => $request->entreprise,
+                   'created_by' => auth()->user()->id,
+            ]);
+            
+                
+        }
+        
         return view('dash/prospect_about',
         [
             'id_entreprise' => $request->entreprise,
@@ -356,19 +410,37 @@ class InterlocuteurController extends Controller
             return back()->with('error', 'Choisissez l\'entreprise ');
         }
         
-        //dd($request->nom);
-        $Insert = Interlocuteur::create([
-            'titre' => $request->titre,
-             'nom' => $request->nom, 
-             'tel' => $request->tel,
-              'email' => $request->email, 
-              'fonction' => $request->fonction, 
-              
-              'id_entreprise' => $request->entreprise,
-               'created_by' => auth()->user()->id,
-        ]);
-        
+        if($request->fonction == "autre")
+        {
+            $p = Profession::create(['intitule' => $request->new_fonction]);
+            //AJOUTER MAINTENANT L'INTERLOCUTEUR
+            $interl = Interlocuteur::create([
+                'titre' => $request->titre,
+                'nom' => $request->nom, 
+                'tel' => $request->tel,
+                'email' => $request->email, 
+                'fonction' => $p->id, 
+                'id_entreprise' => $request->entreprise,
+                'created_by' => auth()->user()->id,
+            ]);
 
+        }
+        else
+        {  
+            $Insert = Interlocuteur::create([
+                'titre' => $request->titre,
+                 'nom' => $request->nom, 
+                 'tel' => $request->tel,
+                  'email' => $request->email, 
+                  'fonction' => $request->fonction, 
+                  
+                  'id_entreprise' => $request->entreprise,
+                   'created_by' => auth()->user()->id,
+            ]);
+            
+                
+        }
+        
         return view('dash/fiche_customer',
             [
                 'id_entreprise' => $request->entreprise,

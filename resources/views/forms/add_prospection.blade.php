@@ -234,23 +234,42 @@
                                     <div class="form-group">
                                             <label>Téléphone (*)</label>
                                             <input type="text" disabled="disabled" required id="grise3" maxlength="30"   class="form-control " name="tel" placeholder="(+225)0214578931" >
-                                        </div>
+                                    </div>
 
                                     <div class="form-group">
-                                        <label>Fonction</label>
-                                            <select class="form-control select2"  maxlength="60" name="fonction" id="grise4" disabled="disabled" required>
+                                        <label>Fonction (Choisir "Autre" si inexistant)</label>
+                                            <select class="form-control"  onchange="newFonction();" name="fonction" id="grise4" disabled="disabled" required>
                                             @php
                                                 $f = DB::table('professions')->orderBy('id', 'asc')->get();
                                             @endphp
                                             @foreach($f as $f)
                                                 <option value="{{$f->id}}">{{$f->intitule}}</option>
                                             @endforeach
+                                            <option value="autre">Autre</option>
                                         </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                            <label>Fonction:(*)</label>
+                                            <input type="text" disabled="disabled" required id="newf" maxlength="60"   class="form-control " name="new_fonction" onkeyup="this.value=this.value.toUpperCase()" >
                                     </div>  
                             
                             </div>
 
                             <script>
+                                function newFonction()
+                                {
+                                    
+                                    var f = document.getElementById("grise4").value;
+                                   //alert(f);
+                                    if(f == 'autre')
+                                    {
+                                        document.getElementById("newf").removeAttribute("disabled");
+                                    }
+                                    else{
+                                        document.getElementById("newf").setAttribute("disabled", "disabled");
+                                    }
+                                }
                                 function griseFunction() {
                                     /* ce script permet d'activer les champ si l'utilisateur choisit autre*/
                                     var x = document.getElementById("mySelect").value;
