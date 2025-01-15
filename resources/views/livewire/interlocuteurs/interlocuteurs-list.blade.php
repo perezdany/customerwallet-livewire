@@ -94,8 +94,8 @@
                                         <!--SUPPRESSION AVEC POPUP-->
                                         
                                         <button type="button" class="btn btn-danger" data-toggle="modal" data-target="@php echo "#".$interlocuteur->id.""; @endphp">
-                                            <i class="fa fa-trash"></i>
-                                            </button>
+                                        <i class="fa fa-trash"></i>
+                                        </button>
                                         <div class="modal modal-danger fade" id="@php echo "".$interlocuteur->id.""; @endphp">
                                             <div class="modal-dialog">
                                             <div class="modal-content">

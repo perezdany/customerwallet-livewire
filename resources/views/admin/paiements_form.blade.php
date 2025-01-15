@@ -48,32 +48,72 @@
                         <thead>
                         <tr>
                             <th>Montant</th>
-                        
                             <th>Date de paiement</th>
                             <th>Numéro de facture</th>
-                            <th>Action</th>
+                            <th>Modifier</th>
+                            <th>Supp</th>
                         </tr>
                         </thead>
                         <tbody>
                             @foreach($my_own as $my_own)
                                 <tr>
-                                <td>
-                                    @php
-                                        echo  number_format($my_own->paiement, 2, ".", " ")." XOF";
-                                    @endphp
-                                </td>
-                                
-                                <td>@php echo date('d/m/Y',strtotime($my_own->date_paiement)) @endphp</td>
-                                
-                                <td>{{$my_own->numero_facture}}</td>
-                                
-                                <td>
-                                    <form action="edit_paiement_form" method="post">
-                                        @csrf
-                                        <input type="text" value={{$my_own->id}} style="display:none;" name="id_paiement">
-                                        <button type="submit" class="btn btn-success"><i class="fa fa-edit"></i></button>
-                                    </form>
-                                </td>
+                                    <td>
+                                        @php
+                                            echo  number_format($my_own->paiement, 2, ".", " ")." XOF";
+                                        @endphp
+                                    </td>
+                                    
+                                    <td>@php echo date('d/m/Y',strtotime($my_own->date_paiement)) @endphp</td>
+                                    
+                                    <td>{{$my_own->numero_facture}}</td>
+                                    
+                                    <td>
+                                        <form action="edit_paiement_form" method="post">
+                                            @csrf
+                                            <input type="text" value={{$my_own->id}} style="display:none;" name="id_paiement">
+                                            <button type="submit" class="btn btn-success"><i class="fa fa-edit"></i></button>
+                                        </form>
+                                    </td>
+                                    @can("comptable")
+                                        @can("delete")
+                                            <td>
+
+                                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="@php echo "#".$my_own->id.""; @endphp">
+                                                 <i class="fa fa-times"></i>
+                                                </button>
+                                                <div class="modal modal-danger fade" id="@php echo "".$my_own->id.""; @endphp">
+                                                    <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span></button>
+                                                        <h4 class="modal-title">Supprimer </h4>
+                                                        </div>
+                                                        <form action="delete_paiement" method="post">
+                                                        <div class="modal-body">
+                                                            <p>Voulez-vous supprimer le paiement du montant de {{$my_own->paiement}} XOF?</p>
+                                                            @csrf
+                                                            @csrf
+                                                            <input type="text" value="{{$id}}" style="display:none;" name="id">
+                                                            <input type="text" value={{$my_own->id}} style="display:none;" name="id_paiement">
+                                                            
+                                                        </div>
+                                                        
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Fermer</button>
+                                                            <button type="submit" class="btn btn-outline">Supprimer</button>
+                                                        </div>
+                                                        </form>
+                                                    </div>
+                                                    <!-- /.modal-content -->
+                                                    </div>
+                                                    <!-- /.modal-dialog -->
+                                                </div>
+                                                <!-- /.modal -->
+                                            </td>
+                                        @endcan
+                                    @endcan
+
                                 </tr>
                             @endforeach
                         </tbody>

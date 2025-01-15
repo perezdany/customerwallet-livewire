@@ -459,6 +459,9 @@ Route::middleware(['auth:web'])->group(function(){
     //ALLER AUX PAIEMENTS
     Route::post('paiement_form', [PaiementController::class, 'GoForm']);
 
+    //SUPPRIMER LES PAIEMENS
+    Route::post('delete_paiement', [PaiementController::class, 'DeletePaiement']);
+
     //PAYER
     Route::post('do_paiement', [PaiementController::class, 'DoPaiement']);
 

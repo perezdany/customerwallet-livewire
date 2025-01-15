@@ -31,7 +31,9 @@
             </div>
         @endif
     <!-- left column -->
-    
+        @php
+            //dd($id);
+        @endphp
         <div class="col-md-6">
            @if(isset($id))
                 @php
@@ -48,13 +50,11 @@
                         <thead>
                         <tr>
                             <th>Montant</th>
-                        
                             <th>Date de paiement</th>
                             <th>Numéro de facture</th>
-                            @if(auth()->user()->id_role == 3)
-                            @else
-                                <th>Action</th>
-                            @endif
+                            <th>Modifier</th>
+                            <th>Supp</th>
+                           
                         </tr>
                         </thead>
                         <tbody>
@@ -80,6 +80,7 @@
                                             </form>
                                         </td>
                                     @endcan
+                                   
                                     @can("admin")
                                         <td>
                                             <form action="edit_paiement_form" method="post">
@@ -89,6 +90,47 @@
                                             </form>
                                         </td>
                                     @endcan
+
+                                    @can("comptable")
+                                        @can("delete")
+                                            <td>
+
+                                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="@php echo "#".$my_own->id.""; @endphp">
+                                                 <i class="fa fa-times"></i>
+                                                </button>
+                                                <div class="modal modal-danger fade" id="@php echo "".$my_own->id.""; @endphp">
+                                                    <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span></button>
+                                                        <h4 class="modal-title">Supprimer </h4>
+                                                        </div>
+                                                        <form action="delete_paiement" method="post">
+                                                        <div class="modal-body">
+                                                            <p>Voulez-vous supprimer le paiement du montant de {{$my_own->paiement}} XOF?</p>
+                                                            @csrf
+                                                            @csrf
+                                                            <input type="text" value="{{$id}}" style="display:none;" name="id">
+                                                            <input type="text" value={{$my_own->id}} style="display:none;" name="id_paiement">
+                                                            
+                                                        </div>
+                                                        
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Fermer</button>
+                                                            <button type="submit" class="btn btn-outline">Supprimer</button>
+                                                        </div>
+                                                        </form>
+                                                    </div>
+                                                    <!-- /.modal-content -->
+                                                    </div>
+                                                    <!-- /.modal-dialog -->
+                                                </div>
+                                                <!-- /.modal -->
+                                            </td>
+                                        @endcan
+                                    @endcan
+
                                 @endif
                                 
                                 </tr>

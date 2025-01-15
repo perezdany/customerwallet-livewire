@@ -285,4 +285,17 @@ class PaiementController extends Controller
         //dd($get);
         return $get;
     }
+
+    public function DeletePaiement(Request $request)
+    {
+        //dd($request->all());
+        $delete = DB::table('paiements')->where('id', '=', $request->id_paiement)->delete();
+        return view('admin/paiements_by_facture',
+            [
+                'id' => $request->id, 
+                'success' => 'Paiement supprimé',
+            ]
+        );
+        
+    }
 }
