@@ -141,13 +141,13 @@
                             <!--FAIRE DES CALCULS POUR DETERMINER LA FIN DU CONTRAT-->
                               <div class="row">
                                 <div class="col-md-3">
-                                  <input type="number" class="form-control" placeholder="jours" min="1" max="365" name="jour" >
+                                  <input type="number" class="form-control" placeholder="jours" value="0" min="0" max="365" name="jour" >
                                 </div>
                                 <div class="col-md-4">
-                                  <input type="number" class="form-control" placeholder="mois" min="1" max="12" name="mois">
+                                  <input type="number" class="form-control" placeholder="mois" value="0" min="0" max="12" name="mois">
                                 </div>
                                 <div class="col-md-5">
-                                  <input type="number" class="form-control" placeholder="année" min="1" max="10" name="annee">
+                                  <input type="number" class="form-control" placeholder="année" value="0" min="0" max="10" name="annee">
                                 </div>
                               </div>
                           </div>

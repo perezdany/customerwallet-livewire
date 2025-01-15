@@ -52,7 +52,7 @@
         foreach($contrats as $contrats)
         {
             //VERIFIER LA DATE DE FIN DE CONTRAT
-            if($contrats->fin_contrat <= date('Y-m-d'))
+            if($contrats->fin_contrat <= date('Y-m-d')) //SON ETAT EST MIS SUR TERMINE OU BIEN SA DATE DE FIN EST DEPASSEE
             {
                 //LE CONTRAT EST FINI, VERIFIONS SI IL EST RECONDUIT
                 if($contrats->reconduction == 0)//Pas reconduit
@@ -61,15 +61,15 @@
                 }
                 else
                 {
-                    if($contrats->reconduction == 1 AND $contrats->etat == 1)//Reconduit
+                    if($contrats->reconduction == 1 AND $contrats->etat == 1)//Reconduit et en cours
                     {
-                        //ON A LES DUREES DANS LA TABLE DONC ON  SERT DE CA POUR LA MISE A JOURS
-                      
+                        //ON A LES DUREES DANS LA TABLE DONC ON SE SERT DE CA POUR LA MISE A JOURS
+                        //DES QUE LE CONTRAT EST RECONDUIT IL EST EN COURS
                         //echo $contrats->titre_contrat."--".$contrats->fin_contrat."<br>";
                         $date_debut = strtotime($contrats->debut_contrat);
                         $date_fin = strtotime($contrats->fin_contrat);
                         //$diff_in_days = floor(($date_fin - $date_debut ) / (60 * 60 * 24));//on obtient ca en jour
-                        $nouvelle_date_fin = $calculator->FinContrat(intval($contrats->jours), $date_fin, intval($contrats->mois), intval($contrats->annees));
+                        $nouvelle_date_fin = $calculator->FinContrat(intval($contrats->jours), $contrats->fin_contrat, intval($contrats->mois), intval($contrats->annees));
                         //ACTUALISATION DE LA DATE
                         /*$timestamp = strtotime($contrats->fin_contrat);
                         $departtime1 = strtotime('+'.$diff_in_days.' days', $timestamp);
@@ -81,6 +81,7 @@
                         ->where('id', $contrats->id)
                         ->update([
                             'fin_contrat'=> $nouvelle_date_fin,  
+                            'etat' => 1
                         ]);
                     }
                    

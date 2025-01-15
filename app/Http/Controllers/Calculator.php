@@ -25,13 +25,16 @@ class Calculator extends Controller
        //dd($jours." ". $date_debut." ". $mois." ". $annee);
         if($annee !=0 )//il a rempli l'annee
         {
-            if($mois != 0)//le mois aussi est rempli
+            //dd('a');
+            if($mois != 0 OR $mois != null)//le mois aussi est rempli
             {
+                //dd('b');
                 /*$departtime2 = strtotime('+'.$annee.' year', $departtime1);
                 $depart = date("Y-m-d", $departtime2);*/
            
-                if($jours != 0)//le jour aussi est rempli
+                if($jours != 0 OR $jours != null)//le jour aussi est rempli
                 {
+                    dd('c');
                     $departtime1 = strtotime('+'.$mois.' month', $timestamp);
                     $departtime2 = strtotime('+'.$jours.' days',  $departtime1);
                     $departtime3 = strtotime('+'.$annee.' year', $departtime2);
@@ -40,6 +43,7 @@ class Calculator extends Controller
                 }
                 else
                 {
+                   dd('e');
                     $departtime1 = strtotime('+'.$mois.' month', $timestamp);
                     $departtime2 = strtotime('+'.$jours.' days', $departtime1);
                     $depart = date("Y-m-d", $departtime2);
@@ -47,14 +51,24 @@ class Calculator extends Controller
             }
             else
             {
-                if($jours != 0)//le jour aussi est rempli
+                //dd('f');
+                if($jours != 0 OR $jours != null)//le jour aussi est rempli
                 {
+                    dd('g');
                     $departtime1 = strtotime('+'.$mois.' month', $timestamp);
                     $departtime2 = strtotime('+'.$jours.' days',$departtime2);
                     $departtime3 = strtotime('+'.$annee.' year', $departtime3);
 
                     $depart = date("Y-m-d", $departtime3);
                 }
+                else
+                {
+                    //dd('h');
+                    $departtime = strtotime('+'.$annee.' year', $timestamp);
+
+                    $depart = date("Y-m-d", $departtime);
+                }
+                 
             }
 
             //$depart_base = strtotime( $timestamp);
@@ -123,7 +137,7 @@ class Calculator extends Controller
                 else // le jour est rempli et différent de zéro
                 {
                    
-                   
+                   return $date_debut;
                    
                 }
             }

@@ -154,11 +154,29 @@ class Contrats extends Component
         //Calcul de la date de fin de contrat
         if($this->jours == "null" AND $this->mois == "null" AND $this->annee == "null")
         {
-            //$date_fin = "NULL";
+           
         }
         else
         {
-            $date_fin = $calculator->FinContrat($jours, $this->editContrat['debut_contrat'], $mois, $annees);
+            if($this->editContrat['fin_contrat'] <= date('Y-m-d'))//EST CE QUE LA DATE DE FIN EST DEPASSEE
+            {
+                if($this->editContrat['reconduction'] == 1)//SI AUSSI C'EST RECONDUIT
+                {
+                    $date_fin = $calculator->FinContrat($jours, $this->editContrat['fin_contrat'], $mois, $annees);
+                }
+                else
+                {
+                    //ON MODIFIE JUSTE EN FONCTION DU JOURS QUI EST ENTRE 
+                    $date_fin = $calculator->FinContrat($jours, $this->editContrat['debut_contrat'], $mois, $annees);
+                }
+                
+            }
+            else
+            {
+                //ON MODIFIE JUSTE EN FONCTION DU JOURS QUI EST ENTRE 
+                $date_fin = $calculator->FinContrat($jours, $this->editContrat['debut_contrat'], $mois, $annees);
+            }
+            
            
         }
         //dd($date_fin);
