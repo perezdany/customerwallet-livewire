@@ -2935,7 +2935,7 @@ class ContratController extends Controller
     {
         $get = DB::table('contrats')
             
-          ->where('contrats.etat', '=', 0)
+          ->where('contrats.etat', '=', 1)
           ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')
           ->get(['contrats.*', 'entreprises.nom_entreprise']);
           

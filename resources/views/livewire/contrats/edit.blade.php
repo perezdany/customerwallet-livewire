@@ -141,7 +141,7 @@
                     <div class="row">
                         <div class="col-sm-6"> <label >Contrat Parent:</label></div>
                         <div class="col-sm-6">
-                        <select class="form-control select4" wire:model="editContrat.id_contrat_parent" id="id_contrat_parent" disabled required>
+                        <select class="form-control select4" wire:model="editContrat.id_contrat_parent" id="id_contrat_parent" >
                             
 
                             @php

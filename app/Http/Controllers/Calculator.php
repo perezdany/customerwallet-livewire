@@ -345,7 +345,7 @@ class Calculator extends Controller
             ->join('contrats', 'factures.id_contrat', '=', 'contrats.id')
             ->join('entreprises', 'entreprises.id', '=', 'contrats.id_entreprise')
             ->where('factures.date_emission', '=', $the_date)
-            ->where('factures.annulee', "0")
+            //->where('factures.annulee', "0")
             ->select(['factures.*', 'contrats.titre_contrat', 'contrats.montant', 'entreprises.nom_entreprise'])
             ->get();
             
@@ -390,7 +390,7 @@ class Calculator extends Controller
                 ->join('contrats', 'factures.id_contrat', '=', 'contrats.id')
                 ->join('entreprises', 'entreprises.id', '=', 'contrats.id_entreprise')
                 ->where('factures.date_emission', '=', $the_date)
-                ->where('factures.annulee', 0)
+                //->where('factures.annulee', 0)
                 ->where('contrats.id_entreprise', $all_entreprises->id)
                 ->get(['factures.date_emission', 'entreprises.nom_entreprise', 'factures.montant_facture']);
                 foreach($contrats as $contrats)
@@ -471,7 +471,7 @@ class Calculator extends Controller
             $toutes_reglees =  DB::table('factures')
             ->join('contrats', 'factures.id_contrat', '=', 'contrats.id')
             ->join('entreprises', 'entreprises.id', '=', 'contrats.id_entreprise')
-            ->where('factures.annulee', 0)
+            //->where('factures.annulee', 0)
             ->where('factures.date_emission', '>=', $first_date)
             ->where('factures.date_emission', '<=', $last_date)
             ->get();
@@ -536,7 +536,7 @@ class Calculator extends Controller
         $month_get = date_parse($request->month);
         //dd($month_get);
         $month = $month_get['month'];
-
+    
         //l'année recherchée
          $year = $month_get['year'];
 
@@ -566,7 +566,7 @@ class Calculator extends Controller
                 ->join('contrats', 'factures.id_contrat', '=', 'contrats.id')
                 ->join('entreprises', 'entreprises.id', '=', 'contrats.id_entreprise')
                 ->where('factures.date_emission', '=', $the_date)
-                ->where('factures.annulee', "0")
+                //->where('factures.annulee', "0")
                 ->select(['factures.*', 'contrats.titre_contrat', 'contrats.montant', 'entreprises.nom_entreprise'])
                 ->get();
             
@@ -611,7 +611,7 @@ class Calculator extends Controller
                 ->join('contrats', 'factures.id_contrat', '=', 'contrats.id')
                 ->join('entreprises', 'entreprises.id', '=', 'contrats.id_entreprise')
                 ->where('factures.date_emission', '=', $the_date)
-                ->where('factures.annulee', 0)
+                //->where('factures.annulee', 0)
                 ->where('contrats.id_entreprise', $all_entreprises->id)
                 ->get(['factures.date_emission', 'entreprises.nom_entreprise', 'factures.montant_facture']);
                
@@ -619,10 +619,8 @@ class Calculator extends Controller
                 foreach($contrats as $contrats)
                 {
                   
-                    //dump($contrats);
                     $montant = $montant + $contrats->montant_facture;
-                   
-                   
+
                 }
         
            }  
@@ -643,7 +641,7 @@ class Calculator extends Controller
            
         }
         
-       //dd($percent);
+        //dd($percent);
         //dd($totalnb_entreprise);
         //ON AURA $totalnb_entreprise COULEURS DONC FAIRE UN TABLEAU QUI VA AVOIR LE NOMRE TOTAL DE COULEUR DIFFERENTES
         $alpha = ['A', 'B', 'C', 'D', 'E', 'F', ];
@@ -669,9 +667,6 @@ class Calculator extends Controller
             //echo $chaine_couleur ."<br>";
             //mettre la couelur formée dans le tableau colors
             array_push($colors, $chaine_couleur);
-            
-        
-        
         }
        // dd($colors);
         //AFFICHER LES GRAPHES PAR PRESTATIONS, PAR SERVICES
@@ -697,7 +692,7 @@ class Calculator extends Controller
             $toutes_reglees =  DB::table('factures')
             ->join('contrats', 'factures.id_contrat', '=', 'contrats.id')
             ->join('entreprises', 'entreprises.id', '=', 'contrats.id_entreprise')
-            ->where('factures.annulee', 0)
+            //->where('factures.annulee', 0)
             ->where('factures.date_emission', '>=', $first_date)
             ->where('factures.date_emission', '<=', $last_date)
             ->get();
@@ -776,7 +771,7 @@ class Calculator extends Controller
         $annuelle = DB::table('factures')
         ->join('contrats', 'factures.id_contrat', '=', 'contrats.id')
         ->join('entreprises', 'entreprises.id', '=', 'contrats.id_entreprise')
-        ->where('factures.annulee', 0)
+        //->where('factures.annulee', 0)
         ->where('factures.date_emission', '>=', $first_date)
         ->where('factures.date_emission', '<=', $last_date)
         ->get();
@@ -786,7 +781,6 @@ class Calculator extends Controller
             $total_annuel = $total_annuel + $annuelle->montant_facture;
         }
         
-
         //LA BOUCLE DES 12 MOIS
         for($i = 1; $i <= 12; $i++)
         {
@@ -808,7 +802,7 @@ class Calculator extends Controller
                 ->join('contrats', 'factures.id_contrat', '=', 'contrats.id')
                 ->join('entreprises', 'entreprises.id', '=', 'contrats.id_entreprise')
                 ->where('factures.date_emission', '=', $the_date)
-                ->where('factures.annulee', "0")
+                //->where('factures.annulee', "0")
                 ->get();
  
                 //FAIRE UN FOREACH POUR FAIRE LA SOMME
@@ -822,9 +816,7 @@ class Calculator extends Controller
             }
             $total = $total + $somme;
             //METTRE DANS LE TABLEAU data
-            array_push($data, $total);
-
-            
+            array_push($data, $total); 
         } 
 
         //NOMBRE TOTAL DES ENTREPRISE
@@ -835,7 +827,7 @@ class Calculator extends Controller
         $toutes_reglees = DB::table('factures')
         ->join('contrats', 'factures.id_contrat', '=', 'contrats.id')
         ->join('entreprises', 'entreprises.id', '=', 'contrats.id_entreprise')
-        ->where('factures.annulee', 0)
+        //->where('factures.annulee', 0)
         ->where('factures.date_emission', '>=', $first_date)
         ->where('factures.date_emission', '<=', $last_date)
         ->get(['factures.*', 'contrats.id', 'contrats.titre_contrat', 'contrats.debut_contrat']);
@@ -850,7 +842,6 @@ class Calculator extends Controller
             //LA BOUCLE DES 12 MOIS
             for($i = 1; $i <= 12; $i++)
             {
-                
                 //nombre de jours dans le mois
                 $number = cal_days_in_month(CAL_GREGORIAN, $i, $year);
 
@@ -946,7 +937,7 @@ class Calculator extends Controller
             $toutes_reglees =  DB::table('factures')
             ->join('contrats', 'factures.id_contrat', '=', 'contrats.id')
             ->join('entreprises', 'entreprises.id', '=', 'contrats.id_entreprise')
-            ->where('factures.annulee', 0)
+            //->where('factures.annulee', 0)
             ->where('factures.date_emission', '>=', $first_date)
             ->where('factures.date_emission', '<=', $last_date)
             ->get();
@@ -1019,7 +1010,7 @@ class Calculator extends Controller
         $year_get = date_parse($request->year);
 
         $year = $year_get['year'];
-        
+        //dd($year);
         //REQUETE POUR RECUPERER LA RECETTE ANNUELLE
         $first_date = $year."-01-01";
         $last_date = $year."-12-31";
@@ -1028,7 +1019,7 @@ class Calculator extends Controller
         $annuelle = DB::table('factures')
         ->join('contrats', 'factures.id_contrat', '=', 'contrats.id')
         ->join('entreprises', 'entreprises.id', '=', 'contrats.id_entreprise')
-        ->where('factures.annulee', 0)
+        //->where('factures.annulee', 0)
         ->where('factures.date_emission', '>=', $first_date)
         ->where('factures.date_emission', '<=', $last_date)
         ->get();
@@ -1048,33 +1039,33 @@ class Calculator extends Controller
             $somme = 0;
             //nombre de jours dans le mois
             $number = cal_days_in_month(CAL_GREGORIAN, $i, $year);
-
-            for($j = 1; $j<$number; $j++)
+            
+            for($j = 1; $j<=$number; $j++)
             {
             
                 $the_date = $year."-".$i."-".$j;
+                //dump($the_date);
                 //LA REQUETE MAINTENANT
                 $get =  $get = DB::table('factures')
                 ->join('contrats', 'factures.id_contrat', '=', 'contrats.id')
                 ->join('entreprises', 'entreprises.id', '=', 'contrats.id_entreprise')
                 ->where('factures.date_emission', '=', $the_date)
-                ->where('factures.annulee', "0")
+                //->where('factures.annulee', "0")
                 ->get();
 
                 //FAIRE UN FOREACH POUR FAIRE LA SOMME
                 foreach($get as $all)
                 {
                 //echo $all->montant."<br";
-                    $somme = $somme + $all->montant;
+                    $somme = $somme + $all->montant_facture;
                 }
                
-
             }
-            //dump($somme);
+          
             $total = $total + $somme;
             //METTRE DANS LE TABLEAU data
+             //dump($total);
             array_push($data, $total);
-           
            
         } 
         //dd($data);
@@ -1095,47 +1086,47 @@ class Calculator extends Controller
       //Total des montants pour l'entreprise
        //Prendre toutes les entreprises et pour chaque entrprise recupérer le montant des contrats dans le mois en questions
      
-       foreach($all_entreprises as $all_entreprises )
-       {   
+        foreach($all_entreprises as $all_entreprises )
+        {   
           
-           $montant = 0;
-           $the_date = $year."-".$i."-".$j;
-           //LA REQUETE MAINTENANT
-           $contrats =  DB::table('factures')
-           ->join('contrats', 'factures.id_contrat', '=', 'contrats.id')
-           ->join('entreprises', 'entreprises.id', '=', 'contrats.id_entreprise')
-           ->where('factures.annulee', 0)
-           ->where('factures.date_emission', '>=', $first_date)
-           ->where('factures.date_emission', '<=', $last_date)
-           ->where('contrats.id_entreprise', '=', $all_entreprises->id)
-           ->get();
+            $montant = 0;
+            $the_date = $year."-".$i."-".$j;
+            //LA REQUETE MAINTENANT
+            $contrats =  DB::table('factures')
+            ->join('contrats', 'factures.id_contrat', '=', 'contrats.id')
+            ->join('entreprises', 'entreprises.id', '=', 'contrats.id_entreprise')
+            //->where('factures.annulee', 0)
+            ->where('factures.date_emission', '>=', $first_date)
+            ->where('factures.date_emission', '<=', $last_date)
+            ->where('contrats.id_entreprise', '=', $all_entreprises->id)
+            ->get();
 
-           foreach($contrats as $contrats)
-           {
-               $montant = $montant + $contrats->montant_facture;
-           }
-           //METTRE LES VALLEURS DANS LES DIFFERENTS TABLEAUX
+            foreach($contrats as $contrats)
+            {
+                $montant = $montant + $contrats->montant_facture;
+            }
+            //METTRE LES VALLEURS DANS LES DIFFERENTS TABLEAUX
             if($montant != 0) //Si cette entreprise a rapporter quelque chose il faut remplir dans le tableu pour le gaph
             {   //dd('de');
                 $totalnb_entreprise = $totalnb_entreprise + 1;
                 array_push($company, $all_entreprises->nom_entreprise);
                 //CALCULER LE POURCENTAGE ET METTRE DANS LE TABLEAU
                 $p = ($montant * 100) / $total_annuel;
-                
+
                 array_push($percent, $p);
 
             }  
-          // dump($percent);
-           //echo $total."<br>";
+            // dump($percent);
+            //echo $total."<br>";
           
-       }
+        }
 
        //ON AURA $totalnb_entreprise COULEURS DONC FAIRE UN TABLEAU QUI VA AVOIR LE NOMRE TOTAL DE COULEUR DIFFERENTES
        $alpha = ['A', 'B', 'C', 'D', 'E', 'F', ];
        $colors = [];
        //FAIRE UNE BOUCLE POUR CONCEVOIR LA COULEUR DE CHAQUE ENTREPRISE DETECTEE
-       for($c=0; $c < $totalnb_entreprise; $c++)
-       {   
+        for($c=0; $c < $totalnb_entreprise; $c++)
+        {   
            $bol = rand(0,1);
            $chaine_couleur = "#";
            for($l = 1; $l<=6; $l++)
@@ -1180,7 +1171,7 @@ class Calculator extends Controller
             $toutes_reglees =  DB::table('factures')
             ->join('contrats', 'factures.id_contrat', '=', 'contrats.id')
             ->join('entreprises', 'entreprises.id', '=', 'contrats.id_entreprise')
-            ->where('factures.annulee', 0)
+            //->where('factures.annulee', 0)
             ->where('factures.date_emission', '>=', $first_date)
             ->where('factures.date_emission', '<=', $last_date)
             ->get();

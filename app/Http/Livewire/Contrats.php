@@ -200,7 +200,7 @@ class Contrats extends Component
             'reconduction' =>  $this->editContrat['reconduction'],
             'avenant' =>  $this->editContrat['avenant'],
             'etat' =>  $this->editContrat['etat'],
-            'id_contrat_parent' =>  $this->editContrat['id_contrat_parent'],
+            //'id_contrat_parent' =>  $this->editContrat['id_contrat_parent'],
             'id_type_prestation' =>  $this->editContrat['id_type_prestation']
         ]);
 
