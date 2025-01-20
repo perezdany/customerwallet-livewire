@@ -139,7 +139,7 @@
 
   <footer class="main-footer">
     <div class="pull-right hidden-xs">
-      <b>Version</b> 1.0
+      <b>Version</b> 2.0
     </div>
     <strong>Copyright &copy; 2024</strong> AENEAS WEST AFRICA
   </footer>

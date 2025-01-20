@@ -152,7 +152,7 @@
                         <div class="box-body">
 
                             <div class="form-group">
-                                <label>CONTRAT DU :</label>
+                                <label>CONTRAT {{$retrive->titre_contrat}} DU :</label>
                                 <p><h3>@php echo date('d/m/Y',strtotime($retrive->debut_contrat)) @endphp</h3></p>
                             </div>
                             <!--<div class="form-group">
@@ -160,12 +160,12 @@
                                 <p><h3>  </h3></p>
                             </div>-->
                              <div class="form-group">
-                                <label>TYPE DE PRESTATION :</label>
+                                <label>TYPE DE FACTURATION:</label>
                                 <p><h3> {{$retrive->libele}}</h3> </p>
                             </div>
                             <div class="form-group">
                                 <label>Numéro facture</label>
-                                <input type="text" maxlength="30" readonly="true" class="form-control input-lg" name="numero_facture" value="{{$retrive->numero_facture}}">
+                                <input type="text" maxlength="30" readonly="true" class="form-control" name="numero_facture" value="{{$retrive->numero_facture}}">
                             </div>
                             <div class="form-group">
                                 <label>MONTANT RESTANT DE LA FACTURE:</label>
@@ -174,7 +174,7 @@
                                         @php
                                              $rest  = $calculator->RetrunMontantRest($retrive->id, $retrive->montant_facture);
                                         @endphp
-                                        <input type="text" class="form-control input-lg"  value="{{$rest}}"  id="lereste" disabled>
+                                        <input type="text" class="form-control"  value="{{$rest}}"  id="lereste" disabled>
                                     
                                 </p>
                             </div>
@@ -182,7 +182,7 @@
 
                             <div class="form-group">
                                 <label>Entrer le montant du paiement</label>
-                                <input type="number" class="form-control input-lg" name="paiement" required id="mt" onkeyup="VerifRest()">
+                                <input type="number" class="form-control" name="paiement" required id="mt" onkeyup="VerifRest()">
                             </div>
                             <div class="form-group" id="message">
                                 
@@ -190,7 +190,7 @@
 
                             <div class="form-group">
                                 <label>Date du paiement</label>
-                                <input type="date" class="form-control input-lg" name="date_paiement" required>
+                                <input type="date" class="form-control" name="date_paiement" required>
                             </div>
                             
                            
