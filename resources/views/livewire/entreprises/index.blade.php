@@ -23,7 +23,8 @@
 @endphp
 
 <div class="row">
-   
+    @include('livewire.entreprises.details_particulier')
+    @include('livewire.entreprises.edit_particulier')
     @include('livewire.entreprises.edit')
     @include('livewire.entreprises.details')
     @include("livewire.entreprises.entreprise-list")
@@ -31,6 +32,15 @@
     <script>
         window.addEventListener("showEditModal",  event=>{
             $("#editModal").modal(
+                {
+                    "show" : true, 
+                    "backup": "static"
+                }
+            )
+        })
+
+         window.addEventListener("showEditModalParticulier",  event=>{
+            $("#editModalParticulier").modal(
                 {
                     "show" : true, 
                     "backup": "static"
@@ -52,6 +62,10 @@
         //FERMER LE POPUP DE MODIF
         window.addEventListener("closeEditModal",  event=>{
             $("#editModal").modal("hide")
+        })
+
+        window.addEventListener("closeEditModalParticulier",  event=>{
+            $("#editModalParticulier").modal("hide")
         })
 
         //POPUP MODIF
@@ -101,6 +115,15 @@
 
         window.addEventListener("showDetail",  event=>{
             $("#details").modal(
+                {
+                    "show" : true, 
+                    "backup": "static"
+                }
+            )
+        })
+
+        window.addEventListener("showDetailParticulier",  event=>{
+            $("#detailsParticulier").modal(
                 {
                     "show" : true, 
                     "backup": "static"

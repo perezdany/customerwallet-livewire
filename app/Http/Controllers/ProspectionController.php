@@ -31,10 +31,9 @@ class ProspectionController extends Controller
         $get = DB::table('prospections')
        
         ->join('entreprises', 'prospections.id_entreprise', '=', 'entreprises.id')
-        ->join('interlocuteurs', 'prospections.interlocuteur', '=', 'interlocuteurs.id')
+        //->join('interlocuteurs', 'prospections.interlocuteur', '=', 'interlocuteurs.id')
         ->join('utilisateurs', 'prospections.id_utilisateur', '=', 'utilisateurs.id')
-        ->get(['prospections.*', 'entreprises.nom_entreprise', 'interlocuteurs.titre', 
-        'interlocuteurs.nom', 'interlocuteurs.tel', 'interlocuteurs.fonction', 'utilisateurs.nom_prenoms']);
+        ->get(['prospections.*', 'entreprises.nom_entreprise', 'utilisateurs.nom_prenoms']);
 
         return $get;
 

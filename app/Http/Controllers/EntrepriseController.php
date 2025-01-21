@@ -79,8 +79,9 @@ class EntrepriseController extends Controller
         ->where('entreprises.id', $id)
         ->join('statutentreprises', 'entreprises.id_statutentreprise', '=', 'statutentreprises.id')
         ->join('pays', 'entreprises.id_pays', '=', 'pays.id')
+        ->join('utilisateurs', 'entreprises.created_by', '=', 'utilisateurs.id')
         ->orderBy('nom_entreprise', 'asc')
-        ->get(['entreprises.*', 'statutentreprises.libele_statut', 'pays.nom_pays']);
+        ->get(['entreprises.*', 'statutentreprises.libele_statut', 'pays.nom_pays', 'utilisateurs.nom_prenoms']);
 
         return $get;
     }
@@ -208,14 +209,19 @@ class EntrepriseController extends Controller
         $Insert = Entreprise::create([
            
             'nom_entreprise'=> $request->nom_entreprise,
+            'particulier' => $request->particulier,
             'chiffre_affaire' => $request->chiffre, 
             'nb_employes' => $request->nb_emp,
+            'date_creation' => $request->date_creation,
             'adresse' => $request->adresse,
             'activite' => $request->activite,
             'telephone' => $request->tel,
             'id_pays' => $request->pays,
             'etat' => 0,
+            'adresse_email' => $request->email,
+            'site_web' => $request->site_web,
             'id_statutentreprise' => 1,
+            'paticulier' => $request->particulier,
              'created_by' => auth()->user()->id, 
         ]);
 
@@ -233,14 +239,19 @@ class EntrepriseController extends Controller
         $Insert = Entreprise::create([
            
             'nom_entreprise'=> $request->nom_entreprise,
+            'particulier' => $request->particulier,
             'chiffre_affaire' => $request->chiffre, 
             'nb_employes' => $request->nb_emp,
+            'date_creation' => $request->date_creation,
             'adresse' => $request->adresse,
             'activite' => $request->activite,
             'telephone' => $request->tel,
             'id_pays' => $request->pays,
             'etat' => 1,
+            'adresse_email' => $request->email,
+            'site_web' => $request->site_web,
             'id_statutentreprise' => 2,
+            'paticulier' => $request->particulier,
             'client_depuis' => date('Y-m-d'),
              'created_by' => auth()->user()->id, 
         ]);
@@ -260,15 +271,19 @@ class EntrepriseController extends Controller
         $Insert = Entreprise::create([
            
             'nom_entreprise' => $request->nom_entreprise,
+            'particulier' => $request->particulier,
             'chiffre_affaire' => $request->chiffre, 
             'nb_employes' => $request->nb_emp,
+            'date_creation' => $request->date_creation,
             'adresse' => $request->adresse,
             'activite' => $request->activite,
             'telephone' => $request->tel,
             'etat' => 0,
             'id_pays' => $request->pays,
             'adresse_email' => $request->email,
+            'site_web' => $request->site_web,
             'id_statutentreprise' => 1,
+            'paticulier' => $request->particulier,
              'created_by' => auth()->user()->id, 
         ]);
 
@@ -286,7 +301,7 @@ class EntrepriseController extends Controller
 
     public function SaveEntreprise(Request $request)
     {
-       //dd($request->statut );
+        //dd($request->all());
         if(isset($request->entreprise) AND  $request->entreprise == 0)
         {
             return back()->with('error', 'Vous n\'avez pas choisi l\'entreprise');
@@ -295,12 +310,15 @@ class EntrepriseController extends Controller
         //SI ON CHOISI LE STATUT CLIENT IL FAUT METTRE LA DATE
         if($request->statut == 2)
         { 
+            
             $Insert = Entreprise::create([
            
                 'nom_entreprise'=> $request->nom_entreprise,
                 'id_statutentreprise' => $request->statut,
+                'particulier' => $request->particulier,
                 'chiffre_affaire' => $request->chiffre, 
                 'nb_employes' => $request->nb_emp,
+                'date_creation' => $request->date_creation,
                 'etat' => $request->optionsradios,
                 'adresse' => $request->adresse,
                 'activite' => $request->activite,
@@ -309,29 +327,30 @@ class EntrepriseController extends Controller
                  'created_by' => auth()->user()->id,
                  'client_depuis' => $request->depuis,
                  'adresse_email' => $request->email,
-
+                 'site_web' => $request->site_web,
             ]);
-
     
         }
         else
         {
-           
+         
             $Insert = Entreprise::create([
            
                 'nom_entreprise'=> $request->nom_entreprise,
                 'id_statutentreprise' => $request->statut,
+                'particulier' => $request->particulier,
                 'chiffre_affaire' => $request->chiffre, 
                 'nb_employes' => $request->nb_emp,
+                'date_creation' => $request->date_creation,
                 'etat' => $request->optionsradios,
                 'adresse' => $request->adresse,
                 'telephone' => $request->tel,
                 'activite' => $request->activite,
                 'id_pays' => $request->pays,
                 'adresse_email' => $request->email,
+                'site_web' => $request->site_web,
                  'created_by' => auth()->user()->id,
             ]);
-
             
         }
       
@@ -413,14 +432,17 @@ class EntrepriseController extends Controller
            
             'nom_entreprise'=> $request->nom_entreprise,
             'id_statutentreprise' => $request->statut,
+            'particulier' => $request->particulier,
             'client_depuis' => $request->depuis,
             'chiffre_affaire' => $request->chiffre, 
             'nb_employes' => $request->nb_emp,
+            'date_creation' => $request->date_creation,
             'etat' => $request->optionsradios,
             'adresse' => $request->adresse,
             'telephone' => $request->tel,
             'activite' => $request->activite,
             'adresse_email' => $request->email,
+            'site_web' => $request->site_web,
         ]);
 
       
@@ -545,12 +567,15 @@ class EntrepriseController extends Controller
            
             'nom_entreprise'=> $request->nom_entreprise,
             'activite' => $request->activite,
+            'particulier' => $request->particulier,
             'client_depuis' => $request->depuis,
             'chiffre_affaire' => $request->chiffre, 
             'nb_employes' => $request->nb_emp,
+            'date_creation' => $request->date_creation,
             'adresse' => $request->adresse,
             'telephone' => $request->tel,
              'adresse_email' => $request->email,
+             'site_web' => $request->site_web,
         ]);
 
       
@@ -567,14 +592,17 @@ class EntrepriseController extends Controller
            
             'nom_entreprise'=> $request->nom,
             'id_statutentreprise' => $request->statut,
+            'particulier' => $request->particulier,
             'client_depuis' => $request->depuis,
             'chiffre_affaire' => $request->chiffre, 
             'nb_employes' => $request->nb_emp,
+            'date_creation' => $request->date_creation,
             'etat' => $request->optionsradios,
             'activite' => $request->activite,
             'adresse' => $request->adresse,
             'telephone' => $request->tel,
             'adresse_email' => $request->email,
+            'site_web' => $request->site_web,
         ]);
 
       
@@ -591,14 +619,17 @@ class EntrepriseController extends Controller
            
             'nom_entreprise'=> $request->nom_entreprise,
             'id_statutentreprise' => $request->statut,
+            'particulier' => $request->particulier,
             'client_depuis' => $request->depuis,
             'chiffre_affaire' => $request->chiffre, 
             'nb_employes' => $request->nb_emp,
+            'date_creation' => $request->date_creation,
             'activite' => $request->activite,
             'etat' => $request->optionsradios,
             'adresse' => $request->adresse,
             'telephone' => $request->tel,
              'adresse_email' => $request->email,
+             'site_web' => $request->site_web,
         ]);
 
       

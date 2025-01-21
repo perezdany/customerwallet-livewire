@@ -21,7 +21,9 @@
                         </tr>
                         </thead>
                         @php
-                            $interloc = DB::table('interlocuteurs')->where('id_entreprise', $entreprise->id)->get();
+                            $interloc = DB::table('interlocuteurs')->where('id_entreprise', $entreprise->id)
+                            ->join('professions', 'interlocuteurs.fonction', '=', 'professions.id')
+                            ->get(['interlocuteurs.*', 'professions.intitule']);
                         @endphp
                         <tbody>
                             @foreach($interloc as $interloc)
@@ -30,9 +32,8 @@
                                     <td>{{$interloc->titre}} {{$interloc->nom}}</td>
                                     <td>{{$interloc->tel}}</td>
                                     <td>{{$interloc->email}}</td>
-                                    <td>{{$interloc->fonction}}</td>
-                                    
-                                   
+                                    <td>{{$interloc->intitule}}</td>
+
                                 </tr>
                             @endforeach
                         </tbody>

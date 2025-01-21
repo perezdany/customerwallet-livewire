@@ -54,14 +54,21 @@
               <form role="form" method="post" action="add_entreprise_cible">
                 @csrf
                 <div class="box-body">
-                    
                     <div class="form-group">
-                        <label>Identité :</label>
-                        <input type="text"  maxlength="50" class="form-control " name="nom" onkeyup='this.value=this.value.toUpperCase()'  reuqired />
+                        <label>Particulier ?:</label>
+
+                        <select class="form-control " name="particulier" id="particulier" onchange="EnableFields();">
+                            <option value="0">NON</option>
+                            <option value="1">OUI</option>
+                        </select>
+                    </div>  
+                    <div class="form-group">
+                        <label>Identité (Dénomination/nom&prénoms):</label>
+                        <input type="text"  maxlength="50" class="form-control "  placeholder="CIE ou M.KONAN KOFFI" name="nom" onkeyup='this.value=this.value.toUpperCase()'  reuqired />
                     </div> 
                    
                      <div class="form-group">
-                      <label >Adresse:</label>
+                      <label >Adresse (géographique/siège social):</label>
                       <input type="text" maxlength="60" class="form-control  " name="adresse" placeholder="COCODY" onkeyup="this.value=this.value.toUpperCase()">
                     </div>
                      <div class="form-group">
@@ -71,17 +78,22 @@
 
                     <div class="form-group">
                       <label >Chiffre d'affaire (FCFA):</label>
-                      <input type="tex"  maxlength="18" class="form-control  " name="chiffre" placeholder="1000000">
+                      <input type="tex"  maxlength="18" class="form-control" name="chiffre" id="ca" placeholder="1000000">
+                    </div>
+
+                    <div class="form-group">
+                      <label> Date de création:</label>
+                      <input type="date" id="date_creation" maxlength="11" class="form-control  " name="date_creation">
                     </div>
 
                     <div class="form-group">
                       <label >Nombre d'employés:</label>
-                      <input type="text"  maxlength="18" class="form-control  " name="nb_emp" placeholder="5">
+                      <input type="text"  maxlength="18" class="form-control  " name="nb_emp" id="ne" placeholder="5">
                     </div>
 
                      <div class="form-group">
-                      <label >Objet Sociale/Activités:</label>
-                      <input type="text" maxlength="100" class="form-control  " name="activite" 
+                      <label >Objet Sociale(Activités/Profession):</label>
+                      <input type="text" maxlength="100" class="form-control  " name="activite" id="activite"
                       placeholder="TRANSIT" onkeyup="this.value=this.value.toUpperCase()">
                     </div>
 
@@ -89,10 +101,13 @@
                       <label>Email:</label>
                       <input type="email"  maxlength="30" class="form-control  " name="email">
                     </div>
-                    
+                    <div class="form-group">
+                      <label >Site web:</label>
+                      <input type="text" id="site_web" maxlength="60" class="form-control  " name="site_web" placeholder="COCODY DANGA" onkeyup="this.value=this.value.toUpperCase()">
+                    </div> 
                     <div class="form-group">
                         <label>Pays :</label>
-                        <select class="form-control " name="pays" reuqired>
+                        <select class="form-control " name="pays" id="pays">
                             @php
                                 $pays = $payscontroller->DisplayAll();
                             @endphp
@@ -103,7 +118,27 @@
                             
                         </select>
                     </div>
-                    
+                    <script>
+                      //CODE POUR ACTIVER CERTAINS CHAMPS SI C'EST UN PARTICULIER
+                      function EnableFields()
+                      {
+                          var particulier = document.getElementById("particulier").value;
+                          if( particulier == '1')
+                          {
+                          document.getElementById("ca").setAttribute("disabled", "disabled");
+                          document.getElementById("ne").setAttribute("disabled", "disabled");
+                          document.getElementById("date_creation").setAttribute("disabled", "disabled");
+                          document.getElementById("pays").setAttribute("disabled", "disabled");
+                          }
+                          else{
+                              document.getElementById("ca").removeAttribute("disabled");
+                              document.getElementById("ne").removeAttribute("disabled");
+                              document.getElementById("date_creation").removeAttribute("disabled");
+                              document.getElementById("pays").removeAttribute("disabled");
+                          
+                          }
+                      }
+                    </script>
                     <div class="box-footer">
                         <button type="submit" class="btn btn-primary">ENREGISTRER</button>
                     </div>

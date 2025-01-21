@@ -5,7 +5,7 @@
     <div class="col-xs-12">
         <div class="box">
             <div class="box-header">
-                <h3 class="box-title flex-grow-1">Base des Entreprise</h3><br>
+                <h3 class="box-title flex-grow-1">Base des Entreprises/Prospects/Particuliers/Cibles</h3><br>
         
                     <!--<a href="form_add_entreprise"><button class="btn btn-success"> <b><i class="fa fa-plus"></i> ENTREPRISE</b></button></a><br><br>-->
                     <a href="entreprises" style="color:blue"><u>Rétablir<i class="fa fa-refresh" aria-hidden="true"></i></u></a> &emsp;&emsp; <label>Filtrer par:</label>
@@ -53,15 +53,15 @@
                     <div class="row">
                         <div class="col-xs-3 form-group">
                             <div class="col-xs-3">
-                                <select class="form-control" id="compare" wire:model.debounce.250ms="compare">
+                                <select class="" id="compare" wire:model.debounce.250ms="compare">
                                     <option value="">Choisir</option>
                                     <option value="<"><</option> 
                                     <option value=">">></option>
                                     <option value="=">=</option>                              
                                 </select>   
                             </div>
-                             <div class="col-xs-6">
-                                <select class="form-control" id="categorie" wire:model.debounce.250ms="annee_depuis">
+                             <div class="col-xs-3">
+                                <select class="" id="anne_depuis" wire:model.debounce.250ms="annee_depuis">
                                     <option value="">Choisir</option>
                                     @php
                                         $annee_fin = "2030";
@@ -86,41 +86,56 @@
                         <th wire:click="setOrderField('etat')"><i class="fa fa-sort-amount-desc" aria-hidden="true"></i>Statut</th>
                         <th style="display:none">EtatEntreprise</th>
                     
-                        <th >Fiche</th>
-                        <th>Interlocuteurs: </th>
+                        <!--<th>Fiche Signalétique</th>-->
+                        <th>Interlocuteurs:</th>
                         <th>Mod</th>
                         <th>Supp</th>
-                        <th>Détails</th>
+                        <th>Fiche Signalétique</th>
                     </tr>
                     </thead>
                     <tbody>
 
                         @forelse($entreprises as $entreprise)
-                            
+        
                             <tr  wire:key="{{ $entreprise->id }}">
-                            <td>{{$entreprise->nom_entreprise}}</td>
+                            <td>
+                                
+                                @if($entreprise->id_statutentreprise == 2)
+                                    <form method="get" action="display_fiche_customer" target="blank">
+                                        @csrf
+                                        <input type="text" value="{{$entreprise->id}}" style="display:none;" name="id_entreprise">
+                                        <button class="btn btn-default"> <b>{{$entreprise->nom_entreprise}}</b></button>
+                                    </form>
+                                @else
+                                    <form method="post" action="display_fiche_customer">
+                                        @csrf
+                                        <input type="text" value="{{$entreprise->id}}" style="display:none;" name="id_entreprise">
+                                        <button class="btn btn-default"> <b>{{$entreprise->nom_entreprise}}</b></button>
+                                    </form>
+                             
+                                @endif
+                            </td>
                             
                             <td>
-                            {{$entreprise->adresse}}
+                                {{$entreprise->adresse}}
                             </td>
                             <th>
                                 @if($entreprise->etat == 0)
-                                    <p class="bg-red">Inactif</p>
+                                    @if($entreprise->id_statutentreprise == 2)
+                                        <p class="bg-red">Inactif</p>
+                                    @else
+                                    @endif
                                 @else
-                                    <p class="bg-green">Actif</p>
+                                    @if($entreprise->id_statutentreprise == 2)
+                                       <p class="bg-green">Actif</p>
+                                    @else
+                                    @endif
+                                    
                                 @endif
                             
                             </th>
                             <th style="display:none">{{$entreprise->etat}}</th>
-                            <td>
-                                @if($entreprise->id_statutentreprise == 2)
-                                <form method="get" action="display_fiche_customer">
-                                    @csrf
-                                    <input type="text" value="{{$entreprise->id}}" style="display:none;" name="id_entreprise">
-                                    <button class="btn btn-default"> <b><i class="fa fa-eye" aria-hidden="true"></i></b></button>
-                                </form>
-                                @endif
-                            </td>
+                           
                             <td>
                                 @include('livewire.entreprises.interlocuteurs-of-this')
                                 <!--AFFICHAGE DES INTERLOCUTEURS AVEC POPUP-->

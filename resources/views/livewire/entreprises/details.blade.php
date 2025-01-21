@@ -9,8 +9,8 @@
 
             <div class="modal-body">
                 <div class="box-body form-group" style="text-align:center;"> 
-
-                    <h4><label>Raison sociale:</label></h4>
+                    
+                    <h4><label>Dénomination:</label></h4>
                     <input class="form-control" wire:model="entrepriseDetail.nom_entreprise" disabled/>
 
                     <h4><label>Adresse :</label></h4>
@@ -28,7 +28,13 @@
                     <input class="form-control" wire:model="entrepriseDetail.nb_employes" disabled/>
                    
                     <h4><label >Activités:</label></h4>
-                     <input class="form-control" wire:model="eentrepriseDetail.activite" disabled/>
+                     <input class="form-control" wire:model="entrepriseDetail.activite" disabled/>
+
+                     <h4><label >Site web:</label></h4>
+                     <input class="form-control" wire:model="entrepriseDetail.site_web" disabled/>
+
+                     <h4><label >Date de création:</label></h4>
+                     <input class="form-control" wire:model="entrepriseDetail.date_creation" disabled/>
                   
                     <h4><label>Pays :</label></h4>
        

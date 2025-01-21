@@ -43,16 +43,14 @@
                             <th>Date</th>
                             <th>Entreprise</th>	
                             <th>prestation(s) proposée(s)</th>
-                            @if(auth()->user()->id_role != NULL)
-                                <th>Modifier la prospection</th>
-                            @endif
+                            @can("edit")
+                                <th>Mod</th>
+                            @endcan
                             
                             <th>Facture proforma:</th>
                             
-                            @if(auth()->user()->id_role == 3)
-                            @else
-                                <th>Compte Rendu</th>
-                            @endif
+                            <th>Compte Rendu</th>
+                           
                         </tr>
                         </thead>
                         <tbody>
@@ -82,20 +80,16 @@
                                         </ul>
                                     </td>
                                     
-                                    @if(auth()->user()->id_role != NULL)
+                                    @can('edit')
                                         <td>
-                                       
-                                            @if(auth()->user()->id_role == 3)
-                                            @else
-                                                <form action="edit_prospect_form" method="post">
-                                                    @csrf
-                                                    <input type="text" value={{$all->id}} style="display:none;" name="id_prospection">
-                                                    <button type="submit" class="btn btn-success"><i class="fa fa-edit"></i></button>
-                                                </form>
-                                            @endif
-                                            
+                                            <form action="edit_prospect_form" method="post">
+                                                @csrf
+                                                <input type="text" value={{$all->id}} style="display:none;" name="id_prospection">
+                                                <button type="submit" class="btn btn-success"><i class="fa fa-edit"></i></button>
+                                            </form>
+                                           
                                         </td>
-                                    @endif
+                                    @endcan
                                    
                                     <td>
                                         

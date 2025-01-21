@@ -16,8 +16,6 @@
 
     $payscontroller = new PaysController();
      
-
-    
 @endphp
 
 @section('content')
@@ -56,7 +54,7 @@
                     <th>Ajouté par</th>
                     <th>Modifier</th>
                     <th>Supprimer</th>
-                    <th>Détails</th>
+                    <th>Fiche Signaletique</th>
                   </tr>
                   </thead>
                   <tbody>

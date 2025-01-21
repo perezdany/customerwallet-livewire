@@ -51,9 +51,16 @@
                     <form role="form" method="post" action="add_entreprise">
                         @csrf
                         <div class="box-body">
-                            
                             <div class="form-group">
-                                <label>Désignation :</label>
+                                <label>Particulier ?:</label>
+
+                                <select class="form-control " name="particulier" id="particulier" onchange="EnableFields();">
+                                    <option value="0">NON</option>
+                                    <option value="1">OUI</option>
+                                </select>
+                            </div>  
+                            <div class="form-group">
+                                <label>Désignation (Nom & Prénom(s)):</label>
                                 <input type="text" class="form-control " name="nom_entreprise" onkeyup='this.value=this.value.toUpperCase()'  required />
                             </div> 
                             <div class="form-group">
@@ -76,7 +83,7 @@
                             </div>
                             <div class="form-group">
                             <label >Téléphone (fixe/mobile):</label>
-                            <input type="text"  maxlength="18" class="form-control  " name="tel" placeholder="+225 27 47 54 45 68">
+                            <input type="text"  maxlength="60" class="form-control  " name="tel" placeholder="+225 27 47 54 45 68">
                             </div>
                             <div class="form-group">
                             <label >Chiffre d'affaire (FCFA): </label>
@@ -89,7 +96,12 @@
                             </div>
 
                             <div class="form-group">
-                                <label>Object/Activité:</label>
+                            <label> Date de création:</label>
+                            <input type="date" id="date_creation" maxlength="11" class="form-control  " name="date_creation">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Activité (Ou profession):</label>
                                 <input type="text"  maxlength="100" class="form-control  " 
                                 name="activite" onkeyup='this.value=this.value.toUpperCase()'>
                             </div>
@@ -99,11 +111,14 @@
                                 <input type="email"  maxlength="30" class="form-control  " 
                                 name="email">
                             </div>
-
+                            <div class="form-group">
+                                <label >Site web:</label>
+                                <input type="text" id="site_web" maxlength="60" class="form-control  " name="site_web" placeholder="www.site.com">
+                            </div>
 
                             <div class="form-group">
                                 <label>Pays :</label>
-                                <select class="form-control " name="pays">
+                                <select class="form-control " name="pays" id="pays">
                                     @php
                                         $pays = $payscontroller->DisplayAll();
                                     @endphp
@@ -132,7 +147,27 @@
                             
                             </div>
 
-                            
+                            <script>
+                                //CODE POUR ACTIVER CERTAINS CHAMPS SI C'EST UN PARTICULIER
+                                function EnableFields()
+                                {
+                                    var particulier = document.getElementById("particulier").value;
+                                    if( particulier == '1')
+                                    {
+                                    document.getElementById("ca").setAttribute("disabled", "disabled");
+                                    document.getElementById("ne").setAttribute("disabled", "disabled");
+                                    document.getElementById("date_creation").setAttribute("disabled", "disabled");
+                                    document.getElementById("pays").setAttribute("disabled", "disabled");
+                                    }
+                                    else{
+                                        document.getElementById("ca").removeAttribute("disabled");
+                                        document.getElementById("ne").removeAttribute("disabled");
+                                        document.getElementById("date_creation").removeAttribute("disabled");
+                                        document.getElementById("pays").removeAttribute("disabled");
+                                    
+                                    }
+                                }
+                            </script>
                             <div class="box-footer">
                                 <button type="submit" class="btn btn-primary">VALIDER</button>
                             </div>

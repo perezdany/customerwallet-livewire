@@ -48,8 +48,8 @@ class CibleController extends Controller
         'activite' => $request->activite,
         'telephone' => $request->tel,
         'id_pays' => $request->pays,
-        
         'id_statutentreprise' => 3,
+        'paticulier' => $request->particulier,
          'created_by' => auth()->user()->id, 
         ]);
 
@@ -98,7 +98,7 @@ class CibleController extends Controller
             'activite' => $request->activite,
             'telephone' => $request->tel,
             'id_pays' => $request->pays,
-            
+            'paticulier' => $request->particulier,
             'created_by' => auth()->user()->id, 
         ]);
         return redirect('cibles')->with('success', 'Modification effectuée');

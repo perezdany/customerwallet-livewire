@@ -27,7 +27,7 @@
               <li><a href="contrat"><i class="fa fa-circle-o"></i>Contrats</a></li>
               <li class="active"><a href="facture"><i class="fa fa-circle-o"></i>Factures</a></li>
               <li class="active"><a href="prospection"><i class="fa fa-circle-o"></i>Prospections</a></li>
-              <li class="active"><a href="fiche"><i class="fa fa-circle-o"></i>Fiche clients</a></li>
+              <li class="active"><a href="fiche"><i class="fa fa-circle-o"></i>Fiche de suivi clients</a></li>
             @endcan
             @can("manager")
              <li><a href="entreprises"><i class="fa fa-circle-o"></i> Entreprises</a></li> 
@@ -65,19 +65,16 @@
             @can("employe")
              <li><a href="entreprises"><i class="fa fa-circle-o"></i> Entreprises</a></li> 
               <li><a href="interlocuteurs"><i class="fa fa-circle-o"></i>Interlocuteurs</a></li>
-              <li class="active"><a href="fiche"><i class="fa fa-circle-o"></i>Fiche clients</a></li>
+              <li class="active"><a href="fiche"><i class="fa fa-circle-o"></i>Fiche de suivi clients</a></li>
             @endcan
 
             @can("standard")
               <li><a href="entreprises"><i class="fa fa-circle-o"></i> Entreprises</a></li> 
               <li><a href="interlocuteurs"><i class="fa fa-circle-o"></i>Interlocuteurs</a></li>
-              <li class="active"><a href="fiche"><i class="fa fa-circle-o"></i>Fiche clients</a></li>
+              <li class="active"><a href="fiche"><i class="fa fa-circle-o"></i>Fiche de suivi clients</a></li>
 
             @endcan
 
-           
-            
-           
           </ul>
         </li>
 
@@ -169,8 +166,6 @@
               </ul>
           </li>
         @endcan
-      
-
         
           <li class="">
             <a href="#" style="background-color: #FFFFFF">

@@ -37,49 +37,54 @@
 @endphp
 
 @section('content')
-
+   
     <div class="row">
+      
         <div class="col-md-2"></div>
         <div class="col-md-8">
              
              
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <a href="prospects"><button class="btn btn-default"> <b>RETOUR</b></button></a>
             </div>
-            
+            @can("edit")
+                 <div class="col-md-3">
+                   <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add"><i class="fa fa-plus">INTERLOCUTEUR</i></button>
+                </div>
+            @endcan
             @can("manager-commercial")
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <a href="form_add_prospection"><button class="btn btn-primary"> <b><i class="fa fa-plus"></i>PROSPECTION</b></button></a>
                 </div>
                
             @endcan
 
              @can("commercial")
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <a href="form_add_prospection"><button class="btn btn-primary"> <b><i class="fa fa-plus"></i>PROSPECTION</b></button></a>
                 </div>
                
             @endcan
 
             @can("manager")
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <a href="form_add_prospection"><button class="btn btn-primary"> <b><i class="fa fa-plus"></i>PROSPECTION</b></button></a>
                 </div>
             
             @endcan
 
             @can("admin")
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <a href="form_add_prospection"><button class="btn btn-primary"> <b><i class="fa fa-plus"></i>PROSPECTION</b></button></a>
                 </div>
                
             @endcan
             
 
-             <div class="col-md-4"><a href="form_add_prospection">
+             <div class="col-md-3"><a href="form_add_prospection">
                 @if(isset($id_entreprise))
 
-                  <form method="post" action="go_print_rapport" target="blank"> 
+                   <form method="post" action="go_print_rapport" target="blank"> 
                             @csrf
                             <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
                             <button class="btn btn-success"> <b>RAPPORT FICHE</b></button></a>
@@ -90,9 +95,7 @@
         </div>
         <div class="col-md-2"></div>
     </div><br>
-    @php
-        //dd($id_entreprise);
-    @endphp
+   
     @if(isset($id_entreprise))
         
         @php
@@ -635,7 +638,6 @@
                         <div class="box-body no-padding">
                             <table class="table table-hover">
                                 <tr>
-                            
                                     <th>Nom</th>
                                     <th>Ajouté le :</th>
                                     <th>Supprimer</th>
@@ -894,93 +896,6 @@
                             </div>
                         @endcan
                             
-
-                        @can("edit")
-                            <div class="box-body">
-                                <!--DEUXIEMEN PARTIE DU FORMULAIRE-->
-                                <form action="add_referant_in_fiche" method="post">         
-                                    @csrf
-                                    <div class="box-header">
-                                        <h3 class="box-title"><b>AJOUTER UN INTERLOCUTEUR </b></h3>
-                                    </div> 
-
-                                    <div class="form-group">
-                                        @php
-                                            $nom = $entreprisecontroller->GetById($id_entreprise)
-                                        @endphp
-                                    
-                                                
-                                        <select class="form-control " name="entreprise" style="display:none;">
-                                            @foreach($nom as $nom)
-                                                <option value={{$id_entreprise}}>{{$nom->nom_entreprise}}</option>
-
-                                            @endforeach
-                                        
-                                        </select>
-                                        
-                                    </div>        
-
-                                    <div class="form-group">
-                                        <label for="exampleInputFile">Titre :</label>
-                                        <select class="form-control " name="titre" id="grise1" >
-                                            <option value="M">M</option>
-                                            <option value="Mme">Mme</option>
-                                            <option value="Mlle">Mlle</option>
-                                        </select>
-                                        
-                                    </div>
-                                    <div class="form-group">
-                                            <label >Nom & Prénom(s)</label>
-                                            <input type="text" maxlength="100" required id="grise2" class="form-control  " name="nom" onkeyup="this.value=this.value.toUpperCase()">
-                                    </div>
-
-                                    <div class="form-group">
-                                            <label>Email</label>
-                                            <input type="email" id="grise5" maxlength="30" class="form-control " name="email" >
-                                    </div>
-
-                                    <div class="form-group">
-                                            <label>Téléphone (*)</label>
-                                            <input type="text" required id="grise3" maxlength="30"   class="form-control " name="tel" placeholder="(+225)0214578931" >
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label>Fonction (Choisir "Autre" si inexistant)</label>
-                                                <select class="form-control"  onchange="newFonction();" name="fonction" id="grise4" required>
-                                                @php
-                                                    $f = DB::table('professions')->orderBy('id', 'asc')->get();
-                                                @endphp
-                                                @foreach($f as $f)
-                                                    <option value="{{$f->id}}">{{$f->intitule}}</option>
-                                                @endforeach
-                                                <option value="autre">Autre</option>
-                                            </select>
-                                        </div>
-
-                                        <div class="form-group">
-                                                <label>Fonction:(*)</label>
-                                                <input type="text" disabled="disabled" required id="newf" maxlength="60"   class="form-control " name="new_fonction" onkeyup="this.value=this.value.toUpperCase()" >
-                                        </div>  
-                                    </div>
-                                    <script>
-                                        function newFonction()
-                                        {
-                                            
-                                            var f = document.getElementById("grise4").value;
-                                            //alert(f);
-                                            if(f == 'autre')
-                                            {
-                                                document.getElementById("newf").removeAttribute("disabled");
-                                            }
-                                            else{
-                                                document.getElementById("newf").setAttribute("disabled", "disabled");
-                                            }
-                                        }
-                                    </script>
-                                    <button class="btn btn-primary" >Valider</button>  
-                                </form>
-                            </div>
-                        @endcan
                     @endforeach
               
                 @endif    
@@ -992,6 +907,110 @@
         </div>
         <!--/.col (right) -->
     @endif
+     <div class="row">
+          <div class="modal modal-default fade" id="add">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Ajouter un interlocuteur </h4>
+                    </div>
+                 
+                    <div class="modal-body">
+                        <!-- form start -->
+                        <form action="add_referant_in_fiche" method="post">  
+                             @csrf
+                            <div class="box-header">
+                                <h3 class="box-title"><b>AJOUTER UN INTERLOCUTEUR </b></h3>
+                            </div> 
+
+                            <div class="form-group">
+                                @php
+                                    $nom = $entreprisecontroller->GetById($id_entreprise)
+                                @endphp
+                            
+                                        
+                                <select class="form-control " name="entreprise" style="display:none;">
+                                    @foreach($nom as $nom)
+                                        <option value={{$id_entreprise}}>{{$nom->nom_entreprise}}</option>
+
+                                    @endforeach
+                                
+                                </select>
+                                
+                            </div>        
+
+                            <div class="form-group">
+                                <label for="exampleInputFile">Titre :</label>
+                                <select class="form-control " name="titre" id="grise1" >
+                                    <option value="M">M</option>
+                                    <option value="Mme">Mme</option>
+                                    <option value="Mlle">Mlle</option>
+                                </select>
+                                
+                            </div>
+                            <div class="form-group">
+                                    <label >Nom & Prénom(s)</label>
+                                    <input type="text" maxlength="100" required id="grise2" class="form-control  " name="nom" onkeyup="this.value=this.value.toUpperCase()">
+                            </div>
+
+                            <div class="form-group">
+                                    <label>Email</label>
+                                    <input type="email" id="grise5" maxlength="30" class="form-control " name="email" >
+                            </div>
+
+                            <div class="form-group">
+                                    <label>Téléphone (*)</label>
+                                    <input type="text" required id="grise3" maxlength="30"   class="form-control " name="tel" placeholder="(+225)0214578931" >
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Fonction (Choisir "Autre" si inexistant)</label>
+                                        <select class="form-control"  onchange="newFonction();" name="fonction" id="grise4" required>
+                                        @php
+                                            $f = DB::table('professions')->orderBy('id', 'asc')->get();
+                                        @endphp
+                                        @foreach($f as $f)
+                                            <option value="{{$f->id}}">{{$f->intitule}}</option>
+                                        @endforeach
+                                        <option value="autre">Autre</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                        <label>Fonction:(*)</label>
+                                        <input type="text" disabled="disabled" required id="newf" maxlength="60"   class="form-control " name="new_fonction" onkeyup="this.value=this.value.toUpperCase()" >
+                                </div>  
+                            </div>
+                            <script>
+                                function newFonction()
+                                {
+                                    
+                                    var f = document.getElementById("grise4").value;
+                                    //alert(f);
+                                    if(f == 'autre')
+                                    {
+                                        document.getElementById("newf").removeAttribute("disabled");
+                                    }
+                                    else{
+                                        document.getElementById("newf").setAttribute("disabled", "disabled");
+                                    }
+                                }
+                            </script>
+                            <div class="modal-footer">
+                                <button type="button" class="btn  pull-left" data-dismiss="modal">Fermer</button>
+                                <button type="submit" class="btn btn-primary">Ajouter</button>
+                            </div>
+                        </form>
+                    </div>
+                    
+                </div>
+                <!-- /.modal-content -->
+            </div>
+        </div> 
+        
+    </div>
     
 @endsection 
  

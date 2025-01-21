@@ -119,30 +119,41 @@
                                     </select>
                                     
                                 </div>
-
                                 <div class="form-group">
-                                        <label >Nom :</label>
-                                        <input type="text" id="ent" required disabled="disabled" maxlength="50" class="form-control  " name="nom_entreprise" onkeyup="this.value=this.value.toUpperCase()">
+                                    <label>Particulier ?:</label>
+
+                                    <select class="form-control " name="particulier" id="particulier" disabled="disabled" onchange="EnableFields();">
+                                        <option value="0">NON</option>
+                                        <option value="1">OUI</option>
+                                    </select>
+                                </div>  
+                                <div class="form-group">
+                                        <label >Nom (Dénomination/nom &prénomsn):</label>
+                                        <input type="text" id="ent" required disabled="disabled" maxlength="50" class="form-control" placeholder="CIE ou M.KONAN KOFFI" name="nom_entreprise" onkeyup="this.value=this.value.toUpperCase()">
                                 </div>
 
                                 <div class="form-group">
-                                        <label >Chiffre d'affaire (FCFA):</label>
+                                        <label>Chiffre d'affaire (FCFA) </label>
                                         <input type="text" id="ca" disabled="disabled" maxlength="18" class="form-control  " name="chiffre" placeholder="1000000">
                                 </div>
 
                                 <div class="form-group">
                                         <label >Nombre d'employés:</label>
-                                        <input type="text" id="ne" disabled="disabled" maxlength="18" class="form-control  " name="nb_emp" placeholder="5">
+                                        <input type="number" id="ne" disabled="disabled" maxlength="18" class="form-control  " name="nb_emp" placeholder="5">
                                 </div>
 
                                 <div class="form-group">
-                                        <label >Adresse (géographique):</label>
+                                        <label >Siège social (Adresse géographique):</label>
                                         <input type="text" id="adresse" disabled="disabled" maxlength="60" class="form-control  " name="adresse" placeholder="COCODY DANGA" onkeyup="this.value=this.value.toUpperCase()">
                                 </div>
 
-                                 <div class="form-group">
-                                        <label >Activité :</label>
+                                <div class="form-group">
+                                        <label >Activité (Ou profession):</label>
                                         <input type="text" id="activite" disabled="disabled" maxlength="60" class="form-control  " name="activite" placeholder="TRANSIT" onkeyup="this.value=this.value.toUpperCase()">
+                                </div>
+                                <div class="form-group">
+                                        <label >Site web:</label>
+                                        <input type="text" id="site_web" disabled="disabled" maxlength="60" class="form-control" placeholder="www.site.com">
                                 </div>
                                 <div class="form-group">
                                     <label>Pays :</label>
@@ -165,22 +176,48 @@
                                         
                                         if( val == 'autre')
                                         {
+                                            document.getElementById("particulier").removeAttribute("disabled");
                                             document.getElementById("ent").removeAttribute("disabled");
                                             document.getElementById("ca").removeAttribute("disabled");
                                             document.getElementById("ne").removeAttribute("disabled");
                                             document.getElementById("adresse").removeAttribute("disabled");
                                             document.getElementById("activite").removeAttribute("disabled");
                                             document.getElementById("pays").removeAttribute("disabled");
+                                             document.getElementById("site_web").removeAttribute("disabled");
                                         }
                                         else{
+                                            document.getElementById("particulier").setAttribute("disabled", "disabled");
                                             document.getElementById("ent").setAttribute("disabled", "disabled");
                                             document.getElementById("ca").setAttribute("disabled", "disabled");
                                             document.getElementById("ne").setAttribute("disabled", "disabled");
                                             document.getElementById("adresse").setAttribute("disabled", "disabled");
                                             document.getElementById("activite").setAttribute("disabled", "disabled");
                                             document.getElementById("pays").setAttribute("disabled", "disabled");
+                                            document.getElementById("site_web").setAttribute("disabled", "disabled");
                                         }
                                     
+                                    }
+                                </script>
+
+                                <script>
+                                    //CODE POUR ACTIVER CERTAINS CHAMPS SI C'EST UN PARTICULIER
+                                    function EnableFields()
+                                    {
+                                        var particulier = document.getElementById("particulier").value;
+                                        if( particulier == '1')
+                                        {
+                                            document.getElementById("ca").setAttribute("disabled", "disabled");
+                                            document.getElementById("ne").setAttribute("disabled", "disabled");
+                        
+                                            document.getElementById("pays").setAttribute("disabled", "disabled");
+                                        }
+                                        else{
+                                            document.getElementById("ca").removeAttribute("disabled");
+                                            document.getElementById("ne").removeAttribute("disabled");
+                                       
+                                            document.getElementById("pays").removeAttribute("disabled");
+                                        
+                                        }
                                     }
                                 </script>
                         

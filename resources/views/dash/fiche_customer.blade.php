@@ -42,22 +42,138 @@
 @section('content')
 
     <div class="row">
+        
+        <div class="modal modal-default fade" id="add">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Ajouter un interlocuteur </h4>
+                    </div>
+                    
+                    <div class="modal-body">
+                        <!-- form start -->
+                        <form action="add_referant_in_fiche_customer" method="post">  
+                            @csrf
+                        
+                            <!-- /.box-body -->
+                            <div class="box-body">
+                            @csrf
+                                <div class="box-header">
+                                    <h3 class="box-title"><b>AJOUTER UN INTERLOCUTEUR </b></h3>
+                                </div> 
+
+                                <div class="form-group">
+                                    @php
+                                        $nom = $entreprisecontroller->GetById($id_entreprise)
+                                    @endphp
+                                
+                                            
+                                    <select class="form-control " name="entreprise" style="display:none;">
+                                        @foreach($nom as $nom)
+                                            <option value={{$id_entreprise}}>{{$nom->nom_entreprise}}</option>
+
+                                        @endforeach
+                                    
+                                    </select>
+                                    
+                                </div>        
+
+                                <div class="form-group">
+                                    <label for="exampleInputFile">Titre :</label>
+                                    <select class="form-control " name="titre" id="grise1" >
+                                        <option value="M">M</option>
+                                        <option value="Mme">Mme</option>
+                                        <option value="Mlle">Mlle</option>
+                                    </select>
+                                    
+                                </div>
+                                <div class="form-group">
+                                        <label>Nom & Prénom(s)</label>
+                                        <input type="text" maxlength="100" required id="grise2" class="form-control  " name="nom" onkeyup="this.value=this.value.toUpperCase()">
+                                </div>
+
+                                <div class="form-group">
+                                        <label>Email</label>
+                                        <input type="email" id="grise5" maxlength="30" class="form-control " name="email" >
+                                </div>
+
+                                <div class="form-group">
+                                        <label>Téléphone (*)</label>
+                                        <input type="text" required id="grise3" maxlength="30"   class="form-control " name="tel" placeholder="(+225)0214578931" >
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Fonction (Choisir "Autre" si inexistant)</label>
+                                            <select class="form-control"  onchange="newFonction();" name="fonction" id="grise4" required>
+                                            @php
+                                                $f = DB::table('professions')->orderBy('id', 'asc')->get();
+                                            @endphp
+                                            @foreach($f as $f)
+                                                <option value="{{$f->id}}">{{$f->intitule}}</option>
+                                            @endforeach
+                                            <option value="autre">Autre</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                            <label>Fonction:(*)</label>
+                                            <input type="text" disabled="disabled" required id="newf" maxlength="60"   class="form-control " name="new_fonction" onkeyup="this.value=this.value.toUpperCase()" >
+                                    </div>  
+                                </div>
+                                    <script>
+                                        function newFonction()
+                                        {
+                                            
+                                            var f = document.getElementById("grise4").value;
+                                            //alert(f);
+                                            if(f == 'autre')
+                                            {
+                                                document.getElementById("newf").removeAttribute("disabled");
+                                            }
+                                            else{
+                                                document.getElementById("newf").setAttribute("disabled", "disabled");
+                                            }
+                                        }
+                                    </script>
+
+                            
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn  pull-left" data-dismiss="modal">Fermer</button>
+                                <button type="submit" class="btn btn-primary">Ajouter</button>
+                            </div>
+                        </form>
+                                        
+                    
+                    </div>
+                
+                    
+                </div>
+                <!-- /.modal-content -->
+            </div>
+        </div> 
+        <!-- /.modal-dialog -->
+
         <div class="col-md-2"></div>
         <div class="col-md-8">
              
              
-            <div class="col-md-4">
-                <a href="fiche"><button class="btn btn-default"> <b>RETOUR</b></button></a>
+            <div class="col-md-3">
+                <a href="fiche"><button class="btn btn-default" > <b>RETOUR</b></button></a>
             </div>
              
             @can("edit")
-               
-                <div class="col-md-4">
+                <div class="col-md-3">
+                   <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add"><i class="fa fa-plus">INTERLOCUTEUR</i></button>
+                </div>
+                <div class="col-md-3">
                     <a href="form_add_contrat"><button class="btn btn-primary"> <b><i class="fa fa-plus"></i>CONTRAT</b></button></a>
                 </div>
             @endcan
 
-            <div class="col-md-4"><a href="form_add_prospection">
+            <div class="col-md-3"><a href="form_add_prospection">
                 @if(isset($id_entreprise))
 
                   <form method="post" action="go_print_rapport_clt" target="blank">
@@ -96,7 +212,7 @@
                   
                     <div class="box-header with-border" style="text-align:center">
                     @php
-                    $nom = $entreprisecontroller->GetById($id_entreprise)
+                        $nom = $entreprisecontroller->GetById($id_entreprise)
                     @endphp
                     @foreach($nom as $nom)
                         <h3 class="box-title"><b>{{$nom->nom_entreprise}}</b>
@@ -107,6 +223,34 @@
                         </h3>
                         </div>
                         <!-- /.box-header -->
+                         <div class="box-body">
+                            <div class="form-group">
+                                 <label class="col-sm-6 control-label"> <b>CLIENT DEPUIS LE :</b></label>
+                            
+                                <div class="col-sm-6">
+                                    <input type="text" value="@php echo date('d/m/Y', strtotime($nom->client_depuis)) @endphp" class="form-control" disabled>
+                                </div><br><br>
+                                
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-6 control-label"> <b>ADRESSE GEROGRAPHIQUE DE L'ENTREPRISE :</b></label>
+                            
+                                <div class="col-sm-6">
+                                    <input type="text" value="{{$nom->adresse}}" class="form-control" disabled>
+                                </div><br><br>
+                                
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-6 control-label"><b>AJOUTE PAR :</b></label>
+                            
+                                <div class="col-sm-6">
+                                    <input class="form-control" disabled type="text" value="{{$nom->nom_prenoms}}">
+                                </div><br><br>
+                            
+                            </div>
+                        
+                        </div>
+
                     @endforeach
 
                     <div class="box-header" style="text-align:center">
@@ -120,56 +264,55 @@
                     @endif
                     @foreach($contrats as $contrats)
                         <!--Contrats-->
-
-                            <div class="no-padding">
-                                <table class="table table-hover box-body">
-                                
-                                    <tr>
-                                       <th>Référence du contrat</th>
-                                        <th>Début du contrat</th>
-                                        <th>Fin du contrat</th>
-                                        <th>Montant</th>
-                                        <!--LES RESTRICTIONS -->
-                                          <th>Action</th>
-                                      
+                        <div class="no-padding">
+                            <table class="table table-hover box-body">
+                            
+                                <tr>
+                                    <th>Référence du contrat</th>
+                                    <th>Début du contrat</th>
+                                    <th>Fin du contrat</th>
+                                    <th>Montant</th>
+                                    <!--LES RESTRICTIONS -->
+                                        <th>Action</th>
+                                    
+                                    
+                                </tr>
+                                <!--LES FICHIERS ET LES FACTURES-->
+                                <tr>
+                                    <td> {{$contrats->titre_contrat}}  </td>
+                                    <td>
+                                        @php 
+                                            echo date('d/m/Y',strtotime($contrats->debut_contrat));
+                                        @endphp
+                                        </td>
+                                    <td>
+                                        @php 
+                                        echo date('d/m/Y',strtotime($contrats->fin_contrat)) ;
+                                        @endphp
+                                    </td>
+                                    <td>
+                                        @php
+                                                    echo  number_format($contrats->montant, 2, ".", " ")." XOF";
+                                        @endphp
                                         
-                                    </tr>
-                                    <!--LES FICHIERS ET LES FACTURES-->
-                                    <tr>
-                                        <td> {{$contrats->titre_contrat}}  </td>
-                                        <td>
-                                            @php 
-                                                echo date('d/m/Y',strtotime($contrats->debut_contrat));
-                                            @endphp
-                                            </td>
-                                        <td>
-                                           @php 
-                                            echo date('d/m/Y',strtotime($contrats->fin_contrat)) ;
-                                            @endphp
-                                        </td>
-                                        <td>
-                                            @php
-                                                        echo  number_format($contrats->montant, 2, ".", " ")." XOF";
-                                            @endphp
-                                           
-                                        </td>
+                                    </td>
 
-                                        <td>
-                                            @can("edit")
-                                            <form action="fiche_edit_contrat_form" method="post" >
-                                                @csrf
-                                                <input type="text" value={{$contrats->id}} style="display:none;" name="id_contrat">
-                                                <input type="text" value={{$id_entreprise}} style="display:none;" name="id_entreprise">
-                                                <button type="submit" class="btn btn-success"><i class="fa fa-edit"></i></button>
-                                            </form>
-                                            @endcan
-                                        </td>
-                                 
-                                       
-                                    </tr>
+                                    <td>
+                                        @can("edit")
+                                        <form action="fiche_edit_contrat_form" method="post" >
+                                            @csrf
+                                            <input type="text" value={{$contrats->id}} style="display:none;" name="id_contrat">
+                                            <input type="text" value={{$id_entreprise}} style="display:none;" name="id_entreprise">
+                                            <button type="submit" class="btn btn-success"><i class="fa fa-edit"></i></button>
+                                        </form>
+                                        @endcan
+                                    </td>
                                 
-                                </table>
-                            </div>
+                                    
+                                </tr>
+                            
+                            </table>
+                        </div>
 
                         <!--LES FICHIERS ET LES FACTURES DANS LA TABLE CONTRAT-->
                            
@@ -357,35 +500,6 @@
                         <!-- form start  INFO SUR LA PROPESCTION DANS LA TABLE-->
                         <div class="form-horizontal">
                          
-                            <div class="box-body">
-                                <div class="form-group">
-                                    <label class="col-sm-6 control-label"><b>DATE :</b></label>
-                                
-                                    <div class="col-sm-6">
-                                     <input type="text" class="form-control" disabled value="@php echo date('d/m/Y', strtotime($prospections->date_prospection)) @endphp">
-                                    </div>
-                                  
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-6 control-label"> <b>ADRESSE DE L'ENTREPRISE :</b></label>
-                                  
-                                
-                                    <div class="col-sm-6">
-                                     <input type="text" value="{{$prospections->adresse}}" class="form-control" disabled>
-                                    </div>
-                                   
-                                </div>
-                                <div class="form-group">
-                                      <label class="col-sm-6 control-label"><b>EN CHARGE DE LA PROSPECTION :</b></label>
-                                
-                                    <div class="col-sm-6">
-                                       <input class="form-control" disabled type="text" value="{{$prospections->nom_prenoms}}">
-                                    </div>
-                              
-                                </div>
-                            
-                            </div>
-               
                         </div>
                        
                         <div class="box-header">
@@ -790,10 +904,8 @@
                     @endforeach
                     <hr>
 
-                    @php
-                            
+                    @php 
                         $interlocuteurs =  $interlocuterController->InterlocuteurWithIdEntreprise($id_entreprise);
-                        
                     @endphp
                     <div class="box-header with-border">
                         <h3 class="box-title"><b>Interlocuteur(s)</b></h3>
@@ -878,94 +990,6 @@
        
                     <hr>
 
-                    @can("edit")
-                        <div class="box-body">
-                            <!--DEUXIEMEN PARTIE DU FORMULAIRE-->
-                            <form action="add_referant_in_fiche_customer" method="post">         
-                                @csrf
-                                <div class="box-header">
-                                    <h3 class="box-title"><b>AJOUTER UN INTERLOCUTEUR </b></h3>
-                                </div> 
-
-                                <div class="form-group">
-                                    @php
-                                        $nom = $entreprisecontroller->GetById($id_entreprise)
-                                    @endphp
-                                
-                                            
-                                    <select class="form-control " name="entreprise" style="display:none;">
-                                        @foreach($nom as $nom)
-                                            <option value={{$id_entreprise}}>{{$nom->nom_entreprise}}</option>
-
-                                        @endforeach
-                                    
-                                    </select>
-                                    
-                                </div>        
-
-                                <div class="form-group">
-                                    <label for="exampleInputFile">Titre :</label>
-                                    <select class="form-control " name="titre" id="grise1" >
-                                        <option value="M">M</option>
-                                        <option value="Mme">Mme</option>
-                                        <option value="Mlle">Mlle</option>
-                                    </select>
-                                    
-                                </div>
-                                <div class="form-group">
-                                        <label >Nom & Prénom(s)</label>
-                                        <input type="text" maxlength="100" required id="grise2" class="form-control  " name="nom" onkeyup="this.value=this.value.toUpperCase()">
-                                </div>
-
-                                <div class="form-group">
-                                        <label>Email</label>
-                                        <input type="email" id="grise5" maxlength="30" class="form-control " name="email" >
-                                </div>
-
-                                <div class="form-group">
-                                        <label>Téléphone (*)</label>
-                                        <input type="text" required id="grise3" maxlength="30"   class="form-control " name="tel" placeholder="(+225)0214578931" >
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label>Fonction (Choisir "Autre" si inexistant)</label>
-                                            <select class="form-control"  onchange="newFonction();" name="fonction" id="grise4" required>
-                                            @php
-                                                $f = DB::table('professions')->orderBy('id', 'asc')->get();
-                                            @endphp
-                                            @foreach($f as $f)
-                                                <option value="{{$f->id}}">{{$f->intitule}}</option>
-                                            @endforeach
-                                            <option value="autre">Autre</option>
-                                        </select>
-                                    </div>
-
-                                    <div class="form-group">
-                                            <label>Fonction:(*)</label>
-                                            <input type="text" disabled="disabled" required id="newf" maxlength="60"   class="form-control " name="new_fonction" onkeyup="this.value=this.value.toUpperCase()" >
-                                    </div>  
-                                </div>
-                                 <script>
-                                        function newFonction()
-                                        {
-                                            
-                                            var f = document.getElementById("grise4").value;
-                                            //alert(f);
-                                            if(f == 'autre')
-                                            {
-                                                document.getElementById("newf").removeAttribute("disabled");
-                                            }
-                                            else{
-                                                document.getElementById("newf").setAttribute("disabled", "disabled");
-                                            }
-                                        }
-                                    </script>
-
-                                <button class="btn btn-primary" >Ajouter</button>  
-                            </form>
-                        </div>
-                    @endcan
-                    
                    
                 </div>
                 <hr>

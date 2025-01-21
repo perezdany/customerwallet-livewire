@@ -80,7 +80,10 @@ class Entreprises extends Component
             $this->editEntreprise['adresse_email'] != $this->editOldValues['adresse_email'] OR
             $this->editEntreprise['activite'] != $this->editOldValues['activite'] OR
             $this->editEntreprise['etat'] != $this->editOldValues['etat'] OR
-            $this->editEntreprise['id_statutentreprise'] != $this->editOldValues['id_statutentreprise'] 
+            $this->editEntreprise['id_statutentreprise'] != $this->editOldValues['id_statutentreprise'] OR
+            $this->editEntreprise['site_web'] != $this->editOldValues['site_web'] OR
+            $this->editEntreprise['particulier'] != $this->editOldValues['particulier'] OR
+            $this->editEntreprise['date_creation'] != $this->editOldValues['date_creation'] 
         )
         {
             $this->editHasChanged = true;
@@ -158,8 +161,17 @@ class Entreprises extends Component
       
         $this->editOldValues = $this->editEntreprise; //Mettre les valeurs ancienne dedans
 
-        $this->dispatchBrowserEvent('showEditModal');
+        //VOIR SI C'EST UN PARTICULIER ET AFFICHER SON FORMULAIRE
+        if($this->editOldValues['particulier'] == "0")
+        {
+            $this->dispatchBrowserEvent('showEditModal');
 
+        }
+        else
+        {   
+            //dd('ici');
+            $this->dispatchBrowserEvent('showEditModalParticulier');
+        }
         //$this->dispatchBrowserEvent("closeEditModal");
 
     }
@@ -187,6 +199,7 @@ class Entreprises extends Component
         $this->dispatchBrowserEvent('showSuccessMessage', ["message" => "Modification effectuée avec succès"]);
 
         $this->dispatchBrowserEvent("closeEditModal");
+        $this->dispatchBrowserEvent("closeEditModalParticulier");
        
     }
 
@@ -194,11 +207,19 @@ class Entreprises extends Component
 
     public function Detail(Entreprise $entreprise)
     {
-       // dd('iic');
+        //dd('iic');
         $this->entrepriseDetail = $entreprise->toArray();
-
-        $this->dispatchBrowserEvent('showDetail');
-
+        //dd($this->entrepriseDetail['particulier']);
+        if($this->entrepriseDetail['particulier'] == 0)
+        {
+            $this->dispatchBrowserEvent('showDetail');
+        }
+        else
+        {
+            //dd('ici');
+            $this->dispatchBrowserEvent('showDetailParticulier');
+        }
+        
     }
 
     public function closeEditModal()

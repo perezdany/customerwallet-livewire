@@ -85,15 +85,15 @@
             <div class="row">
                 <div class="col-xs-3 form-group">
                     <div class="col-xs-3">
-                        <select class="form-control" id="compare" wire:model.debounce.250ms="compare">
+                        <select class="" id="compare" wire:model.debounce.250ms="compare">
                             <option value="">Choisir</option>
                             <option value="<"><</option> 
                             <option value=">">></option>
                             <option value="=">=</option>                              
                         </select>   
                     </div>
-                        <div class="col-xs-6">
-                        <select class="form-control" id="categorie" wire:model.debounce.250ms="annee_depuis">
+                        <div class="col-xs-3">
+                        <select class="" id="anne_depuis" wire:model.debounce.250ms="annee_depuis">
                             <option value="">Choisir</option>
                             @php
                                 $annee_fin = "2030";

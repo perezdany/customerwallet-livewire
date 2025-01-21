@@ -60,150 +60,208 @@
 </head>
 
 <body onload="window.print();">
-<div class="wrapper">
-  <!-- Main content -->
-   <!-- title row -->
-    <div class="row">
-      <div class="col-xs-12">
-        <h2 class="page-header">
-          <i class="fa fa-globe"></i> ÆNEAS WEST AFRICA.
-         
-        </h2>
-      </div>
-      <!-- /.col -->
-    </div>
-  <section class="invoice">
-     @if(isset($id_entreprise))
-        
-        @php
-
-            $prospections = $prospectioncontroller->GetProspectionByIdEntr($id_entreprise);
-
-            $contrats = $contratcontroller->GetContratByIdEntr($id_entreprise);
-
-            $count_contrat = $contrats->count();
-
-        @endphp
-
-
+    <div class="wrapper">
+    <!-- Main content -->
+    <!-- title row -->
         <div class="row">
-          
-            <div class="col-md-2"></div>
-            <!-- left column -->
-            <div class="col-md-8" >
-                <!-- Horizontal Form -->
-                <div class="box "  style="text-align:center">
-                    <div class="box-header">
-                        <h3 class="box-title"><b>Contrats</b></h3>
-                    </div>
-                    @if($count_contrat == 0)
-                        <div class="box-header" style="text-align:center">
-                            <h3 class="box-title"><b>Pas de Contrat</b></h3>
-                            <hr>
-                        </div> 
-                    @endif
-                  
-                    <!--Contrats-->
-                    <div class="no-padding"  style="text-align:center">
+        <div class="col-xs-12">
+            <h2 class="page-header">
+            <i class="fa fa-globe"></i> ÆNEAS WEST AFRICA.
+            
+            </h2>
+        </div>
+        <!-- /.col -->
+        </div>
+    <section class="invoice">
+        @if(isset($id_entreprise))
+            
+            @php
+                $nom = $entreprisecontroller->GetById($id_entreprise);
+
+                $prospections = $prospectioncontroller->GetProspectionByIdEntr($id_entreprise);
+
+                $contrats = $contratcontroller->GetContratByIdEntr($id_entreprise);
+
+                $count_contrat = $contrats->count();
+
+            @endphp
+
+
+            <div class="row">
+            
+                <div class="col-md-2"></div>
+                <!-- left column -->
+                <div class="col-md-8" >
+                    <!-- Horizontal Form -->
+                    @foreach($nom as $nom)
+                            <h3 class="box-title"><b>{{$nom->nom_entreprise}}</b>
+                                @if($nom->etat == 0)
+                                    <span class="bg-red">INACTIF</span>
+                                @else
+                                @endif
+                            </h3>
+                            </div>
+                            <!-- /.box-header -->
+                            <div class="box-body">
+                                <div class="form-group">
+                                    <label class="col-sm-6 control-label"> <b>CLIENT DEPUIS LE :</b></label>
+                                
+                                    <div class="col-sm-6">
+                                        <input type="text" value="@php echo date('d/m/Y', strtotime($nom->client_depuis)) @endphp" class="form-control" disabled>
+                                    </div><br><br><br>
+                                    
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-6 control-label"> <b>ADRESSE GEROGRAPHIQUE DE L'ENTREPRISE :</b></label>
+                                    <div class="col-sm-6">
+                                        <input type="text" value="{{$nom->adresse}}" class="form-control" disabled>
+                                    </div><br><br><br>
+                                    
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-6 control-label"> <b>TELEPHONE :</b></label>
+                                    <div class="col-sm-6">
+                                        <input type="text" value="{{$nom->telephone}}" class="form-control" disabled>
+                                    </div><br><br><br>
+                                    
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-6 control-label"> <b>ADRESSE EMAIL:</b></label>
+                                
+                                    <div class="col-sm-6">
+                                        <input type="text" value="{{$nom->adresse_email}}" class="form-control" disabled>
+                                    </div><br><br>
+                                    
+                                </div>
+                                @if($nom->particulier == 0)
+                                    <div class="form-group">
+                                        <label class="col-sm-6 control-label"> <b>CHIFFRE D'AFFAIRE:</b></label>
+                                    
+                                        <div class="col-sm-6">
+                                            <input type="text" value="{{$nom->chiffre_affaire}}" class="form-control" disabled>
+                                        </div><br><br>
+                                        
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-6 control-label"> <b>NOMBRE D'ENPLOYES:</b></label>
+                                    
+                                        <div class="col-sm-6">
+                                            <input type="text" value="{{$nom->nb_employes}}" class="form-control" disabled>
+                                        </div><br><br>
+                                        
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-6 control-label"> <b>DATE DE CREATION:</b></label>
+                                    
+                                        <div class="col-sm-6">
+                                            <input type="text" value="{{$nom->date_creation}}" class="form-control" disabled>
+                                        </div><br><br>
+                                        
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-6 control-label"> <b>PAYS:</b></label>
+                                    
+                                        <div class="col-sm-6">
+                                            <input type="text" value="{{$nom->nom_pays}}" class="form-control" disabled>
+                                        </div><br><br>
+                                        
+                                    </div>
+                                @endif
+                                <div class="form-group">
+                                    <label class="col-sm-6 control-label"> <b>SITE WEB:</b></label>
+                                
+                                    <div class="col-sm-6">
+                                        <input type="text" value="{{$nom->site_web}}" class="form-control" disabled>
+                                    </div><br><br>
+                                        
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-6 control-label"> <b>ACTIVITE/PROFESSION:</b></label>
+                                
+                                    <div class="col-sm-6">
+                                        <input type="text" value="{{$nom->activite}}" class="form-control" disabled>
+                                    </div><br><br>
+                                        
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-6 control-label"><b>AJOUTE PAR :</b></label>
+                                
+                                    <div class="col-sm-6">
+                                        <input class="form-control" disabled type="text" value="{{$nom->nom_prenoms}}">
+                                    </div><br><br>
+                                
+                                </div>
+                            
+                            </div>
+
+                        @endforeach
+                    
+                        <!--Contrats-->
+                        <div class="no-padding"  style="text-align:center">
+                            <table class="table table-hover box-body">
+                            
+                    
+                            </table>
+                        </div>
+
+                    
+                        @php
+                                
+                            $interlocuteurs =  $interlocuterController->InterlocuteurWithIdEntreprise($id_entreprise);
+                            
+                        @endphp
+                        <div class="box-header with-border">
+                            <h3 class="box-title"><b>Interlocuteur(s)</b></h3>
+                        </div>
+
                         <table class="table table-hover box-body">
-                        
+                                        
                             <tr>
-                                <th>Titre de contrat</th>
-                                <th>Début du contrat</th>
-                                <th>Fin du contrat</th>
-                                <th>Montant</th>	
+                        
+                                <th>Nom</th>
+                                <th>Téléphone</th>
+                                <th>Email</th>
+                                <th>Fonction</th>
+                            
                                 
                             </tr>
                             <!--LES FICHIERS ET LES FACTURES-->
-                            @foreach($contrats as $contrats)
+                            
+                            @foreach($interlocuteurs as $interlocuteurs)
                                 <tr>
-                                    <td> {{$contrats->titre_contrat}}  </td>
-                                    <td>
-                                        @php 
-                                            echo date('d/m/Y',strtotime($contrats->debut_contrat));
-                                        @endphp
-                                        </td>
-                                    <td>
-                                        @php 
-                                        echo date('d/m/Y',strtotime($contrats->fin_contrat)) ;
-                                        @endphp
-                                    </td>
-                                    <td>
-                                        @php
-                                            echo  number_format($contrats->montant, 2, ".", " ")." XOF";
-                                        @endphp
-                                    
-                                    </td>
+                                    <td> {{$interlocuteurs->titre}} {{$interlocuteurs->nom}}</td>
                                 
+                                    <td>
+                                        {{$interlocuteurs->tel}}
+                                    </td>
+                                    <td>{{$interlocuteurs->email}}</td>
+                                    <td>{{$interlocuteurs->intitule}}</td>
                                 
                                 </tr>
+                            
                             @endforeach
-                
+                        
                         </table>
-                    </div>
-
-                
-                    @php
-                            
-                        $interlocuteurs =  $interlocuterController->InterlocuteurWithIdEntreprise($id_entreprise);
-                        
-                    @endphp
-                    <div class="box-header with-border">
-                        <h3 class="box-title"><b>Interlocuteur(s)</b></h3>
-                    </div>
-
-                    <table class="table table-hover box-body">
-                                    
-                        <tr>
-                    
-                            <th>Nom</th>
-                            <th>Téléphone</th>
-                             <th>Email</th>
-                              <th>Fonction</th>
-                          
-                            
-                        </tr>
-                        <!--LES FICHIERS ET LES FACTURES-->
-                        
-                        @foreach($interlocuteurs as $interlocuteurs)
-                            <tr>
-                                <td> {{$interlocuteurs->titre}} {{$interlocuteurs->nom}}</td>
-                            
-                                <td>
-                                    {{$interlocuteurs->tel}}
-                                </td>
-                                <td>{{$interlocuteurs->email}}</td>
-                                <td>{{$interlocuteurs->fonction}}</td>
-                               
-                            </tr>
-                        
-                        @endforeach
-                    
-                    </table>
-       
-                    <hr>
-                  
-                </div>
-               
-                <!-- /.box -->
-             
         
-            </div>
+                        <hr>
+                    
+                    </div>
+                
+                    <!-- /.box -->
+                
             
-            <div class="col-md-2"></div>
-        </div>
-        <!--/.col (right) -->
-    @endif
-
-   
-   
-
+                </div>
+                
+                <div class="col-md-2"></div>
+            </div>
+            <!--/.col (right) -->
+        @endif
     
-
-   
-  </section>
-  <!-- /.content -->
-</div>
-<!-- ./wrapper -->
+    </section>
+    <!-- /.content -->
+    </div>
+    <!-- ./wrapper -->
 </body>
 </html>

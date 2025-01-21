@@ -126,62 +126,63 @@
                                 </div>
                             </div>
                         
-                            <div class="col-md-6">           
-                                <div class="box-header">
-                                <h3 class="box-title"> <b> INFORMATIONS DE L'INTERLOCUTEUR </b></h3>
+                            <!-- 
+                                <div class="col-md-6">           
+                                    <div class="box-header">
+                                    <h3 class="box-title"> <b> INFORMATIONS DE L'INTERLOCUTEUR </b></h3>
+                                    </div>
+                                
+                                        <div class="form-group">
+                                            <label for="exampleInputFile">Choisissez l'interlocuteur si existant ou sélectionnez Autre:</label>
+                                            <select class="form-control input-lg" name="interlocuteur">
+                                                @php
+                                                    $interlocuteur = $interlocuteurcontroller->GetAll();
+                                                    
+                                                @endphp
+                                                <option value={{$retrive->id}}>{{$retrive->nom}}/{{$retrive->fonction}}/{{$retrive->tel}}</option>
+                                                @foreach($interlocuteur as $interlocuteur)
+                                                    <option value={{$interlocuteur->id}}>{{$interlocuteur->nom}}/{{$interlocuteur->fonction}}/{{$interlocuteur->tel}}</option>
+                                                    
+                                                @endforeach
+
+                                                <option value="autre">Autre</option>
+
+                                            </select>
+                                            
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="exampleInputFile">Titre :</label>
+                                            <select class="form-control input-lg" name="titre">
+                                                <option value="{{$retrive->titre}}">{{$retrive->titre}}</option>
+                                                <option value="M">M</option>
+                                                <option value="Mme">Mme</option>
+                                                <option value="Mlle">Mlle</option>
+                                            </select>
+                                            
+                                        </div>
+                                        <div class="form-group">
+                                                <label >Nom & Prénom(s)</label>
+                                                <input type="text" class="form-control  input-lg" name="nom" onkeyup="this.value=this.value.toUpperCase()" value="{{$retrive->nom}}">
+                                        </div>
+
+                                        <div class="form-group">
+                                                <label>Email</label>
+                                                <input type="text" class="form-control input-lg" name="email" value="{{$retrive->email}}">
+                                            </div>
+
+                                        <div class="form-group">
+                                                <label>Téléphone (*)</label>
+                                                <input type="text" class="form-control input-lg" name="tel" placeholder="(+225)0214578931" value="{{$retrive->tel}}" required>
+                                            </div>
+
+                                        <div class="form-group">
+                                                <label>Fonction</label>
+                                                <input type="text" class="form-control input-lg" name="fonction" onkeyup="this.value=this.value.toUpperCase()" value="{{$retrive->fonction}}">
+                                            </div>  
+                                
                                 </div>
-                            
-                                    <div class="form-group">
-                                        <label for="exampleInputFile">Choisissez l'interlocuteur si existant ou sélectionnez Autre:</label>
-                                        <select class="form-control input-lg" name="interlocuteur">
-                                            @php
-                                                $interlocuteur = $interlocuteurcontroller->GetAll();
-                                                
-                                            @endphp
-                                            <option value={{$retrive->id}}>{{$retrive->nom}}/{{$retrive->fonction}}/{{$retrive->tel}}</option>
-                                            @foreach($interlocuteur as $interlocuteur)
-                                                <option value={{$interlocuteur->id}}>{{$interlocuteur->nom}}/{{$interlocuteur->fonction}}/{{$interlocuteur->tel}}</option>
-                                                
-                                            @endforeach
-
-                                            <option value="autre">Autre</option>
-
-                                        </select>
-                                        
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="exampleInputFile">Titre :</label>
-                                        <select class="form-control input-lg" name="titre">
-                                            <option value="{{$retrive->titre}}">{{$retrive->titre}}</option>
-                                            <option value="M">M</option>
-                                            <option value="Mme">Mme</option>
-                                            <option value="Mlle">Mlle</option>
-                                        </select>
-                                        
-                                    </div>
-                                    <div class="form-group">
-                                            <label >Nom & Prénom(s)</label>
-                                            <input type="text" class="form-control  input-lg" name="nom" onkeyup="this.value=this.value.toUpperCase()" value="{{$retrive->nom}}">
-                                    </div>
-
-                                    <div class="form-group">
-                                            <label>Email</label>
-                                            <input type="text" class="form-control input-lg" name="email" value="{{$retrive->email}}">
-                                        </div>
-
-                                    <div class="form-group">
-                                            <label>Téléphone (*)</label>
-                                            <input type="text" class="form-control input-lg" name="tel" placeholder="(+225)0214578931" value="{{$retrive->tel}}" required>
-                                        </div>
-
-                                    <div class="form-group">
-                                            <label>Fonction</label>
-                                            <input type="text" class="form-control input-lg" name="fonction" onkeyup="this.value=this.value.toUpperCase()" value="{{$retrive->fonction}}">
-                                        </div>  
-                            
-                            </div>
-
+                            -->
                               <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Facture Proforma</label>
