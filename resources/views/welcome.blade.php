@@ -41,7 +41,7 @@
     use App\Models\Facture;
     use App\Models\Paiement;
     use App\Models\Prestation;
- 
+    use App\Models\Entreprise;
      
 @endphp
 
@@ -85,6 +85,46 @@
                         ]);
                     }
                    
+                }
+                
+            }
+        }
+
+
+        //CODE POUR METTRE LES DATES DES CLIENTS DEPUIS DANS LA TABLE ENTREPRISE
+        $entreprises = Entreprise::all();
+        foreach($entreprises as $entreprise)
+        {
+            //ON VA VOIR LES CONTRATS MAINTENANT 
+            if($entreprise->client_depuis == null)
+            {
+                $count_contrats = Contrat::where('id_entreprise', $entreprise->id)->orderBy('debut_contrat', 'ASC')->limit(1)->count();
+                //dd($contrats);
+                if($count_contrats == 0)
+                {
+                    //ON A PAS TROUVE DE CONTRAT
+                    //dd('ici');
+                    $edit =  DB::table('entreprises')
+                    ->where('id',  $entreprise->id)
+                    ->update([
+                        'client_depuis' => "2014-01-01",
+                    ]);
+                }
+                else
+                {
+                    $contrats = Contrat::where('id_entreprise', $entreprise->id)->orderBy('debut_contrat', 'ASC')->limit(1)->get();
+                    foreach($contrats as $contrat)
+                    {
+                        //METTRE A JOUR LE CHAMP CLIENT DEPUIS DE LA TABLE ENTREPRISE
+
+                        $edit =  DB::table('entreprises')
+                        ->where('id',  $entreprise->id)
+                        ->update([
+                            'client_depuis' => $contrat->debut_contrat,
+                        ]);
+
+                    }
+                 
                 }
                 
             }

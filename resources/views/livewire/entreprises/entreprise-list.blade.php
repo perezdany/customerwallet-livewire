@@ -7,7 +7,7 @@
             <div class="box-header">
                 <h3 class="box-title flex-grow-1">Base des Entreprise</h3><br>
         
-                        <!--<a href="form_add_entreprise"><button class="btn btn-success"> <b><i class="fa fa-plus"></i> ENTREPRISE</b></button></a><br><br>-->
+                    <!--<a href="form_add_entreprise"><button class="btn btn-success"> <b><i class="fa fa-plus"></i> ENTREPRISE</b></button></a><br><br>-->
                     <a href="entreprises" style="color:blue"><u>Rétablir<i class="fa fa-refresh" aria-hidden="true"></i></u></a> &emsp;&emsp; <label>Filtrer par:</label>
                     <div class="row">
                     
@@ -39,16 +39,42 @@
 
                     </div>
                     
-                <div class="box-tools d-flex aglin-items-center">
-                    <a href="form_add_entreprise" class="mr-4 d-block"><button class="btn btn-primary"> <b><i class="fa fa-plus"></i> ENTREPRISE</b></button></a> <br><br>
-                    <div class="input-group input-group-sm" style="width: 350px;">
-                        <input type="text" id="search" wire:model.debounce.250ms="search" class="form-control pull-right" placeholder="Rechercher">
+                    <div class="box-tools d-flex aglin-items-center">
+                        <a href="form_add_entreprise" class="mr-4 d-block"><button class="btn btn-primary"> <b><i class="fa fa-plus"></i> ENTREPRISE</b></button></a> <br><br>
+                        <div class="input-group input-group-sm" style="width: 350px;">
+                            <input type="text" id="search" wire:model.debounce.250ms="search" class="form-control pull-right" placeholder="Rechercher">
 
-                        <div class="input-group-btn">
-                            <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                            <div class="input-group-btn">
+                                <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                            </div>
                         </div>
                     </div>
-                </div>
+                    <label>Afficher par date d'ajout:</label>
+                    <div class="row">
+                        <div class="col-xs-3 form-group">
+                            <div class="col-xs-3">
+                                <select class="form-control" id="compare" wire:model.debounce.250ms="compare">
+                                    <option value="">Choisir</option>
+                                    <option value="<"><</option> 
+                                    <option value=">">></option>
+                                    <option value="=">=</option>                              
+                                </select>   
+                            </div>
+                             <div class="col-xs-6">
+                                <select class="form-control" id="categorie" wire:model.debounce.250ms="annee_depuis">
+                                    <option value="">Choisir</option>
+                                    @php
+                                        $annee_fin = "2030";
+                                        for($annee="2014"; $annee<=$annee_fin; $annee++)
+                                        {
+                                            echo'<option value='.$annee.'>'.$annee.'</option>';
+                                        }
+                                    @endphp
+                                    
+                                </select>   
+                            </div>
+                        </div>    
+                    </div>
             </div>
             <!-- /.box-header -->
             <div class="box-body table-responsive">
@@ -58,12 +84,12 @@
                         <th wire:click="setOrderField('nom_entreprise')"><i class="fa fa-sort-amount-desc" aria-hidden="true"></i>Nom</th>
                         <th wire:click="setOrderField('adresse')"><i class="fa fa-sort-amount-desc" aria-hidden="true"></i>Adresse</th>
                         <th wire:click="setOrderField('etat')"><i class="fa fa-sort-amount-desc" aria-hidden="true"></i>Statut</th>
-                        <th style="display:none">EatEntreprise</th>
+                        <th style="display:none">EtatEntreprise</th>
                     
                         <th >Fiche</th>
                         <th>Interlocuteurs: </th>
-                        <th>Modifier</th>
-                        <th>Supprimer</th>
+                        <th>Mod</th>
+                        <th>Supp</th>
                         <th>Détails</th>
                     </tr>
                     </thead>

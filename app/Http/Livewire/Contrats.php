@@ -41,6 +41,9 @@ class Contrats extends Component
     public $etat_contrat = "";
     public $service = "";
 
+    public $compare = ""; 
+    public $annee_depuis = "";
+
     public $editContrat = []; //LA VARIABLE QUI RECUPERE LES DONNEES ENTREES DU FORMULAIRE
 
     public $editHasChanged;
@@ -266,9 +269,6 @@ class Contrats extends Component
                //dd('pi');
                 $contratQuery->where('etat', $this->etat_contrat);
             }
-           
-        
-           
         }
 
         if($this->service != "")
@@ -288,12 +288,33 @@ class Contrats extends Component
         }
         else
         {   
-           
-
+        
         }
 
+        if($this->compare != "" AND $this->annee_depuis != "")
+        {
+            
+            if($this->compare == "=")
+            {
+                $annee = $this->annee_depuis."-01-01";
+                $annee_f = $this->annee_depuis."-12-31";
+                $contratQuery->where("debut_contrat", '<', $annee_f)->where("debut_contrat", '>', $annee);
+            }
+            elseif($this->compare == "<")
+            {
+                $annee = $this->annee_depuis."-01-01";
+                $contratQuery->where("debut_contrat", $this->compare,  $annee);
+            }
+            else
+            {
+                $annee = $this->annee_depuis."-12-31";
+                $contratQuery->where("debut_contrat", $this->compare,  $annee);
+            }
+            
+        }
+        
 
-        return view('livewire.contrats.index',  ['contrats' => $contratQuery->orderBy($this->orderField, $this->orderDirection)->paginate(8)])
+        return view('livewire.contrats.index',  ['contrats' => $contratQuery->orderBy($this->orderField, $this->orderDirection)->paginate(6)])
         ->extends('layouts.base')
         ->section('content');
     }

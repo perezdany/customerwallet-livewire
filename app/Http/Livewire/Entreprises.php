@@ -18,7 +18,8 @@ class Entreprises extends Component
     protected $paginationTheme = "bootstrap";
 
     public $search = ""; 
-
+    public $compare = ""; 
+    public $annee_depuis = "";
     public $editEntreprise = []; //LA VARIABLE QUI RECUPERE LES DONNEES ENTREES DU FORMULAIRE
 
     public $entrepriseDetail = []; //POUR LES DETAILS DE L'ENTREPRISE
@@ -97,8 +98,6 @@ class Entreprises extends Component
         {
             $entrepriseQuery->where("nom_entreprise", "LIKE", "%".$this->search."%")
             ->orwhere('adresse', "LIKE", "%". $this->search."%");
-        
-           
         }
     
         if($this->categorie != "")
@@ -120,10 +119,33 @@ class Entreprises extends Component
             //Ca veut dire que des valeurs sont en train d'être modifié dans le formulaire de modification
             $this->showUpdateButton();
         }
+
+        if($this->compare != "" AND $this->annee_depuis != "")
+        {
+            
+            if($this->compare == "=")
+            {
+                $annee = $this->annee_depuis."-01-01";
+                $annee_f = $this->annee_depuis."-12-31";
+                $entrepriseQuery->where("client_depuis", '<', $annee_f)->where("client_depuis", '>', $annee);
+            }
+            elseif($this->compare == "<")
+            {
+               
+                $annee = $this->annee_depuis."-01-01";
+                $entrepriseQuery->where("client_depuis", $this->compare,  $annee);
+            }
+            else
+            {
+                $annee = $this->annee_depuis."-12-31";
+                $entrepriseQuery->where("client_depuis", $this->compare,  $annee);
+            }
+            
+        }
         
     
         return view('livewire.entreprises.index',  
-            ['entreprises' => $entrepriseQuery->orderBy($this->orderField, $this->orderDirection)->paginate(8)])
+            ['entreprises' => $entrepriseQuery->orderBy($this->orderField, $this->orderDirection)->paginate(6)])
             ->extends('layouts.base')
             ->section('content');
            

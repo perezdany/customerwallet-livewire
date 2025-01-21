@@ -66,10 +66,7 @@
                         @endforeach
                             
                     </select>
-                </div>
-
-            
-                
+                </div>                
             </div>
 
     
@@ -84,6 +81,32 @@
                 </div>
             </div>
 
+            <label>Afficher par date d'ajout:</label>
+            <div class="row">
+                <div class="col-xs-3 form-group">
+                    <div class="col-xs-3">
+                        <select class="form-control" id="compare" wire:model.debounce.250ms="compare">
+                            <option value="">Choisir</option>
+                            <option value="<"><</option> 
+                            <option value=">">></option>
+                            <option value="=">=</option>                              
+                        </select>   
+                    </div>
+                        <div class="col-xs-6">
+                        <select class="form-control" id="categorie" wire:model.debounce.250ms="annee_depuis">
+                            <option value="">Choisir</option>
+                            @php
+                                $annee_fin = "2030";
+                                for($annee="2014"; $annee<=$annee_fin; $annee++)
+                                {
+                                    echo'<option value='.$annee.'>'.$annee.'</option>';
+                                }
+                            @endphp
+                            
+                        </select>   
+                    </div>
+                </div>    
+            </div>
         </div>
         <!-- /.box-header -->
         <div class="box-body table-responsive">
