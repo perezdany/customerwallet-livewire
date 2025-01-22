@@ -102,6 +102,11 @@
                         <div class="col-sm-8"><input type="email" wire:model="editEntreprise.adresse_email"  maxlength="30" class="form-control" 
                         id="email"></div>
                         </div><br>
+                        <div class="row form-group text-center">
+                        <div class="col-sm-4"><label>Site web:</label></div>
+                        <div class="col-sm-8"><input type="text" wire:model="editEntreprise.site_web"  maxlength="60" class="form-control" 
+                        id="site_web"></div>
+                        </div><br>
 
                          <div class="row form-group text-center">
                         <div class="col-sm-4"><label>Date de création:</label></div>

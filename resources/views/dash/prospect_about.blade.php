@@ -101,8 +101,8 @@
         @php
 
             $prospections = $prospectioncontroller->GetProspectionByIdEntr($id_entreprise);
-           // dd($prospections);
-             $count_prospection = $prospections->count();
+           //dd($prospections);
+            $count_prospection = $prospections->count();
 
         @endphp
 
@@ -131,7 +131,7 @@
                             <!-- /.box-header -->
                       @endforeach
 
-                @if( $count_prospection != 0) 
+                @if($count_prospection != 0) 
 
                     @foreach($prospections as $prospections)
                       
@@ -908,7 +908,7 @@
         <!--/.col (right) -->
     @endif
      <div class="row">
-          <div class="modal modal-default fade" id="add">
+        <div class="modal modal-default fade" id="add">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">

@@ -66,7 +66,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Service Proposé (*)</label>
-                                    <select class="form-control input-lg select2" data-placeholder ="Dérouler pour voir les service" multiple="multiple" name="service_propose[]" >
+                                    <select class="form-control  select2" data-placeholder ="Dérouler pour voir les service" multiple="multiple" name="service_propose[]" >
                                             
                                         <!--liste des services a choisir -->
                                         
@@ -94,11 +94,11 @@
                                 </div>
                                 <div class="form-group">
                                     <label >Date de la prospection</label>
-                                    <input type="date" class="form-control  input-lg" name="date_prospect" value="{{$retrive->date_prospection}}">
+                                    <input type="date" class="form-control  " name="date_prospect" value="{{$retrive->date_prospection}}">
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputFile">Durée de la prospection (Jr)</label>
-                                    <input type="number" max="365" min="1" class="form-control input-lg" name="duree" value="{{$retrive->duree_jours}}">
+                                    <input type="number" max="365" min="1" class="form-control " name="duree" value="{{$retrive->duree_jours}}">
                                 </div>
                                     <!--CALCULER LA DATE DE FIN DE LA PROSPECTION ET AJOUTER-->
                                 <div class="box-header">
@@ -106,7 +106,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputFile">Choisissez l'entreprise si existant ou sélectionnez Autre:</label>
-                                    <select class="form-control input-lg" name="entreprise">
+                                    <select class="form-control " name="entreprise">
                                         @php
                                             $get = $entreprisecontroller->GetAll();
                                         @endphp
@@ -121,7 +121,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputFile">Saisir le nom de l'entreprise</label>
-                                    <input type="text" class="form-control input-lg" name="entreprise_name" onkeyup="this.value=this.value.toUpperCase()">
+                                    <input type="text" class="form-control " name="entreprise_name" onkeyup="this.value=this.value.toUpperCase()">
                                     
                                 </div>
                             </div>
@@ -134,7 +134,7 @@
                                 
                                         <div class="form-group">
                                             <label for="exampleInputFile">Choisissez l'interlocuteur si existant ou sélectionnez Autre:</label>
-                                            <select class="form-control input-lg" name="interlocuteur">
+                                            <select class="form-control " name="interlocuteur">
                                                 @php
                                                     $interlocuteur = $interlocuteurcontroller->GetAll();
                                                     
@@ -153,7 +153,7 @@
 
                                         <div class="form-group">
                                             <label for="exampleInputFile">Titre :</label>
-                                            <select class="form-control input-lg" name="titre">
+                                            <select class="form-control " name="titre">
                                                 <option value="{{$retrive->titre}}">{{$retrive->titre}}</option>
                                                 <option value="M">M</option>
                                                 <option value="Mme">Mme</option>
@@ -163,22 +163,22 @@
                                         </div>
                                         <div class="form-group">
                                                 <label >Nom & Prénom(s)</label>
-                                                <input type="text" class="form-control  input-lg" name="nom" onkeyup="this.value=this.value.toUpperCase()" value="{{$retrive->nom}}">
+                                                <input type="text" class="form-control  " name="nom" onkeyup="this.value=this.value.toUpperCase()" value="{{$retrive->nom}}">
                                         </div>
 
                                         <div class="form-group">
                                                 <label>Email</label>
-                                                <input type="text" class="form-control input-lg" name="email" value="{{$retrive->email}}">
+                                                <input type="text" class="form-control " name="email" value="{{$retrive->email}}">
                                             </div>
 
                                         <div class="form-group">
                                                 <label>Téléphone (*)</label>
-                                                <input type="text" class="form-control input-lg" name="tel" placeholder="(+225)0214578931" value="{{$retrive->tel}}" required>
+                                                <input type="text" class="form-control " name="tel" placeholder="(+225)0214578931" value="{{$retrive->tel}}" required>
                                             </div>
 
                                         <div class="form-group">
                                                 <label>Fonction</label>
-                                                <input type="text" class="form-control input-lg" name="fonction" onkeyup="this.value=this.value.toUpperCase()" value="{{$retrive->fonction}}">
+                                                <input type="text" class="form-control " name="fonction" onkeyup="this.value=this.value.toUpperCase()" value="{{$retrive->fonction}}">
                                             </div>  
                                 
                                 </div>

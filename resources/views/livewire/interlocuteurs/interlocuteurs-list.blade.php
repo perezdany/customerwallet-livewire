@@ -128,11 +128,10 @@
 
                                 <div class="col-xs-6 no-padding">
                                     @can("edit")
-                                        <form action="edit_interlocuteur_form" method="post">
-                                            @csrf
-                                            <input type="text" value={{$interlocuteur->id}} style="display:none;" name="id_interlocuteur">
-                                            <button type="submit" class="btn btn-primary"><i class ="fa fa-edit"></i></button>
-                                        </form>
+                                        <button type="submit" class="btn btn-primary" wire:click="editInterlocuteur('{{$interlocuteur->id}}')"><i class ="fa fa-edit"></i></button>
+                                        <!--<form action="edit_interlocuteur_form" method="post">
+                                           
+                                        </form>-->
                                     @endcan
                                 </div>
                                 

@@ -40,7 +40,7 @@
                         <div class="box-body">
                             <div class="form-group">
                                 <label for="exampleInputFile">Titre :</label>
-                                <select class="form-control input-lg" name="titre">
+                                <select class="form-control " name="titre">
                                 <option value="{{$interlocuteur->titre}}">{{$interlocuteur->titre}}</option>
                                     <option value="M">M</option>
                                     <option value="Mme">Mme</option>
@@ -49,51 +49,50 @@
                                 
                             </div>
                             <div class="form-group">
-                                    <label >Nom & Prénom(s)</label>
-                                    <input type="text" maxlength="60" value="{{$interlocuteur->nom}}" class="form-control  input-lg" name="nom" onkeyup="this.value=this.value.toUpperCase()">
+                                <label >Nom & Prénom(s)</label>
+                                <input type="text" maxlength="60" value="{{$interlocuteur->nom}}" class="form-control  " name="nom" onkeyup="this.value=this.value.toUpperCase()">
                             </div>
 
                             <div class="form-group">
-                                    <label>Email</label>
-                                    <input type="text" class="form-control input-lg" name="email" value="{{$interlocuteur->email}}"  >
-                                </div>
+                                <label>Email</label>
+                                <input type="text" class="form-control " name="email" value="{{$interlocuteur->email}}"  >
+                            </div>
 
                             <div class="form-group">
-                                    <label>Téléphone (*)</label>
-                                    <input type="text" maxlength="30" class="form-control input-lg" name="tel" placeholder="+225 0214578931" value="{{$interlocuteur->tel}}"  >
-                                </div>
+                                <label>Téléphone (*)</label>
+                                <input type="text" maxlength="30" class="form-control " name="tel" placeholder="+225 0214578931" value="{{$interlocuteur->tel}}"  >
+                            </div>
 
-                                <div class="form-group">
-                                    <label>Fonction</label>
-                                        <select class="form-control select2"  maxlength="60" name="fonction" required>
-                                            <option value="{{$interlocuteur->fonction}}">{{$interlocuteur->intitule}}</option>
-                                            @php
-                                                $f = DB::table('professions')->orderBy('id', 'asc')->get();
-                                            @endphp
-                                            @foreach($f as $f)
-                                                <option value="{{$f->id}}">{{$f->intitule}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>  
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="exampleInputFile">Choisissez l'entreprise :</label>
-                                    <select class="form-control input-lg" name="entreprise">
+                            <div class="form-group">
+                                <label>Fonction</label>
+                                    <select class="form-control select2"  maxlength="60" name="fonction" required>
+                                        <option value="{{$interlocuteur->fonction}}">{{$interlocuteur->intitule}}</option>
                                         @php
-                                            $get = $entreprisecontroller->GetAll();
+                                            $f = DB::table('professions')->orderBy('id', 'asc')->get();
                                         @endphp
-                                        <option value={{$interlocuteur->id_entreprise}}>{{$interlocuteur->nom_entreprise}}</option>
-                                        @foreach($get as $entreprise)
-                                            <option value={{$entreprise->id}}>{{$entreprise->nom_entreprise}}</option>
-                                            
+                                        @foreach($f as $f)
+                                            <option value="{{$f->id}}">{{$f->intitule}}</option>
                                         @endforeach
-                                        
                                     </select>
-                                
                                 </div>  
-                                
                             </div>
+
+                            <div class="form-group">
+                                <label for="exampleInputFile">Choisissez l'entreprise :</label>
+                                <select class="form-control " name="entreprise">
+                                    @php
+                                        $get = $entreprisecontroller->GetAll();
+                                    @endphp
+                                    <option value={{$interlocuteur->id_entreprise}}>{{$interlocuteur->nom_entreprise}}</option>
+                                    @foreach($get as $entreprise)
+                                        <option value={{$entreprise->id}}>{{$entreprise->nom_entreprise}}</option>
+                                        
+                                    @endforeach
+                                    
+                                </select>
+                            
+                            </div>  
+                           
 
                             <div class="box-footer">
                                 <button type="submit" class="btn btn-primary">MODIFIER</button>

@@ -15,6 +15,7 @@ $all =  $interlocuteurcontroller-> GetAll();
   //dd($all);
 @endphp
 <div class="row">
+    @include('livewire.interlocuteurs.edit')
     @include('livewire.interlocuteurs.add')
     @include('livewire.interlocuteurs.interlocuteurs-list')
 
