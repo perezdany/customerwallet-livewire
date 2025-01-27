@@ -250,7 +250,8 @@ class InterlocuteurController extends Controller
 
     public function CibleDisplayByIdEntreprise(Request $request)
     {
-        $interloc = Interlocuteur::where('id_entreprise', $request->id_entreprise)->get();
+        $interloc = Interlocuteur::where('id_entreprise', $request->id_entreprise)
+        ->join('professions', 'interlocuteurs.fonction', '=', 'professions.id')->get(['interlocuteurs.*', 'professions.intitule']);
         
         return view('dash/cibles', compact('interloc'));
     }

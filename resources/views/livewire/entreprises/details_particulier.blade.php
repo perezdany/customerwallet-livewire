@@ -18,14 +18,16 @@
                     <p>  </p>
                     <h4><label >Téléphone (fixe/mobile):</label></h4>
                     <input class="form-control" wire:model="entrepriseDetail.telephone" disabled/>
+                    <h4><label >Téléphone mobile:</label></h4>
+                    <input class="form-control" wire:model="entrepriseDetail.mobile" disabled/>
                     <h4><label >Email:</label></h4>
                     <input class="form-control" wire:model="entrepriseDetail.adresse_email" disabled/>
                       
                     <h4><label >Activités:</label></h4>
-                    <input class="form-control" wire:model="eentrepriseDetail.activite" disabled/>
+                    <input class="form-control" wire:model="entrepriseDetail.activite" disabled/>
 
                     <h4><label >Site web:</label></h4>
-                    <input class="form-control" wire:model="eentrepriseDetail." disabled/>
+                    <input class="form-control" wire:model="entrepriseDetail.site_web" disabled/>
                 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary pull-left" data-dismiss="modal">Fermer</button>

@@ -166,7 +166,7 @@
              
             @can("edit")
                 <div class="col-md-3">
-                   <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add"><i class="fa fa-plus">INTERLOCUTEUR</i></button>
+                   <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add"><b><i class="fa fa-plus"></i>INTERLOCUTEUR</b></button>
                 </div>
                 <div class="col-md-3">
                     <a href="form_add_contrat"><button class="btn btn-primary"> <b><i class="fa fa-plus"></i>CONTRAT</b></button></a>

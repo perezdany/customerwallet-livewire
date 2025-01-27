@@ -216,6 +216,7 @@ class EntrepriseController extends Controller
             'adresse' => $request->adresse,
             'activite' => $request->activite,
             'telephone' => $request->tel,
+            'mobile' => $request->mobile,
             'id_pays' => $request->pays,
             'etat' => 0,
             'adresse_email' => $request->email,
@@ -246,6 +247,7 @@ class EntrepriseController extends Controller
             'adresse' => $request->adresse,
             'activite' => $request->activite,
             'telephone' => $request->tel,
+            'mobile' => $request->mobile,
             'id_pays' => $request->pays,
             'etat' => 1,
             'adresse_email' => $request->email,
@@ -267,7 +269,7 @@ class EntrepriseController extends Controller
 
     public function AddProspect(Request $request)
     {
-        //dd($request->nom_entreprise);
+        //dd($request->all());
         $Insert = Entreprise::create([
            
             'nom_entreprise' => $request->nom_entreprise,
@@ -278,6 +280,7 @@ class EntrepriseController extends Controller
             'adresse' => $request->adresse,
             'activite' => $request->activite,
             'telephone' => $request->tel,
+            'mobile' => $request->mobile,
             'etat' => 0,
             'id_pays' => $request->pays,
             'adresse_email' => $request->email,
@@ -323,11 +326,12 @@ class EntrepriseController extends Controller
                 'adresse' => $request->adresse,
                 'activite' => $request->activite,
                 'telephone' => $request->tel,
+                'mobile' => $request->mobile,
                 'id_pays' => $request->pays,
-                 'created_by' => auth()->user()->id,
-                 'client_depuis' => $request->depuis,
-                 'adresse_email' => $request->email,
-                 'site_web' => $request->site_web,
+                'created_by' => auth()->user()->id,
+                'client_depuis' => $request->depuis,
+                'adresse_email' => $request->email,
+                'site_web' => $request->site_web,
             ]);
     
         }
@@ -345,6 +349,7 @@ class EntrepriseController extends Controller
                 'etat' => $request->optionsradios,
                 'adresse' => $request->adresse,
                 'telephone' => $request->tel,
+                'mobile' => $request->mobile,
                 'activite' => $request->activite,
                 'id_pays' => $request->pays,
                 'adresse_email' => $request->email,
@@ -425,7 +430,6 @@ class EntrepriseController extends Controller
     public function EditEntreprise(Request $request)
     {
        
-
         $affected= DB::table('entreprises')
         ->where('id', $request->id_entreprise)
         ->update([
@@ -440,6 +444,7 @@ class EntrepriseController extends Controller
             'etat' => $request->optionsradios,
             'adresse' => $request->adresse,
             'telephone' => $request->tel,
+            'mobile' => $request->mobile,
             'activite' => $request->activite,
             'adresse_email' => $request->email,
             'site_web' => $request->site_web,
@@ -574,6 +579,7 @@ class EntrepriseController extends Controller
             'date_creation' => $request->date_creation,
             'adresse' => $request->adresse,
             'telephone' => $request->tel,
+            'mobile' => $request->mobile,
              'adresse_email' => $request->email,
              'site_web' => $request->site_web,
         ]);
@@ -601,6 +607,7 @@ class EntrepriseController extends Controller
             'activite' => $request->activite,
             'adresse' => $request->adresse,
             'telephone' => $request->tel,
+            'mobile' => $request->mobile,
             'adresse_email' => $request->email,
             'site_web' => $request->site_web,
         ]);
@@ -612,7 +619,6 @@ class EntrepriseController extends Controller
     public function EditEntrActif(Request $request)
     {
        
-
         $affected= DB::table('entreprises')
         ->where('id', $request->id_entreprise)
         ->update([
@@ -628,8 +634,9 @@ class EntrepriseController extends Controller
             'etat' => $request->optionsradios,
             'adresse' => $request->adresse,
             'telephone' => $request->tel,
-             'adresse_email' => $request->email,
-             'site_web' => $request->site_web,
+            'mobile' => $request->mobile,
+            'adresse_email' => $request->email,
+            'site_web' => $request->site_web,
         ]);
 
       
@@ -655,7 +662,7 @@ class EntrepriseController extends Controller
         ->join('utilisateurs', 'entreprises.created_by', '=', 'utilisateurs.id')
         ->join('pays', 'entreprises.id_pays', '=', 'pays.id')
         ->get(['entreprises.*', 'statutentreprises.libele_statut', 'utilisateurs.nom_prenoms', 'pays.nom_pays']);
-
+        
         return $get;
     }
 

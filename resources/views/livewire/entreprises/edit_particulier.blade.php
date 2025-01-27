@@ -66,6 +66,11 @@
                         @error('editEntreprise.tel') <span class="error">{{ $message }}</span> @enderror
                         </div><br>
                         <div class="row form-group text-center">
+                        <div class="col-sm-4"><label >Téléphone mobile:</label></div>
+                        <div class="col-sm-8"><input type="text" id="mobile" maxlength="18" class="form-control"  wire:model="editEntreprise.mobile" ></div>
+                        @error('editEntreprise.tel') <span class="error">{{ $message }}</span> @enderror
+                        </div><br>
+                        <div class="row form-group text-center">
                             <div class="col-sm-4"><label>Email:</label></div>
                             <div class="col-sm-8"><input type="email" wire:model="editEntreprise.adresse_email"  maxlength="30" class="form-control" 
                             id="email"></div>

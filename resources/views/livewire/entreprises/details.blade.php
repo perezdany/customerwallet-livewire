@@ -16,8 +16,10 @@
                     <h4><label>Adresse :</label></h4>
                     <input class="form-control" wire:model="entrepriseDetail.adresse" disabled/>
                     <p>  </p>
-                    <h4><label >Téléphone (fixe/mobile):</label></h4>
+                    <h4><label >Téléphone fixe:</label></h4>
                     <input class="form-control" wire:model="entrepriseDetail.telephone" disabled/>
+                     <h4><label >Téléphone mobile:</label></h4>
+                    <input class="form-control" wire:model="entrepriseDetail.mobile" disabled/>
                     <h4><label >Email:</label></h4>
                     <input class="form-control" wire:model="entrepriseDetail.adresse_email" disabled/>
                    

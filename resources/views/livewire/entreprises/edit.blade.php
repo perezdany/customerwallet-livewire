@@ -73,29 +73,35 @@
                         </div><br>
 
                         <div class="row form-group text-center">
-                        <div class="col-sm-4"><label >Téléphone (fixe/mobile):</label></div>
+                        <div class="col-sm-4"><label >Téléphone fixe:</label></div>
                         <div class="col-sm-8"><input type="text" id="telephone" maxlength="18" class="form-control"  wire:model="editEntreprise.telephone" ></div>
                         @error('editEntreprise.tel') <span class="error">{{ $message }}</span> @enderror
                         </div><br>
 
-                           <div class="row form-group text-center">
+                        <div class="row form-group text-center">
+                        <div class="col-sm-4"><label >Téléphone mobile</label></div>
+                        <div class="col-sm-8"><input type="text" id="mobile" maxlength="18" class="form-control"  wire:model="editEntreprise.mobile" ></div>
+                        @error('editEntreprise.tel') <span class="error">{{ $message }}</span> @enderror
+                        </div><br>
+
+                        <div class="row form-group text-center">
                         <div class="col-sm-4"><label>Pays :</label></div>
-                            <div class="col-sm-8"><select class="form-control" id="id_pays" wire:model="editEntreprise.id_pays">
-                            
-                            @php
-                                $pays = $payscontroller->DisplayAll();
-                            @endphp
-                            @foreach($pays as $pays)
-                                <option value={{$pays->id}}>{{$pays->nom_pays}}</option>
-                                
-                            @endforeach
-                            
-                        </select></div>
+                            <div class="col-sm-8">
+                            <select class="form-control" id="id_pays" wire:model="editEntreprise.id_pays">
+                                @php
+                                    $pays = $payscontroller->DisplayAll();
+                                @endphp
+                                @foreach($pays as $pays)
+                                    <option value={{$pays->id}}>{{$pays->nom_pays}}</option>
+                                    
+                                @endforeach   
+                            </select>
+                            </div>
                         </div><br>
                         <div class="row form-group text-center">
-                        <div class="col-sm-4"><label >Activité:</label></div>
-                        <div class="col-sm-8"><input type="text" maxlength="60" class="form-control" 
-                        id="activite" wire:model="editEntreprise.activite" onkeyup='this.value=this.value.toUpperCase()'></div>
+                            <div class="col-sm-4"><label >Activité:</label></div>
+                            <div class="col-sm-8"><input type="text" maxlength="60" class="form-control" 
+                            id="activite" wire:model="editEntreprise.activite" onkeyup='this.value=this.value.toUpperCase()'></div>
                         </div><br>
                         <div class="row form-group text-center">
                         <div class="col-sm-4"><label>Email:</label></div>

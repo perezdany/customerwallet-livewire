@@ -49,7 +49,7 @@
             </div>
             @can("edit")
                  <div class="col-md-3">
-                   <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add"><i class="fa fa-plus">INTERLOCUTEUR</i></button>
+                   <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add"><b><i class="fa fa-plus"></i>INTERLOCUTEUR</b></button>
                 </div>
             @endcan
             @can("manager-commercial")

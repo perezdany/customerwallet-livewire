@@ -33,12 +33,13 @@ class CibleController extends Controller
         ->join('pays', 'entreprises.id_pays', '=', 'pays.id')
         ->orderBy('nom_entreprise', 'asc')
         ->get(['entreprises.*', 'pays.nom_pays']);
-
+        
         return $get;
     }
 
     public function AddCible(Request $request)
     { 
+        //dd($request->all());
         $Insert = Entreprise::create([
            
         'nom_entreprise'=> $request->nom,
@@ -47,9 +48,13 @@ class CibleController extends Controller
         'adresse' => $request->adresse,
         'activite' => $request->activite,
         'telephone' => $request->tel,
+        'mobile' => $request->mobile,
+        'date_creation' => $request->date_creation,
         'id_pays' => $request->pays,
+        'adresse_email' => $request->email,
+        'site_web' => $request->site_web,
         'id_statutentreprise' => 3,
-        'paticulier' => $request->particulier,
+        'particulier' => $request->particulier,
          'created_by' => auth()->user()->id, 
         ]);
 
@@ -94,11 +99,15 @@ class CibleController extends Controller
             'nom_entreprise'=> $request->nom,
             'chiffre_affaire' => $request->chiffre, 
             'nb_employes' => $request->nb_emp,
+            'date_creation' => $request->date_creation,
             'adresse' => $request->adresse,
             'activite' => $request->activite,
             'telephone' => $request->tel,
+            'mobile' => $request->mobile,
+            'adresse_email' => $request->email,
+            'site_web' => $request->site_web,
             'id_pays' => $request->pays,
-            'paticulier' => $request->particulier,
+            'particulier' => $request->particulier,
             'created_by' => auth()->user()->id, 
         ]);
         return redirect('cibles')->with('success', 'Modification effectuée');

@@ -97,68 +97,91 @@
                                     <span aria-hidden="true">&times;</span></button>
                                   <h4 class="modal-title">Modification</h4>
                                 </div>
-                                
-                                  
                                 <!-- form start -->
                                 <form role="form" method="post" action="edit_prospect">
                                   <div class="modal-body">
-                                      <div class="box-body">
+                                      <div class="box-body"  style="text-align:center;">
                                           @csrf
                                           <input type="text" name="id_entreprise" value="{{$all->id}}" style="display:none;">
-                                      
-                                        
-                                            <div class="form-group">
-                                                <label>Désignation :</label>
-                                                <input type="text" class="form-control " value="{{$all->nom_entreprise}}" name="nom_entreprise" onkeyup='this.value=this.value.toUpperCase()'  reuqired />
+                                  
+                                            <div class="form-group row text-center">
+                                              <div class="col-sm-6"><label>Désignation:</label><br></div>
+                                              <div class="col-sm-6">
+                                                <input type="text" class="form-control "  value="{{$all->nom_entreprise}}" 
+                                                name="nom_entreprise" onkeyup='this.value=this.value.toUpperCase()'  reuqired />
+                                              </div> 
                                             </div> <br><br>
                                           
 
-                                            <div class="form-group">
-                                                <label>Adresse :</label>
-                                                <input type="text" class="form-control " value="{{$all->adresse}}"  onkeyup='this.value=this.value.toUpperCase()' name="adresse" />
+                                            <div class="form-group row text-center">
+                                                <div class="col-sm-6"><label>Adresse :</label></div>
+                                                <div class="col-sm-6"><input type="text" class="form-control " value="{{$all->adresse}}" 
+                                                 onkeyup='this.value=this.value.toUpperCase()' name="adresse" /></div>
                                             </div><br><br>
 
 
-                                            <div class="form-group">
-                                              <label >Téléphone (fixe/mobile):</label>
-                                              <input type="text"  maxlength="18" class="form-control  " value="{{$all->telephone}}" name="tel" placeholder="+225 27 47 54 45 68">
+                                            <div class="form-group row text-center">
+                                              <div class="col-sm-6"><label >Téléphone fixe:</label></div>
+                                              <div class="col-sm-6"><input type="text"  maxlength="18" class="form-control  " value="{{$all->telephone}}"
+                                               name="tel" placeholder="+225 27 47 54 45 68"></div>
                                             </div><br><br>
 
-                                            <div class="form-group">
-                                              <label >Chiffre d'affaire (FCFA):</label>
-                                              <input type="text" id="ca" value="{{$all->chiffre_affaire}}"  maxlength="18" class="form-control  " name="chiffre" placeholder="1000000">
+                                             <div class="form-group row text-center">
+                                              <div class="col-sm-6"><label >Téléphone mobile:</label></div>
+                                              <div class="col-sm-6"><input type="text"  maxlength="18" class="form-control"
+                                               value="{{$all->mobile}}" name="mobile" placeholder="+225 07 47 54 45 68"></div>
                                             </div><br><br>
 
-                                            <div class="form-group">
-                                              <label >Nombre d'employés:</label>
-                                              <input type="text" id="ne" value="{{$all->nb_employes}}" maxlength="18" class="form-control  " name="nb_emp" placeholder="5">
+                                            @if($all->particulier == 0)
+                                              <div class="form-group row text-center">
+                                                <div class="col-sm-6"><label >Chiffre d'affaire (FCFA):</label></div>
+                                                <div class="col-sm-6"><input type="text" id="ca" value="{{$all->chiffre_affaire}}"
+                                                  maxlength="18" class="form-control  " name="chiffre" placeholder="1000000"></div>
+                                              </div><br><br>
+
+                                              <div class="form-group row text-center">
+                                                <div class="col-sm-6"><label >Nombre d'employés:</label></div>
+                                                <div class="col-sm-6"><input type="text" id="ne" value="{{$all->nb_employes}}" maxlength="18"
+                                                 class="form-control  " name="nb_emp" placeholder="5"></div>
+                                              </div><br><br>
+
+                                              <div class="form-group row text-center">
+                                                <div class="col-sm-6"><label>Activité:</label></div>
+                                                 <div class="col-sm-6"><input type="text"  value="{{$all->activite}}" maxlength="60" 
+                                                 class="form-control  " name="activite" onkeyup='this.value=this.value.toUpperCase()'></div>
+                                              </div><br><br>
+
+                                              <div class="form-group row text-center">
+                                                 <div class="col-sm-6"><label>Pays:</label></div>
+                                                  <div class="col-sm-6"><select class="form-control " name="pays">
+                                                    <option value={{$all->id_pays}}>{{$all->nom_pays}}</option>
+                                                      @php
+                                                          $pays = $payscontroller->DisplayAll();
+                                                      @endphp
+                                                      @foreach($pays as $pays)
+                                                          <option value={{$pays->id}}>{{$pays->nom_pays}}</option>
+                                                          
+                                                      @endforeach
+                                                      
+                                                    </select>
+                                                  </div>
+                                              </div><br><br>
+                                            @else
+                                              <div class="form-group row text-center">
+                                                <div class="col-sm-6"><label>Profession:</label></div>
+                                                <div class="col-sm-6"><input type="text"  value="{{$all->activite}}" maxlength="60" class="form-control  " 
+                                                name="activite" onkeyup='this.value=this.value.toUpperCase()'></div>
+                                              </div><br><br>
+
+                                            @endif
+
+                                            <div class="form-group row text-center">
+                                               <div class="col-sm-6"><label>Email:</label></div>
+                                               <div class="col-sm-6"><input type="email"  maxlength="30" class="form-control" 
+                                               value="{{$all->adresse_email}}" name="email"></div>
                                             </div><br><br>
 
-                                            <div class="form-group">
-                                              <label>Objet sociale/Activité:</label>
-                                              <input type="text"  value="{{$all->activite}}" maxlength="60" class="form-control  " 
-                                              name="activite" onkeyup='this.value=this.value.toUpperCase()'>
-                                            </div><br><br>
-
-                                            <div class="form-group">
-                                              <label>Email:</label>
-                                              <input type="email"  maxlength="30" class="form-control  " value="{{$all->adresse_email}}" name="email">
-                                            </div><br><br>
-
-                                            <div class="form-group">
-                                                <label>Pays :</label>
-                                                <select class="form-control " name="pays">
-                                                <option value={{$all->id_pays}}>{{$all->nom_pays}}</option>
-                                                    @php
-                                                        $pays = $payscontroller->DisplayAll();
-                                                    @endphp
-                                                    @foreach($pays as $pays)
-                                                        <option value={{$pays->id}}>{{$pays->nom_pays}}</option>
-                                                        
-                                                    @endforeach
-                                                    
-                                                </select>
-                                            </div>
+                                           
 
                                           <div class="modal-footer">
                         
@@ -235,77 +258,78 @@
                                     <span aria-hidden="true">&times;</span></button>
                                   <h4 class="modal-title">Infos</h4>
                                 </div>
-                                
-                                  
-                                <!-- form start -->
-                               
+                                  <!-- form start -->
                                   <div class="modal-body">
-                                       <div class="box-body" >
+                                      <div class="box-body" >
                                         @csrf
                                        
                                         <div class="box-body" style="text-align: center;">
                                         
                                           <div class="form-group">
-                                              <h4><label>Raison sociale:</label></h4>
-                                              <p> {{$all->nom_entreprise}} </p>
+                                              <h4><label>Nom & prénom(s)/Dénomination:</label></h4>
+                                              <p> <h4>{{$all->nom_entreprise}}</h4> </p>
                                           </div><br>
                                           <div class="form-group">
-                                              <h4><label>Adresse :</label></h4>
+                                              <h4><label>Adresse géographique:</label></h4>
                                               <p> {{$all->adresse}} </p>
                                           </div><br>
 
                                           <div class="form-group">
-                                            <h4><label >Téléphone (fixe/mobile):</label></h4>
+                                            <h4><label >Téléphone fixe:</label></h4>
                                             <p> {{$all->telephone}} </p>
                                           </div><br>
 
                                           <div class="form-group">
-                                            <h4><label >Email:</label></h4>
+                                            <h4><label >Téléphone mobile:</label></h4>
+                                            <p> {{$all->mobile}} </p>
+                                          </div><br>
+
+                                          <div class="form-group">
+                                            <h4><label>Email:</label></h4>
                                             <p> {{$all->adresse_email}} </p>
                                           </div><br>
-        
-                                          <div class="form-group">
-                                            <h4><label >Chiffre d'affaire (FCFA):</label></h4>
-                                            <p> {{$all->chiffre_affaire}} </p>
-                                          </div><br>
+                                          @if($all->particulier == 0)
+                                            <div class="form-group">
+                                              <h4><label >Chiffre d'affaire (FCFA):</label></h4>
+                                              <p> {{$all->chiffre_affaire}} </p>
+                                            </div><br>
 
-                                          <div class="form-group">
-                                            <h4><label >Nombre d'employés:</label></h4>
-                                            <p> {{$all->nb_employes}} </p>
-                                          </div><br>
+                                            <div class="form-group">
+                                              <h4><label >Nombre d'employés:</label></h4>
+                                              <p> {{$all->nb_employes}} </p>
+                                            </div><br>
 
-                                          <div class="form-group">
-                                            <h4><label >Activités:</label></h4>
-                                            <p>{{$all->activite}} </p>
-                                          </div><br>
-
-                                          <div class="form-group">
+                                            <div class="form-group">
                                               <h4><label>Pays :</label></h4>
                                               <p> {{$all->nom_pays}}</p>
-                                                
-                                          </div><br>
-                                          
+                                            </div><br>
+                                            <div class="form-group">
+                                              <h4><label >Activités:</label></h4>
+                                              <p>{{$all->activite}} </p>
+                                            </div><br>
+                                          @else
+                                            <div class="form-group">
+                                              <h4><label >Profession:</label></h4>
+                                              <p>{{$all->activite}} </p>
+                                            </div><br>
+                                          @endif
+                                         
+
+                                         
                                         </div>
-                                      </div>  <!-- /.box-body -->
+                                      </div>  
+                                        <!-- /.box-body -->
                                       
-                                       <div class="modal-footer">
-                        
-                                        <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Fermer</button>
-                                      
-                                    
-                                      </div>
+                                        <div class="modal-footer">
+                                          <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Fermer</button>
+                                        </div>
                                   </div>
-                                
-                             
                               </div>
                               <!-- /.modal-content -->
                             </div>
                             <!-- /.modal-dialog -->
                           </div>
                           <!-- /.modal -->
-                             
-                        
-                          
                         </td>
                     
                     </tr>
@@ -321,7 +345,4 @@
             <!-- /.col -->
               
       </div>
-       
-   
-    	
 @endsection

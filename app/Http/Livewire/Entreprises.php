@@ -77,6 +77,7 @@ class Entreprises extends Component
             $this->editEntreprise['chiffre_affaire'] != $this->editOldValues['chiffre_affaire'] OR
             $this->editEntreprise['nb_employes'] != $this->editOldValues['nb_employes'] OR
             $this->editEntreprise['telephone'] != $this->editOldValues['telephone']  OR
+            $this->editEntreprise['mobile'] != $this->editOldValues['mobile']  OR
             $this->editEntreprise['adresse_email'] != $this->editOldValues['adresse_email'] OR
             $this->editEntreprise['activite'] != $this->editOldValues['activite'] OR
             $this->editEntreprise['etat'] != $this->editOldValues['etat'] OR
