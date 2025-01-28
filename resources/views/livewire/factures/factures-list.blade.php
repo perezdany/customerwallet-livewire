@@ -323,9 +323,9 @@
                             <select class="form-control" wire:model.change="etat">
                             
                                 <option value="">Etat</option>
-                                <option value="1">Réglé</option>
-                                <option value="0">non-reglé</option>
-                                <option value="2">Annulé</option>
+                                <option value="1">Réglée</option>
+                                <option value="0">non-reglée</option>
+                                <option value="2">Annulée</option>
                             </select>
                                                         
                         </div>
@@ -372,6 +372,33 @@
                             </div>
                         </div>
                     </div>
+
+                    <label>Afficher par date:</label>
+                    <div class="row">
+                        <div class="col-xs-3 form-group">
+                            <div class="col-xs-3">
+                                <select class="" id="compare" wire:model.debounce.250ms="compare">
+                                    <option value="">Choisir</option>
+                                    <option value="<"><</option> 
+                                    <option value=">">></option>
+                                    <option value="=">=</option>                              
+                                </select>   
+                            </div>
+                                <div class="col-xs-3">
+                                <select class="" id="anne_depuis" wire:model.debounce.250ms="annee">
+                                    <option value="">Choisir</option>
+                                    @php
+                                        $annee_fin = "2030";
+                                        for($annee="2014"; $annee<=$annee_fin; $annee++)
+                                        {
+                                            echo'<option value='.$annee.'>'.$annee.'</option>';
+                                        }
+                                    @endphp
+                                    
+                                </select>   
+                            </div>
+                        </div>    
+                    </div>
                 
                 </div>
                 <!-- /.box-header -->
@@ -386,10 +413,11 @@
                             <th wire:click="setOrderField('titre_contrat')"><i class="fa fa-sort-amount-desc" aria-hidden="true"></i>Contrat</th>
                             <th wire:click="setOrderField('nom_entreprise')"><i class="fa fa-sort-amount-desc" aria-hidden="true"></i>Client</th>
                             <th wire:click="setOrderField('montant_facture')"><i class="fa fa-sort-amount-desc" aria-hidden="true"></i>Montant</th>
+                            <th>Reglé</th>
                             <th>Paiements</th>
                             <th>Fichier</th>
-                            <th>Modifier le Fichier</th>
-                            <th>Modifier/Paiement</th>
+                            <th>Mod. le Fichier</th>
+                            <th>Mod./Paiement</th>
                             <th>Supp</th>
                         </tr>
                         </thead>
@@ -405,7 +433,6 @@
                                     @php
                                         
                                         $total_non_reglee = $total_non_reglee + $facture->montant_facture;
-                                        
                                         //LES FACTURE ECHUE DEPUIS UN MOMENT
                                         $diff_in_days = floor(($date_aujourdhui - strtotime($facture->date_reglement)) / (60 * 60 * 24));//on obtient ca en jour
                                         //dump($total);
@@ -417,7 +444,11 @@
                                             <td class="bg-red">{{$facture->numero_facture}}</td>
                                             
                                             <td class="bg-red">@php echo date('d/m/Y',strtotime($facture->date_emission)) @endphp</td>
-                                            <td class="bg-red">@php echo date('d/m/Y',strtotime($facture->date_reglement)) @endphp</td>
+                                            @if($facture->date_reglement != NULL)
+                                                <td class="bg-red">@php echo date('d/m/Y',strtotime($facture->date_reglement)) @endphp</td>
+                                            @else
+                                                <td class="bg-red"></td>
+                                            @endif
                                             @php
                                                 //Afficher les infos du contrat et le nom de l'entreprise
                                                 $disp = DB::table('contrats')
@@ -433,10 +464,16 @@
                                                 @endphp
                                             </td>
                                             <td class="bg-red">
+                                                @php
+                                                    $rest  = $calculator->RetrunMontantRest($facture->id, $facture->montant_facture);
+                                                    echo  number_format(($facture->montant_facture-$rest), 2, ".", " ")." XOF";
+                                                @endphp
+                                            </td>
+                                            <td class="bg-red">
                                                 <form action="paiement_by_facture" method="post">
                                                         @csrf
                                                         <input type="text" value={{$facture->id}} style="display:none;" name="id_facture">
-                                                        <button type="submit" class="btn btn-success"><i class="fa fa-money"></i>AFFICHER</button>
+                                                        <button type="submit" class="btn btn-success"><i class="fa fa-eye"></i></button>
                                                 </form>
                                             </td>
                                             
@@ -550,7 +587,12 @@
                                                 <td class="bg-warning">{{$facture->numero_facture}}</td>
                                                 <td class="bg-warning">@php echo date('d/m/Y',strtotime($facture->date_emission)) @endphp</td>
                                         
-                                                <td class="bg-warning">@php echo date('d/m/Y',strtotime($facture->date_reglement)) @endphp</td>
+                                                < @if($facture->date_reglement != NULL)
+                                                    <td class="bg-warning">@php echo date('d/m/Y',strtotime($facture->date_reglement)) @endphp</td>
+                                                @else
+                                                    <td class="bg-warning"></td>
+                                            
+                                                @endif
                                                         
                                                 <td class="bg-warning">{{$facture->titre_contrat}}</td>
                                                 <td class="bg-warning">{{$facture->nom_entreprise}}</td>
@@ -560,10 +602,16 @@
                                                     @endphp
                                                 </td>
                                                 <td class="bg-warning">
+                                                    @php
+                                                        $rest  = $calculator->RetrunMontantRest($facture->id, $facture->montant_facture);
+                                                         echo  number_format(($facture->montant_facture-$rest), 2, ".", " ")." XOF";
+                                                    @endphp
+                                                </td>
+                                                <td class="bg-warning">
                                                     <form action="paiement_by_facture" method="post" target="blank">
                                                             @csrf
                                                             <input type="text" value={{$facture->id}} style="display:none;" name="id_facture">
-                                                            <button type="submit" class="btn btn-success"><i class="fa fa-money"></i>AFFICHER</button>
+                                                            <button type="submit" class="btn btn-success"><i class="fa fa-eye"></i></button>
                                                     </form>
                                                 </td>
                                             
@@ -684,7 +732,12 @@
                                                 <td class="bg-warning">{{$facture->numero_facture}}</td>
                                                 
                                                 <td class="bg-warning">@php echo date('d/m/Y',strtotime($facture->date_emission)) @endphp</td>
-                                                <td class="bg-warning">@php echo date('d/m/Y',strtotime($facture->date_reglement)) @endphp</td>
+                                                @if($facture->date_reglement != NULL)
+                                                    <td class="bg-warning">@php echo date('d/m/Y',strtotime($facture->date_reglement)) @endphp</td>
+                                                @else
+                                                    <td class="bg-warning"></td>
+                                            
+                                                @endif
                                                 
                                                 <td class="bg-warning">{{$facture->titre_contrat}}</td>
                                                 <td class="bg-warning">{{$facture->nom_entreprise}}</td>
@@ -694,10 +747,16 @@
                                                     @endphp
                                                 </td>
                                                 <td class="bg-warning">
+                                                    @php
+                                                        $rest  = $calculator->RetrunMontantRest($facture->id, $facture->montant_facture);
+                                                        echo  number_format(($facture->montant_facture-$rest), 2, ".", " ")." XOF";
+                                                    @endphp
+                                                </td>
+                                                <td class="bg-warning">
                                                     <form action="paiement_by_facture" method="post" target="blank">
                                                         @csrf
                                                         <input type="text" value={{$facture->id}} style="display:none;" name="id_facture">
-                                                        <button type="submit" class="btn btn-success"><i class="fa fa-money"></i>AFFICHER</button>
+                                                        <button type="submit" class="btn btn-success"><i class="fa fa-eye"></i></button>
                                                     </form>
                                                 </td>
                                             
@@ -821,8 +880,13 @@
                                         <td >{{$facture->numero_facture}}</td>
                                         
                                         <td>@php echo date('d/m/Y',strtotime($facture->date_emission)) @endphp</td>
-                                        <td>@php echo date('d/m/Y',strtotime($facture->date_reglement)) @endphp</td>
-
+                                        @if($facture->date_reglement != NULL)
+                                            <td>@php echo date('d/m/Y',strtotime($facture->date_reglement)) @endphp</td>
+                                        @else
+                                            <td></td>
+                                    
+                                        @endif
+                                                
                                         <td>{{$facture->titre_contrat}}</td>
                                         <td>{{$facture->nom_entreprise}}</td>
                                         <td>
@@ -831,10 +895,16 @@
                                             @endphp
                                         </td>
                                         <td>
+                                            @php
+                                                $rest  = $calculator->RetrunMontantRest($facture->id, $facture->montant_facture);
+                                                echo  number_format(($facture->montant_facture-$rest), 2, ".", " ")." XOF";
+                                            @endphp
+                                        </td>
+                                        <td>
                                             <form action="paiement_by_facture" method="post" target="blank">
                                                     @csrf
                                                     <input type="text" value={{$facture->id}} style="display:none;" name="id_facture">
-                                                    <button type="submit" class="btn btn-success"><i class="fa fa-money"></i>AFFICHER</button>
+                                                    <button type="submit" class="btn btn-success"><i class="fa fa-eye"></i></button>
                                             </form>
                                         </td>
                                         
@@ -970,18 +1040,26 @@
                 </div>
                 <div class="box-footer"> 
                     @php
-                         if(isset($total_by_entreprise) AND $total_by_entreprise != 0)
+                        if(isset($total_by_entreprise) AND $total_by_entreprise != 0)
                         {
                             echo  "<h3>TOTAL DES FACTURES POUR CETTE ENTREPRISE:<b>".number_format($total_by_entreprise, 2, ".", " ")." XOF</b></h3>";
                         }
                         
                         $somme = 0;
-                        $non_r = DB::table('factures')->where('reglee', 0)->where('annulee', 0)->get();
+                        /*$non_r = DB::table('factures')->where('reglee', 0)->where('annulee', 0)->get();
                         foreach($non_r as $non_r)
                         {
                             $somme = $somme + $non_r->montant_facture;
                         }
-                        echo  "<h3>TOTAL DES FACTURES NON REGLEES:<b>".number_format($somme, 2, ".", " ")." XOF</b></h3>";
+                        echo  "<h3>TOTAL DES FACTURES NON REGLEES:<b>".number_format($somme, 2, ".", " ")." XOF</b></h3>";*/
+                        $non_r = DB::table('factures')->where('reglee', 0)->where('annulee', 0)->get();
+                        foreach($non_r as $non_r)
+                        {
+                            $rest  = $calculator->RetrunMontantRest($non_r->id, $non_r->montant_facture);
+                            $somme = $somme + $rest ;
+                            
+                        }
+                        echo  "<h3>TOTAL MONTANT DES FACTURES NON REGLEES:<b>".number_format($somme, 2, ".", " ")." XOF</b></h3>";
                     @endphp
                    
                 </div>

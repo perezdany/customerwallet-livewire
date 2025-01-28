@@ -443,24 +443,23 @@
                 <h3><a href="contrat" style="color:#fff;"> {{$count}} </a></h3>
 
                   <a href="contrat" style="color:#fff;"> <p>CONTRATS</p>  </a><br>
-                    <form method="get" action="encours">
-                      @csrf
-                      <!--<input type="text" value="" name="entreprise" style="display:none;">
-                      <input type="text" value="" name="reconduction" style="display:none;">
-                      <input type="text" value="0" name="etat_contrat" style="display:none;">
-                      <input type="text" value="" name="service" style="display:none;">-->
-                      <button class="btn  bg-yellow"><p>En cours : {{$encours}}  </p></button>  
-                      </form>
-                      <form method="get" action="end">
-                      @csrf
-                      <!--<input type="text" value="" name="entreprise" style="display:none;">
-                      <input type="text" value="" name="reconduction" style="display:none;">
-                      <input type="text" value="1" name="etat_contrat" style="display:none;">
-                      <input type="text" value="" name="service" style="display:none;">-->
-                      <button class="btn  bg-yellow"><p>Terminés : {{$end}}  </p></button>  
-                      </form>
-            
-                  
+                  <form method="get" action="encours">
+                    @csrf
+                    <!--<input type="text" value="" name="entreprise" style="display:none;">
+                    <input type="text" value="" name="reconduction" style="display:none;">
+                    <input type="text" value="0" name="etat_contrat" style="display:none;">
+                    <input type="text" value="" name="service" style="display:none;">-->
+                    <button class="btn  bg-yellow"><p>En cours : {{$encours}}  </p></button>  
+                    </form>
+                    <form method="get" action="end">
+                    @csrf
+                    <!--<input type="text" value="" name="entreprise" style="display:none;">
+                    <input type="text" value="" name="reconduction" style="display:none;">
+                    <input type="text" value="1" name="etat_contrat" style="display:none;">
+                    <input type="text" value="" name="service" style="display:none;">-->
+                    <button class="btn  bg-yellow"><p>Terminés : {{$end}}  </p></button>  
+                    </form>
+
               </div>
           
             <div class="icon"><!--ion ion-person-add-->
@@ -473,51 +472,48 @@
         </div>
         <!-- ./col -->
 
-          <div class="col-lg-3 col-xs-6">
-            <!-- small box -->
-            <div class="small-box bg-purple">
-              <div class="inner">
-              @php
-                    $count = $calculator->CountFacture();
-                      $countno = $calculator-> CountFactureNoReglee();
-                $countreglee = $calculator-> CountFactureReglee();
-                    //dd($count);
-                  @endphp
-                <h3> <a href="facture" style="color:#fff;">{{$count}}</a></h3>
-                
-                <a href="facture" style="color:#fff;"><p>FACTURE(Avoir y compris)</p></a><br>
-
-              <form method="get" action="no_reglee">
-                @csrf
-                
-                <button class="btn bg-purple"><p>Non réglées : {{$countno}} </p></button>  
-              </form>
-              <form method="get" action="reglee">
-                @csrf
-                  
-                <button class="btn bg-purple"><p>Réglées : {{$countreglee}}  </p></button>  
-              </form> 
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-purple">
+            <div class="inner">
+            @php
+                  $count = $calculator->CountFacture();
+                    $countno = $calculator-> CountFactureNoReglee();
+              $countreglee = $calculator-> CountFactureReglee();
+                  //dd($count);
+                @endphp
+              <h3> <a href="facture" style="color:#fff;">{{$count}}</a></h3>
               
-              </div>
-              <div class="icon">
-                <i class="fa fa-money"></i>
-              </div>
-              <a href="facture" class="small-box-footer">
-                Plus d'infos <i class="fa fa-arrow-circle-right"></i>
-              </a>
-            </div>
-          </div>
+              <a href="facture" style="color:#fff;"><p>FACTURE(Avoir y compris)</p></a><br>
 
-      
-          
-      
+            <form method="get" action="no_reglee">
+              @csrf
+              
+              <button class="btn bg-purple"><p>Non réglées : {{$countno}} </p></button>  
+            </form>
+            <form method="get" action="reglee">
+              @csrf
+                
+              <button class="btn bg-purple"><p>Réglées : {{$countreglee}}  </p></button>  
+            </form> 
+            
+            </div>
+            <div class="icon">
+              <i class="fa fa-money"></i>
+            </div>
+            <a href="facture" class="small-box-footer">
+              Plus d'infos <i class="fa fa-arrow-circle-right"></i>
+            </a>
+          </div>
+        </div>
+
       </div>
       <!-- /.row -->
 
       <div class="row">
           
           
-      </div>
+       </div>
       <!-- /.row -->
     
     @endcan

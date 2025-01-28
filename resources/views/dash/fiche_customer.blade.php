@@ -148,8 +148,7 @@
                                         
                     
                     </div>
-                
-                    
+                                
                 </div>
                 <!-- /.modal-content -->
             </div>
@@ -158,8 +157,7 @@
 
         <div class="col-md-2"></div>
         <div class="col-md-8">
-             
-             
+
             <div class="col-md-3">
                 <a href="fiche"><button class="btn btn-default" > <b>RETOUR</b></button></a>
             </div>
@@ -292,19 +290,20 @@
                                     </td>
                                     <td>
                                         @php
-                                                    echo  number_format($contrats->montant, 2, ".", " ")." XOF";
+                                             echo  number_format($contrats->montant, 2, ".", " ")." XOF";
                                         @endphp
                                         
                                     </td>
 
                                     <td>
+                                      
                                         @can("edit")
-                                        <form action="fiche_edit_contrat_form" method="post" >
-                                            @csrf
-                                            <input type="text" value={{$contrats->id}} style="display:none;" name="id_contrat">
-                                            <input type="text" value={{$id_entreprise}} style="display:none;" name="id_entreprise">
-                                            <button type="submit" class="btn btn-success"><i class="fa fa-edit"></i></button>
-                                        </form>
+                                            <form action="fiche_edit_contrat_form" method="post" >
+                                                @csrf
+                                                <input type="text" value={{$contrats->id}} style="display:none;" name="id_contrat">
+                                                <input type="text" value={{$id_entreprise}} style="display:none;" name="id_entreprise">
+                                                <button type="submit" class="btn btn-success"><i class="fa fa-edit"></i></button>
+                                            </form>
                                         @endcan
                                     </td>
                                 

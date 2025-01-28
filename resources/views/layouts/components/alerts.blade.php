@@ -115,7 +115,7 @@
 
                     <div class="box-footer clearfix">
         
-                       <a href="facture" class="btn btn-sm btn-primary btn-flat pull-right">Voir tout</a>
+                       <a href="no_reglee" class="btn btn-sm btn-primary btn-flat pull-right">Voir tout</a>
                     </div>
                 </div>
                 <!-- /.box -->
@@ -241,7 +241,7 @@
 
                     <div class="box-footer clearfix">
         
-                        @if(auth()->user()->id_role == 2)<a href="facture" class="btn btn-sm btn-primary btn-flat pull-right">Voir tout</a>@endif
+                      <a href="no_reglee" class="btn btn-sm btn-primary btn-flat pull-right">Voir tout</a>
                     </div>
                 </div>
                 <!-- /.box -->
@@ -367,7 +367,7 @@
 
                     <div class="box-footer clearfix">
         
-                        @if(auth()->user()->id_role == 2)<a href="facture" class="btn btn-sm btn-primary btn-flat pull-right">Voir tout</a>@endif
+                        <a href="no_reglee" class="btn btn-sm btn-primary btn-flat pull-right">Voir tout</a>
                     </div>
                 </div>
                 <!-- /.box -->

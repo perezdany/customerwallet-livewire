@@ -22,6 +22,11 @@
                             <label for="exampleInputEmail1">Date d'emission de la facture:</label>
                             <input type="date" class="form-control" wire:model="editFacture.date_emission">
                         </div>
+                        
+                         <div class="form-group">
+                            <label for="exampleInputEmail1">Date de règlement de la facture:</label>
+                            <input type="date" class="form-control" wire:model="editFacture.date_reglement">
+                        </div>
                             
                         <div class="form-group">
                             <label for="exampleInputEmail1">Montant de la facture:</label>

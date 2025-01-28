@@ -33,7 +33,8 @@ class Factures extends Component
     public $entreprise = "";
     public $etat = "";
     public $annulee = "";
-
+    public $annee = "";
+    public $compare ="";
     public $orderField = 'created_at';
     public $orderDirection = 'DESC';
 
@@ -106,6 +107,7 @@ class Factures extends Component
        if(
             $this->editFacture['numero_facture'] != $this->editOldValues['numero_facture'] OR
             $this->editFacture['date_emission'] != $this->editOldValues['date_emission'] OR
+            $this->editFacture['date_reglement'] != $this->editOldValues['date_reglement'] OR
             $this->editFacture['montant_facture'] != $this->editOldValues['montant_facture'] OR
             $this->editFacture['id_contrat'] != $this->editOldValues['id_contrat'] OR
             $this->editFacture['file_path'] != $this->editOldValues['file_path']  OR
@@ -127,6 +129,7 @@ class Factures extends Component
         ->update([ 'numero_facture' => $this->editFacture['numero_facture'], 
             
             'date_emission' => $this->editFacture['date_emission'], 
+            'date_reglement' => $this->editFacture['date_reglement'], 
             'montant_facture' => $this->editFacture['montant_facture'], 
             'id_contrat' => $this->editFacture['id_contrat'],
             'annulee' => $this->editFacture['annulee']
@@ -267,7 +270,7 @@ class Factures extends Component
             }
             else
             {
-                $factureQuery->where("reglee",  $this->etat);
+                $factureQuery->where("reglee",  $this->etat)->where("annulee", 0);
             
             }
             
@@ -289,6 +292,28 @@ class Factures extends Component
 
         }
        
+        if($this->compare != "" AND $this->annee != "")
+        {
+            
+            if($this->compare == "=")
+            {
+                $annee = $this->annee."-01-01";
+                $annee_f = $this->annee."-12-31";
+                $factureQuery->where("date_emission", '<', $annee_f)->where("date_emission", '>', $annee);
+            }
+            elseif($this->compare == "<")
+            {
+                $annee = $this->annee."-01-01";
+                $factureQuery->where("date_emission", $this->compare,  $annee);
+            }
+            else
+            {
+                $annee = $this->annee."-12-31";
+                $factureQuery->where("date_emission", $this->compare,  $annee);
+            }
+            
+        }
+        
 
         //dump($factureQuery);
         return view('livewire.factures.index', ['factures' => $factureQuery->orderBy($this->orderField, $this->orderDirection)->paginate(8) ])

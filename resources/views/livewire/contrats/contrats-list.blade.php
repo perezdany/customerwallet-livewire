@@ -23,7 +23,6 @@
                 </div>    
 
                 <div class="col-md-2 form-group">
-            
                     <select class="form-control" wire:model.change="reconduction" id="reconduction">
                     
                         <option value="">Renouvellement</option>

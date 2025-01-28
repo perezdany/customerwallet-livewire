@@ -67,6 +67,10 @@ class AuthServiceProvider extends ServiceProvider
             return $user->hasPermission("Ecriture");
         });
 
+        Gate::define("procuration", function(Utilisateur $user){
+            return $user->hasPermission("Procuration");
+        });
+
        Gate::after(function (Utilisateur $user) {
     
             return $user->hasRole("super-admin");

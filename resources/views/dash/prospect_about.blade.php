@@ -42,8 +42,6 @@
       
         <div class="col-md-2"></div>
         <div class="col-md-8">
-             
-             
             <div class="col-md-3">
                 <a href="prospects"><button class="btn btn-default"> <b>RETOUR</b></button></a>
             </div>
@@ -113,7 +111,15 @@
             <div class="col-md-8">
                 <!-- Horizontal Form -->
                 <div class="box box-info">
-                  
+                      @can("edit")
+                            <div class="box-body">
+                                <form action="go_contrat_form" method="post" >
+                                        @csrf
+                                        <input type="text" value={{$id_entreprise}} style="display:none;" name="id_entreprise">
+                                        <button type="submit" class="btn btn-success"><i class="fa fa-plus"></i>CONTRAT</button>
+                                </form>
+                            </div>
+                        @endcan
                       <div class="box-header with-border" style="text-align:center">
                       @php
                         $nom = $entreprisecontroller->GetById($id_entreprise);
@@ -134,7 +140,6 @@
                 @if($count_prospection != 0) 
 
                     @foreach($prospections as $prospections)
-                      
 
                         <!-- form start  INFO SUR LA PROPESCTION DANS LA TABLE-->
                         <div class="form-horizontal">
@@ -196,16 +201,6 @@
                             </div>
                
                         </div>
-                        @can("edit")
-                            <div class="box-body">
-                                <form action="go_contrat_form" method="post" >
-                                        @csrf
-                                        <input type="text" value={{$id_entreprise}} style="display:none;" name="id_entreprise">
-                                        <button type="submit" class="btn btn-success"><i class="fa fa-edit">AJOUTER UN CONTRAT</i></button>
-                                </form>
-                            </div>
-                        @endcan
-                      
                        
                         <div class="box-header">
                             <h3 class="box-title"><b>Service(s) proposé(s)</b></h3>
@@ -286,7 +281,7 @@
                         </div>
 
                         @can("edit")
-                             <div class="box-body">
+                            <div class="box-body">
                                 <form action="add_service_in_fiche" method="post" class="col-sm-12">
                                     @csrf
                                     <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
@@ -325,7 +320,7 @@
                            
                         <hr>
 
-                         <!--LES FICHIERS ET LES FACTURES DANS LA TABLE PROSPECTION-->
+                        <!--LES FICHIERS ET LES FACTURES DANS LA TABLE PROSPECTION-->
 
                         <div class="box-header with-border">
                             <h3 class="box-title"><b>FACTURE PROFORMA</b></h3>
@@ -360,11 +355,24 @@
                                         </td>
                                         @can("edit")
                                             <td>
-                                                <form action="edit_prospect_form" method="post">
-                                                    @csrf
-                                                    <input type="text" value={{$prospections->id}} style="display:none;" name="id_prospection">
-                                                    <button type="submit" class="btn btn-success"><i class="fa fa-edit">Aller a la page prospections pour modifier</i></button>
-                                                </form>
+                                                @if(auth()->user()->id != $prospections->id_utilisateur)
+                                                    @can("procuration")
+                                                        <form action="edit_prospect_form" method="post">
+                                                            @csrf
+                                                            <input type="text" value={{$prospections->id}} style="display:none;" name="id_prospection">
+                                                            <button type="submit" class="btn btn-success"><i class="fa fa-edit">Aller a la page prospections pour modifier</i></button>
+                                                        </form>
+                                                    @endcan
+                                                @else
+                                                    @can("edit")
+                                                        <form action="edit_prospect_form" method="post">
+                                                            @csrf
+                                                            <input type="text" value={{$prospections->id}} style="display:none;" name="id_prospection">
+                                                            <button type="submit" class="btn btn-success"><i class="fa fa-edit">Aller a la page prospections pour modifier</i></button>
+                                                        </form>
+                                                    @endcan
+                                                @endif
+                                               
                                             </td>
                                          @endcan
                                         
@@ -398,11 +406,10 @@
                             <table class="table table-hover box-body">
                                 @php
                                     $select = DB::table('docfactures')
-                                                ->where('id_prospection', $prospections->id)
-                                                ->get();
+                                        ->where('id_prospection', $prospections->id)
+                                        ->get();
                                 @endphp
                                
-                                
                                 @foreach($select as $select)
                                     <tr>
                                         <td>  <span class="text">{{$select->libele}}</span> </td>
@@ -411,28 +418,48 @@
                                                 echo "<b>".date('d/m/Y',strtotime($select->created_at))."</b> à <b>".date('H:i:s',strtotime($select->created_at))."</b>" ;
                                             @endphp
                                         </td>
-                                        @can("delete")
-                                            <td>
-                                                <form action="delete_prof_in_fiche" method="post" >
+                                        @if(auth()->user()->id != $prospections->id_utilisateur)
+                                            @can("procuration")
+                                                @can("delete")
+                                                    <td>
+                                                        <form action="delete_prof_in_fiche" method="post" >
+                                                            @csrf
+                                                            <div class="box-body">
+                                                                <div class="form-group col-sm-6">
+                                                                <input type="text" value="{{$select->id}}" style="display:none;" name="id_doc">
+                                                                    <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
+                                                                    <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
+                                                                    <input type="text" class="form-control" name="file" value="{{$select->path_doc}}"  style="display:none;">
+                                                                    <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                                                                </div>
 
-                                                    @csrf
-                                                    <div class="box-body">
-                                                        <div class="form-group col-sm-6">
-                                                        <input type="text" value="{{$select->id}}" style="display:none;" name="id_doc">
-                                                            <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
-                                                            <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
-                                                            <input type="text" class="form-control" name="file" value="{{$select->path_doc}}"  style="display:none;">
-                                                            <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                                                            </div>
+                                                        </form>
+                                                    </td>
+                                                @endcan
+                                            
+                                            @endcan
+                                        @else
+                                            @can("delete")
+                                                <td>
+                                                    <form action="delete_prof_in_fiche" method="post" >
+                                                        @csrf
+                                                        <div class="box-body">
+                                                            <div class="form-group col-sm-6">
+                                                            <input type="text" value="{{$select->id}}" style="display:none;" name="id_doc">
+                                                                <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
+                                                                <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
+                                                                <input type="text" class="form-control" name="file" value="{{$select->path_doc}}"  style="display:none;">
+                                                                <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                                                            </div>
+
                                                         </div>
-
-                                                    </div>
-                                                
-                                                </form>
-                                            </td>
-                                         @endcan
+                                                    </form>
+                                                </td>
+                                            @endcan
+                                        @endif
                                        
                                         <td>
-                                            
                                             <form action="download_facture_proforma" method="post" enctype="multipart/form-data">
 
                                                 @csrf
@@ -455,29 +482,53 @@
                             
                             </table>
                         </div>
+                        @if(auth()->user()->id != $prospections->id_utilisateur)
+                            @can("procuration")
+                                @can("edit")
+                                    <!--SI ON VEUT AJOUETR UN AUTRE DOCUMENT de FACTURE PROFORMA -->
+                                    <div class="box-body">
+                                        <form action="add_new_doc_proforma" method="post" enctype="multipart/form-data" class="col-sm-12">
 
-                        @can("edit")
-                             <!--SI ON VEUT AJOUETR UN AUTRE DOCUMENT de FACTURE PROFORMA -->
-                            <div class="box-body">
-                                <form action="add_new_doc_proforma" method="post" enctype="multipart/form-data" class="col-sm-12">
+                                            @csrf
+                                            <div class="box-body ">
+                                                <div class="form-group col-sm-6">
+                                                    <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
+                                                    <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
+                                                    <label class="control-label">Ajouter une facture :</label>
+                                                    <input type="file" class="form-control" name="new_doc_proforma" required>
+                                                    <button type="submit" class="btn btn-primary"><i class="fa fa-upload"></i></button>
+                                                </div>
 
-                                    @csrf
-                                    <div class="box-body ">
-                                        <div class="form-group col-sm-6">
-                                            <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
-                                            <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
-                                            <label class="control-label">Ajouter une facture :</label>
-                                            <input type="file" class="form-control" name="new_doc_proforma" required>
-                                            <button type="submit" class="btn btn-primary"><i class="fa fa-upload"></i></button>
-                                        </div>
-
+                                            </div>
+                                            
+                                        </form>
                                     </div>
+                                @endcan
                                     
-                                </form>
-                            </div>
-                        @endcan
-                        
+                            @endcan
+                        @else
+                            @can("edit")
+                                <!--SI ON VEUT AJOUETR UN AUTRE DOCUMENT de FACTURE PROFORMA -->
+                                <div class="box-body">
+                                    <form action="add_new_doc_proforma" method="post" enctype="multipart/form-data" class="col-sm-12">
 
+                                        @csrf
+                                        <div class="box-body ">
+                                            <div class="form-group col-sm-6">
+                                                <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
+                                                <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
+                                                <label class="control-label">Ajouter une facture :</label>
+                                                <input type="file" class="form-control" name="new_doc_proforma" required>
+                                                <button type="submit" class="btn btn-primary"><i class="fa fa-upload"></i></button>
+                                            </div>
+
+                                        </div>
+                                        
+                                    </form>
+                                </div>
+                            @endcan
+                        @endif
+                       
                         <!--LES CR DE VISITE DANS LA TABLE PROPSECTION-->
                         <div class="box-header with-border">
                             <h3 class="box-title"><b>COMPTE RENDU DE VISITE</b></h3>
@@ -485,12 +536,8 @@
                          
                         <div class="form-group ">
                             <table class="table table-hover box-body">
-                               
                                 <tr>
-                            
-                                    <th>Nom du fichier</th>
-    
-                                    
+                                    <th>Nom du fichier</th>                            
                                 </tr>
                                
                                 <tr class="no-padding">
@@ -511,15 +558,32 @@
                                                 echo "<b>".date('d/m/Y',strtotime($prospections->created_at))."</b> à <b>".date('H:i:s',strtotime($prospections->created_at))."</b>" ;
                                             @endphp
                                         </td>
-                                        @can("edit")
-                                              <td>
-                                                <form action="edit_prospect_form" method="post">
-                                                    @csrf
-                                                    <input type="text" value={{$prospections->id}} style="display:none;" name="id_prospection">
-                                                    <button type="submit" class="btn btn-success"><i class="fa fa-edit">Aller a la page prospections pour modifier</i></button>
-                                                </form>
-                                            <td>
-                                        @endcan
+                                        @if(auth()->user()->id != $prospections->id_utilisateur)
+                                            LAL
+                                            @can("procuration")
+                                                @can("edit")
+                                                    <td>
+                                                        <form action="edit_prospect_form" method="post">
+                                                            @csrf
+                                                            <input type="text" value={{$prospections->id}} style="display:none;" name="id_prospection">
+                                                            <button type="submit" class="btn btn-success"><i class="fa fa-edit">Aller a la page prospections pour modifier</i></button>
+                                                        </form>
+                                                    <td>
+                                                @endcan
+                                            @endcan
+                                        @else
+                                            @can("edit")
+                                                <td>
+                                                    <form action="edit_prospect_form" method="post">
+                                                        @csrf
+                                                        <input type="text" value={{$prospections->id}} style="display:none;" name="id_prospection">
+                                                        <button type="submit" class="btn btn-success"><i class="fa fa-edit">Aller a la page prospections pour modifier</i></button>
+                                                    </form>
+                                                <td>
+                                      
+                                            @endcan
+                                        @endif
+                                      
                                        
                                         <td>    
                                             <form action="download_prospect" method="post" enctype="multipart/form-data">
@@ -550,8 +614,8 @@
                             <table class="table table-hover box-body">
                                @php
                                     $select = DB::table('compterendus')
-                                                ->where('id_prospection', $prospections->id)
-                                                ->get();
+                                    ->where('id_prospection', $prospections->id)
+                                    ->get();
                                @endphp
                                
                                 <!--LES FICHIERS ET LES FACTURES-->
@@ -559,31 +623,55 @@
                                     <tr>
                                         <td>  <span class="text">{{$select->libele}}</span> </td>
                                         
-                                        @can("delete")
-                                            <td>
-                                                <form action="delete_cr_in_fiche" method="post" >
+                                        @if(auth()->user()->id != $prospections->id_utilisateur)
+                                            @can("procuration")
+                                                @can("delete")
+                                                    <td>
+                                                        <form action="delete_cr_in_fiche" method="post" >
 
-                                                    @csrf
-                                                    <div class="box-body">
-                                                        <div class="form-group col-sm-6">
-                                                        <input type="text" value="{{$select->id}}" style="display:none;" name="id_doc">
-                                                            <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
-                                                            <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
-                                                            <input type="text" class="form-control" name="file" value="{{$select->path_doc}}"  style="display:none;">
-                                                            <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                                                            @csrf
+                                                            <div class="box-body">
+                                                                <div class="form-group col-sm-6">
+                                                                <input type="text" value="{{$select->id}}" style="display:none;" name="id_doc">
+                                                                    <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
+                                                                    <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
+                                                                    <input type="text" class="form-control" name="file" value="{{$select->path_doc}}"  style="display:none;">
+                                                                    <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                                                                </div>
+
+                                                            </div>
+                                                        
+                                                        </form>
+                                                        
+                                                    </td>
+                                                @endcan
+                                            @endcan
+                                        @else
+                                            @can("delete")
+                                                <td>
+                                                    <form action="delete_cr_in_fiche" method="post" >
+
+                                                        @csrf
+                                                        <div class="box-body">
+                                                            <div class="form-group col-sm-6">
+                                                            <input type="text" value="{{$select->id}}" style="display:none;" name="id_doc">
+                                                                <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
+                                                                <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
+                                                                <input type="text" class="form-control" name="file" value="{{$select->path_doc}}"  style="display:none;">
+                                                                <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                                                            </div>
+
                                                         </div>
-
-                                                    </div>
-                                                
-                                                </form>
-                                                
-                                            </td>
-                                        @endcan
+                                                    
+                                                    </form>
+                                                    
+                                                </td>
+                                            @endcan
+                                        @endif
+                                       
                                       
                                         <td>
-                                            
                                             <form action="download_facture_proforma" method="post" enctype="multipart/form-data">
-
                                                 @csrf
                                                 <div class="box-body">
                                                     <div class="form-group col-sm-6">
@@ -592,11 +680,8 @@
                                                         <input type="text" class="form-control" name="file" value="{{$select->path_doc}}"  style="display:none;">
                                                         <button type="submit" class="btn btn-warning"><i class="fa fa-download"></i></button>
                                                     </div>
-
                                                 </div>
-                                            
                                             </form>
-
                                         </td>
                                     </tr>
                                 @endforeach
@@ -606,27 +691,52 @@
                         </div>
 
 
-                         <!--SI ON VEUT AJOUETR UN AUTRE DOCUMENT -->
-                        @can("edit")
-                            <div class="box-body">
-                                <form action="add_new_doc_cr" method="post" enctype="multipart/form-data" class="col-sm-12">
+                        <!--SI ON VEUT AJOUETR UN AUTRE DOCUMENT -->
+                        @if(auth()->user()->id != $prospections->id_utilisateur)
+                            @can("procuration")
+                                @can("edit")
+                                    <div class="box-body">
+                                        <form action="add_new_doc_cr" method="post" enctype="multipart/form-data" class="col-sm-12">
 
-                                    @csrf
-                                    <div class="box-body ">
-                                        <div class="form-group col-sm-6">
-                                            <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
-                                            <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
-                                            <label class="control-label">Ajouter un CR de visite :</label>
-                                            <input type="file" class="form-control" name="new_doc_cr" required>
-                                            <button type="submit" class="btn btn-primary"><i class="fa fa-upload"></i></button>
-                                        </div>
+                                            @csrf
+                                            <div class="box-body ">
+                                                <div class="form-group col-sm-6">
+                                                    <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
+                                                    <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
+                                                    <label class="control-label">Ajouter un CR de visite :</label>
+                                                    <input type="file" class="form-control" name="new_doc_cr" required>
+                                                    <button type="submit" class="btn btn-primary"><i class="fa fa-upload"></i></button>
+                                                </div>
 
+                                            </div>
+                                            
+                                        </form>
                                     </div>
-                                    
-                                </form>
-                            </div>
 
-                        @endcan
+                                @endcan
+                            @endcan
+                        @else
+                            @can("edit")
+                                <div class="box-body">
+                                    <form action="add_new_doc_cr" method="post" enctype="multipart/form-data" class="col-sm-12">
+
+                                        @csrf
+                                        <div class="box-body ">
+                                            <div class="form-group col-sm-6">
+                                                <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
+                                                <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
+                                                <label class="control-label">Ajouter un CR de visite :</label>
+                                                <input type="file" class="form-control" name="new_doc_cr" required>
+                                                <button type="submit" class="btn btn-primary"><i class="fa fa-upload"></i></button>
+                                            </div>
+
+                                        </div>
+                                        
+                                    </form>
+                                </div>
+                            @endcan
+                        @endif
+                       
                         
                         <!--AUTRE DOCS-->
                         @php
@@ -652,20 +762,39 @@
                                             echo "<b>".date('d/m/Y',strtotime($docs->created_at))."</b> à <b>".date('H:i:s',strtotime($docs->created_at))."</b>" ;
                                         @endphp
                                     </td>
-                                    @can("delete")
-                                        <td>
-                                            <form action="delete_doc" method="post" enctype="multipart/form-data">
+                                    @if(auth()->user()->id != $prospections->id_utilisateur)
+                                        @can("procuration")
+                                            @can("delete")
+                                                <td>
+                                                    <form action="delete_doc" method="post" enctype="multipart/form-data">
 
-                                                @csrf
-                                                <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
-                                                <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
-                                                <input type="text" value="{{$docs->id}}" style="display:none;" name="id_doc">
-                                                <input type="text" class="form-control" name="file" value="{{$docs->path_doc}}" style="display:none;">
-                                                <button type="submit" class="btn btn-sx btn-danger"><i class="fa fa-trash-o"></i></button>
-                                            </form>
-                                        </td>
-                                    @endcan
+                                                        @csrf
+                                                        <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
+                                                        <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
+                                                        <input type="text" value="{{$docs->id}}" style="display:none;" name="id_doc">
+                                                        <input type="text" class="form-control" name="file" value="{{$docs->path_doc}}" style="display:none;">
+                                                        <button type="submit" class="btn btn-sx btn-danger"><i class="fa fa-trash-o"></i></button>
+                                                    </form>
+                                                </td>
+                                            @endcan
+                                        @endcan
+                                    @else
+                                        @can("delete")
+                                            <td>
+                                                <form action="delete_doc" method="post" enctype="multipart/form-data">
+
+                                                    @csrf
+                                                    <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
+                                                    <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
+                                                    <input type="text" value="{{$docs->id}}" style="display:none;" name="id_doc">
+                                                    <input type="text" class="form-control" name="file" value="{{$docs->path_doc}}" style="display:none;">
+                                                    <button type="submit" class="btn btn-sx btn-danger"><i class="fa fa-trash-o"></i></button>
+                                                </form>
+                                            </td>
+                                        @endcan
                                   
+                                    @endif
+                                          
                                     <td>
                                         
                                         <form action="download_docs" method="post" enctype="multipart/form-data" class="col-sm-6">
@@ -683,31 +812,52 @@
                             </table>
                         </div>
                         <hr>
-                       
-                        
+
                         <!--SI ON VEUT AJOUETR UN AUTRE DOCUMENT -->
-                        @can("edit")
-                            <div class="box-body">
-                                <form action="add_new_doc" method="post" enctype="multipart/form-data" class="col-sm-12">
+                        @if(auth()->user()->id != $prospections->id_utilisateur)
+                            @can("procuration")
+                                @can("edit")
+                                    <div class="box-body">
+                                        <form action="add_new_doc" method="post" enctype="multipart/form-data" class="col-sm-12">
 
-                                    @csrf
-                                    <div class="box-body ">
-                                        <div class="form-group col-sm-6">
-                                            <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
-                                            <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
-                                            <label class="control-label">Ajouter un document :</label>
-                                            <input type="file" class="form-control" name="new_doc" required>
-                                            <button type="submit" class="btn btn-primary"><i class="fa fa-upload"></i></button>
-                                        </div>
+                                            @csrf
+                                            <div class="box-body ">
+                                                <div class="form-group col-sm-6">
+                                                    <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
+                                                    <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
+                                                    <label class="control-label">Ajouter un document :</label>
+                                                    <input type="file" class="form-control" name="new_doc" required>
+                                                    <button type="submit" class="btn btn-primary"><i class="fa fa-upload"></i></button>
+                                                </div>
 
+                                            </div>
+                                            
+                                        </form>
                                     </div>
-                                    
-                                </form>
-                            </div>
-                        @endcan
-                     
+                                @endcan
+                            @endcan
+                        @else
+                            @can("edit")
+                                <div class="box-body">
+                                    <form action="add_new_doc" method="post" enctype="multipart/form-data" class="col-sm-12">
 
-                        
+                                        @csrf
+                                        <div class="box-body ">
+                                            <div class="form-group col-sm-6">
+                                                <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
+                                                <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
+                                                <label class="control-label">Ajouter un document :</label>
+                                                <input type="file" class="form-control" name="new_doc" required>
+                                                <button type="submit" class="btn btn-primary"><i class="fa fa-upload"></i></button>
+                                            </div>
+
+                                        </div>
+                                        
+                                    </form>
+                                </div>
+                            @endcan
+                        @endif
+                       
                         @php
                             $propal = $propalcontroller->GetByIdEntreprise($prospections->id);  
                         @endphp
@@ -735,19 +885,37 @@
                                             echo "<b>".date('d/m/Y',strtotime($propal->created_at))."</b> à <b>".date('H:i:s',strtotime($propal->created_at))."</b>" ;
                                         @endphp
                                     </td>
-                                    @can("delete")
-                                        <td>
-                                            <form action="delete_doc_propal" method="post" enctype="multipart/form-data">
+                                    @if(auth()->user()->id != $prospections->id_utilisateur)
+                                        @can("procuration")
+                                            @can("delete")
+                                                <td>
+                                                    <form action="delete_doc_propal" method="post" enctype="multipart/form-data">
 
-                                                @csrf
-                                                <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
-                                                <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
-                                                <input type="text" value="{{$propal->id}}" style="display:none;" name="id_doc">
-                                                <input type="text" class="form-control" name="file" value="{{$propal->path_doc}}" style="display:none;">
-                                                <button type="submit" class="btn btn-sx btn-danger"><i class="fa fa-trash-o"></i></button>
-                                            </form>
-                                        </td>
-                                    @endcan
+                                                        @csrf
+                                                        <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
+                                                        <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
+                                                        <input type="text" value="{{$propal->id}}" style="display:none;" name="id_doc">
+                                                        <input type="text" class="form-control" name="file" value="{{$propal->path_doc}}" style="display:none;">
+                                                        <button type="submit" class="btn btn-sx btn-danger"><i class="fa fa-trash-o"></i></button>
+                                                    </form>
+                                                </td>
+                                            @endcan
+                                        @endcan
+                                    @else
+                                        @can("delete")
+                                            <td>
+                                                <form action="delete_doc_propal" method="post" enctype="multipart/form-data">
+
+                                                    @csrf
+                                                    <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
+                                                    <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
+                                                    <input type="text" value="{{$propal->id}}" style="display:none;" name="id_doc">
+                                                    <input type="text" class="form-control" name="file" value="{{$propal->path_doc}}" style="display:none;">
+                                                    <button type="submit" class="btn btn-sx btn-danger"><i class="fa fa-trash-o"></i></button>
+                                                </form>
+                                            </td>
+                                        @endcan
+                                    @endif
                                     
                                     <td>
                                         
@@ -767,34 +935,54 @@
                         </div>
                         <hr>
 
-                          <!--SI ON VEUT AJOUETR UNE PROPOSITION -->
-                       
-                        @can("edit")
-                            <div class="box-body">
-                                <form action="add_doc_proposition" method="post" enctype="multipart/form-data" class="col-sm-12">
+                        <!--SI ON VEUT AJOUETR UNE PROPOSITION -->
+                        @if(auth()->user()->id != $prospections->id_utilisateur)
+                            @can("procuration")
+                                @can("edit")
+                                    <div class="box-body">
+                                        <form action="add_doc_proposition" method="post" enctype="multipart/form-data" class="col-sm-12">
 
-                                    @csrf
-                                    <div class="box-body ">
-                                        <div class="form-group col-sm-6">
-                                            <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
-                                            <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
-                                            <label class="control-label">Ajouter un document :</label>
-                                            <input type="file" class="form-control" name="new_doc" required>
-                                            <button type="submit" class="btn btn-primary"><i class="fa fa-upload"></i></button>
-                                        </div>
+                                            @csrf
+                                            <div class="box-body ">
+                                                <div class="form-group col-sm-6">
+                                                    <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
+                                                    <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
+                                                    <label class="control-label">Ajouter un document :</label>
+                                                    <input type="file" class="form-control" name="new_doc" required>
+                                                    <button type="submit" class="btn btn-primary"><i class="fa fa-upload"></i></button>
+                                                </div>
 
+                                            </div>
+                                            
+                                        </form>
                                     </div>
-                                    
-                                </form>
-                            </div>
+                                @endcan
+                            @endcan
+                        @else
+                            @can("edit")
+                                <div class="box-body">
+                                    <form action="add_doc_proposition" method="post" enctype="multipart/form-data" class="col-sm-12">
 
+                                        @csrf
+                                        <div class="box-body ">
+                                            <div class="form-group col-sm-6">
+                                                <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
+                                                <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
+                                                <label class="control-label">Ajouter un document :</label>
+                                                <input type="file" class="form-control" name="new_doc" required>
+                                                <button type="submit" class="btn btn-primary"><i class="fa fa-upload"></i></button>
+                                            </div>
+
+                                        </div>
+                                        
+                                    </form>
+                                </div>
+                            @endcan
                         @endcan
                       
-                                <hr>
-                        @php
-                                
+                        <hr>
+                        @php    
                             $interlocuteurs =  $interlocuterController->InterlocuteurWithIdEntreprise($id_entreprise);
-                            
                         @endphp
                         <div class="box-header with-border">
                             <h3 class="box-title"><b>Interlocuteur(s)</b></h3>
@@ -802,13 +990,11 @@
 
                         <table class="table table-hover box-body">        
                             <tr>
-                        
                                 <th>Nom</th>
                                 <th>Téléphone</th>
                                 <th>Email</th>
                                 <th>Fonction</th>
                                 <th>Action</th>
-                                
                             </tr>
                             <!--LES FICHIERS ET LES FACTURES-->
                             @foreach($interlocuteurs as $interlocuteurs)
@@ -822,52 +1008,97 @@
                                     <td>{{$interlocuteurs->intitule}}</td>
 
                                     <td>
-                                    
-                                        @can("edit")
-                                            <form action="edit_interlocuteur_form_fiche" method="post">
-                                                @csrf
-                                                <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
-                                                <input type="text" value={{$interlocuteurs->id}} style="display:none;" name="id_interlocuteur">
-                                                <button type="submit" class="btn btn-primary"><i class ="fa fa-edit"></i></button>
-                                            </form> 
-
-                                        @endcan
-                                        @can("delete")
-                                             <!--SUPPRESSION AVEC POPUP-->
-                                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="@php echo "#interloc".$interlocuteurs->id.""; @endphp">
-                                                <i class="fa fa-trash"></i>
-                                            </button>
-                                            <div class="modal modal-danger fade" id="@php echo "".$interlocuteurs->id.""; @endphp">
-                                              <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                  <div class="modal-header">
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                      <span aria-hidden="true">&times;</span></button>
-                                                    <h4 class="modal-title">Supprimer </h4>
-                                                  </div>
-                                                    <form action="delete_interlocuteur_from_fiche" method="post">
-                                                    <div class="modal-body">
-                                                      <p>Voulez-vous supprimer {{$interlocuteurs->nom}}?</p>
-                                                      @csrf
-                                                      <input type="text" value="{{$interlocuteurs->id_entreprise}}" name="id_entreprise" style="display:none;">
+                                        @if(auth()->user()->id != $prospections->id_utilisateur)
+                                            @can("procuration")
+                                                @can("edit")
+                                                    <form action="edit_interlocuteur_form_fiche" method="post">
+                                                        @csrf
+                                                        <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
+                                                        <input type="text" value={{$interlocuteurs->id}} style="display:none;" name="id_interlocuteur">
+                                                        <button type="submit" class="btn btn-primary"><i class ="fa fa-edit"></i></button>
+                                                    </form>
+                                                @endcan
+                                                @can("delete")
+                                                    <!--SUPPRESSION AVEC POPUP-->
+                                                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="@php echo "#interloc".$interlocuteurs->id.""; @endphp">
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
+                                                    <div class="modal modal-danger fade" id="@php echo "".$interlocuteurs->id.""; @endphp">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span></button>
+                                                            <h4 class="modal-title">Supprimer </h4>
+                                                        </div>
+                                                            <form action="delete_interlocuteur_from_fiche" method="post">
+                                                            <div class="modal-body">
+                                                            <p>Voulez-vous supprimer {{$interlocuteurs->nom}}?</p>
+                                                            @csrf
+                                                            <input type="text" value="{{$interlocuteurs->id_entreprise}}" name="id_entreprise" style="display:none;">
+                                                            <input type="text" value={{$interlocuteurs->id}} style="display:none;" name="id_interlocuteur">
+                                                            </div>
+                                                        
+                                                            <div class="modal-footer">
+                                                            <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Fermer</button>
+                                                            <button type="submit" class="btn btn-outline">Supprimer</button>
+                                                            </div>
+                                                        </form>
+                                                        </div>
+                                                        <!-- /.modal-content -->
+                                                    </div>
+                                                    <!-- /.modal-dialog -->
+                                                    </div>
+                                                    <!-- /.modal -->
+                                                    
+                                                    
+                                                @endcan
+                                            @endcan
+                                        @else
+                                            @can("edit")
+                                                <form action="edit_interlocuteur_form_fiche" method="post">
+                                                    @csrf
+                                                    <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
                                                     <input type="text" value={{$interlocuteurs->id}} style="display:none;" name="id_interlocuteur">
+                                                    <button type="submit" class="btn btn-primary"><i class ="fa fa-edit"></i></button>
+                                                </form>
+                                            @endcan
+                                            @can("delete")
+                                                <!--SUPPRESSION AVEC POPUP-->
+                                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="@php echo "#interloc".$interlocuteurs->id.""; @endphp">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+                                                <div class="modal modal-danger fade" id="@php echo "".$interlocuteurs->id.""; @endphp">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span></button>
+                                                        <h4 class="modal-title">Supprimer </h4>
                                                     </div>
-                                                  
-                                                    <div class="modal-footer">
-                                                      <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Fermer</button>
-                                                      <button type="submit" class="btn btn-outline">Supprimer</button>
+                                                        <form action="delete_interlocuteur_from_fiche" method="post">
+                                                        <div class="modal-body">
+                                                        <p>Voulez-vous supprimer {{$interlocuteurs->nom}}?</p>
+                                                        @csrf
+                                                        <input type="text" value="{{$interlocuteurs->id_entreprise}}" name="id_entreprise" style="display:none;">
+                                                        <input type="text" value={{$interlocuteurs->id}} style="display:none;" name="id_interlocuteur">
+                                                        </div>
+                                                    
+                                                        <div class="modal-footer">
+                                                        <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Fermer</button>
+                                                        <button type="submit" class="btn btn-outline">Supprimer</button>
+                                                        </div>
+                                                    </form>
                                                     </div>
-                                                  </form>
+                                                    <!-- /.modal-content -->
                                                 </div>
-                                                <!-- /.modal-content -->
-                                              </div>
-                                              <!-- /.modal-dialog -->
-                                            </div>
-                                            <!-- /.modal -->
-                                            
-                                            
-                                        @endcan
-                                
+                                                <!-- /.modal-dialog -->
+                                                </div>
+                                                <!-- /.modal -->
+                                                
+                                                
+                                            @endcan
+                                        @endif
                                     </td>
                                 </tr>
                             
@@ -876,25 +1107,50 @@
                         </table>
        
                         <hr>
-                        @can("edit")
-                            <div class="box-body">
-                                <form action="add_doc_proposition" method="post" enctype="multipart/form-data" class="col-sm-12">
+                        @if(auth()->user()->id != $prospections->id)
+                            @can("procuration")
+                                @can("edit")
+                                    <div class="box-body">
+                                        <form action="add_doc_proposition" method="post" enctype="multipart/form-data" class="col-sm-12">
 
-                                    @csrf
-                                    <div class="box-body ">
-                                        <div class="form-group col-sm-6">
-                                            <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
-                                            <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
-                                            <label class="control-label">Ajouter un document :</label>
-                                            <input type="file" class="form-control" name="new_doc" required>
-                                            <button type="submit" class="btn btn-primary"><i class="fa fa-upload"></i></button>
-                                        </div>
+                                            @csrf
+                                            <div class="box-body ">
+                                                <div class="form-group col-sm-6">
+                                                    <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
+                                                    <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
+                                                    <label class="control-label">Ajouter un document :</label>
+                                                    <input type="file" class="form-control" name="new_doc" required>
+                                                    <button type="submit" class="btn btn-primary"><i class="fa fa-upload"></i></button>
+                                                </div>
 
+                                            </div>
+                                            
+                                        </form>
                                     </div>
-                                    
-                                </form>
-                            </div>
-                        @endcan
+                                @endcan
+                            @endcan
+                        @else
+                          @can("edit")
+                                <div class="box-body">
+                                    <form action="add_doc_proposition" method="post" enctype="multipart/form-data" class="col-sm-12">
+
+                                        @csrf
+                                        <div class="box-body ">
+                                            <div class="form-group col-sm-6">
+                                                <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
+                                                <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
+                                                <label class="control-label">Ajouter un document :</label>
+                                                <input type="file" class="form-control" name="new_doc" required>
+                                                <button type="submit" class="btn btn-primary"><i class="fa fa-upload"></i></button>
+                                            </div>
+
+                                        </div>
+                                        
+                                    </form>
+                                </div>
+                            @endcan
+                        @endif
+                        
                             
                     @endforeach
               
@@ -1014,6 +1270,3 @@
     
 @endsection 
  
- 
- 
-          
