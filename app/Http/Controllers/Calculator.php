@@ -182,7 +182,7 @@ class Calculator extends Controller
     }
     public function CountFactureReglee()
     {
-        $count = Facture::where('reglee', 1)
+        $count = Facture::where('reglee', 1)->where('annulee', 0)
         ->count();
          return  $count;
     }
@@ -742,6 +742,7 @@ class Calculator extends Controller
 
     public function YearlyChart()
     {
+       
         //FAIRE UNE BOUCLE POUR TOUS LES MOIS DE L'ANNEE
 
         //LE TABLEAU QUI VA RECCUEILLIR LES ENTREPRISES
@@ -759,7 +760,7 @@ class Calculator extends Controller
         //LE TABLEAUD DES MOIS
         $mois_francais = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 
         'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
-
+        
         //l'année en cours
         $year = date('Y');
 
@@ -780,6 +781,7 @@ class Calculator extends Controller
         {
             $total_annuel = $total_annuel + $annuelle->montant_facture;
         }
+        //dd($total_annuel);
         
         //LA BOUCLE DES 12 MOIS
         for($i = 1; $i <= 12; $i++)
@@ -817,12 +819,12 @@ class Calculator extends Controller
             $total = $total + $somme;
             //METTRE DANS LE TABLEAU data
             array_push($data, $total); 
+            
         } 
-
+        //dd($data);
         //NOMBRE TOTAL DES ENTREPRISE
         $totalnb_entreprise = 0;
 
-        //PAR CLIENT 
         
         $toutes_reglees = DB::table('factures')
         ->join('contrats', 'factures.id_contrat', '=', 'contrats.id')
@@ -831,61 +833,46 @@ class Calculator extends Controller
         ->where('factures.date_emission', '>=', $first_date)
         ->where('factures.date_emission', '<=', $last_date)
         ->get(['factures.*', 'contrats.id', 'contrats.titre_contrat', 'contrats.debut_contrat']);
-
-        //Prendre toutes les entreprises et pour chaque entrprise recupérer le montant des contrats dans le mois en questions
-      
-        foreach($toutes_reglees as  $toutes_reglee)
-        {    //dd($all_entreprises->id);
-            
-            //Total des montants pour l'entreprise
+        //dd($toutes_reglees);
+        
+        //PAR CLIENT 
+        $all_entreprises = Entreprise::all();
+        //Prendre toutes les entreprises et pour chaque entreprise recupérer le montant des contrats dans le mois en questions
+        foreach($all_entreprises as $all_entreprises )
+        {   
+          
             $montant = 0;
-            //LA BOUCLE DES 12 MOIS
-            for($i = 1; $i <= 12; $i++)
+            $the_date = $year."-".$i."-".$j;
+            //LA REQUETE MAINTENANT
+            $contrats =  DB::table('factures')
+            ->join('contrats', 'factures.id_contrat', '=', 'contrats.id')
+            ->join('entreprises', 'entreprises.id', '=', 'contrats.id_entreprise')
+            //->where('factures.annulee', 0)
+            ->where('factures.date_emission', '>=', $first_date)
+            ->where('factures.date_emission', '<=', $last_date)
+            ->where('contrats.id_entreprise', '=', $all_entreprises->id)
+            ->get();
+
+            foreach($contrats as $contrats)
             {
-                //nombre de jours dans le mois
-                $number = cal_days_in_month(CAL_GREGORIAN, $i, $year);
+                $montant = $montant + $contrats->montant_facture;
+            }
+            //METTRE LES VALLEURS DANS LES DIFFERENTS TABLEAUX
+            if($montant != 0) //Si cette entreprise a rapporter quelque chose il faut remplir dans le tableu pour le gaph
+            {   //dd('de');
+                $totalnb_entreprise = $totalnb_entreprise + 1;
+                array_push($company, $all_entreprises->nom_entreprise);
+                //CALCULER LE POURCENTAGE ET METTRE DANS LE TABLEAU
+                $p = ($montant * 100) / $total_annuel;
 
-                //$last_date = $year."-".$i."-".$number;
-                
-                for($j = 1; $j<=$number; $j++)
-                {
-                    $all_entreprises = Entreprise::all();
-                    foreach($all_entreprises as $all_entreprises)
-                    {
-                        $the_date = $year."-".$i."-".$j;
-                        //LA REQUETE MAINTENANT
-                        $contrats =  DB::table('factures')
-                        ->join('contrats', 'factures.id_contrat', '=', 'contrats.id')
-                        ->join('entreprises', 'entreprises.id', '=', 'contrats.id_entreprise')
-                        ->where('factures.annulee', 0)
-                        ->where('factures.date_emission', '>=', $the_date)
-                        ->where('contrats.id_entreprise', '=', $all_entreprises->id)
-                        ->get();
+                array_push($percent, $p);
 
-                        foreach($contrats as $contrats)
-                        {
-                            $montant = $montant + $contrats->montant_facture;
-                        }
-                        //METTRE LES VALLEURS DANS LES DIFFERENTS TABLEAUX
-                        if($montant != 0) //Si cette entreprise a rapporter quelque chose il faut remplir dans le tableu pour le gaph
-                        {
-                            $totalnb_entreprise = $totalnb_entreprise + 1;
-                            array_push($company, $all_entreprises->nom_entreprise);
-                            //CALCULER LE POURCENTAGE ET METTRE DANS LE TABLEAU
-                            $p = ($montant * 100) / $total_annuel;
-                            
-                            array_push($percent, $p);
-
-                        }
-                            
-                    }
-                    
-                }
-               
-            } 
+            }  
+            //dump($percent);
             //echo $total."<br>";
-           
+          
         }
+        //dd($percent);
 
        //ON AURA $totalnb_entreprise COULEURS DONC FAIRE UN TABLEAU QUI VA AVOIR LE NOMRE TOTAL DE COULEUR DIFFERENTES
        $alpha = ['A', 'B', 'C', 'D', 'E', 'F', ];
@@ -1084,6 +1071,7 @@ class Calculator extends Controller
        ->where('factures.date_emission', '<=', $last_date)
        ->get(['factures.*', 'contrats.id', 'contrats.titre_contrat', 'contrats.debut_contrat']);*/
       //Total des montants pour l'entreprise
+      
        //Prendre toutes les entreprises et pour chaque entrprise recupérer le montant des contrats dans le mois en questions
      
         foreach($all_entreprises as $all_entreprises )

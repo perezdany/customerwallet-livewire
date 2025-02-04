@@ -6,7 +6,7 @@
     <form action="go_login" method="post"> 
     @csrf
          @if(session('error'))
-                <p class="bg-warning">{{session('error')}}</p>
+                <p class="bg-red">{{session('error')}}</p>
             @endif
       <div class="form-group has-feedback">
         <input type="email" class="form-control input-lg" placeholder="Email" name="login" required maxlength="30"> 

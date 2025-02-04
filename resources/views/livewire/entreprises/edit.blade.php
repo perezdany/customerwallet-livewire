@@ -17,9 +17,9 @@
                         <div class="col-sm-4"><label>Particulier:</label></div>
                           
                         <div class="col-sm-8">
-                            <select class="form-control" id="id_statutentreprise" wire:model="editEntreprise.particulier" reuqired>
+                            <select class="form-control" id="id_statutentreprise" wire:model="editEntreprise.particulier" style="display:none;">
                                <option value="0">NON</option>
-                               <option value="1">OUI</option>
+                              
                             </select>
                         </div>
                         </div><br>
@@ -115,9 +115,20 @@
                         </div><br>
 
                          <div class="row form-group text-center">
-                        <div class="col-sm-4"><label>Date de création:</label></div>
-                        <div class="col-sm-8"><input type="date" wire:model="editEntreprise.date_creation"  maxlength="30" class="form-control" 
-                        id="email"></div>
+                            <div class="col-sm-4"><label>Année de création:</label></div>
+                            <div class="col-sm-8">
+                                 <select class="form-control" id="id_pays" wire:model="editEntreprise.date_creation">
+                                <option value="">Choisir</option>
+                                    @php
+                                        $annee_fin = "2060";
+                                        for($annee="1980"; $annee<=$annee_fin; $annee++)
+                                        {
+                                            echo'<option value='.$annee.'>'.$annee.'</option>';
+                                        }
+                                    @endphp
+                                </select>
+                             
+                            </div>
                         </div><br>
                         
                         <div class="row form-group text-center">

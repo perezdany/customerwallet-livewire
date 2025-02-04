@@ -131,7 +131,7 @@ class UserController extends Controller
         $user_password = Hash::make($request->password);
 
         $affected = DB::table('utilisateurs')
-        ->where('id', $request->id)
+        ->where('id', $request->id_user)
         ->update(['password' =>  $user_password, ]);
 
         //dd($request->id);
