@@ -51,6 +51,10 @@
                         <label>Dénomination:</label>
                         <input type="text"  maxlength="50" class="form-control "  placeholder="COMPAGNIE IVOIRIENNE D'ELECTRICITE (CIE)" name="nom" onkeyup='this.value=this.value.toUpperCase()'  reuqired />
                     </div> 
+                    <div class="form-group">
+                        <label>Nom du dirigeant(DG):</label>
+                        <input type="text" maxlength="150" class="form-control " placeholder="EX: M. KOFFI KOFFI" name="dirigeant" onkeyup='this.value=this.value.toUpperCase()'  reuqired />
+                    </div> 
                    
                      <div class="form-group">
                       <label >Adresse (géographique/siège social):</label>
@@ -70,11 +74,11 @@
                       <label >Chiffre d'affaire (FCFA):</label>
                       <input type="tex"  maxlength="18" class="form-control" name="chiffre" id="ca" placeholder="1000000">
                     </div>
-                    <div class="form-group">
+                    <!--<div class="form-group">
                       <label>Activité:</label>
                       <input type="text" maxlength="100" class="form-control  " name="activite" id="activite"
                       placeholder="TRANSIT" onkeyup="this.value=this.value.toUpperCase()">
-                    </div>
+                    </div>-->
                     <div class="form-group">
                       <label>Année de création:</label>
                       <select class="" id="date_creation" name="date_creation">

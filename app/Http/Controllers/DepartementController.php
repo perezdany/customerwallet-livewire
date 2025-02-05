@@ -23,8 +23,9 @@ class DepartementController extends Controller
 
     public function AddDepartement(Request $request)
     {
+        
         $Insert = Departement::create([
-            'libele_departement' => $request->departement, 
+            'libele_departement' => $request->libele, 
        ]);
 
        return redirect('departements')->with('success', 'Enregistrement effectué');

@@ -53,6 +53,7 @@ class CibleController extends Controller
         'id_pays' => $request->pays,
         'adresse_email' => $request->email,
         'site_web' => $request->site_web,
+        'dirigeant' => $request->dirigeant,
         'id_statutentreprise' => 3,
         'particulier' => $request->particulier,
          'created_by' => auth()->user()->id, 
@@ -93,6 +94,7 @@ class CibleController extends Controller
 
     public function EditCible(Request $request)
     {
+        //dd($request->all());
         $affected= DB::table('entreprises')
         ->where('id', $request->id_entreprise)
         ->update([
@@ -106,6 +108,7 @@ class CibleController extends Controller
             'mobile' => $request->mobile,
             'adresse_email' => $request->email,
             'site_web' => $request->site_web,
+            'dirigeant' => $request->dirigeant,
             'id_pays' => $request->pays,
             'particulier' => $request->particulier,
             'created_by' => auth()->user()->id, 

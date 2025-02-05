@@ -215,6 +215,10 @@
                                     </div><br>
                                     @if($edit->particulier == 0)
                                       <div class="form-group">
+                                        <h4><label >Dirigeant:</label></h4>
+                                        <p> {{$edit->dirigeant}} </p>
+                                      </div><br>
+                                      <div class="form-group">
                                         <h4><label >Chiffre d'affaire (FCFA):</label></h4>
                                         <p> {{$edit->chiffre_affaire}} </p>
                                       </div><br>
@@ -435,6 +439,7 @@
                         <div class="box-body">
                           @csrf
                           <input type="text" name="id_entreprise" value="{{$edit->id}}" style="display:none;">
+                          
                           <div class="box-body">
                           
                             <div class="form-group">
@@ -480,6 +485,15 @@
                          
                             @if($edit->particulier == "0")
                               <div class="form-group">
+                                <label >Nom du dirigeant:</label>
+                                <input type="tex" id="dirigeant" value="{{$edit->dirigeant}}"  maxlength="150" class="form-control  " name="dirigeant" onkeyup='this.value=this.value.toUpperCase()'>
+                              </div>
+                              <div class="form-group">
+                              <select class="form-control " name="particulier" id="particulier" onchange="EnableFields();" style="display:none;">
+                                    <option value="0">OUI</option>
+                                  </select>
+                              </div>  
+                              <div class="form-group">
                                 <label >Chiffre d'affaire (FCFA):</label>
                                 <input type="tex" id="ca" value="{{$edit->chiffre_affaire}}"  maxlength="18" class="form-control  " name="chiffre" placeholder="1000000">
                               </div>
@@ -510,6 +524,11 @@
                                   </select>
                               </div>
                             @else
+                              <div class="form-group">
+                                  <select class="form-control " name="particulier" id="particulier" onchange="EnableFields();" style="display:none;">
+                                    <option value="1">OUI</option>
+                                  </select>
+                              </div>  
                               <div class="form-group">
                                 <label >Profession:</label>
                                 <input type="text" value="{{$edit->activite}}" maxlength="100" class="form-control  " name="activite" 
