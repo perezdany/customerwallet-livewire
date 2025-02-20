@@ -243,7 +243,7 @@
                                                 <td>
                                                     @php 
                         
-                                                        echo "<b>".date('d/m/Y',strtotime($se_get->created_at))."</b> à <b>".date('H:i:s',strtotime($se_get->created_at))."</b>" ;
+                                                        echo "<b>".date('d/m/Y',strtotime($se_get->created_at))."</b>" ;
                                                 
                                                     @endphp
                                                 </td>
@@ -350,7 +350,7 @@
                                         </td>
                                         <td>
                                             @php 
-                                                echo "<b>".date('d/m/Y',strtotime($prospections->created_at))."</b> à <b>".date('H:i:s',strtotime($se_get->created_at))."</b>" ;
+                                                echo "<b>".date('d/m/Y',strtotime($prospections->created_at))."</b>" ;
                                             @endphp
                                         </td>
                                         @can("edit")
@@ -377,7 +377,6 @@
                                          @endcan
                                         
                                         <td>
-                                            
                                             <form action="download_facture_proforma" method="post" enctype="multipart/form-data">
 
                                                 @csrf
@@ -392,7 +391,6 @@
                                                 </div>
                                             
                                             </form>
-
                                         </td>
                                     @endif
                                     
@@ -415,7 +413,7 @@
                                         <td>  <span class="text">{{$select->libele}}</span> </td>
                                          <td>
                                             @php 
-                                                echo "<b>".date('d/m/Y',strtotime($select->created_at))."</b> à <b>".date('H:i:s',strtotime($select->created_at))."</b>" ;
+                                                echo "<b>".date('d/m/Y',strtotime($select->created_at))."</b>" ;
                                             @endphp
                                         </td>
                                         @if(auth()->user()->id != $prospections->id_utilisateur)
@@ -555,11 +553,11 @@
                                         </td>
                                         <td>
                                             @php 
-                                                echo "<b>".date('d/m/Y',strtotime($prospections->created_at))."</b> à <b>".date('H:i:s',strtotime($prospections->created_at))."</b>" ;
+                                                echo "<b>".date('d/m/Y',strtotime($prospections->created_at))."</b>" ;
                                             @endphp
                                         </td>
                                         @if(auth()->user()->id != $prospections->id_utilisateur)
-                                            LAL
+                                            
                                             @can("procuration")
                                                 @can("edit")
                                                     <td>
@@ -686,7 +684,6 @@
                                     </tr>
                                 @endforeach
                               
-                            
                             </table>
                         </div>
 
@@ -759,7 +756,7 @@
                                     <td>  <span class="text">{{$docs->libele}}</span> </td>
                                     <td>
                                         @php 
-                                            echo "<b>".date('d/m/Y',strtotime($docs->created_at))."</b> à <b>".date('H:i:s',strtotime($docs->created_at))."</b>" ;
+                                            echo "<b>".date('d/m/Y',strtotime($docs->created_at))."</b>" ;
                                         @endphp
                                     </td>
                                     @if(auth()->user()->id != $prospections->id_utilisateur)
@@ -873,6 +870,7 @@
                             
                                     <th>Nom</th>
                                     <th>Ajouté le :</th>
+                                    <th>Actualisation :</th>
                                     <th>Supprimer</th>
                                     <th style="width: 40px">Aperçu</th>
                                 </tr>
@@ -882,8 +880,73 @@
                                     <td>  <span class="text">{{$propal->libele}}</span> </td>
                                     <td>
                                         @php 
-                                            echo "<b>".date('d/m/Y',strtotime($propal->created_at))."</b> à <b>".date('H:i:s',strtotime($propal->created_at))."</b>" ;
+                                            echo "<b>".date('d/m/Y',strtotime($propal->created_at))."</b>" ;
                                         @endphp
+                                    </td>
+                                    <td>
+                                       <button type="button" class="btn btn-primary" 
+                                       data-toggle="modal" data-target="#actu{{$propal->id}}"><b><i class="fa fa-plus"></i></b></button>
+                                        <div class="modal modal-default fade" id="actu{{$propal->id}}">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span></button>
+                                                        <h4 class="modal-title">{{$propal->libele}}</h4>
+                                                    </div>
+                                                
+                                                    <div class="modal-body">
+                                                        <!-- form start -->
+                                                        <form action="actual_propal" method="post">  
+                                                            @csrf
+                                                            <input type="text" value="{{$propal->id}}" name="id_propal" style="display:none;">
+                                                            <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
+                                                            <div class="form-group">   
+                                                                <label>Rejeté?</label>
+                                                                <select class="form-control " name="rejete">
+                                                                    @if($propal->rejete == "0")
+                                                                        <option value="0">NON</option>
+                                                                        <option value="1">OUI</option>
+                                                                    @else
+                                                                        <option value="1">OUI</option>
+                                                                        <option value="0">NON</option>
+                                                                    @endif
+                                                                </select>
+                                                                
+                                                            </div>        
+
+                                                            <div class="form-group">
+                                                                <label>Motif :</label>
+                                                                <p>{{$propal->motif}}</p>
+                                                                <textarea name="motif" class="form-control"></textarea>
+                                                            </div>
+                                                           
+                                                            <script>
+                                                                function newFonction()
+                                                                {
+                                                                    
+                                                                    var f = document.getElementById("grise4").value;
+                                                                    //alert(f);
+                                                                    if(f == 'autre')
+                                                                    {
+                                                                        document.getElementById("newf").removeAttribute("disabled");
+                                                                    }
+                                                                    else{
+                                                                        document.getElementById("newf").setAttribute("disabled", "disabled");
+                                                                    }
+                                                                }
+                                                            </script>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn  pull-left" data-dismiss="modal">Fermer</button>
+                                                                <button type="submit" class="btn btn-primary">Actualiser</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                    
+                                                </div>
+                                                <!-- /.modal-content -->
+                                            </div>
+                                        </div> 
                                     </td>
                                     @if(auth()->user()->id != $prospections->id_utilisateur)
                                         @can("procuration")
@@ -1163,7 +1226,7 @@
         </div>
         <!--/.col (right) -->
     @endif
-     <div class="row">
+    <div class="row">
         <div class="modal modal-default fade" id="add">
             <div class="modal-dialog">
                 <div class="modal-content">

@@ -12,7 +12,7 @@ class Proposition extends Model
     public $timestamps = true;
     
     protected $fillable = [
-        'libele', 'path_doc', 'id_prospection', 
-         'id_utilisateur', 'updated_at', 
+        'libele', 'path_doc', 'id_prospection', 'id_client',
+         'rejete', 'id_utilisateur', 'updated_at', 
     ];
 }

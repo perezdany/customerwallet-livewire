@@ -105,7 +105,7 @@
                   @endphp
                 <h3> <a href="facture" style="color:#fff;">{{$count}}</a></h3>
                 
-                <a href="facture" style="color:#fff;"><p>FACTURE(Avoir y compris)</p></a><br>
+                <a href="facture" style="color:#fff;"><p>FACTURES(Avoir y compris)</p></a><br>
 
               <form method="get" action="no_reglee">
                 @csrf
@@ -295,7 +295,7 @@
                   @endphp
                 <h3> <a href="facture" style="color:#fff;">{{$count}}</a></h3>
                 
-                <a href="facture" style="color:#fff;"><p>FACTURE(Avoir y compris)</p></a><br>
+                <a href="facture" style="color:#fff;"><p>FACTURES(Avoir y compris)</p></a><br>
 
               <form method="get" action="no_reglee">
                 @csrf
@@ -484,7 +484,7 @@
                 @endphp
               <h3> <a href="facture" style="color:#fff;">{{$count}}</a></h3>
               
-              <a href="facture" style="color:#fff;"><p>FACTURE(Avoir y compris)</p></a><br>
+              <a href="facture" style="color:#fff;"><p>FACTURES(Avoir y compris)</p></a><br>
 
             <form method="get" action="no_reglee">
               @csrf

@@ -121,15 +121,9 @@
                             </td>
                             <th>
                                 @if($entreprise->etat == 0)
-                                    @if($entreprise->id_statutentreprise == 2)
-                                        <p class="bg-red">Inactif</p>
-                                    @else
-                                    @endif
+                                    <p class="bg-red">Inactif</p>
                                 @else
-                                    @if($entreprise->id_statutentreprise == 2)
-                                       <p class="bg-green">Actif</p>
-                                    @else
-                                    @endif
+                                    <p class="bg-green">Actif</p>
                                     
                                 @endif
                             
@@ -205,10 +199,3 @@
         </div>
         <!-- /.box -->
     </div>
-   
-
-
-
-
-
-

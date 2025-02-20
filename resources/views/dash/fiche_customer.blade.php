@@ -334,13 +334,13 @@
                                             <td>
                                             
                                                 @php
-                                                //$pieces = explode("/", $contrats->path);
-                                                //echo $pieces[2];
+                                                    $pieces = explode("/", $contrats->path);
+                                                    echo $pieces[2];
                                                 @endphp
                                             </td>
                                         <td>
                                         @php 
-                                            echo "<b>".date('d/m/Y',strtotime($contrats->created_at))."</b> à <b>".date('H:i:s',strtotime($contrats->created_at))."</b>" ;
+                                            echo "<b>".date('d/m/Y',strtotime($contrats->created_at))."</b>" ;
                                         @endphp
                                         </td>
                                         <td>
@@ -397,7 +397,7 @@
 
                                         <td>
                                             @php 
-                                                echo "<b>".date('d/m/Y',strtotime($contrats->created_at))."</b> à <b>".date('H:i:s',strtotime($contrats->created_at))."</b>" ;
+                                                echo "<b>".date('d/m/Y',strtotime($contrats->created_at))."</b> " ;
                                             @endphp
                                         </td>
                                         <td>
@@ -535,7 +535,7 @@
                                                 <td>
                                                         @php 
                         
-                                                        echo "<b>".date('d/m/Y',strtotime($se_get->created_at))."</b> à <b>".date('H:i:s',strtotime($se_get->created_at))."</b>" ;
+                                                        echo "<b>".date('d/m/Y',strtotime($se_get->created_at))."</b>" ;
                                                 
                                                     @endphp
                                                 </td>
@@ -584,7 +584,7 @@
                                         </td>
                                         <td>
                                             @php 
-                                                echo "<b>".date('d/m/Y',strtotime($prospections->created_at))."</b> à <b>".date('H:i:s',strtotime($se_get->created_at))."</b>" ;
+                                                echo "<b>".date('d/m/Y',strtotime($prospections->created_at))."</b> " ;
                                             @endphp
                                         </td>
                                         <td>
@@ -634,7 +634,7 @@
                                         <td>  <span class="text">{{$select->libele}}</span> </td>
                                         <td>
                                             @php 
-                                                echo "<b>".date('d/m/Y',strtotime($prospections->created_at))."</b> à <b>".date('H:i:s',strtotime($se_get->created_at))."</b>" ;
+                                                echo "<b>".date('d/m/Y',strtotime($prospections->created_at))."</b>" ;
                                             @endphp
                                         </td>
                                         <td>
@@ -694,7 +694,7 @@
                                         </td>
                                         <td>
                                             @php 
-                                                echo "<b>".date('d/m/Y',strtotime($prospections->created_at))."</b> à <b>".date('H:i:s',strtotime($prospections->created_at))."</b>" ;
+                                                echo "<b>".date('d/m/Y',strtotime($prospections->created_at))."</b>" ;
                                             @endphp
                                         </td>
                                         <td>
@@ -743,7 +743,7 @@
                                         <td>  <span class="text">{{$select->libele}}</span> </td>
                                          <td>
                                             @php 
-                                                echo "<b>".date('d/m/Y',strtotime($select->created_at))."</b> à <b>".date('H:i:s',strtotime($select->created_at))."</b>" ;
+                                                echo "<b>".date('d/m/Y',strtotime($select->created_at))."</b>" ;
                                             @endphp
                                         </td>
                                         <td>
@@ -839,7 +839,7 @@
                                     <td>  <span class="text">{{$propal->libele}}</span> </td>
                                     <td>
                                         @php 
-                                            echo "<b>".date('d/m/Y',strtotime($propal->created_at))."</b> à <b>".date('H:i:s',strtotime($propal->created_at))."</b>" ;
+                                            echo "<b>".date('d/m/Y',strtotime($propal->created_at))."</b> " ;
                                         @endphp
                                     </td>
                                     <td>

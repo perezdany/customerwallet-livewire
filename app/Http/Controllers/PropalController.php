@@ -76,6 +76,7 @@ class PropalController extends Controller
                     'path_doc' => $path,
                     'id_prospection' => $request->id_prospection,
                     'id_client' => $request->id_entreprise,
+                    'rejete' => 0,
                     'id_utilisateur' => auth()->user()->id
                 ]);
 
@@ -168,6 +169,7 @@ class PropalController extends Controller
                     'path_doc' => $path,
                     'id_prospection' => $request->id_prospection,
                     'id_client' => $request->id_entreprise,
+                    'rejete' => 0,
                     'id_utilisateur' => auth()->user()->id
                 ]);
 
@@ -219,6 +221,20 @@ class PropalController extends Controller
         {
             return back()->with('error', 'Vous devez choisir un fichier');
         }
+    }
+
+    public function RefreshPropal(Request $request)
+    {
+        //dd($request->all());
+        $affected = DB::table('propositions')->where('id', $request->id_propal)
+        ->update(['rejete' => $request->rejete, 'motif' => $request->motif]);
+
+        return view('dash/prospect_about',
+        [
+            'id_entreprise' => $request->id_entreprise,
+            'success' => 'La proposition a été actualisé'
+        ]
+    );
     }
 
     public function ViewDocPropal(Request $request)

@@ -655,6 +655,9 @@ Route::middleware(['auth:web'])->group(function(){
 
     Route::post('add_doc_proposition_cust', [PropalController::class, 'AddPropalCustomer']);
 
+    //ACTUALISER UNE PROPOSITION
+    Route::post('actual_propal', [PropalController::class, 'RefreshPropal']);
+
     //VISUALISER LE FICHIER
     Route::post('download_docs_propal', [PropalController::class, 'ViewDocPropal']);
 

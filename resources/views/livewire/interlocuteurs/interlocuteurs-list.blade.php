@@ -1,7 +1,7 @@
 <div class="col-md-12">
     <!--AJOUT AVEC POPUP-->       
     &emsp;	&emsp;<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add">
-    <i class="fa fa-plus">INTERLOCUTEUR</i>
+    <i class="fa fa-plus"></i>INTERLOCUTEUR
     </button>
 
 
