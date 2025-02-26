@@ -535,6 +535,20 @@ Route::middleware(['auth:web'])->group(function(){
     //RECHERCHER UNE ANNEE
     Route::post('search_yearly_chart', [Calculator::class, 'SearchYear']);
 
+    //NOUVEAUX CLIENTS DANS L'ANNEE EN COURS
+    Route::get('newcustomery', [Calculator::class, 'NewCustomerInYear']);
+
+    //RECHERCHER UNE ANNEE
+    Route::post('search_yearly_customer', [Calculator::class, 'SearchNewCustomerInYear']);
+
+    //NOUVEAUX CLIENTS DANS LE MOIS EN COURS
+    Route::get('newcustomerm', [Calculator::class, 'NewCustomerInMonth']);
+
+    //RECHERCHER UN MOIS
+    Route::post('search_monthly_customer', [Calculator::class, 'SearchNewCustomerInMonth']);
+
+
+
     //LES TYPES DE PRESTATIONS
     Route::get('type_prestation', function(){
         return view('admin/type_prestation');

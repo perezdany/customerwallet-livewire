@@ -410,6 +410,7 @@ class ProspectionController extends Controller
 
     public function EditProspection(Request $request)
     {
+        //dd($request->all());
         $calculator = new Calculator();
         
         //Calcul de la date de fin de contrat
@@ -426,7 +427,7 @@ class ProspectionController extends Controller
             {
                 if($request->interlocuteur == "autre")//L'interloctueur n'existe pas 
                 {
-                    if($request->fonction == "autre")
+                   /* if($request->fonction == "autre")
                     {
                         $p = Profession::create(['intitule' => $request->new_fonction]);
                         //AJOUTER MAINTENANT L'INTERLOCUTEUR
@@ -472,7 +473,7 @@ class ProspectionController extends Controller
                         }
                       
                     }
-                   
+                   */
                         
                 }
                 else //interlocuteur pas nouveau
@@ -490,7 +491,7 @@ class ProspectionController extends Controller
                             
                     ]);
 
-                    $Interloc = DB::table('interlocuteurs')
+                    /*$Interloc = DB::table('interlocuteurs')
                     ->where('id', $request->id_interlocuteur)
                        ->update([
                         'titre' => $request->titre,
@@ -500,7 +501,7 @@ class ProspectionController extends Controller
                           'fonction' => $request->fonction, 
                           
                            
-                        ]);
+                        ]);*/
 
                 }
                
@@ -514,8 +515,9 @@ class ProspectionController extends Controller
             if($request->interlocuteur == "autre")//L'interlocuteur n'existe pas 
             {
             
-                if($request->fonction == "autre")
+               if($request->fonction == "autre")
                 {
+                     /*
                     $p = Profession::create(['intitule' => $request->new_fonction]);
                     //AJOUTER MAINTENANT L'INTERLOCUTEUR
                     $interl = Interlocuteur::create([
@@ -537,13 +539,21 @@ class ProspectionController extends Controller
                         'duree_jours' => $request->duree, 
                         'id_entreprise' => $client->id, 
                         'interlocuteur' => $interl->id,
-                   ]);
+                   ]);*/
                 }
                 else
                 {
-                    $add = (new InterlocuteurController())->AddInterlocuteurWithClient($request, $client->id);
-    
-                    foreach($add as $interlocuteur)
+                   // $add = (new InterlocuteurController())->AddInterlocuteurWithClient($request, $client->id);
+                      $affected =  DB::table('prospections')
+                        ->update([
+                             
+                            'date_prospection' => $request->date_prospect,
+                            'date_fin' => $date_fin, 
+                            'duree_jours' => $request->duree, 
+                            'id_entreprise' => $client->id, 
+                            //'interlocuteur' => $interlocuteur->id,
+                       ]);
+                    /*foreach($add as $interlocuteur)
                     {
                        
                         $affected =  DB::table('prospections')
@@ -553,11 +563,11 @@ class ProspectionController extends Controller
                             'date_fin' => $date_fin, 
                             'duree_jours' => $request->duree, 
                             'id_entreprise' => $client->id, 
-                            'interlocuteur' => $interlocuteur->id,
+                            //'interlocuteur' => $interlocuteur->id,
                        ]);
                       
                       
-                    }
+                    }*/
                   
                 }
                
@@ -578,7 +588,7 @@ class ProspectionController extends Controller
                         
                 ]);
 
-                $Interloc = DB::table('interlocuteurs')
+                /*$Interloc = DB::table('interlocuteurs')
                 ->where('id', $request->id_interlocuteur)
                 ->update([
                     'titre' => $request->titre,
@@ -586,7 +596,7 @@ class ProspectionController extends Controller
                     'tel' => $request->tel,
                     'email' => $request->email, 
                     'fonction' => $request->fonction, 
-                 ]);
+                 ]);*/
 
                  //dd($affected);
             }
@@ -623,16 +633,12 @@ class ProspectionController extends Controller
         if($fichier != null)
         {
             //VERFIFIER LE FORMAT 
-            $extension = pathinfo($fichier->getFilename(), PATHINFO_EXTENSION);
+            $extension = pathinfo($fichier->getClientOriginalName(), PATHINFO_EXTENSION);
+            
 
             if($extension != "pdf")
             {
-                    return view('dash/prospect_about',
-                    [
-                        'id_entreprise' => $request->id_entreprise,
-                        'error' => 'FORMAT DE FICHIER INCORRECT'
-                    ]
-                );
+                  return redirect('prospection')->with('error', 'Format de fichier incorrect!');
             }
             //VERIFIER SI L'ENREGISTREMENT A UN CHEMIN D'ACCES ENREGISTRE
             $get_path = Prospection::where('id', $request->id_prospection)->get();
@@ -694,21 +700,16 @@ class ProspectionController extends Controller
          //AJOUT DE PROFORMA
          
         $fichier_proforma = $request->fileproforma;
-        
+        //dd($fichier_proforma);
 
         if( $fichier_proforma != null)
         { 
             //VERFIFIER LE FORMAT 
-            $extension = pathinfo($fichier_proforma->getFilename(), PATHINFO_EXTENSION);
-
+            $extension = pathinfo($fichier_proforma->getClientOriginalName(), PATHINFO_EXTENSION);
+            //dd($extension);
             if($extension != "pdf")
             {
-                    return view('dash/prospect_about',
-                    [
-                        'id_entreprise' => $request->id_entreprise,
-                        'error' => 'FORMAT DE FICHIER INCORRECT'
-                    ]
-                );
+                  return redirect('prospection')->with('error', 'Format de fichier incorrect!');
             }
 
             //VERIFIER SI L'ENREGISTREMENT A UN CHEMIN D'ACCES ENREGISTRE
@@ -773,20 +774,20 @@ class ProspectionController extends Controller
 
     public function GetProspectionByIdEntr($id)
     {
-        //dd($id);
+        
         $get = DB::table('prospections')
         ->join('entreprises', 'prospections.id_entreprise', '=', 'entreprises.id')
         ->join('utilisateurs', 'prospections.id_utilisateur', '=', 'utilisateurs.id')
         ->join('interlocuteurs', 'prospections.interlocuteur', '=', 'interlocuteurs.id')
+      
+        
         ->where('entreprises.id', '=', $id)
         ->get(['prospections.*', 'entreprises.nom_entreprise', 'entreprises.adresse', 
-        'entreprises.chiffre_affaire', 'entreprises.nb_employes',
-        'entreprises.activite', 'utilisateurs.nom_prenoms',
-         'interlocuteurs.titre', 'interlocuteurs.nom', 'interlocuteurs.tel', 'interlocuteurs.email', 
-        'interlocuteurs.fonction',
-       ]);
-        //dd($get)
-        /**/;
+        'entreprises.chiffre_affaire', 'entreprises.nb_employes','interlocuteurs.titre', 
+        'entreprises.activite',
+        'interlocuteurs.nom', 'interlocuteurs.tel', 'interlocuteurs.email', 
+        'interlocuteurs.fonction', 'utilisateurs.nom_prenoms']);
+      
         return $get;
 
     }

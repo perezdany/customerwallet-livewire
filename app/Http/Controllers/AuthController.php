@@ -48,6 +48,9 @@ class AuthController extends Controller
                     
                     if (Auth::guard('web')->attempt(['login' => $request->login, 'password' => $request->password, ])) 
                     {
+                        $request->session()->regenerate();//regeneger la session
+        
+                        return redirect()->route('home'); 
                         //ON le deconnecte 
                         Auth::logout();
 

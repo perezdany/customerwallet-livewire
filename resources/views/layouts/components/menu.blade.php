@@ -112,6 +112,8 @@
             <ul class="treeview-menu">
               <li><a href="monthly"><i class="fa fa-circle-o"></i> Chiffre d'affaire mensuel</a></li>
               <li><a href="yearly"><i class="fa fa-circle-o"></i> Chiffre d'affaire annuel</a></li>
+              <li><a href="newcustomery"><i class="fa fa-circle-o"></i> Nouveaux Clients(Annuel)</a></li>
+              <li><a href="newcustomerm"><i class="fa fa-circle-o"></i> Nouveaux Clients(Mensuel)</a></li>
               
             </ul>
           </li>
@@ -128,7 +130,8 @@
               <ul class="treeview-menu">
                 <li><a href="monthly"><i class="fa fa-circle-o"></i> Chiffre d'affaire mensuel</a></li>
                 <li><a href="yearly"><i class="fa fa-circle-o"></i> Chiffre d'affaire annuel</a></li>
-                
+                <li><a href="newcustomery"><i class="fa fa-circle-o"></i> Nouveaux Clients(Annuel)</a></li>
+                <li><a href="newcustomerm"><i class="fa fa-circle-o"></i> Nouveaux Clients(Mensuel)</a></li>
               </ul>
           </li>
         @endcan
@@ -145,7 +148,8 @@
               <ul class="treeview-menu">
                 <li><a href="monthly"><i class="fa fa-circle-o"></i> Chiffre d'affaire mensuel</a></li>
                 <li><a href="yearly"><i class="fa fa-circle-o"></i> Chiffre d'affaire annuel</a></li>
-                
+                <li><a href="newcustomery"><i class="fa fa-circle-o"></i> Nouveaux Clients(Annuel)</a></li>
+                <li><a href="newcustomerm"><i class="fa fa-circle-o"></i> Nouveaux Clients(Mensuel)</a></li>
               </ul>
           </li>
         @endcan
@@ -162,7 +166,8 @@
               <ul class="treeview-menu">
                 <li><a href="monthly"><i class="fa fa-circle-o"></i> Chiffre d'affaire mensuel</a></li>
                 <li><a href="yearly"><i class="fa fa-circle-o"></i> Chiffre d'affaire annuel</a></li>
-                
+                <li><a href="newcustomery"><i class="fa fa-circle-o"></i> Nouveaux Clients(Annuel)</a></li>
+                <li><a href="newcustomerm"><i class="fa fa-circle-o"></i> Nouveaux Clients(Mensuel)</a></li>
               </ul>
           </li>
         @endcan

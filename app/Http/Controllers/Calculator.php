@@ -753,6 +753,7 @@ class Calculator extends Controller
 
         //TABLEAU DES POURCENTAGE POUR L'ENTREPRISE
         $percent = [];
+        
 
         //chiffre d'affaire annuel en cours
         $total_chiffre_annuel = 0;
@@ -1206,6 +1207,310 @@ class Calculator extends Controller
         
        return view('graph/search_yearly', compact('data', 'mois_francais', 'percent', 'company', 'data_serv', 'serv', 'year', 'colors', 'total_annuel'));
     }
+
+    public function NewCustomerInYear()
+    {
+        //FAIRE UNE BOUCLE POUR TOUS LES MOIS DE L'ANNEE
+
+        //LE TABLEAU QUI VA RECCUEILLIR LES ENTREPRISES
+        $company = [];
+
+        //LE TABLEAU QUI VA RECCUEILLIR LES DONNES 
+        $data = [];
+
+        //NOMBRE DES CLIENTS AU TOTAL
+        $customers = [];
+
+        //LE TABLEAUD DES MOIS
+        $mois_francais = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 
+        'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
+        
+        //l'année en cours
+        $year = date('Y');
+
+        //REQUETE POUR RECUPERER LES NOUVEAUX CLIENTS
+       
+        $get =  DB::table('entreprises')
+        ->where('id_statutentreprise', 2)
+        ->get();
+        //dd($total_annuel);
+        //FAIRE UN FOREACH POUR FAIRE LA SOMME
+        
+        //LA BOUCLE DES 12 MOIS
+        for($i = 1; $i <= 12; $i++)
+        {
+            //total pour chaque mois
+            $total = 0;
+            
+            //nombre de jours dans le mois
+            $number = cal_days_in_month(CAL_GREGORIAN, $i, $year);
+
+            $first_date = date('Y')."-".$i."-01";
+            $last_date = date('Y')."-".$i."-".$number;
+            foreach($get as $all)
+            {   
+               
+                if($all->client_depuis != NULL)
+                {
+                    if($all->client_depuis >= $first_date AND $all->client_depuis <= $last_date)
+                    {
+                        $total = $total++;
+                        array_push($company, $all->nom_entreprise);
+                        array_push($customers, 1);
+                    }
+                }
+                else
+                {
+                    $to_convert = date('d/m/Y',strtotime($all->created_at));
+                    if($to_convert >= $first_date AND $to_convert <= $last_date)
+                    {
+                        $total = $total++;
+                        array_push($company, $all->nom_entreprise);
+                        array_push($customers, 1);
+                    }
+                }
+                
+            } 
+            array_push($data, $total); 
+        
+        }
+        
+        
+        return view('graph/newcustomery', compact('data', 'mois_francais',  'company' , 'year', 'customers'));
+    }
+
+    public function SearchNewCustomerInYear(Request $request)
+    {
+        //FAIRE UNE BOUCLE POUR TOUS LES MOIS DE L'ANNEE
+
+        //LE TABLEAU QUI VA RECCUEILLIR LES ENTREPRISES
+        $company = [];
+
+        //LE TABLEAU QUI VA RECCUEILLIR LES DONNES 
+        $data = [];
+
+        //NOMBRE DES CLIENTS AU TOTAL
+        $customers = [];
+
+        //LE TABLEAUD DES MOIS
+        $mois_francais = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 
+        'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
+        
+        //l'année en cours
+        //l'année en cours
+        $year_get = date_parse($request->year);
+
+        $year = $year_get['year'];
+
+        //REQUETE POUR RECUPERER LES NOUVEAUX CLIENTS
+       
+        $get =  DB::table('entreprises')
+        ->where('id_statutentreprise', 2)
+        ->get();
+        //dd($get);
+        //FAIRE UN FOREACH POUR FAIRE LA SOMME
+        
+        //LA BOUCLE DES 12 MOIS
+        for($i = 1; $i <= 12; $i++)
+        {
+            //total pour chaque mois
+            $total = 0;
+            
+            //nombre de jours dans le mois
+            $number = cal_days_in_month(CAL_GREGORIAN, $i, $year);
+
+            $first_date = $year."-".$i."-01";
+            $last_date = $year."-".$i."-".$number;
+            //dd($first_date);
+            foreach($get as $all)
+            {   
+               //dump($all);
+                if($all->client_depuis != NULL)
+                {
+                    //dd($all->client_depuis);
+                    if(strtotime($all->client_depuis) >= strtotime($first_date) && strtotime($all->client_depuis) <= strtotime($last_date))
+                    {
+                        //dd('i');
+                        $total = $total + 1;
+                        array_push($company, $all->nom_entreprise);
+                        array_push($customers, 1);
+                    }
+                }
+                else
+                {
+                    //dd('la');
+                    $to_convert = date('d/m/Y',strtotime($all->created_at));
+                    if(strtotime($to_convert) >= strtotime($first_date) AND strtotime($to_convert) <= strtotime($last_date))
+                    {
+                        $total = $total + 1;
+                        array_push($company, $all->nom_entreprise);
+                        array_push($customers, 1);
+                    }
+                }
+                
+            } 
+            array_push($data, $total); 
+        
+        }
+        
+        //dd($company);
+        return view('graph/search_new_customery', compact('data', 'mois_francais',  'company', 'customers', 'year'));
+    }
+
+    public function NewCustomerInMonth()
+    {
+        //FAIRE UNE BOUCLE POUR TOUS LES MOIS DE L'ANNEE
+
+        //LE TABLEAU QUI VA RECCUEILLIR LES ENTREPRISES
+        $company = [];
+
+        //LE TABLEAU QUI VA RECCUEILLIR LES DONNES 
+        $data = [];
+
+        //NOMBRE DES CLIENTS AU TOTAL
+        $customers = [];
+
+        //LE TABLEAUD DES MOIS
+        $mois_francais = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 
+        'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
+        
+        //l'année en cours
+        $month = date('m');
+
+        //REQUETE POUR RECUPERER LES NOUVEAUX CLIENTS
+       
+        $get =  DB::table('entreprises')
+        ->where('id_statutentreprise', 2)
+        ->get();
+        //dd($total_annuel);
+        //FAIRE UN FOREACH POUR FAIRE LA SOMME
+        //nombre de jours dans le mois
+        $number = cal_days_in_month(CAL_GREGORIAN, $month, date('Y'));
+
+        //LA BOUCLE DES 12 MOIS
+        for($i = 1; $i <= $number; $i++)
+        {
+            //total pour chaque mois
+            $total = 0;
+            
+          
+            $first_date = date('Y')."-".$month."-".$i;
+            $last_date =  date('Y')."-".$month."-".$number;
+            foreach($get as $all)
+            {   
+               
+                if($all->client_depuis != NULL)
+                {
+                    if(strtotime($all->client_depuis) >= strtotime($first_date) AND strtotime($all->client_depuis) <= strtotime($last_date))
+                    {
+                        $total = $total++;
+                        array_push($company, $all->nom_entreprise);
+                        array_push($customers, 1);
+                    }
+                }
+                else
+                {
+                    $to_convert = date('d/m/Y',strtotime($all->created_at));
+                    if(strtotime($to_convert) >= strtotime($first_date) AND strtotime($to_convert) <= strtotime($last_date))
+                    {
+                        $total = $total++;
+                        array_push($company, $all->nom_entreprise);
+                        array_push($customers, 1);
+                    }
+                }
+                
+            } 
+            array_push($data, $total); 
+        
+        }
+        
+        
+        return view('graph/newcustomerm', compact('data', 'mois_francais',  'company', 'month', 'customers'));
+    }
+
+    public function SearchNewCustomerInMonth(Request $request)
+    {
+        //FAIRE UNE BOUCLE POUR TOUS LES MOIS DE L'ANNEE
+
+        //LE TABLEAU QUI VA RECCUEILLIR LES ENTREPRISES
+        $company = [];
+
+        //LE TABLEAU QUI VA RECCUEILLIR LES DONNES 
+        $data = [];
+
+        //NOMBRE DES CLIENTS AU TOTAL
+        $customers = [];
+
+        //LE TABLEAUD DES MOIS
+        $mois_francais = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 
+        'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
+        
+        //le mois
+        $month_get = date_parse($request->month);
+
+        $month = $month_get['month'];
+
+        $year = $month_get['year'];
+
+        $mois =  $mois_francais[$month-1];
+
+        //REQUETE POUR RECUPERER LES NOUVEAUX CLIENTS
+       
+        $get =  DB::table('entreprises')
+        ->where('id_statutentreprise', 2)
+        ->get();
+        //dd($total_annuel);
+        //FAIRE UN FOREACH POUR FAIRE LA SOMME
+        //nombre de jours dans le mois
+        $number = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+
+        //LA BOUCLE DES 12 MOIS
+        for($i = 1; $i <= $number; $i++)
+        {
+            //total pour chaque mois
+            $total = 0;
+            
+            $first_date = $year."-".$month."-".$i;
+            $last_date =  $year."-".$month."-".$number;
+            //dump($first_date);
+            foreach($get as $all)
+            {   
+               //dd($all->client_depuis);
+                if($all->client_depuis != NULL)
+                {
+                   
+                    //echo $all->client_depuis."<br>";
+                    
+                    if(strtotime($all->client_depuis) == strtotime($first_date) )
+                    {
+                        
+                        $total = $total + 1;
+                        array_push($company, $all->nom_entreprise);
+                        array_push($customers, 1);
+                    }
+                }
+                else
+                {
+                   
+                    $to_convert = date('d/m/Y',strtotime($all->created_at));
+                    if(strtotime($to_convert) === strtotime($first_date))
+                    {
+                       
+                        $total = $total + 1;
+                        array_push($company, $all->nom_entreprise);
+                        array_push($customers, 1);
+                    }
+                }
+                
+            } 
+            array_push($data, $total); 
+        
+        }
+        
+        //dd($data);
+        return view('graph/search_new_customerm', compact('data', 'mois_francais',  'company', 'month', 'mois', 'year', 'customers'));
+    }
+
 
     public function VerifyIfFactureRegle($id_facture, $montant)
     {
