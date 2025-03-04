@@ -14,7 +14,7 @@
                     @csrf
                     <div class="box-body">   
                          <div class="row form-group text-center">
-                        <div class="col-sm-4"><label>Particulier:</label></div>
+                        <div class="col-sm-4"><label><!--Particulier:--></label></div>
                           
                         <div class="col-sm-8">
                             <select class="form-control" id="id_statutentreprise" wire:model="editEntreprise.particulier" style="display:none;">
@@ -67,6 +67,11 @@
                         <div class="col-sm-8"><input type="text" id="chiffre_affaire" wire:model="editEntreprise.chiffre_affaire"  maxlength="18" class="form-control" name="chiffre" placeholder="1000000"></div>
                         </div><br>
 
+                         <div class="row form-gorup text-center">
+                        <div class="col-sm-4"> <label >Dirigeant:</label></div>
+                        <div class="col-sm-8"><input type="text" wire:model="editEntreprise.dirigeant"  maxlength="60" class="form-control" name="chiffre" placeholder="M. ARTHUR VILBRUN"></div>
+                        </div><br>
+
                         <div class="row form-group text-center">
                         <div class="col-sm-4"><label >Nombre d'employés:</label></div>
                         <div class="col-sm-8"><input type="text" id="nb_emp" wire:model="editEntreprise.nb_employes" maxlength="18" class="form-control" ></div>
@@ -105,7 +110,7 @@
                         </div><br>
                         <div class="row form-group text-center">
                         <div class="col-sm-4"><label>Email:</label></div>
-                        <div class="col-sm-8"><input type="email" wire:model="editEntreprise.adresse_email"  maxlength="30" class="form-control" 
+                        <div class="col-sm-8"><input type="email" wire:model="editEntreprise.adresse_email"  maxlength="60" class="form-control" 
                         id="email"></div>
                         </div><br>
                         <div class="row form-group text-center">

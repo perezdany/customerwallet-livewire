@@ -89,6 +89,11 @@
                             </div>
 
                             <div class="form-group">
+                            <label >Dirigeant: </label>
+                            <input type="text" maxlength="230" class="form-control  " name="dirigeant" placeholder="ARTHUR VILBRUN" onkeyup='this.value=this.value.toUpperCase()'>
+                            </div>
+
+                            <div class="form-group">
                             <label >Nombre d'employés:</label>
                             <input type="text" id="ne" maxlength="11" class="form-control  " name="nb_emp" placeholder="5">
                             </div>

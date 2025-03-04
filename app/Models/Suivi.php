@@ -12,6 +12,7 @@ class Suivi extends Model
     public $timestamps = true;
 
     protected $fillable = [
-        'titre', 'activite', 'id_prospection', 'created_by', 'updated_at', 
+        'date_activite', 'heure_action', 'action', 'name_interl',
+        'tel_interl', 'comment', 'id_utilisateur', 'id_entreprise'
     ];
 }

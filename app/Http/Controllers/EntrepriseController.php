@@ -206,6 +206,7 @@ class EntrepriseController extends Controller
     public function AddEntreprise(Request $request)
     {
         //dd($request->all());
+        //dd($request->particulier);
         $Insert = Entreprise::create([
            
             'nom_entreprise'=> $request->nom_entreprise,
@@ -221,8 +222,9 @@ class EntrepriseController extends Controller
             'etat' => 0,
             'adresse_email' => $request->email,
             'site_web' => $request->site_web,
+            'dirgeant' => $request->dirigeant,
             'id_statutentreprise' => 1,
-            'paticulier' => $request->particulier,
+            'particulier' => $request->particulier,
              'created_by' => auth()->user()->id, 
         ]);
 
@@ -252,8 +254,9 @@ class EntrepriseController extends Controller
             'etat' => 1,
             'adresse_email' => $request->email,
             'site_web' => $request->site_web,
+            'dirgeant' => $request->dirigeant,
             'id_statutentreprise' => 2,
-            'paticulier' => $request->particulier,
+            'particulier' => $request->particulier,
             'client_depuis' => date('Y-m-d'),
              'created_by' => auth()->user()->id, 
         ]);
@@ -269,7 +272,7 @@ class EntrepriseController extends Controller
 
     public function AddProspect(Request $request)
     {
-        //dd($request->all());
+        
         $Insert = Entreprise::create([
            
             'nom_entreprise' => $request->nom_entreprise,
@@ -285,8 +288,9 @@ class EntrepriseController extends Controller
             'id_pays' => $request->pays,
             'adresse_email' => $request->email,
             'site_web' => $request->site_web,
+            'dirgeant' => $request->dirigeant,
             'id_statutentreprise' => 1,
-            'paticulier' => $request->particulier,
+            'particulier' => $request->particulier,
              'created_by' => auth()->user()->id, 
         ]);
 
@@ -582,6 +586,7 @@ class EntrepriseController extends Controller
             'mobile' => $request->mobile,
              'adresse_email' => $request->email,
              'site_web' => $request->site_web,
+             'dirigeant' => $request->dirigeant,
         ]);
 
       
@@ -1028,7 +1033,7 @@ class EntrepriseController extends Controller
 
     public function GetFicheCustomer(Request $request)
     {
-        
+        dd('ici');
         return view('dash/fiche_customer',
             [
                 'id_entreprise' => $request->id_entreprise,

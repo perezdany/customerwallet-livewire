@@ -140,6 +140,12 @@
                                               </div><br><br>
 
                                               <div class="form-group row text-center">
+                                                <div class="col-sm-6"><label >Dirigeant:</label></div>
+                                                <div class="col-sm-6"><input type="text"  value="{{$all->dirigeant}}"
+                                                  maxlength="60" class="form-control  " name="dirigeant" placeholder="M. ARTHUR VILBRUN"></div>
+                                              </div><br><br>
+
+                                              <div class="form-group row text-center">
                                                 <div class="col-sm-6"><label >Nombre d'employés:</label></div>
                                                 <div class="col-sm-6"><input type="text" id="ne" value="{{$all->nb_employes}}" maxlength="18"
                                                  class="form-control  " name="nb_emp" placeholder="5"></div>
@@ -292,6 +298,11 @@
                                             <div class="form-group">
                                               <h4><label >Chiffre d'affaire (FCFA):</label></h4>
                                               <p> {{$all->chiffre_affaire}} </p>
+                                            </div><br>
+
+                                             <div class="form-group">
+                                              <h4><label >Dirigeant:</label></h4>
+                                              <p> {{$all->dirigeant}} </p>
                                             </div><br>
 
                                             <div class="form-group">

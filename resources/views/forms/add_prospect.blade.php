@@ -49,7 +49,7 @@
                         @csrf
                         <div class="box-body">
                             <div class="form-group">
-                                <label>Particulier ?:</label>
+                                <!--<label>Particulier ?:</label>-->
 
                                 <select class="form-control " name="particulier" id="particulier" onchange="EnableFields();" style="display:none;">
                                     <option value="0">NON</option>
@@ -66,15 +66,20 @@
                             </div>
                             <div class="form-group">
                             <label >Téléphone fixe:</label>
-                            <input type="text"  maxlength="18" class="form-control  " name="tel" placeholder="+225 27 47 54 45 68">
+                            <input type="text"  maxlength="30" class="form-control  " name="tel" placeholder="+225 27 47 54 45 68">
                             </div>
                              <div class="form-group">
                             <label >Téléphone mobile:</label>
-                            <input type="text"  maxlength="18" class="form-control  " name="mobile" placeholder="+225 07 47 54 45 68">
+                            <input type="text"  maxlength="30" class="form-control  " name="mobile" placeholder="+225 07 47 54 45 68">
                             </div>
                             <div class="form-group">
                             <label >Chiffre d'affaire (FCFA): </label>
                             <input type="text" id="ca" maxlength="18" class="form-control  " name="chiffre" placeholder="1000000">
+                            </div>
+
+                            <div class="form-group">
+                            <label >Dirigeant: </label>
+                            <input type="text" maxlength="230" class="form-control  " name="dirigeant" placeholder="ARTHUR VILBRUN" onkeyup='this.value=this.value.toUpperCase()'>
                             </div>
 
                             <div class="form-group">
@@ -97,7 +102,7 @@
                                 </select>   
                             </div>
                             <div class="form-group">
-                                <label >Activité (Ou profession):</label>
+                                <label >Activité:</label>
                                 <input type="text"  maxlength="100" class="form-control" id="activite" name="activite" onkeyup='this.value=this.value.toUpperCase()'>
                             </div>
 
@@ -175,7 +180,7 @@
                         @csrf
                         <div class="box-body">
                             <div class="form-group">
-                                <label>Particulier ?:</label>
+                                <!--<label>Particulier ?:</label>-->
 
                                 <select class="form-control " name="particulier" id="particulier" onchange="EnableFields();" style="display:none;">
                                     <option value="1">OUI</option>
@@ -192,15 +197,15 @@
                             </div>
                             <div class="form-group">
                             <label >Téléphone fixe:</label>
-                            <input type="text"  maxlength="18" class="form-control  " name="tel" placeholder="+225 27 47 54 45 68">
+                            <input type="text"  maxlength="30" class="form-control  " name="tel" placeholder="+225 27 47 54 45 68">
                             </div>
                             <div class="form-group">
                             <label >Téléphone mobile:</label>
-                            <input type="text"  maxlength="18" class="form-control  " name="mobile" placeholder="+225 07 47 54 45 68">
+                            <input type="text"  maxlength="30" class="form-control  " name="mobile" placeholder="+225 07 47 54 45 68">
                             </div>
 
                             <div class="form-group">
-                                <label >Profession):</label>
+                                <label >Profession:</label>
                                 <input type="text"  maxlength="100" class="form-control" id="activite" name="activite" onkeyup='this.value=this.value.toUpperCase()'>
                             </div>
 

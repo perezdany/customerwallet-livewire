@@ -89,9 +89,8 @@
 
             <div class="row">
             
-                <div class="col-md-2"></div>
                 <!-- left column -->
-                <div class="col-md-8" >
+                <div class="col-md-12" >
                     <!-- Horizontal Form -->
                     @foreach($nom as $nom)
                             <h3 class="box-title"><b>{{$nom->nom_entreprise}}</b>
@@ -108,91 +107,91 @@
                                 
                                     <div class="col-sm-6">
                                         <input type="text" value="@php echo date('d/m/Y', strtotime($nom->client_depuis)) @endphp" class="form-control" disabled>
-                                    </div><br><br><br>
+                                    </div>
                                     
-                                </div>
+                                </div><br>
                                 <div class="form-group">
                                     <label class="col-sm-6 control-label"> <b>ADRESSE GEROGRAPHIQUE DE L'ENTREPRISE :</b></label>
                                     <div class="col-sm-6">
                                         <input type="text" value="{{$nom->adresse}}" class="form-control" disabled>
-                                    </div><br><br><br>
+                                    </div>
                                     
-                                </div>
+                                </div><br>
                                 <div class="form-group">
                                     <label class="col-sm-6 control-label"> <b>TELEPHONE :</b></label>
                                     <div class="col-sm-6">
                                         <input type="text" value="{{$nom->telephone}}" class="form-control" disabled>
-                                    </div><br><br><br>
+                                    </div>
                                     
-                                </div>
+                                </div><br>
                                 <div class="form-group">
                                     <label class="col-sm-6 control-label"> <b>ADRESSE EMAIL:</b></label>
                                 
                                     <div class="col-sm-6">
                                         <input type="text" value="{{$nom->adresse_email}}" class="form-control" disabled>
-                                    </div><br><br>
+                                    </div>
                                     
-                                </div>
+                                </div><br>
                                 @if($nom->particulier == 0)
                                     <div class="form-group">
                                         <label class="col-sm-6 control-label"> <b>CHIFFRE D'AFFAIRE:</b></label>
                                     
                                         <div class="col-sm-6">
                                             <input type="text" value="{{$nom->chiffre_affaire}}" class="form-control" disabled>
-                                        </div><br><br>
+                                        </div>
                                         
-                                    </div>
+                                    </div><br>
                                     <div class="form-group">
                                         <label class="col-sm-6 control-label"> <b>NOMBRE D'ENPLOYES:</b></label>
                                     
                                         <div class="col-sm-6">
                                             <input type="text" value="{{$nom->nb_employes}}" class="form-control" disabled>
-                                        </div><br><br>
+                                        </div>
                                         
-                                    </div>
+                                    </div><br>
 
                                     <div class="form-group">
                                         <label class="col-sm-6 control-label"> <b>DATE DE CREATION:</b></label>
                                     
                                         <div class="col-sm-6">
                                             <input type="text" value="{{$nom->date_creation}}" class="form-control" disabled>
-                                        </div><br><br>
+                                        </div>
                                         
-                                    </div>
+                                    </div><br>
 
                                     <div class="form-group">
                                         <label class="col-sm-6 control-label"> <b>PAYS:</b></label>
                                     
                                         <div class="col-sm-6">
                                             <input type="text" value="{{$nom->nom_pays}}" class="form-control" disabled>
-                                        </div><br><br>
+                                        </div>
                                         
-                                    </div>
+                                    </div><br>
                                 @endif
                                 <div class="form-group">
                                     <label class="col-sm-6 control-label"> <b>SITE WEB:</b></label>
                                 
                                     <div class="col-sm-6">
                                         <input type="text" value="{{$nom->site_web}}" class="form-control" disabled>
-                                    </div><br><br>
+                                    </div>
                                         
-                                </div>
+                                </div><br>
                                 <div class="form-group">
                                     <label class="col-sm-6 control-label"> <b>ACTIVITE/PROFESSION:</b></label>
                                 
                                     <div class="col-sm-6">
                                         <input type="text" value="{{$nom->activite}}" class="form-control" disabled>
-                                    </div><br><br>
+                                    </div>
                                         
-                                </div>
+                                </div><br>
                                 <div class="form-group">
                                     <label class="col-sm-6 control-label"><b>AJOUTE PAR :</b></label>
                                 
                                     <div class="col-sm-6">
                                         <input class="form-control" disabled type="text" value="{{$nom->nom_prenoms}}">
-                                    </div><br><br>
+                                    </div>
                                 
-                                </div>
+                                </div><br>
                             
                             </div>
 
@@ -254,7 +253,6 @@
             
                 </div>
                 
-                <div class="col-md-2"></div>
             </div>
             <!--/.col (right) -->
         @endif

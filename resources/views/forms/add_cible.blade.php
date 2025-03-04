@@ -74,6 +74,11 @@
                       <label >Chiffre d'affaire (FCFA):</label>
                       <input type="tex"  maxlength="18" class="form-control" name="chiffre" id="ca" placeholder="1000000">
                     </div>
+
+                    <div class="form-group">
+                    <label >Dirigeant: </label>
+                    <input type="text" maxlength="230" class="form-control  " name="dirigeant" placeholder="ARTHUR VILBRUN" onkeyup='this.value=this.value.toUpperCase()'>
+                    </div>
                     <!--<div class="form-group">
                       <label>Activité:</label>
                       <input type="text" maxlength="100" class="form-control  " name="activite" id="activite"

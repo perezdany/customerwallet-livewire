@@ -101,17 +101,28 @@
                             <td>
                                 
                                 @if($entreprise->id_statutentreprise == 2)
+                                
                                     <form method="get" action="display_fiche_customer" target="blank">
                                         @csrf
                                         <input type="text" value="{{$entreprise->id}}" style="display:none;" name="id_entreprise">
                                         <button class="btn btn-default"> <b>{{$entreprise->nom_entreprise}}</b></button>
                                     </form>
                                 @else
-                                    <form method="post" action="display_fiche_customer">
+                                    @if($entreprise->id_statutentreprise == 1)
+                                    
+                                    <form method="post" action="display_about_prospect">
                                         @csrf
                                         <input type="text" value="{{$entreprise->id}}" style="display:none;" name="id_entreprise">
                                         <button class="btn btn-default"> <b>{{$entreprise->nom_entreprise}}</b></button>
                                     </form>
+                                    @endif
+                                    @if($entreprise->id_statutentreprise == 3)
+                                        <form method="post" action="display_about_prospect">
+                                            @csrf
+                                            <input type="text" value="{{$entreprise->id}}" style="display:none;" name="id_entreprise">
+                                            <button class="btn btn-default"> <b>{{$entreprise->nom_entreprise}}</b></button>
+                                        </form>
+                                    @endif
                              
                                 @endif
                             </td>

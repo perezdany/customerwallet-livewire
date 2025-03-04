@@ -57,11 +57,21 @@
                       @foreach($all as $all)
                         <tr>
                           <td>
-                            <form method="post" action="display_fiche_customer">
+                            @if($all->id_statutentreprise == 2)
+                             
+                              <form method="post" action="display_fiche_customer">
                                 @csrf
                                 <input type="text" value="{{$all->id}}" style="display:none;" name="id_entreprise">
                                 <button class="btn btn-default"> <b>{{$all->nom_entreprise}}</b></button>
-                            </form>
+                              </form>
+                            @else
+                              <form method="post" action="display_about_prospect">
+                                @csrf
+                                <input type="text" value="{{$all->id}}" style="display:none;" name="id_entreprise">
+                                <button class="btn btn-default"> <b>{{$all->nom_entreprise}}</b></button>
+                              </form>
+                            @endif
+                            
                              
                           </td>
                           <td>

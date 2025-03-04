@@ -24,6 +24,8 @@
 
     use App\Http\Controllers\PropalController;
 
+    use App\Http\Controllers\SuiviController;
+
     $contratcontroller = new ContratController();
     $entreprisecontroller = new EntrepriseController();
     $prestationcontroller = new PrestationController();
@@ -34,8 +36,7 @@
     $categoriecontroller = new CategorieController();
     $servicecontroller = new ServiceController();
     $propalcontroller = new PropalController();
-
-   
+    $suivicontroller = new SuiviController();
   
 @endphp
 
@@ -155,6 +156,82 @@
         </div> 
         <!-- /.modal-dialog -->
 
+        
+        <div class="modal modal-default fade" id="addsuivi">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Enregistrer une nouvelle action menée</h4>
+                    </div>
+                 
+                    <div class="modal-body">
+                        <!-- form start -->
+                        <form action="add_suivi_customer" method="post">  
+                             @csrf
+                           
+                            <div class="form-group">
+                              
+                                @php
+                                    $nom = $entreprisecontroller->GetById($id_entreprise);
+                                @endphp
+                                
+                                <select class="form-control " name="entreprise" style="display:none;">
+                                    @foreach($nom as $nom)
+                                        <option value={{$id_entreprise}}>{{$nom->nom_entreprise}}</option>
+
+                                    @endforeach
+                                
+                                </select>
+                                
+                            </div>        
+
+                            <div class="form-group">
+                                <label for="">Date:</label>
+                                <input type="date" class="form-control" name="date_activite" required>
+                            </div>
+ 
+                            <div class="form-group">
+                                <label for="">Heure:</label>
+                                <input type="time" id="appt" class="form-control" name="heure_action" min="00:00" max="23:59" required />
+                            </div>
+                           
+                            <div class="form-group">
+                                <label>Action menée:</label>
+                                <textarea name="action" class="form-control" required></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                    <label>Nom de l'interlocuteur:</label>
+                                    <input type="text" required onkeyup="this.value=this.value.toUpperCase()" 
+                                    maxlength="100" class="form-control" name="name_interl" placeholder="M. KOFFI JEAN">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Téléphone (*)</label>
+                                <input type="text" required maxlength="30"   class="form-control " name="tel_interl" placeholder="(+225)0214578931" >
+                            </div>
+
+
+                            <div class="form-group">
+                                <label>Commentaire:(*)</label>
+                                <textarea name="comment" class="form-control" required></textarea>
+                            </div>  
+                    
+                          
+                            <div class="modal-footer">
+                                <button type="button" class="btn  pull-left" data-dismiss="modal">Fermer</button>
+                                <button type="submit" class="btn btn-primary">Ajouter</button>
+                            </div>
+                        </form>
+                    </div>
+                    
+                </div>
+                <!-- /.modal-content -->
+            </div>
+        </div> 
+
         <div class="col-md-2"></div>
         <div class="col-md-8">
 
@@ -202,7 +279,7 @@
 
         <div class="row">
           
-            <div class="col-md-2"></div>
+           
             <!-- left column -->
             <div class="col-md-8">
                 <!-- Horizontal Form -->
@@ -252,7 +329,10 @@
                     @endforeach
 
                     <div class="box-header" style="text-align:center">
-                        <h3 class="box-title"><b>Contrats</b></h3>
+                        <h3 class="box-title"><b>ORDRE D'AFFICHAGE DES INFORMATIONS:</b>
+                        Contrats--Fichier du contrat--Facture proforma--Les prestations du contrat--Prospections--
+                        Compte rendu de visite--Autre documents--Prospections--Propositions de la prospection
+                        --Autre documents de la prospections--Nouvelles prospections--Nouveaux documents--Interlocuteurs</h3>
                     </div>
                     @if($count_contrat == 0)
                         <div class="box-header" style="text-align:center">
@@ -494,8 +574,7 @@
                         <hr>
                     @endif
                     @foreach($prospections as $prospections)
-                      
-
+                    
                         <!-- form start  INFO SUR LA PROPESCTION DANS LA TABLE-->
                         <div class="form-horizontal">
                          
@@ -596,7 +675,7 @@
                                         </td>
                                         <td>
                                             
-                                            <form action="download_facture_proforma" method="post" enctype="multipart/form-data">
+                                            <form action="download_facture_proforma_cust" method="post" enctype="multipart/form-data" target="blank">
 
                                                 @csrf
                                                 <div class="box-body">
@@ -639,7 +718,7 @@
                                         </td>
                                         <td>
                                             
-                                            <form action="download_facture_proforma" method="post" enctype="multipart/form-data">
+                                            <form action="download_facture_proforma_cust" method="post" enctype="multipart/form-data" target="blank">
 
                                                 @csrf
                                                 <div class="box-body">
@@ -661,8 +740,6 @@
                             
                             </table>
                         </div>
-
-                        
 
                         <!--LES CR DE VISITE DANS LA TABLE PROPSECTION-->
                         <div class="box-header with-border">
@@ -748,7 +825,7 @@
                                         </td>
                                         <td>
                                             
-                                            <form action="download_facture_proforma" method="post" enctype="multipart/form-data">
+                                            <form action="download_facture_proforma_cust" method="post" enctype="multipart/form-data" target="blank">
 
                                                 @csrf
                                                 <div class="box-body">
@@ -771,7 +848,6 @@
                             </table>
                         </div>
 
-                       
                         @php
                             $docs = $documentController->GetDocByProspection($prospections->id);  
                         @endphp
@@ -796,7 +872,7 @@
                                    
                                     <td>
                                         
-                                        <form action="download_docs" method="post" enctype="multipart/form-data" class="col-sm-6">
+                                        <form action="download_docs_customer" method="post" enctype="multipart/form-data" class="col-sm-6">
 
                                             @csrf
                                             <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
@@ -820,7 +896,7 @@
                         <!--PROPOSITION-->
                         
                         <div class="box-header with-border">
-                            <h3 class="box-title"><b>PROPOSITIONS</b></h3>
+                            <h3 class="box-title"><b>PROPOSITIONS DE LA PROSPECTION</b></h3>
                         </div>
                         <div class="box-body no-padding">
                             <table class="table table-hover">
@@ -828,10 +904,9 @@
                             
                                     <th>Nom</th>
                                     <th>Ajouté le :</th>
-                                    <!--LES RESTRICTIONS -->
+                                    <th>Actualisation :</th>
                                     <th>Supprimer</th>
                                     <th style="width: 40px">Aperçu</th>
-
                                 </tr>
                                 @foreach($propal as $propal)
                                     <!--LES FICHIERS ET LES FACTURES-->
@@ -839,24 +914,106 @@
                                     <td>  <span class="text">{{$propal->libele}}</span> </td>
                                     <td>
                                         @php 
-                                            echo "<b>".date('d/m/Y',strtotime($propal->created_at))."</b> " ;
+                                            echo "<b>".date('d/m/Y',strtotime($propal->created_at))."</b>" ;
                                         @endphp
                                     </td>
                                     <td>
-                                        @can("delete")
-                                            <form action="delete_doc_propal_cust" method="post" enctype="multipart/form-data">
+                                       <button type="button" class="btn btn-primary" 
+                                       data-toggle="modal" data-target="#actu{{$propal->id}}"><b><i class="fa fa-plus"></i></b></button>
+                                        <div class="modal modal-default fade" id="actu{{$propal->id}}">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span></button>
+                                                        <h4 class="modal-title">{{$propal->libele}}</h4>
+                                                    </div>
+                                                
+                                                    <div class="modal-body">
+                                                        <!-- form start -->
+                                                        <form action="actual_propal" method="post">  
+                                                            @csrf
+                                                            <input type="text" value="{{$propal->id}}" name="id_propal" style="display:none;">
+                                                            <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
+                                                            <div class="form-group">   
+                                                                <label>Rejeté?</label>
+                                                                <select class="form-control " name="rejete">
+                                                                    @if($propal->rejete == "0")
+                                                                        <option value="0">NON</option>
+                                                                        <option value="1">OUI</option>
+                                                                    @else
+                                                                        <option value="1">OUI</option>
+                                                                        <option value="0">NON</option>
+                                                                    @endif
+                                                                </select>
+                                                                
+                                                            </div>        
 
-                                                @csrf
-                                                <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
-                                                <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
-                                                <input type="text" value="{{$propal->id}}" style="display:none;" name="id_doc">
-                                                <input type="text" class="form-control" name="file" value="{{$propal->path_doc}}" style="display:none;">
-                                                <button type="submit" class="btn btn-sx btn-danger"><i class="fa fa-trash-o"></i></button>
-                                            </form>
-                                        
-                                        @endcan
-                                            
+                                                            <div class="form-group">
+                                                                <label>Motif :</label>
+                                                                <p>{{$propal->motif}}</p>
+                                                                <textarea name="motif" class="form-control"></textarea>
+                                                            </div>
+                                                           
+                                                            <script>
+                                                                function newFonction()
+                                                                {
+                                                                    
+                                                                    var f = document.getElementById("grise4").value;
+                                                                    //alert(f);
+                                                                    if(f == 'autre')
+                                                                    {
+                                                                        document.getElementById("newf").removeAttribute("disabled");
+                                                                    }
+                                                                    else{
+                                                                        document.getElementById("newf").setAttribute("disabled", "disabled");
+                                                                    }
+                                                                }
+                                                            </script>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn  pull-left" data-dismiss="modal">Fermer</button>
+                                                                <button type="submit" class="btn btn-primary">Actualiser</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                    
+                                                </div>
+                                                <!-- /.modal-content -->
+                                            </div>
+                                        </div> 
                                     </td>
+                                    @if(auth()->user()->id != $prospections->id_utilisateur)
+                                        @can("procuration")
+                                            @can("delete")
+                                                <td>
+                                                    <form action="delete_doc_propal_customer" method="post" enctype="multipart/form-data">
+
+                                                        @csrf
+                                                        <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
+                                                        <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
+                                                        <input type="text" value="{{$propal->id}}" style="display:none;" name="id_doc">
+                                                        <input type="text" class="form-control" name="file" value="{{$propal->path_doc}}" style="display:none;">
+                                                        <button type="submit" class="btn btn-sx btn-danger"><i class="fa fa-trash-o"></i></button>
+                                                    </form>
+                                                </td>
+                                            @endcan
+                                        @endcan
+                                    @else
+                                        @can("delete")
+                                            <td>
+                                                <form action="delete_doc_propal_customer" method="post" enctype="multipart/form-data">
+
+                                                    @csrf
+                                                    <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
+                                                    <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
+                                                    <input type="text" value="{{$propal->id}}" style="display:none;" name="id_doc">
+                                                    <input type="text" class="form-control" name="file" value="{{$propal->path_doc}}" style="display:none;">
+                                                    <button type="submit" class="btn btn-sx btn-danger"><i class="fa fa-trash-o"></i></button>
+                                                </form>
+                                            </td>
+                                        @endcan
+                                    @endif
+                                    
                                     <td>
                                         
                                         <form action="download_docs_propal_cust" method="post" enctype="multipart/form-data" class="col-sm-6">
@@ -874,19 +1031,17 @@
                             </table>
                         </div>
                         <hr>
-
-                        <!--SI ON VEUT AJOUETR UNE PROPOSITION -->
                     
                         @can("edit")	
                             <div class="box-body">
-                                <form action="add_doc_proposition_cust" method="post" enctype="multipart/form-data" class="col-sm-12">
+                                <form action="add_doc_proposition_customer" method="post" enctype="multipart/form-data" class="col-sm-12">
 
                                     @csrf
                                     <div class="box-body ">
                                         <div class="form-group col-sm-6">
                                             <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
                                             <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
-                                            <label class="control-label">Ajouter un document :</label>
+                                            <label class="control-label">Ajouter ue proposition :</label>
                                             <input type="file" class="form-control" name="new_doc" required>
                                             <button type="submit" class="btn btn-primary"><i class="fa fa-upload"></i></button>
                                         </div>
@@ -895,14 +1050,272 @@
                                     
                                 </form>
                             </div>
-                        
-                        
                         @endcan
                             
                        
                     @endforeach
                     <hr>
 
+                    <!--LES PROPOSITIONS -->
+                    @php
+                        $propal = $propalcontroller->GetByEntreprise($id_entreprise);  
+                    @endphp
+            
+                    <div class="box-header with-border">
+                        <h3 class="box-title"><b>NOUVELLES PROPOSITIONS</b></h3>
+                    </div>
+                    <div class="box-body no-padding">
+                        <table class="table table-hover">
+                            <tr>
+                        
+                                <th>Nom</th>
+                                <th>Ajouté le :</th>
+                                <th>Actualisation :</th>
+                                <th>Supprimer</th>
+                                <th style="width: 40px">Aperçu</th>
+                            </tr>
+                            @foreach($propal as $propal)
+                                <!--LES FICHIERS ET LES FACTURES-->
+                            <tr>
+                                <td>  <span class="text">{{$propal->libele}}</span> </td>
+                                <td>
+                                    @php 
+                                        echo "<b>".date('d/m/Y',strtotime($propal->created_at))."</b>" ;
+                                    @endphp
+                                </td>
+                                <td>
+                                <button type="button" class="btn btn-primary" 
+                                data-toggle="modal" data-target="#actu{{$propal->id}}"><b><i class="fa fa-plus"></i></b></button>
+                                    <div class="modal modal-default fade" id="actu{{$propal->id}}">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span></button>
+                                                    <h4 class="modal-title">{{$propal->libele}}</h4>
+                                                </div>
+                                            
+                                                <div class="modal-body">
+                                                    <!-- form start -->
+                                                    <form action="actual_propal_customer" method="post">  
+                                                        @csrf
+                                                        <input type="text" value="{{$propal->id}}" name="id_propal" style="display:none;">
+                                                        <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
+                                                        <div class="form-group">   
+                                                            <label>Rejeté?</label>
+                                                            <select class="form-control " name="rejete">
+                                                                @if($propal->rejete == "0")
+                                                                    <option value="0">NON</option>
+                                                                    <option value="1">OUI</option>
+                                                                @else
+                                                                    <option value="1">OUI</option>
+                                                                    <option value="0">NON</option>
+                                                                @endif
+                                                            </select>
+                                                            
+                                                        </div>        
+
+                                                        <div class="form-group">
+                                                            <label>Motif :</label>
+                                                            <p>{{$propal->motif}}</p>
+                                                            <textarea name="motif" class="form-control"></textarea>
+                                                        </div>
+                                                    
+                                                        <script>
+                                                            function newFonction()
+                                                            {
+                                                                
+                                                                var f = document.getElementById("grise4").value;
+                                                                //alert(f);
+                                                                if(f == 'autre')
+                                                                {
+                                                                    document.getElementById("newf").removeAttribute("disabled");
+                                                                }
+                                                                else{
+                                                                    document.getElementById("newf").setAttribute("disabled", "disabled");
+                                                                }
+                                                            }
+                                                        </script>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn  pull-left" data-dismiss="modal">Fermer</button>
+                                                            <button type="submit" class="btn btn-primary">Actualiser</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                                
+                                            </div>
+                                            <!-- /.modal-content -->
+                                        </div>
+                                    </div> 
+                                </td>
+                                @if(auth()->user()->id != $propal->id_utilisateur)
+                                    @can("procuration")
+                                        @can("delete")
+                                            <td>
+                                                <form action="delete_doc_propal_customer" method="post" enctype="multipart/form-data">
+
+                                                    @csrf
+                                                    
+                                                    <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
+                                                    <input type="text" value="{{$propal->id}}" style="display:none;" name="id_doc">
+                                                    <input type="text" class="form-control" name="file" value="{{$propal->path_doc}}" style="display:none;">
+                                                    <button type="submit" class="btn btn-sx btn-danger"><i class="fa fa-trash-o"></i></button>
+                                                </form>
+                                            </td>
+                                        @endcan
+                                    @endcan
+                                @else
+                                <td>
+                                    @can("delete")
+                                        
+                                            <form action="delete_doc_propal_customer" method="post" enctype="multipart/form-data">
+
+                                                @csrf
+                                               
+                                                <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
+                                                <input type="text" value="{{$propal->id}}" style="display:none;" name="id_doc">
+                                                <input type="text" class="form-control" name="file" value="{{$propal->path_doc}}" style="display:none;">
+                                                <button type="submit" class="btn btn-sx btn-danger"><i class="fa fa-trash-o"></i></button>
+                                            </form>
+                                       
+                                    @endcan
+                                 </td>
+                                @endif
+                                
+                                <td>
+                                    
+                                    <form action="download_docs_propal_cust" method="post" target="blank" enctype="multipart/form-data" class="col-sm-6">
+                                        @csrf
+                                        <input type="text" value="{{$propal->id}}" style="display:none;" name="id_doc">
+                                        <input type="text" class="form-control" name="file" value="{{$propal->path_doc}}" style="display:none;">
+                                        <button type="submit" class="btn btn-warning"><i class="fa fa-download"></i></button>
+                                    </form>
+                                </td>
+                            </tr>
+                            
+                            @endforeach
+                        </table>
+                    </div>
+                    <hr>
+
+                    @can("edit")	
+                        <div class="box-body">
+                            <form action="add_doc_proposition_customer" method="post" enctype="multipart/form-data" class="col-sm-12">
+
+                                @csrf
+                                <div class="box-body ">
+                                    <div class="form-group col-sm-6">
+                                        
+                                        <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
+                                        <label class="control-label">Ajouter une nouvelle proposition :</label>
+                                        <input type="file" class="form-control" name="new_doc" required>
+                                        <button type="submit" class="btn btn-primary"><i class="fa fa-upload"></i></button>
+                                    </div>
+
+                                </div>
+                                
+                            </form>
+                        </div>
+                    @endcan
+ 
+                    <hr>
+                    <div class="box-header with-border">
+                        <h3 class="box-title"><b>NOUVEAUX DOCUMENTS</b></h3>
+                    </div>
+                    @php
+                        $docs = $documentController->GetDocByEntreprise($id_entreprise);  
+                    @endphp
+
+                    <div class="box-body no-padding">
+                        <table class="table table-hover">
+                            <tr>
+                                <th>Nom</th>
+                                <th>Ajouté le :</th>
+                                <th>Supprimer</th>
+                                <th style="width: 40px">Aperçu</th>
+                            </tr>
+                            @foreach($docs as $docs)
+                                <!--LES FICHIERS ET LES FACTURES-->
+                            <tr>
+                                <td>  <span class="text">{{$docs->libele}}</span> </td>
+                                <td>
+                                    @php 
+                                        echo "<b>".date('d/m/Y',strtotime($docs->created_at))."</b>" ;
+                                    @endphp
+                                </td>
+                                <td>
+                                @if(auth()->user()->id != $docs->id_utilisateur)
+                                    @can("procuration")
+                                        @can("delete")
+                                            
+                                                <form action="delete_doc_customer" method="post" enctype="multipart/form-data">
+
+                                                    @csrf
+                                                    
+                                                    <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
+                                                    <input type="text" value="{{$docs->id}}" style="display:none;" name="id_doc">
+                                                    <input type="text" class="form-control" name="file" value="{{$docs->path_doc}}" style="display:none;">
+                                                    <button type="submit" class="btn btn-sx btn-danger"><i class="fa fa-trash-o"></i></button>
+                                                </form>
+                                            
+                                        @endcan
+                                    @endcan
+                                @else
+                               
+                                    @can("delete")
+                                        
+                                            <form action="delete_doc_customer" method="post" enctype="multipart/form-data">
+
+                                                @csrf
+                                                
+                                                <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
+                                                <input type="text" value="{{$docs->id}}" style="display:none;" name="id_doc">
+                                                <input type="text" class="form-control" name="file" value="{{$docs->path_doc}}" style="display:none;">
+                                                <button type="submit" class="btn btn-sx btn-danger"><i class="fa fa-trash-o"></i></button>
+                                            </form>
+                                        
+                                    @endcan
+                                </td>
+                                @endif
+                                    
+                                <td>
+                                    
+                                    <form action="download_docs_customer" target="blank" method="post" enctype="multipart/form-data" class="col-sm-6">
+
+                                        @csrf
+                                       
+                                        <input type="text" value="{{$docs->id}}" style="display:none;" name="id_doc">
+                                        <input type="text" class="form-control" name="file" value="{{$docs->path_doc}}" style="display:none;">
+                                        <button type="submit" class="btn btn-warning"><i class="fa fa-download"></i></button>
+                                    </form>
+                                </td>
+                            </tr>
+                            
+                            @endforeach
+                        </table>
+                    </div>
+       
+                    <hr>
+                    @can("edit")
+                        <div class="box-body">
+                            <form action="add_other_doc" method="post" enctype="multipart/form-data" class="col-sm-12">
+
+                                @csrf
+                                <div class="box-body ">
+                                    <div class="form-group col-sm-6">
+                                        
+                                        <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
+                                        <label class="control-label">Ajouter un nouveau document :</label>
+                                        <input type="file" class="form-control" name="new_doc" required>
+                                        <button type="submit" class="btn btn-primary"><i class="fa fa-upload"></i></button>
+                                    </div>
+
+                                </div>
+                                
+                            </form>
+                        </div>
+
+                    @endcan
                     @php 
                         $interlocuteurs =  $interlocuterController->InterlocuteurWithIdEntreprise($id_entreprise);
                     @endphp
@@ -995,14 +1408,180 @@
                 <!-- /.box -->
 
             </div>
-            
-            <div class="col-md-2"></div>
+            <!-- right column -->
+            <div class="col-md-4">
+                <div class="box box-info table-responsive">
+                   
+                    <div class="box-header with-border" style="text-align:center">
+                      
+                        <h3 class="box-title"><b>SUIVIS</b></h3>
+                    </div>
+                    @php
+                        $suivis =  $suivicontroller->GetSuiviByIdEntreprise($id_entreprise);
+                    @endphp
+                    <div class="box-header with-border">
+                        @can("edit")
+                            <div class="col-md-3">
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addsuivi"><b><i class="fa fa-plus"></i>SUIVI</b></button>
+                            </div>
+                        @endcan
+                    </div>
+
+                    <table class="table table-hover box-body">        
+                        <tr>
+                            <th>Date-Heure</th>
+                            <th>Action</th>
+                            <th>Interlocuteur</th>
+                            <th>Commentaire</th>
+                            <th>Mod/Supp.</th>
+                        </tr>
+                        <!--LES FICHIERS ET LES FACTURES-->
+                        @foreach($suivis as $suivi)
+                            <tr>
+                                <td> 
+                                    @php 
+                                        echo "<b>".date('d/m/Y',strtotime($suivi->date_activite))."</b>";
+                                    @endphp 
+                                    {{$suivi->heure_action}}
+                                </td>
+                            
+                                <td>
+                                    {{$suivi->action}}
+                                </td>
+                                <td>{{$suivi->name_interl}}</td>
+                                <td>{{$suivi->comment}}</td>
+
+                                <td>
+                                    <div class="row">
+                                        <div class="col-xs-6">
+                                            @can("edit")
+                                                <button type="submit" data-toggle="modal" data-target="#edit{{$suivi->id}}" class="btn btn-primary"><i class ="fa fa-edit"></i></button>
+                                            @endcan
+                                            <div class="modal modal-default fade" id="edit{{$suivi->id}}">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span></button>
+                                                            <h4 class="modal-title">Modification</h4>
+                                                        </div>
+                                                    
+                                                        <div class="modal-body">
+                                                            <!-- form start -->
+                                                            <form action="edit_suivi_customer" method="post">  
+                                                                @csrf
+                                                                <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
+                                                                <input type="text" value={{$suivi->id}} style="display:none;" name="id_suivi">
+                                                                <div class="form-group">
+                                                                
+                                                                    @php
+                                                                        $nom = $entreprisecontroller->GetById($id_entreprise);
+                                                                    @endphp
+                                                                    
+                                                                    <select class="form-control " name="entreprise" style="display:none;">
+                                                                        @foreach($nom as $nom)
+                                                                            <option value={{$id_entreprise}}>{{$nom->nom_entreprise}}</option>
+
+                                                                        @endforeach
+                                                                    
+                                                                    </select>
+                                                                    
+                                                                </div>        
+
+                                                                <div class="form-group">
+                                                                    <label for="">Date:</label>
+                                                                    <input type="date" class="form-control" name="date_activite" value="{{$suivi->date_activite}}" required>
+                                                                </div>
+                                    
+                                                                <div class="form-group">
+                                                                    <label for="">Heure:</label>
+                                                                    <input type="time" id="appt" class="form-control" value="{{$suivi->heure_action}}" name="heure_action" min="00:00" max="23:59" required />
+                                                                </div>
+                                                            
+                                                                <div class="form-group">
+                                                                    <label>Action menée:</label>
+                                                                    <textarea name="action" class="form-control" required>{{$suivi->action}}</textarea>
+                                                                </div>
+
+                                                                <div class="form-group">
+                                                                        <label>Nom de l'interlocuteur:</label>
+                                                                        <input type="text" required onkeyup="this.value=this.value.toUpperCase()" 
+                                                                        maxlength="100" class="form-control" value="{{$suivi->name_interl}}" name="name_interl" placeholder="M. KOFFI JEAN">
+                                                                </div>
+
+                                                                <div class="form-group">
+                                                                    <label>Téléphone (*)</label>
+                                                                    <input type="text" required maxlength="30" value="{{$suivi->tel_interl}}"  class="form-control " name="tel_interl" placeholder="(+225)0214578931" >
+                                                                </div>
+
+
+                                                                <div class="form-group">
+                                                                    <label>Commentaire:(*)</label>
+                                                                    <textarea name="comment" class="form-control" equired>{{$suivi->comment}}</textarea>
+                                                                </div>  
+                                                        
+                                                            
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn  pull-left" data-dismiss="modal">Fermer</button>
+                                                                    <button type="submit" class="btn btn-success">Valider les modifications</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                        
+                                                    </div>
+                                                    <!-- /.modal-content -->
+                                                </div>
+                                            </div> 
+                                        </div>
+                                        <div class="col-xs-6">
+                                            @can("delete")
+                                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="@php echo "#".$suivi->id.""; @endphp">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+                                                                    
+                                                <div class="modal modal-danger fade" id="@php echo "".$suivi->id.""; @endphp">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span></button>
+                                                        <h4 class="modal-title">Supprimer </h4>
+                                                    </div>
+                                                     <form action="delete_suivi_from_customer" method="post">
+                                                        <div class="modal-body">
+                                                        <p>Voulez-vous supprimer cet enregistrement?</p>
+                                                        @csrf
+                                                        <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
+                                                        <input type="text" value={{$suivi->id}} style="display:none;" name="id_suivi">
+                                                        </div>
+                                                    
+                                                        <div class="modal-footer">
+                                                        <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Fermer</button>
+                                                        <button type="submit" class="btn btn-outline">Supprimer</button>
+                                                        </div>
+                                                    </form>
+                                                    </div>
+                                                    <!-- /.modal-content -->
+                                                </div>
+                                                <!-- /.modal-dialog -->
+                                                </div>
+                                                <!-- /.modal -->
+                                            @endcan
+                                        </div>
+                                        
+                                     
+                                    </div>
+                                </td>
+                            </tr>
+                        
+                        @endforeach
+                    
+                    </table>
+
+                </div>            
+            </div>
         </div>
         <!--/.col (right) -->
     @endif
     
 @endsection 
- 
- 
- 
-          

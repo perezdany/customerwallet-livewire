@@ -104,11 +104,11 @@
                 {
                     //ON A PAS TROUVE DE CONTRAT
                     //dd('ici');
-                    $edit =  DB::table('entreprises')
+                    /*$edit =  DB::table('entreprises')
                     ->where('id',  $entreprise->id)
                     ->update([
                         'client_depuis' => "2014-01-01",
-                    ]);
+                    ]);*/
                 }
                 else
                 {

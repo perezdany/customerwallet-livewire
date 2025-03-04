@@ -14,7 +14,7 @@
                     @csrf
                     <div class="box-body">   
                          <div class="row form-group text-center">
-                        <div class="col-sm-4"><label>Particulier:</label></div>
+                        <div class="col-sm-4"><label><!--Particulier:--></label></div>
                           
                         <div class="col-sm-8">
                             <select class="form-control" id="id_statutentreprise" wire:model="editEntreprise.particulier" reuqired>

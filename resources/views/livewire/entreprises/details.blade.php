@@ -26,6 +26,9 @@
                     <h4><label >Chiffre d'affaire (FCFA):</label></h4>
                     <input class="form-control" wire:model="entrepriseDetail.chiffre_affaire" disabled/>
                    
+                    <h4><label >Dirigeant:</label></h4>
+                    <input class="form-control" wire:model="entrepriseDetail.dirigeant" disabled/>
+                   
                     <h4><label >Nombre d'employés:</label></h4>
                     <input class="form-control" wire:model="entrepriseDetail.nb_employes" disabled/>
                    

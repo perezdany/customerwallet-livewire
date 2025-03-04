@@ -83,6 +83,7 @@ class Entreprises extends Component
             $this->editEntreprise['etat'] != $this->editOldValues['etat'] OR
             $this->editEntreprise['id_statutentreprise'] != $this->editOldValues['id_statutentreprise'] OR
             $this->editEntreprise['site_web'] != $this->editOldValues['site_web'] OR
+            $this->editEntreprise['dirigeant'] != $this->editOldValues['dirigeant'] OR
             $this->editEntreprise['particulier'] != $this->editOldValues['particulier'] OR
             $this->editEntreprise['date_creation'] != $this->editOldValues['date_creation'] 
         )

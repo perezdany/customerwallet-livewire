@@ -36,10 +36,18 @@ class PropalController extends Controller
         return $get;
     }
 
+    public function GetByEntreprise($id)
+    {
+        $get = Proposition::where('id_client', $id)
+        ->get();
+        return $get;
+    }
+
 
     public function AddPropal(Request $request)
     {
-        //dd('ici');
+        /*dd('la');
+        dd($request->all());*/
 
         $fichier = $request->new_doc;
         //dd($request->new_doc);
@@ -66,8 +74,13 @@ class PropalController extends Controller
             if($get_path == 0)
             {
                //dd($file_name);
+               $entreprise = DB::table('entreprises')->where('id', $request->id_entreprise)->get();
+                foreach($entreprise as $entreprise)
+                {
+                    $nom_entreprise = $entreprise->nom_entreprise;
+                }
                 $path = $request->file('new_doc')->storeAs(
-                    'docs/propal', $file_name
+                    'docs/propal/'.$nom_entreprise, $file_name
                 );
 
                 $Insert = Proposition::create([
@@ -97,9 +110,14 @@ class PropalController extends Controller
                 {
                     Storage::delete($get_path->path_doc);
                 }
+                $entreprise = DB::table('entreprises')->where('id', $request->id_entreprise)->get();
+                foreach($entreprise as $entreprise)
+                {
+                    $nom_entreprise = $entreprise->nom_entreprise;
+                }
                                     
                 $path = $request->file('new_doc')->storeAs(
-                    'docs', $file_name
+                    'docs/propal/'.$om_entreprise, $file_name
                 );
 
 
@@ -132,7 +150,8 @@ class PropalController extends Controller
 
     public function AddPropalCustomer(Request $request)
     {
-        //dd('ici');
+        //dd('lop');
+        //dd($request->all());
 
         $fichier = $request->new_doc;
         //dd($request->new_doc);
@@ -159,8 +178,13 @@ class PropalController extends Controller
             if($get_path == 0)
             {
                //dd($file_name);
+               $entreprise = DB::table('entreprises')->where('id', $request->id_entreprise)->get();
+                foreach($entreprise as $entreprise)
+                {
+                    $nom_entreprise = $entreprise->nom_entreprise;
+                }
                 $path = $request->file('new_doc')->storeAs(
-                    'docs/propal', $file_name
+                    'docs/propal/'.$nom_entreprise, $file_name
                 );
 
                 $Insert = Proposition::create([
@@ -190,9 +214,14 @@ class PropalController extends Controller
                 {
                     Storage::delete($get_path->path_doc);
                 }
+                $entreprise = DB::table('entreprises')->where('id', $request->id_entreprise)->get();
+                foreach($entreprise as $entreprise)
+                {
+                    $nom_entreprise = $entreprise->nom_entreprise;
+                }
                                     
                 $path = $request->file('new_doc')->storeAs(
-                    'docs', $file_name
+                    'docs/propal/'.$nom_entreprise, $file_name
                 );
 
 
@@ -230,11 +259,25 @@ class PropalController extends Controller
         ->update(['rejete' => $request->rejete, 'motif' => $request->motif]);
 
         return view('dash/prospect_about',
-        [
-            'id_entreprise' => $request->id_entreprise,
-            'success' => 'La proposition a été actualisé'
-        ]
-    );
+            [
+                'id_entreprise' => $request->id_entreprise,
+                'success' => 'La proposition a été actualisée'
+            ]
+        );
+    }
+
+    public function RefreshPropalCustomer(Request $request)
+    {
+        //dd($request->all());
+        $affected = DB::table('propositions')->where('id', $request->id_propal)
+        ->update(['rejete' => $request->rejete, 'motif' => $request->motif]);
+
+        return view('dash/fiche_customer',
+            [
+                'id_entreprise' => $request->id_entreprise,
+                'success' => 'La proposition a été actualisée'
+            ]
+        );
     }
 
     public function ViewDocPropal(Request $request)
@@ -277,7 +320,8 @@ class PropalController extends Controller
 
     public function DeleteDocPropalCustomer(Request $request)
     {
-       
+        //dd('i');
+        //dd($request->all());
         //SUPPRIMER LE FICHIER DANS LE DOSSIER
         Storage::delete($request->file);
 
@@ -293,7 +337,8 @@ class PropalController extends Controller
 
     public function DeleteDocPropal(Request $request)
     {
-       
+       // dd('o');
+       //dd($request->all());
         //SUPPRIMER LE FICHIER DANS LE DOSSIER
         Storage::delete($request->file);
 

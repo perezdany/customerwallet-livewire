@@ -45,6 +45,13 @@ class DocController extends Controller
         return $get;
     }
 
+    public function GetDocByEntreprise($id)
+    {
+        $get = Doc::where('id_entreprise', $id)->get();
+
+        return $get;
+    }
+
     //POUR OBTENIR LE FORMAT DU FICHIER: pathinfo($file, PATHINFO_EXTENSION);
 
     public function AddDocProspection(Request $request)
@@ -134,9 +141,229 @@ class DocController extends Controller
         }
         else
         {
-            return back()->with('error', 'Vous devez choisir un fichier');
+                return view('dash/prospect_about',
+                [
+                    'id_entreprise' => $request->id_entreprise,
+                    'error' => 'Vous deez choisir un fichier'
+                ]
+            );
         }
     }
+
+    public function AddOtherDoc(Request $request)
+    {
+        //dd($request->all());
+        $fichier = $request->new_doc;
+        
+        //Le vrai nom
+        $file_name = $fichier->getClientOriginalName();
+       
+        if($fichier != null)
+        {
+            //VERFIFIER LE FORMAT 
+            $extension = pathinfo($fichier->getClientOriginalName(), PATHINFO_EXTENSION);
+
+            if($extension != "pdf")
+            {
+                    return view('dash/fiche_customer',
+                    [
+                        'id_entreprise' => $request->id_entreprise,
+                        'error' => 'FORMAT DE FICHIER INCORRECT'
+                    ]
+                );
+            }
+
+            //VERIFIER SI L'ENREGISTREMENT A UN CHEMIN D'ACCES ENREGISTRE
+            $get_path = Doc::where('libele', $file_name)->count();
+            if($get_path == 0)
+            {
+               //dd($file_name);
+                $entreprise = DB::table('entreprises')->where('id', $request->id_entreprise)->get();
+                foreach($entreprise as $entreprise)
+                {
+                    $nom_entreprise = $entreprise->nom_entreprise;
+                }
+
+                $path = $request->file('new_doc')->storeAs(
+                    'docs/'.$nom_entreprise, $file_name
+                );
+
+                $Insert = Doc::create([
+        
+                    'libele' =>  $file_name,
+                    'path_doc' => $path,
+                    'id_entreprise' => $request->id_entreprise,
+                    
+                    'id_utilisateur' => auth()->user()->id
+                ]);
+
+                return view('dash/fiche_customer',
+                    [
+                        'id_entreprise' => $request->id_entreprise,
+                        'success' => 'Fichier enregistré'
+                    ]
+                );
+
+            }
+            else//LE FICHIER EXISTE 
+            {
+                $get_path = Doc::where('libele', $file_name)->count();
+                //SUPPRESSION DE L'ANCIEN FICHIER
+                //dd($get_path->path);
+                foreach($get_path as $get_path)
+                {
+                    Storage::delete($get_path->path_doc);
+                }
+                $entreprise = DB::table('entreprises')->where('id', $request->id_entreprise)->get();
+                foreach($entreprise as $entreprise)
+                {
+                    $nom_entreprise = $entreprise->nom_entreprise;
+                }
+                                    
+                $path = $request->file('new_doc')->storeAs(
+                    'docs/'.$nom_entreprise, $file_name
+                );
+
+
+                $get_doc = Doc::where('libele', $file_name)->get();
+                foreach($get_doc as $get_doc)
+                {
+                    $affected = DB::table('docs')
+                    ->where('id', $get_doc->id)
+                    ->update([
+                        'path_doc'=> $path,
+                        
+                    ]);
+                }
+                
+
+                return view('dash/fiche_customer',
+                    [
+                        'id_entreprise' => $request->id_entreprise,
+                        'success' => 'Fichier enregistré'
+                    ]
+                );
+            }
+           
+        }
+        else
+        {
+            return view('dash/fiche_customer',
+                [
+                    'id_entreprise' => $request->id_entreprise,
+                    'error' => 'Vous deez choisir un fichier'
+                ]
+            );
+        }
+    }
+
+    public function AddOtherDocProspect(Request $request)
+    {
+        //dd($request->all());
+        $fichier = $request->new_doc;
+        
+        //Le vrai nom
+        $file_name = $fichier->getClientOriginalName();
+       
+        if($fichier != null)
+        {
+            //VERFIFIER LE FORMAT 
+            $extension = pathinfo($fichier->getClientOriginalName(), PATHINFO_EXTENSION);
+
+            if($extension != "pdf")
+            {
+                    return view('dash/prospect_about',
+                    [
+                        'id_entreprise' => $request->id_entreprise,
+                        'error' => 'FORMAT DE FICHIER INCORRECT'
+                    ]
+                );
+            }
+
+            //VERIFIER SI L'ENREGISTREMENT A UN CHEMIN D'ACCES ENREGISTRE
+            $get_path = Doc::where('libele', $file_name)->count();
+            if($get_path == 0)
+            {
+               //dd($file_name);
+                $entreprise = DB::table('entreprises')->where('id', $request->id_entreprise)->get();
+                foreach($entreprise as $entreprise)
+                {
+                    $nom_entreprise = $entreprise->nom_entreprise;
+                }
+
+                $path = $request->file('new_doc')->storeAs(
+                    'docs/'.$nom_entreprise, $file_name
+                );
+
+                $Insert = Doc::create([
+        
+                    'libele' =>  $file_name,
+                    'path_doc' => $path,
+                    'id_entreprise' => $request->id_entreprise,
+                    
+                    'id_utilisateur' => auth()->user()->id
+                ]);
+
+                return view('dash/prospect_about',
+                    [
+                        'id_entreprise' => $request->id_entreprise,
+                        'success' => 'Fichier enregistré'
+                    ]
+                );
+
+            }
+            else//LE FICHIER EXISTE 
+            {
+                $get_path = Doc::where('libele', $file_name)->count();
+                //SUPPRESSION DE L'ANCIEN FICHIER
+                //dd($get_path->path);
+                foreach($get_path as $get_path)
+                {
+                    Storage::delete($get_path->path_doc);
+                }
+                $entreprise = DB::table('entreprises')->where('id', $request->id_entreprise)->get();
+                foreach($entreprise as $entreprise)
+                {
+                    $nom_entreprise = $entreprise->nom_entreprise;
+                }
+                                    
+                $path = $request->file('new_doc')->storeAs(
+                    'docs/'.$nom_entreprise, $file_name
+                );
+
+
+                $get_doc = Doc::where('libele', $file_name)->get();
+                foreach($get_doc as $get_doc)
+                {
+                    $affected = DB::table('docs')
+                    ->where('id', $get_doc->id)
+                    ->update([
+                        'path_doc'=> $path,
+                        
+                    ]);
+                }
+                
+
+                return view('dash/prospect_about',
+                    [
+                        'id_entreprise' => $request->id_entreprise,
+                        'success' => 'Fichier enregistré'
+                    ]
+                );
+            }
+           
+        }
+        else
+        {
+            return view('dash/prospect_about',
+                [
+                    'id_entreprise' => $request->id_entreprise,
+                    'error' => 'Vous deez choisir un fichier'
+                ]
+            );
+        }
+    }
+
 
     public function ViewDoc(Request $request)
     {
@@ -157,16 +384,49 @@ class DocController extends Controller
         }
     }
 
+    public function ViewDocCustomer(Request $request)
+    {
+        if(Storage::disk('local')->exists($request->file))
+        {
+            //return Storage::download($request->file);
+            //return response()->file($request->file);
+            return response()->file(Storage::path($request->file));
+        }
+        else
+        {
+            return view('dash/fiche_customer',
+                [
+                    'id_entreprise' => $request->id_entreprise,
+                    'error' => 'Fichier introuvable'
+                ]
+            );
+        }
+    }
+
     public function DeleteDoc(Request $request)
     {
-       
-       
         //SUPPRIMER LE FICHIER DANS LE DOSSIER
         Storage::delete($request->file);
 
         $deleted = DB::table('docs')->where('id', '=', $request->id_doc)->delete();
 
         return view('dash/prospect_about',
+            [
+                'id_entreprise' => $request->id_entreprise,
+                'success' => 'Elément supprimé'
+            ]
+        );
+    }
+
+    public function DeleteDocCustomer(Request $request)
+    {
+        //dd($request->all());
+        //SUPPRIMER LE FICHIER DANS LE DOSSIER
+        Storage::delete($request->file);
+
+        $deleted = DB::table('docs')->where('id', '=', $request->id_doc)->delete();
+
+        return view('dash/fiche_customer',
             [
                 'id_entreprise' => $request->id_entreprise,
                 'success' => 'Elément supprimé'

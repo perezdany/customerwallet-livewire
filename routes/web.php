@@ -224,6 +224,8 @@ Route::middleware(['auth:web'])->group(function(){
      //Voir LA FACTURE PROFORMA
      route::post('download_facture_proforma', [ProspectionController::class, 'DownloadProforma']);
 
+     route::post('download_facture_proforma_cust', [ProspectionController::class, 'DownloadProformaCust']);
+
      //AJOUTER UN COMPTER RENDU PROFORMA QUAND ON EST SUR LA FICHE 
      route::post('add_new_doc_cr', [ProspectionController::class, 'AddNewcr']);
 
@@ -331,7 +333,7 @@ Route::middleware(['auth:web'])->group(function(){
 
     //AFFICHER LA FICHE CLIENT 
     Route::post('display_fiche_customer', [EntrepriseController::class, 'GetFicheCustomer']);
-    Route::get('display_fiche_customer', [EntrepriseController::class, 'GetFicheCustomer']);
+    //Route::get('display_fiche_customer', [EntrepriseController::class, 'GetFicheCustomer']);
 
     //AFFICHER LES INFORMATIONS SUR LES PROSPECTS
     Route::post('display_about_prospect', [EntrepriseController::class, 'GetProspAboutThisTable']);
@@ -454,6 +456,22 @@ Route::middleware(['auth:web'])->group(function(){
 
     //AFFICHER LES SUIVIS D'UNE PROSPECTION
     Route::post('display_suivi', [SuiviController::class, 'GosuiviPage']);
+
+    //AJOUTER UNE ACTION MENEE
+    Route::post('add_suivi', [SuiviController::class, 'AddSuivi']);
+    Route::post('add_suivi_customer', [SuiviController::class, 'AddSuiviForCustomer']);
+
+    //SUPPRIMER UNE ACTION MENEE
+    Route::post('delete_suivi_from_fiche', [SuiviController::class, 'DeleteSuivi']);
+
+     //SUPPRIMER UNE ACTION MENEE DANS LA FICHE CLIENT
+     Route::post('delete_suivi_from_customer', [SuiviController::class, 'DeleteSuiviCustomer']);
+
+     //MODIFICATION D'UNE ACTION MENEE
+     Route::post('edit_suivi', [SuiviController::class, 'EditSuivi']);
+     Route::post('edit_suivi_customer', [SuiviController::class, 'EditSuiviForCustomer']);
+
+
 
     //LES PAIEMENTS
     //ALLER AUX PAIEMENTS
@@ -658,19 +676,30 @@ Route::middleware(['auth:web'])->group(function(){
     //AJOUTER UN AUTRE DOCUMENT
     Route::post('add_new_doc', [DocController::class, 'AddDocProspection']);
 
+    Route::post('add_other_doc', [DocController::class, 'AddOtherDoc']);
+
+    Route::post('add_other_doc_prospect', [DocController::class, 'AddOtherDocProspect']);
+
     //AFFICHER DES DOCUMENTS (AUTRE DOCS)
     Route::post('download_docs', [DocController::class, 'ViewDoc']);
+    Route::post('download_docs_customer', [DocController::class, 'ViewDoc']);
 
     //SUPPRMIMER DES DOCUMENTS (AUTRE DOCS)
     Route::post('delete_doc', [DocController::class, 'DeleteDoc']);
+
+    Route::post('delete_doc_customer', [DocController::class, 'DeleteDocCustomer']);
 
     //AJOUTER UNE PROPOSITION
     Route::post('add_doc_proposition', [PropalController::class, 'AddPropal']);
 
     Route::post('add_doc_proposition_cust', [PropalController::class, 'AddPropalCustomer']);
 
+    Route::post('add_doc_proposition_customer', [PropalController::class, 'AddPropalCustomer']);
+
     //ACTUALISER UNE PROPOSITION
     Route::post('actual_propal', [PropalController::class, 'RefreshPropal']);
+
+    Route::post('actual_propal_customer', [PropalController::class, 'RefreshPropalCustomer']);
 
     //VISUALISER LE FICHIER
     Route::post('download_docs_propal', [PropalController::class, 'ViewDocPropal']);
@@ -680,7 +709,7 @@ Route::middleware(['auth:web'])->group(function(){
     //SUPPRIMER LE DOCUMENT DE PROPOSITION
     Route::post('delete_doc_propal', [PropalController::class, 'DeleteDocPropal']);
 
-    Route::post('delete_doc_propal_cust', [PropalController::class, 'DeleteDocPropalCustomer']);
+    Route::post('delete_doc_propal_customer', [PropalController::class, 'DeleteDocPropalCustomer']);
 
 
 

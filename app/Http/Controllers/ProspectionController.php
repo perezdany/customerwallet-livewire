@@ -133,7 +133,9 @@ class ProspectionController extends Controller
             }
             else//entreprise pas nouvelle
             {
-                
+                //MODIFIER LE STATUT DE L'ENTREPRISE SI C'ETAIT UNE CIBLE
+                $entreprise_update = DB::table('entreprises')->where('id', $request->entreprise)
+                        ->update(['id_statutentreprise' => 1]);
                 if($request->interlocuteur == "autre")//L'interlocuteur n'existe pas 
                 {
                     if($request->fonction == "autre")
@@ -947,6 +949,21 @@ class ProspectionController extends Controller
     }
 
     public function DownloadProforma(Request $request)
+    {
+        //dd($request->file);
+        if(Storage::disk('local')->exists($request->file))
+        {
+            //return Storage::download($request->file);
+            //return response()->file($request->file);
+            return response()->file(Storage::path($request->file));
+        }
+        else
+        {
+            return redirect('prospection')->with('error', 'Le fichier n\'existe pas');
+        }
+    }
+
+    public function DownloadProformaCust(Request $request)
     {
         //dd($request->file);
         if(Storage::disk('local')->exists($request->file))

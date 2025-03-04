@@ -17,7 +17,8 @@ class Doc extends Model
         'id_prospection',
         'id_contrat',
         'id_facture',
-        'id_utilisateur'
+        'id_utilisateur',
+        'id_entreprise'
     ];
 
 }
