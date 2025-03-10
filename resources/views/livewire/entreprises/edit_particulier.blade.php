@@ -17,7 +17,7 @@
                         <div class="col-sm-4"><label><!--Particulier:--></label></div>
                           
                         <div class="col-sm-8">
-                            <select class="form-control" id="id_statutentreprise" wire:model="editEntreprise.particulier" reuqired>
+                            <select class="form-control" id="id_statutentreprise" wire:model="editEntreprise.particulier" style="display:none;">
                                <option value="0">NON</option>
                                <option value="1">OUI</option>
                             </select>

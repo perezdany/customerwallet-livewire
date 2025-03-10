@@ -102,7 +102,7 @@
                                 
                                 @if($entreprise->id_statutentreprise == 2)
                                 
-                                    <form method="get" action="display_fiche_customer" target="blank">
+                                    <form method="post" action="display_fiche_customer" target="blank">
                                         @csrf
                                         <input type="text" value="{{$entreprise->id}}" style="display:none;" name="id_entreprise">
                                         <button class="btn btn-default"> <b>{{$entreprise->nom_entreprise}}</b></button>

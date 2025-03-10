@@ -150,7 +150,7 @@ class Entreprises extends Component
         
     
         return view('livewire.entreprises.index',  
-            ['entreprises' => $entrepriseQuery->orderBy($this->orderField, $this->orderDirection)->paginate(6)])
+            ['entreprises' => $entrepriseQuery->orderBy($this->orderField, $this->orderDirection)->paginate(10)])
             ->extends('layouts.base')
             ->section('content');
            

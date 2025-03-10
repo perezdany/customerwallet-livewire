@@ -90,7 +90,7 @@
             <ul class="treeview-menu">
               
               <li><a href="utilisateurs"><i class="fa fa-circle-o"></i>Utilisateurs</a></li>
-              <li><a href="roles"><i class="fa fa-circle-o"></i>>Roles</a></li>
+              <li><a href="roles"><i class="fa fa-circle-o"></i>Roles</a></li>
               <li><a href="departements"><i class="fa fa-circle-o"></i>Departements</a></li>
               <li><a href="services"><i class="fa fa-circle-o"></i>Nos services</a></li>
               <li><a href="entreprises"><i class="fa fa-circle-o"></i> Entreprises</a></li>
