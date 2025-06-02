@@ -222,7 +222,7 @@ class EntrepriseController extends Controller
             'etat' => 0,
             'adresse_email' => $request->email,
             'site_web' => $request->site_web,
-            'dirgeant' => $request->dirigeant,
+            'dirigeant' => $request->dirigeant,
             'id_statutentreprise' => 1,
             'particulier' => $request->particulier,
              'created_by' => auth()->user()->id, 
@@ -238,7 +238,7 @@ class EntrepriseController extends Controller
 
     public function AddClient(Request $request)
     {
-        //dd($request->all());
+        dd($request->all());
         $Insert = Entreprise::create([
            
             'nom_entreprise'=> $request->nom_entreprise,
@@ -254,7 +254,7 @@ class EntrepriseController extends Controller
             'etat' => 1,
             'adresse_email' => $request->email,
             'site_web' => $request->site_web,
-            'dirgeant' => $request->dirigeant,
+            'dirigeant' => $request->dirigeant,
             'id_statutentreprise' => 2,
             'particulier' => $request->particulier,
             'client_depuis' => date('Y-m-d'),
@@ -288,7 +288,7 @@ class EntrepriseController extends Controller
             'id_pays' => $request->pays,
             'adresse_email' => $request->email,
             'site_web' => $request->site_web,
-            'dirgeant' => $request->dirigeant,
+            'dirigeant' => $request->dirigeant,
             'id_statutentreprise' => 1,
             'particulier' => $request->particulier,
              'created_by' => auth()->user()->id, 
@@ -1033,7 +1033,7 @@ class EntrepriseController extends Controller
 
     public function GetFicheCustomer(Request $request)
     {
-        dd('ici');
+        //dd('ici');
         return view('dash/fiche_customer',
             [
                 'id_entreprise' => $request->id_entreprise,

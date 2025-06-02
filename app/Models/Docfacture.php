@@ -12,6 +12,6 @@ class Docfacture extends Model
     public $timestamps = true;
     
     protected $fillable = [
-        'libele', 'path_doc', 'id_prospection', 'id_contrat', 'id_utilisateur'
+        'libele', 'path_doc', 'id_prospection', 'id_contrat', 'id_entreprise', 'id_utilisateur'
     ];
 }

@@ -10,6 +10,7 @@ use App\Models\Compterendu;
 use App\Models\Prospection_service;
 use App\Models\Profession;
 use App\Models\Interlocuteur;
+use App\Models\Doc;
 
 use App\Http\Controllers\Calculator;
 
@@ -1071,6 +1072,99 @@ class ProspectionController extends Controller
 
     }
 
+    public function AddProformaInFicheClient(Request $request)
+    {
+        //dd($request->all());
+        $fichier = $request->new_doc_proforma;
+        //dd($request->new_doc_proforma);
+        //Le vrai nom
+        $file_name = $fichier->getClientOriginalName();
+        //dd($request->new_doc_proforma->getClientOriginalName());
+        if($fichier != null)
+        {
+            //VERFIFIER LE FORMAT 
+            $extension = pathinfo($file_name, PATHINFO_EXTENSION);
+            //dd($extension);
+            if($extension != "pdf")
+            {
+                    return view('dash/fiche_customer',
+                    [
+                        'id_entreprise' => $request->id_entreprise,
+                        'error' => 'FORMAT DE FICHIER INCORRECT'
+                    ]
+                );
+            }
+
+            //VERIFIER SI L'ENREGISTREMENT A UN CHEMIN D'ACCES ENREGISTRE
+            $get_path = Docfacture::where('libele', $file_name)->count();
+            if($get_path == 0)
+            {
+               //dd($file_name);
+                $path = $request->file('new_doc_proforma')->storeAs(
+                    'factures/proforma', $file_name
+                );
+
+                $Insert = Docfacture::create([
+                    'libele' =>  $file_name,
+                    'path_doc' => $path,
+                    'id_entreprise' => $request->id_entreprise,
+                    
+                    'id_utilisateur' => auth()->user()->id
+                ]);
+
+                return view('dash/fiche_customer',
+                    [
+                        'id_entreprise' => $request->id_entreprise,
+                        'success' => 'Fichier enregistré'
+                    ]
+                );
+
+            }
+            else
+            {
+                $get_path = Docfacture::where('libele', $file_name)->get();
+
+                //SUPPRESSION DE L'ANCIEN FICHIER
+                //dd($get_path);
+                foreach($get_path as $get_path)
+                {
+                    Storage::delete($get_path->path_doc);
+                }
+               
+                $path = $request->file('new_doc_proforma')->storeAs(
+                    'factures/proforma', $file_name
+                );
+
+                //MODIFIER LA LIGNE DANS LA TABLE
+                $get_doc = Docfacture::where('libele', $file_name)->get();
+
+                foreach($get_doc as $get_doc)
+                {
+                    $affected = DB::table('docfactures')
+                    ->where('id', $get_doc->id)
+                    ->update([
+                        'path_doc'=> $path,
+                        
+                    ]);
+                }
+            
+
+                return view('dash/fiche_customer',
+                    [
+                        'id_entreprise' => $request->id_entreprise,
+                        'success' => 'Fichier enregistré'
+                    ]
+                );
+            }
+           
+        }
+        else
+        {
+            return back()->with('error', 'Vous devez choisir un fichier');
+        }
+
+    }
+
     public function AddNewcr(Request $request)
     {
         $fichier = $request->new_doc_cr;
@@ -1163,6 +1257,100 @@ class ProspectionController extends Controller
         }
     }
 
+    public function AddNewcrClient(Request $request)
+    {
+        //dd('ici');
+        $fichier = $request->new_doc_cr;
+        //dd($request->new_doc);
+        //Le vrai nom
+        $file_name = $fichier->getClientOriginalName();
+       
+        if($fichier != null)
+        {
+            //VERFIFIER LE FORMAT 
+            $extension = pathinfo($file_name, PATHINFO_EXTENSION);
+
+            if($extension != "pdf")
+            {
+                    return view('dash/fiche_customer',
+                    [
+                        'id_entreprise' => $request->id_entreprise,
+                        'error' => 'FORMAT DE FICHIER INCORRECT'
+                    ]
+                );
+            }
+
+            //VERIFIER SI L'ENREGISTREMENT A UN CHEMIN D'ACCES ENREGISTRE
+            $get_path = Doc::where('libele', $file_name)->count();
+
+            if($get_path == 0)
+            {
+               
+               //dd($file_name);
+                $path = $request->file('new_doc_cr')->storeAs(
+                    'crs', $file_name
+                );
+
+                $Insert = Compterendu::create([
+        
+                    'libele' =>  $file_name,
+                    'path_doc' => $path,
+                    'id_entreprise' => $request->id_entreprise,
+                    
+                    'id_utilisateur' => auth()->user()->id
+                ]);
+
+                return view('dash/fiche_customer',
+                    [
+                        'id_entreprise' => $request->id_entreprise,
+                        'success' => 'Fichier enregistré'
+                    ]
+                );
+
+            }
+            else
+            {
+              
+                $get_path = Doc::where('libele', $file_name)->get();
+
+                //SUPPRESSION DE L'ANCIEN FICHIER
+                //dd($get_path);
+                foreach($get_path as $get_path)
+                {
+                    Storage::delete($get_path->path_doc);
+                }
+               
+                $path = $request->file('new_doc_cr')->storeAs(
+                    'crs', $file_name
+                );
+
+                //MODIFIER LA LIGNE DANS LA TABLE
+                $get_doc = Doc::where('libele', $file_name)->get();
+
+                foreach($get_doc as $get_doc)
+                {
+                    //dd($get_doc->id);
+                    $affected = DB::table('docs')
+                    ->where('id', $get_doc->id)
+                    ->update([
+                        'path_doc'=> $path,
+                        
+                    ]);
+                }
+            
+
+                return view('dash/fiche_customer',
+                    [
+                        'id_entreprise' => $request->id_entreprise,
+                        'success' => 'Fichier enregistré'
+                    ]
+                );
+            }
+           
+        }
+    }
+
+
     public function DeleteProfInFiche(Request $request)
     {
         Storage::delete($request->file);
@@ -1170,6 +1358,21 @@ class ProspectionController extends Controller
         $deleted = DB::table('docfactures')->where('id', '=', $request->id_doc)->delete();
 
         return view('dash/prospect_about',
+                [
+                    'id_entreprise' => $request->id_entreprise,
+                    'success' => 'Elément supprimé'
+                ]
+            );
+    }
+
+    public function DeleteProfInFicheClient(Request $request)
+    {
+        //dd($request->all());
+        Storage::delete($request->file);
+
+        $deleted = DB::table('docfactures')->where('id', '=', $request->id_doc)->delete();
+
+        return view('dash/fiche_customer',
                 [
                     'id_entreprise' => $request->id_entreprise,
                     'success' => 'Elément supprimé'
@@ -1189,6 +1392,21 @@ class ProspectionController extends Controller
                     'success' => 'Elément supprimé'
                 ]
             );
+    }
+
+    public function DeleteCrInFicheC(Request $request)
+    {
+        //dd($request->all());
+        Storage::delete($request->file);
+
+        $deleted = DB::table('compterendus')->where('id', '=', $request->id_doc)->delete();
+
+        return view('dash/fiche_customer',
+            [
+                'id_entreprise' => $request->id_entreprise,
+                'success' => 'Elément supprimé'
+            ]
+        );
     }
 
 }

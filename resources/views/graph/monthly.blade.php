@@ -42,9 +42,7 @@
                     <!--my chart-->
                     <canvas id="mychart" aria-label="chart" style="height:580px;"></canvas>
 
-                    <!-- my own chart import-->
-                    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-                    
+                   
                     <script>
                         //FONCTION POUR RECUPERER LE NOMBRE DE JOURS DU MOIS
                         function NonbreJourMois(mois, annee)

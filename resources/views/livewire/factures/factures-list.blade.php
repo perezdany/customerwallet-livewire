@@ -290,7 +290,7 @@
                                         Aucune donnée trouvée
                                     </div>
                                 </tr>
-                                @endforelse
+                            @endforelse
                         </tbody>
                         
                     </table>

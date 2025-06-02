@@ -48,7 +48,7 @@ class DocController extends Controller
     public function GetDocByEntreprise($id)
     {
         $get = Doc::where('id_entreprise', $id)->get();
-
+        //dd($get);
         return $get;
     }
 

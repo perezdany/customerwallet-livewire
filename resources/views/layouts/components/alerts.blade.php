@@ -2,12 +2,13 @@
 @can("manager")
    <div class="row">
         <div class="col-md-8">
-        <!-- TABLE: LATEST ORDERS LES FACTURES QUI N'ONT PAS ETE REGLEES ET LADATE EST DEPASS2E-->
+         
+        <!-- TABLE: LATEST ORDERS LES FACTURES QUI N'ONT PAS ETE REGLEES ET LADATE EST DEPASS2E @php echo date('d/m/Y',strtotime($my_own->date_reglement)) @endphp -->
         @if($count_non_reglee != 0)
             
                 <div class="box box-info">
                     <div class="box-header with-border">
-                    <h3 class="box-title">Attention! Ces factures ne sont pas réglées et la date de règlement est dépassée</h3>
+                    <h3 class="box-title">Attention! Ces factures ne sont pas réglées </h3>
 
                     <div class="box-tools pull-right">
                         <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
@@ -40,7 +41,7 @@
                                     <tr>
                                         <td>{{$my_own->numero_facture}}</td>
                                         <td>{{$my_own->nom_entreprise}}</td>
-                                        <td>@php echo date('d/m/Y',strtotime($my_own->date_reglement)) @endphp</td>
+                                        <td>{{$my_own->date_reglement}}</td>
                                         <td>
                                             @php
                                                 echo  number_format($my_own->montant_facture, 2, ".", " ")." XOF";
@@ -133,7 +134,7 @@
             
                 <div class="box box-info">
                     <div class="box-header with-border">
-                    <h3 class="box-title">Attention! Ces factures ne sont pas réglées et la date de règlement est dépassée</h3>
+                    <h3 class="box-title">Attention! Ces factures ne sont pas réglées</h3>
 
                     <div class="box-tools pull-right">
                         <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
@@ -166,7 +167,7 @@
                                     <tr>
                                         <td>{{$my_own->numero_facture}}</td>
                                         <td>{{$my_own->nom_entreprise}}</td>
-                                        <td>@php echo date('d/m/Y',strtotime($my_own->date_reglement)) @endphp</td>
+                                        <td>{{$my_own->date_reglement}}</td>
                                         <td>
                                             @php
                                                 echo  number_format($my_own->montant_facture, 2, ".", " ")." XOF";
@@ -259,7 +260,7 @@
             
                 <div class="box box-info">
                     <div class="box-header with-border">
-                    <h3 class="box-title">Attention! Ces factures ne sont pas réglées et la date de règlement est dépassée</h3>
+                    <h3 class="box-title">Attention! Ces factures ne sont pas réglées </h3>
 
                     <div class="box-tools pull-right">
                         <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
@@ -292,7 +293,7 @@
                                     <tr>
                                         <td>{{$my_own->numero_facture}}</td>
                                         <td>{{$my_own->nom_entreprise}}</td>
-                                        <td>@php echo date('d/m/Y',strtotime($my_own->date_reglement)) @endphp</td>
+                                        <td>{{$my_own->date_reglement}}</td>
                                         <td>
                                             @php
                                                 echo  number_format($my_own->montant_facture, 2, ".", " ")." XOF";

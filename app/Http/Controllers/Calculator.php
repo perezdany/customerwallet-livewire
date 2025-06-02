@@ -34,7 +34,7 @@ class Calculator extends Controller
            
                 if($jours != 0 OR $jours != null)//le jour aussi est rempli
                 {
-                    dd('c');
+                    //dd('c');
                     $departtime1 = strtotime('+'.$mois.' month', $timestamp);
                     $departtime2 = strtotime('+'.$jours.' days',  $departtime1);
                     $departtime3 = strtotime('+'.$annee.' year', $departtime2);
@@ -43,7 +43,7 @@ class Calculator extends Controller
                 }
                 else
                 {
-                   dd('e');
+                   //dd('e');
                     $departtime1 = strtotime('+'.$mois.' month', $timestamp);
                     $departtime2 = strtotime('+'.$jours.' days', $departtime1);
                     $depart = date("Y-m-d", $departtime2);
@@ -54,7 +54,7 @@ class Calculator extends Controller
                 //dd('f');
                 if($jours != 0 OR $jours != null)//le jour aussi est rempli
                 {
-                    dd('g');
+                    //dd('g');
                     $departtime1 = strtotime('+'.$mois.' month', $timestamp);
                     $departtime2 = strtotime('+'.$jours.' days',$departtime2);
                     $departtime3 = strtotime('+'.$annee.' year', $departtime3);
@@ -753,7 +753,6 @@ class Calculator extends Controller
 
         //TABLEAU DES POURCENTAGE POUR L'ENTREPRISE
         $percent = [];
-        
 
         //chiffre d'affaire annuel en cours
         $total_chiffre_annuel = 0;
@@ -1052,7 +1051,7 @@ class Calculator extends Controller
           
             $total = $total + $somme;
             //METTRE DANS LE TABLEAU data
-             //dump($total);
+            //dump($somme);
             array_push($data, $total);
            
         } 
@@ -1207,8 +1206,9 @@ class Calculator extends Controller
         
        return view('graph/search_yearly', compact('data', 'mois_francais', 'percent', 'company', 'data_serv', 'serv', 'year', 'colors', 'total_annuel'));
     }
-
-    public function NewCustomerInYear()
+    
+    
+     public function NewCustomerInYear()
     {
         //FAIRE UNE BOUCLE POUR TOUS LES MOIS DE L'ANNEE
 
@@ -1218,9 +1218,7 @@ class Calculator extends Controller
         //LE TABLEAU QUI VA RECCUEILLIR LES DONNES 
         $data = [];
 
-        //NOMBRE DES CLIENTS AU TOTAL
         $customers = [];
-
         //LE TABLEAUD DES MOIS
         $mois_francais = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 
         'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
@@ -1249,10 +1247,12 @@ class Calculator extends Controller
             $last_date = date('Y')."-".$i."-".$number;
             foreach($get as $all)
             {   
+                //dump($all->client_depuis);
                
                 if($all->client_depuis != NULL)
                 {
-                    if($all->client_depuis >= $first_date AND $all->client_depuis <= $last_date)
+                    //dump('d');
+                    if(strtotime($all->client_depuis) >= strtotime($first_date) AND strtotime($all->client_depuis) <= strtotime($last_date))
                     {
                         $total = $total++;
                         array_push($company, $all->nom_entreprise);
@@ -1261,8 +1261,10 @@ class Calculator extends Controller
                 }
                 else
                 {
+                   //dd('m');
                     $to_convert = date('d/m/Y',strtotime($all->created_at));
-                    if($to_convert >= $first_date AND $to_convert <= $last_date)
+                     dd($to_convert);
+                    if(strtotime($to_convert) >= strtotime($first_date) AND strtotime($to_convert) <= strtotime($last_date))
                     {
                         $total = $total++;
                         array_push($company, $all->nom_entreprise);
@@ -1276,7 +1278,7 @@ class Calculator extends Controller
         }
         
         
-        return view('graph/newcustomery', compact('data', 'mois_francais',  'company' , 'year', 'customers'));
+        return view('graph/newcustomery', compact('data', 'mois_francais',  'company', 'customers'));
     }
 
     public function SearchNewCustomerInYear(Request $request)
@@ -1354,10 +1356,11 @@ class Calculator extends Controller
         }
         
         //dd($company);
-        return view('graph/search_new_customery', compact('data', 'mois_francais',  'company', 'customers', 'year'));
+        return view('graph/search_new_customery', compact('data', 'mois_francais',  'company', 'customers', 'year', 'customers'));
     }
-
-    public function NewCustomerInMonth()
+    
+    
+     public function NewCustomerInMonth()
     {
         //FAIRE UNE BOUCLE POUR TOUS LES MOIS DE L'ANNEE
 
@@ -1511,7 +1514,6 @@ class Calculator extends Controller
         return view('graph/search_new_customerm', compact('data', 'mois_francais',  'company', 'month', 'mois', 'year', 'customers'));
     }
 
-
     public function VerifyIfFactureRegle($id_facture, $montant)
     {
         //somme des paiement
@@ -1560,13 +1562,15 @@ class Calculator extends Controller
     {
         $today = date('Y-m-d');
         
-        $count = Facture::where('date_reglement', '<', $today)
-        ->where('reglee', 0)->where('annulee', 0)
+        $count = Facture::where('reglee', 0)
+        //->orwhere('date_reglement', '=', NULL)where('date_reglement', '<', $today)
+        ->where('annulee', 0)
         ->count();
         //dd($count);
         return $count;
-
-       
+        
+      /*dd( $count = Facture::where('date_reglement', '<', $today)
+        ->where('reglee', 0)->where('annulee', 0)->get());*/
     }
 
 

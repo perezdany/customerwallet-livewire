@@ -220,7 +220,7 @@ Route::middleware(['auth:web'])->group(function(){
 
     //UPLOAD DANS FICHE PROSPECTION
     route::post('add_new_doc_proforma', [ProspectionController::class, 'AddProformaInFiche']);
-
+    route::post('add_new_doc_proforma_client', [ProspectionController::class, 'AddProformaInFicheClient']);
      //Voir LA FACTURE PROFORMA
      route::post('download_facture_proforma', [ProspectionController::class, 'DownloadProforma']);
 
@@ -228,12 +228,15 @@ Route::middleware(['auth:web'])->group(function(){
 
      //AJOUTER UN COMPTER RENDU PROFORMA QUAND ON EST SUR LA FICHE 
      route::post('add_new_doc_cr', [ProspectionController::class, 'AddNewcr']);
+      route::post('add_new_doc_cr_c', [ProspectionController::class, 'AddNewcrClient']);
 
      //SUPPRIMER UNE FACTURE PROFORMA DE LA FICHE
      route::post('delete_prof_in_fiche', [ProspectionController::class, 'DeleteProfInFiche']);
+     route::post('delete_prof_in_fiche_client', [ProspectionController::class, 'DeleteProfInFicheClient']);
 
      //SUPPRIMER UN CR DANS LA FICHE
-     route::post('delete_cr_in_fiche', [ProspectionController::class, 'DeleteCrInFiche']);
+    route::post('delete_cr_in_fiche', [ProspectionController::class, 'DeleteCrInFiche']);
+    route::post('delete_doc_cr_cust', [ProspectionController::class, 'DeleteCrInFicheC']);
 
     //MODIFIER UN CONTRAT
     Route::post('edit_contrat_form', [ContratController::class, 'EditContratForm']);

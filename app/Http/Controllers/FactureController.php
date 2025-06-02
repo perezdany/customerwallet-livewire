@@ -213,17 +213,18 @@ class FactureController extends Controller
 
         //POUR DES RAISONS TEMPORAIRES POUR LE REMPLISSAGE JE COMMENTE LA LIGNE CI DESSOUS
         $date_reglement = date('Y-m-d', strtotime('+3 days',  $timestamp));
+        //dd($date_reglement);
         
         //dd($date_reglement);
         $Insert = Facture::create([
             'numero_facture' => $request->numero_facture, 
-            'date_reglement' => $request->$date_reglement,
-             'date_emission' => $request->date_emission, 
-             'montant_facture' => $request->montant_facture, 
-             'id_contrat' => $request->id_contrat,
-              'reglee' => 0,
-                'annulee' => 0,
-              'created_by' => auth()->user()->id,
+            'date_reglement' => NULL,
+            'date_emission' => $request->date_emission, 
+            'montant_facture' => $request->montant_facture, 
+            'id_contrat' => $request->id_contrat,
+            'reglee' => 0,
+            'annulee' => 0,
+            'created_by' => auth()->user()->id,
        ]);
 
         //ENREGISTRER LE FICHIER DE LA FACTURE
@@ -406,7 +407,7 @@ class FactureController extends Controller
     {
         //IL FAUT SUPPRIMER L'ANCIEN FICHIER DANS LE DISQUE DUR
         $fichier = $request->file;
-        //dd($request->file);
+       // dd($request->all());
 
         if($fichier != null)
         {
@@ -698,6 +699,7 @@ class FactureController extends Controller
             ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')   
             ->where('date_reglement', '<', $today)
             ->where('reglee', 0)
+            ->where('annulee', 0)
             ->take(3)
             ->get(['factures.*', 'contrats.titre_contrat', 'contrats.date_solde',
             'contrats.montant', 'contrats.reste_a_payer', 
