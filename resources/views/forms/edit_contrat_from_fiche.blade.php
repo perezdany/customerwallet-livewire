@@ -23,7 +23,7 @@
 @section('content')
      <div class="row">
          @if(session('success'))
-            <div class="col-md-12 box-header">
+            <div class="col-md-12 card-header">
               <p class="bg-success" style="font-size:13px;">{{session('success')}}</p>
             </div>
           @endif
@@ -35,9 +35,9 @@
           <!-- left column -->
           <div class="col-md-6">
             <!-- general form elements -->
-            <div class="box box-aeneas">
-              <div class="box-header with-border">
-                <h3 class="box-title">MODIFIER LE CONTRAT</h3><br>(*) champ obligatoire
+            <div class="card card-aeneas">
+              <div class="card-header with-border">
+                <h3 class="card-title">MODIFIER LE CONTRAT</h3><br>(*) champ obligatoire
               </div>
                  @php
                     $contrat = $contratcontroller->GetById($id);
@@ -50,7 +50,7 @@
                         @csrf
                          <input type="text" value="{{$contrat->id}}" style="display:none" name="id_contrat">
                          <input type="text" value="{{$id_entreprise}}" style="display:none" name="id_entreprise">
-                        <div class="box-body">
+                        <div class="card-body">
                             <div class="form-group">
                                 <label>Entreprise:</label>
                                 <select class="form-control " name="entreprise">
@@ -93,16 +93,16 @@
                             </div>
 
                         </div>
-                        <!-- /.box-body -->
+                        <!-- /.card-body -->
 
-                        <div class="box-footer">
+                        <div class="card-footer">
                         <button type="submit" class="btn btn-primary">VALIDER</button>
                         </div>
                     </form>
                 @endforeach
              
             </div>
-            <!-- /.box -->
+            <!-- /.card -->
           </div>
           <!--/.col (left) -->
           <!-- right column -->

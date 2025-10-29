@@ -697,15 +697,14 @@ class FactureController extends Controller
             ->join('typeprestations', 'contrats.id_type_prestation', '=', 'typeprestations.id')
            
             ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')   
-            ->where('date_reglement', '<', $today)
             ->where('reglee', 0)
             ->where('annulee', 0)
+            //->where('date_reglement', '<', $today)
+            //->orwhere('date_reglement', '=', 'NULL')
             ->take(3)
             ->get(['factures.*', 'contrats.titre_contrat', 'contrats.date_solde',
             'contrats.montant', 'contrats.reste_a_payer', 
              'typeprestations.libele',  'entreprises.nom_entreprise']);
-
-        //dd($get);
 
         return $get;
     }

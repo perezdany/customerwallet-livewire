@@ -40,7 +40,7 @@
 @section('content')
     <div class="row">
      @if(session('success'))
-            <div class="col-md-12 box-header" style="font-size:13px;">
+            <div class="col-md-12 card-header" style="font-size:13px;">
               <p class="bg-success" >{{session('success')}}</p>
             </div>
           @endif
@@ -49,16 +49,16 @@
         @foreach($get as $get)
             <div class="col-md-6">
                 <!-- general form elements -->
-                <div class="box box-aeneas">
-                <div class="box-header with-border">
-                    <b><h3 class="box-title">MODIFIER LA PRESTATION</h3></b>
+                <div class="card card-aeneas">
+                <div class="card-header with-border">
+                    <b><h3 class="card-title">MODIFIER LA PRESTATION</h3></b>
                 </div>
                 
                 <!-- form start -->
                 <form role="form" method="post" action="edit_prestation">
                     @csrf
                     <input type="text" value={{$id}} name="id_prestation" style="display:none;">
-                    <div class="box-body">
+                    <div class="card-body">
                         <div class="form-group">
                         
                             <div class="form-group">
@@ -133,14 +133,14 @@
                      
                     
                     </div>
-                    <!-- /.box-body -->
+                    <!-- /.card-body -->
 
-                    <div class="box-footer">
+                    <div class="card-footer">
                     <button type="submit" class="btn btn-primary">VALIDER</button>
                     </div>
                 </form>
                 </div>
-                <!-- /.box -->
+                <!-- /.card -->
             </div>
             <!--/.col (left) -->
         @endforeach

@@ -44,7 +44,7 @@
     <div class="row">
       
         <div class="col-md-2"></div>
-        <div class="col-md-8">
+        <div class="col-md-8 row">
             <div class="col-md-3">
                 <a href="prospects"><button class="btn btn-default"> <b>RETOUR</b></button></a>
             </div>
@@ -113,9 +113,9 @@
             <!-- left column -->
             <div class="col-md-8">
                 <!-- Horizontal Form -->
-                <div class="box box-info">
+                <div class="card card-info">
                     @can("edit")
-                        <div class="box-body">
+                        <div class="card-body">
                             <form action="go_contrat_form" method="post" >
                                     @csrf
                                     <input type="text" value={{$id_entreprise}} style="display:none;" name="id_entreprise">
@@ -123,26 +123,25 @@
                             </form>
                         </div>
                     @endcan
-                    <div class="box-header with-border" style="text-align:center">
+                    <div class="card-header with-border" style="text-align:center">
                         @php
                             $nom = $entreprisecontroller->GetById($id_entreprise);
-
                         @endphp
                         @foreach($nom as $nom)
-                                <h3 class="box-title"><b>{{$nom->nom_entreprise}}</b>
+                                <h3 class="card-title"><b>{{$nom->nom_entreprise}}</b>
                                     @if($nom->etat == 0)
                                         <span class="bg-red">INACTIF</span>
                                     @else
                                     @endif
                                 </h3><br>
-                                    <h4 class="box-title"><b>ORDRE D'AFFICHAGE DES INFORMATIONS:</b>
+                                    <h4 class="card-title"><b>ORDRE D'AFFICHAGE DES INFORMATIONS:</b><br>
                                 Services proposés--Facture proforma--Compte rendu de visite--Autre documents de la prospection
                                 --Propositions de la prospection--Nouvelles propositions--Nouveaux documents--Interlocuteurs</h4>
                     
                         @endforeach
                     </div>
-                    <!-- /.box-header -->
-
+                    <!-- /.card-header -->
+               
 
                     @if($count_prospection != 0) 
                         
@@ -151,70 +150,60 @@
                             <!-- form start  INFO SUR LA PROPESCTION DANS LA TABLE-->
                             <div class="form-horizontal">
                             
-                                <div class="box-body">
-                                    <div class="form-group">
-                                        <label class="col-sm-6 control-label"><b>DATE :</b></label>
-                                    
-                                        <div class="col-sm-6">
-                                        <input type="text" class="form-control" disabled value="@php echo date('d/m/Y', strtotime($prospections->date_prospection)) @endphp">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="form-group row col-md-6">
+                                            <label  class="col-sm-6 col-form-label"><b>DEBUT DE PROSPECTION :</b></label>
+                                            <div class="col-sm-6">
+                                            <input type="text" class="form-control" 
+                                            disabled value="@php echo date('d/m/Y', strtotime($prospections->date_prospection)) @endphp">
+                                            </div>
                                         </div>
-                                    
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-6 control-label"> <b>ADRESSE DE L'ENTREPRISE :</b></label>
-                                    
-                                    
-                                        <div class="col-sm-6">
-                                        <input type="text" value="{{$prospections->adresse}}" class="form-control" disabled>
+                                        <div class="form-group row col-md-6">
+                                            <label  class="col-sm-6 col-form-label"><b>ADRESSE DE L'ENTREPRISE :</b></label>
+                                            <div class="col-sm-6">
+                                            <input type="text" value="{{$prospections->adresse}}" class="form-control" disabled>
+                                            </div>
                                         </div>
-                                    
                                     </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-6 control-label"> <b>CHIFFRE D'AFFAIRE :</b></label>
-                                    
-                                    
+                                    <div class="row">
+                                    <div class="form-group row col-md-6">
+                                        <label  class="col-sm-6 col-form-label"><b>CHIFFRE D'AFFAIRE :</b></label>
                                         <div class="col-sm-6">
-                                        <input type="text" value="{{$prospections->chiffre_affaire}}" class="form-control" disabled>
+                                         <input type="text" value="{{$prospections->chiffre_affaire}}" class="form-control" disabled>
                                         </div>
-                                    
                                     </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-6 control-label"> <b>NOMBRE D'EMPLOYES :</b></label>
-                                    
-                                    
+                                    <div class="form-group row col-md-6">
+                                        <label  class="col-sm-6 col-form-label"><b>NOMBRE D'EMPLOYES :</b></label>
                                         <div class="col-sm-6">
-                                        <input type="text" value="{{$prospections->nb_employes}}" class="form-control" disabled>
+                                           <input type="text" value="{{$prospections->nb_employes}}" class="form-control" disabled>
                                         </div>
-                                    
                                     </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-6 control-label"> <b>ACTIVITE :</b></label>
-                                    
-                                    
+                                    </div>
+                                    <div class="row">
+                                    <div class="form-group row col-md-6">
+                                        <label  class="col-sm-4 col-form-label"><b>ACTIVITE :</b></label>
+                                        <div class="col-sm-8">
+                                           <input type="text" value="{{$prospections->activite}}" class="form-control" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row col-md-6">
+                                        <label  class="col-sm-6 col-form-label"><b>EN CHARGE DU DOSSIER :</b></label>
                                         <div class="col-sm-6">
-                                        <input type="text" value="{{$prospections->activite}}" class="form-control" disabled>
+                                           <input class="form-control" disabled type="text" value="{{$prospections->nom_prenoms}}">
                                         </div>
-                                    
                                     </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-6 control-label"><b>EN CHARGE DE LA PROSPECTION :</b></label>
-                                    
-                                        <div class="col-sm-6">
-                                        <input class="form-control" disabled type="text" value="{{$prospections->nom_prenoms}}">
-                                        </div>
-                                
                                     </div>
-                                
                                 </div>
                 
                             </div>
                         
-                            <div class="box-header">
-                                <h3 class="box-title"><b>Service(s) proposé(s)</b></h3>
+                            <div class="card-header">
+                                <h3 class="card-title"><b>Service(s) proposé(s)</b></h3>
                             </div>
                             
                             <div class="form-group ">
-                                <div class="box-body">
+                                <div class="card-body">
                                     @php
                                         //On va écrire un code pour detecter tous les services offerts
                                         $se = DB::table('prospection_services')
@@ -225,7 +214,7 @@
                                     @endphp
 
                                     <div class="form-group no-padding">
-                                        <table class="table table-hover box-body">
+                                        <table class="table table-hover card-body">
                                         
                                             <tr>
                                         
@@ -234,8 +223,7 @@
                                                 <th style="width: 40px">Ajouté le :</th>
                                                 <!--LES RESTRICTIONS -->
                                                 @can("delete")
-                                                <th>Supprimer</th>
-                                                    
+                                                    <th>Supprimer</th>
                                                 @endcan
                                                     
                                             </tr>
@@ -244,20 +232,16 @@
                                             @foreach($se as $se_get)
                                                 <tr>
                                                     <td>  <span class="text"><b>{{$se_get->libele_service}}</b></span></td>
-                                                
                                                     <td>
                                                         @php 
-                            
                                                             echo "<b>".date('d/m/Y',strtotime($se_get->created_at))."</b>" ;
-                                                    
                                                         @endphp
                                                     </td>
                                                     <td>
                                                         @can("delete")	
                                                             <form action="delete_service_many_to_many" method="post" >
-
                                                                 @csrf
-                                                                <div class="box-body">
+                                                                <div class="card-body">
                                                                     <div class="form-group col-sm-6">
                                                                         <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
                                                                         <input type="text" value="{{$se_get->id}}" style="display:none;" name="id_service">
@@ -286,7 +270,7 @@
                             </div>
 
                             @can("edit")
-                                <div class="box-body">
+                                <div class="card-body">
                                     <form action="add_service_in_fiche" method="post" class="col-sm-12">
                                         @csrf
                                         <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
@@ -327,12 +311,12 @@
 
                             <!--LES FICHIERS ET LES FACTURES DANS LA TABLE PROSPECTION-->
 
-                            <div class="box-header with-border">
-                                <h3 class="box-title"><b>FACTURE PROFORMA</b></h3>
+                            <div class="card-header with-border">
+                                <h3 class="card-title"><b>FACTURE PROFORMA</b></h3>
                             </div>
                             
                             <div class="no-padding">
-                                <table class="table table-hover box-body">
+                                <table class="table table-hover card-body">
                                 
                                     <tr>
                                         <th>Nom</th>
@@ -385,7 +369,7 @@
                                                 <form action="download_facture_proforma" method="post" enctype="multipart/form-data" target="blank">
 
                                                     @csrf
-                                                    <div class="box-body">
+                                                    <div class="card-body">
                                                         <div class="form-group col-sm-6">
                                                             <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
                                                             <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
@@ -406,7 +390,7 @@
 
                             <!--LES AUTRES PROFORMA-->
                             <div class="no-padding">
-                                <table class="table table-hover box-body">
+                                <table class="table table-hover card-body">
                                     @php
                                         $select = DB::table('docfactures')
                                             ->where('id_prospection', $prospections->id)
@@ -427,7 +411,7 @@
                                                         <td>
                                                             <form action="delete_prof_in_fiche" method="post" >
                                                                 @csrf
-                                                                <div class="box-body">
+                                                                <div class="card-body">
                                                                     <div class="form-group col-sm-6">
                                                                     <input type="text" value="{{$select->id}}" style="display:none;" name="id_doc">
                                                                         <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
@@ -447,7 +431,7 @@
                                                     <td>
                                                         <form action="delete_prof_in_fiche" method="post" >
                                                             @csrf
-                                                            <div class="box-body">
+                                                            <div class="card-body">
                                                                 <div class="form-group col-sm-6">
                                                                 <input type="text" value="{{$select->id}}" style="display:none;" name="id_doc">
                                                                     <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
@@ -466,7 +450,7 @@
                                                 <form action="download_facture_proforma" method="post" enctype="multipart/form-data" target="blank">
 
                                                     @csrf
-                                                    <div class="box-body">
+                                                    <div class="card-body">
                                                         <div class="form-group col-sm-6">
                                                             <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
                                                             <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
@@ -489,11 +473,11 @@
                                 @can("procuration")
                                     @can("edit")
                                         <!--SI ON VEUT AJOUETR UN AUTRE DOCUMENT de FACTURE PROFORMA -->
-                                        <div class="box-body">
+                                        <div class="card-body">
                                             <form action="add_new_doc_proforma" method="post" enctype="multipart/form-data" class="col-sm-12">
 
                                                 @csrf
-                                                <div class="box-body ">
+                                                <div class="card-body ">
                                                     <div class="form-group col-sm-6">
                                                         <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
                                                         <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
@@ -512,11 +496,11 @@
                             @else
                                 @can("edit")
                                     <!--SI ON VEUT AJOUETR UN AUTRE DOCUMENT de FACTURE PROFORMA -->
-                                    <div class="box-body">
+                                    <div class="card-body">
                                         <form action="add_new_doc_proforma" method="post" enctype="multipart/form-data" class="col-sm-12">
 
                                             @csrf
-                                            <div class="box-body ">
+                                            <div class="card-body ">
                                                 <div class="form-group col-sm-6">
                                                     <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
                                                     <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
@@ -533,12 +517,12 @@
                             @endif
                         
                             <!--LES CR DE VISITE DANS LA TABLE PROPSECTION-->
-                            <div class="box-header with-border">
-                                <h3 class="box-title"><b>COMPTE RENDU DE VISITE</b></h3>
+                            <div class="card-header with-border">
+                                <h3 class="card-title"><b>COMPTE RENDU DE VISITE</b></h3>
                             </div>
                             
                             <div class="form-group ">
-                                <table class="table table-hover box-body">
+                                <table class="table table-hover card-body">
                                     <tr>
                                         <th>Nom du fichier</th>                            
                                     </tr>
@@ -592,7 +576,7 @@
                                                 <form action="download_prospect" method="post" enctype="multipart/form-data">
         
                                                     @csrf
-                                                    <div class="box-body">
+                                                    <div class="card-body">
                                                         <div class="form-group col-sm-6">
                                                             <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
                                                             <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
@@ -614,7 +598,7 @@
 
                             <!--LES AUTRES CR DE VISITE-->
                             <div class="no-padding">
-                                <table class="table table-hover box-body">
+                                <table class="table table-hover card-body">
                                 @php
                                     $select = DB::table('compterendus')
                                     ->where('id_prospection', $prospections->id)
@@ -633,7 +617,7 @@
                                                             <form action="delete_cr_in_fiche" method="post" >
 
                                                                 @csrf
-                                                                <div class="box-body">
+                                                                <div class="card-body">
                                                                     <div class="form-group col-sm-6">
                                                                     <input type="text" value="{{$select->id}}" style="display:none;" name="id_doc">
                                                                         <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
@@ -655,7 +639,7 @@
                                                         <form action="delete_cr_in_fiche" method="post" >
 
                                                             @csrf
-                                                            <div class="box-body">
+                                                            <div class="card-body">
                                                                 <div class="form-group col-sm-6">
                                                                 <input type="text" value="{{$select->id}}" style="display:none;" name="id_doc">
                                                                     <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
@@ -676,7 +660,7 @@
                                             <td>
                                                 <form action="download_facture_proforma" method="post" enctype="multipart/form-data" target="blank">
                                                     @csrf
-                                                    <div class="box-body">
+                                                    <div class="card-body">
                                                         <div class="form-group col-sm-6">
                                                             <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
                                                             
@@ -697,11 +681,11 @@
                             @if(auth()->user()->id != $prospections->id_utilisateur)
                                 @can("procuration")
                                     @can("edit")
-                                        <div class="box-body">
+                                        <div class="card-body">
                                             <form action="add_new_doc_cr" method="post" enctype="multipart/form-data" class="col-sm-12">
 
                                                 @csrf
-                                                <div class="box-body ">
+                                                <div class="card-body ">
                                                     <div class="form-group col-sm-6">
                                                         <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
                                                         <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
@@ -719,11 +703,11 @@
                                 @endcan
                             @else
                                 @can("edit")
-                                    <div class="box-body">
+                                    <div class="card-body">
                                         <form action="add_new_doc_cr" method="post" enctype="multipart/form-data" class="col-sm-12">
 
                                             @csrf
-                                            <div class="box-body ">
+                                            <div class="card-body ">
                                                 <div class="form-group col-sm-6">
                                                     <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
                                                     <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
@@ -743,10 +727,10 @@
                             @php
                                 $docs = $documentController->GetDocByProspection($prospections->id);  
                             @endphp
-                            <div class="box-header with-border">
-                                <h3 class="box-title"><b>AUTRE DOCUMENTS (facture supplémentaires & autres)</b></h3>
+                            <div class="card-header with-border">
+                                <h3 class="card-title"><b>AUTRE DOCUMENTS (facture supplémentaires & autres)</b></h3>
                             </div>
-                            <div class="box-body no-padding">
+                            <div class="card-body no-padding">
                                 <table class="table table-hover">
                                     <tr>
                                         <th>Nom</th>
@@ -774,7 +758,7 @@
                                                             <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
                                                             <input type="text" value="{{$docs->id}}" style="display:none;" name="id_doc">
                                                             <input type="text" class="form-control" name="file" value="{{$docs->path_doc}}" style="display:none;">
-                                                            <button type="submit" class="btn btn-sx btn-danger"><i class="fa fa-trash-o"></i></button>
+                                                            <button type="submit" class="btn btn-sx btn-danger"><i class="fa fa-trash"></i></button>
                                                         </form>
                                                     </td>
                                                 @endcan
@@ -789,7 +773,7 @@
                                                         <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
                                                         <input type="text" value="{{$docs->id}}" style="display:none;" name="id_doc">
                                                         <input type="text" class="form-control" name="file" value="{{$docs->path_doc}}" style="display:none;">
-                                                        <button type="submit" class="btn btn-sx btn-danger"><i class="fa fa-trash-o"></i></button>
+                                                        <button type="submit" class="btn btn-sx btn-danger"><i class="fa fa-trash"></i></button>
                                                     </form>
                                                 </td>
                                             @endcan
@@ -818,11 +802,11 @@
                             @if(auth()->user()->id != $prospections->id_utilisateur)
                                 @can("procuration")
                                     @can("edit")
-                                        <div class="box-body">
+                                        <div class="card-body">
                                             <form action="add_new_doc" method="post" enctype="multipart/form-data" class="col-sm-12">
 
                                                 @csrf
-                                                <div class="box-body ">
+                                                <div class="card-body ">
                                                     <div class="form-group col-sm-6">
                                                         <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
                                                         <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
@@ -839,11 +823,11 @@
                                 @endcan
                             @else
                                 @can("edit")
-                                    <div class="box-body">
+                                    <div class="card-body">
                                         <form action="add_new_doc" method="post" enctype="multipart/form-data" class="col-sm-12">
 
                                             @csrf
-                                            <div class="box-body ">
+                                            <div class="card-body ">
                                                 <div class="form-group col-sm-6">
                                                     <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
                                                     <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
@@ -865,10 +849,10 @@
 
                             <!--PROPOSITION-->
                         
-                            <div class="box-header with-border">
-                                <h3 class="box-title"><b>PROPOSITIONS DE LA PROSPECTIONS</b></h3>
+                            <div class="card-header with-border">
+                                <h3 class="card-title"><b>PROPOSITIONS DE LA PROSPECTIONS</b></h3>
                             </div>
-                            <div class="box-body no-padding">
+                            <div class="card-body no-padding">
                                 <table class="table table-hover">
                                     <tr>
                                 
@@ -963,7 +947,7 @@
                                                             <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
                                                             <input type="text" value="{{$propal->id}}" style="display:none;" name="id_doc">
                                                             <input type="text" class="form-control" name="file" value="{{$propal->path_doc}}" style="display:none;">
-                                                            <button type="submit" class="btn btn-sx btn-danger"><i class="fa fa-trash-o"></i></button>
+                                                            <button type="submit" class="btn btn-sx btn-danger"><i class="fa fa-trash"></i></button>
                                                         </form>
                                                     </td>
                                                 @endcan
@@ -978,7 +962,7 @@
                                                         <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
                                                         <input type="text" value="{{$propal->id}}" style="display:none;" name="id_doc">
                                                         <input type="text" class="form-control" name="file" value="{{$propal->path_doc}}" style="display:none;">
-                                                        <button type="submit" class="btn btn-sx btn-danger"><i class="fa fa-trash-o"></i></button>
+                                                        <button type="submit" class="btn btn-sx btn-danger"><i class="fa fa-trash"></i></button>
                                                     </form>
                                                 </td>
                                             @endcan
@@ -1006,11 +990,11 @@
                             @if(auth()->user()->id != $prospections->id_utilisateur)
                                 @can("procuration")
                                     @can("edit")
-                                        <div class="box-body">
+                                        <div class="card-body">
                                             <form action="add_doc_proposition" method="post" enctype="multipart/form-data" class="col-sm-12">
 
                                                 @csrf
-                                                <div class="box-body ">
+                                                <div class="card-body ">
                                                     <div class="form-group col-sm-6">
                                                         <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
                                                         <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
@@ -1027,11 +1011,11 @@
                                 @endcan
                             @else
                                 @can("edit")
-                                    <div class="box-body">
+                                    <div class="card-body">
                                         <form action="add_doc_proposition" method="post" enctype="multipart/form-data" class="col-sm-12">
 
                                             @csrf
-                                            <div class="box-body ">
+                                            <div class="card-body ">
                                                 <div class="form-group col-sm-6">
                                                     <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
                                                     <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
@@ -1056,10 +1040,10 @@
                         $propal = $propalcontroller->GetByEntreprise($id_entreprise);  
                     @endphp
             
-                    <div class="box-header with-border">
-                        <h3 class="box-title"><b>NOUVELLES PROPOSITIONS</b></h3>
+                    <div class="card-header with-border">
+                        <h3 class="card-title"><b>NOUVELLES PROPOSITIONS</b></h3>
                     </div>
-                    <div class="box-body no-padding">
+                    <div class="card-body no-padding">
                         <table class="table table-hover">
                             <tr>
                         
@@ -1079,93 +1063,94 @@
                                     @endphp
                                 </td>
                                 <td>
-                                <button type="button" class="btn btn-primary" 
-                                data-toggle="modal" data-target="#actu{{$propal->id}}"><b><i class="fa fa-plus"></i></b></button>
-                                    <div class="modal modal-default fade" id="actu{{$propal->id}}">
+                                    <button type="button" class="btn btn-primary" 
+                                        data-toggle="modal" data-target="#actu{{$propal->id}}"><b>
+                                        <i class="fa fa-plus"></i></b>
+                                    </button>
+                                    <div class="modal fade" id="actu{{$propal->id}}">
                                         <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span></button>
-                                                    <h4 class="modal-title">{{$propal->libele}}</h4>
-                                                </div>
-                                            
-                                                <div class="modal-body">
-                                                    <!-- form start -->
-                                                    <form action="actual_propal" method="post">  
-                                                        @csrf
-                                                        <input type="text" value="{{$propal->id}}" name="id_propal" style="display:none;">
-                                                        <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
-                                                        <div class="form-group">   
-                                                            <label>Rejeté?</label>
-                                                            <select class="form-control " name="rejete">
-                                                                @if($propal->rejete == "0")
-                                                                    <option value="0">NON</option>
-                                                                    <option value="1">OUI</option>
-                                                                @else
-                                                                    <option value="1">OUI</option>
-                                                                    <option value="0">NON</option>
-                                                                @endif
-                                                            </select>
-                                                            
-                                                        </div>        
-
-                                                        <div class="form-group">
-                                                            <label>Motif :</label>
-                                                            <p>{{$propal->motif}}</p>
-                                                            <textarea name="motif" class="form-control"></textarea>
-                                                        </div>
-                                                    
-                                                        <script>
-                                                            function newFonction()
-                                                            {
-                                                                
-                                                                var f = document.getElementById("grise4").value;
-                                                                //alert(f);
-                                                                if(f == 'autre')
-                                                                {
-                                                                    document.getElementById("newf").removeAttribute("disabled");
-                                                                }
-                                                                else{
-                                                                    document.getElementById("newf").setAttribute("disabled", "disabled");
-                                                                }
-                                                            }
-                                                        </script>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn  pull-left" data-dismiss="modal">Fermer</button>
-                                                            <button type="submit" class="btn btn-primary">Actualiser</button>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                                
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h4 class="modal-title">   
+                                                    {{$propal->libele}}
+                                                </h4>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;&times;&times;
+                                                    &times;&times;</span>
+                                                </button>
                                             </div>
-                                            <!-- /.modal-content -->
+                                            <div class="modal-body">
+                                                <!-- form start -->
+                                                <form action="actual_propal" method="post">  
+                                                    @csrf
+                                                    <input type="text" value="{{$propal->id}}" name="id_propal" style="display:none;">
+                                                    <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
+                                                    <div class="form-group">   
+                                                        <label>Rejeté?</label>
+                                                        <select class="form-control " name="rejete">
+                                                            @if($propal->rejete == "0")
+                                                                <option value="0">NON</option>
+                                                                <option value="1">OUI</option>
+                                                            @else
+                                                                <option value="1">OUI</option>
+                                                                <option value="0">NON</option>
+                                                            @endif
+                                                        </select>
+                                                        
+                                                    </div>        
+
+                                                    <div class="form-group">
+                                                        <label>Motif :</label>
+                                                        <p>{{$propal->motif}}</p>
+                                                        <textarea name="motif" class="form-control"></textarea>
+                                                    </div>
+                                                
+                                                    <script>
+                                                        function newFonction()
+                                                        {
+                                                            
+                                                            var f = document.getElementById("grise4").value;
+                                                            //alert(f);
+                                                            if(f == 'autre')
+                                                            {
+                                                                document.getElementById("newf").removeAttribute("disabled");
+                                                            }
+                                                            else{
+                                                                document.getElementById("newf").setAttribute("disabled", "disabled");
+                                                            }
+                                                        }
+                                                    </script>
+                                                    <div class="modal-footer ">
+                                                    <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Fermer</button>
+                                                    <button type="button" class="btn btn-primary">Enregistrer</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            
                                         </div>
-                                    </div> 
+                                        <!-- /.modal-content -->
+                                        </div>
+                                        <!-- /.modal-dialog -->
+                                    </div>
+                                    <!-- /.modal -->
                                 </td>
                           
                                 <td>
                                     @can("delete")
-                                        
-                                            <form action="delete_doc_propal" method="post" enctype="multipart/form-data">
-
-                                                @csrf
-                                            
-                                                <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
-                                                <input type="text" value="{{$propal->id}}" style="display:none;" name="id_doc">
-                                                <input type="text" class="form-control" name="file" value="{{$propal->path_doc}}" style="display:none;">
-                                                <button type="submit" class="btn btn-sx btn-danger"><i class="fa fa-trash-o"></i></button>
-                                            </form>
+                                        <form action="delete_doc_propal" method="post" enctype="multipart/form-data">
+                                            @csrf
+                                            <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
+                                            <input type="text" value="{{$propal->id}}" style="display:none;" name="id_doc">
+                                            <input type="text" class="form-control" name="file" value="{{$propal->path_doc}}" style="display:none;">
+                                            <button type="submit" class="btn btn-sx btn-danger"><i class="fa fa-trash"></i></button>
+                                        </form>
                                     
                                     @endcan
                                 </td>
                               
                                 <td>
-                                    
                                     <form action="download_docs_propal" method="post" enctype="multipart/form-data" target="blank" class="col-sm-6">
-
                                         @csrf
-                                        
                                         <input type="text" value="{{$propal->id}}" style="display:none;" name="id_doc">
                                         <input type="text" class="form-control" name="file" value="{{$propal->path_doc}}" style="display:none;">
                                         <button type="submit" class="btn btn-warning"><i class="fa fa-download"></i></button>
@@ -1179,11 +1164,11 @@
                     <hr>
 
                     @can("edit")	
-                        <div class="box-body">
+                        <div class="card-body">
                             <form action="add_doc_proposition" method="post" enctype="multipart/form-data" class="col-sm-12">
 
                                 @csrf
-                                <div class="box-body ">
+                                <div class="card-body ">
                                     <div class="form-group col-sm-6">
                                         
                                         <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
@@ -1199,14 +1184,14 @@
                     @endcan
 
                     <hr>
-                    <div class="box-header with-border">
-                        <h3 class="box-title"><b>NOUVEAUX DOCUMENTS</b></h3>
+                    <div class="card-header with-border">
+                        <h3 class="card-title"><b>NOUVEAUX DOCUMENTS</b></h3>
                     </div>
                     @php
                         $docs = $documentController->GetDocByEntreprise($id_entreprise);  
                         //dd($docs);
                     @endphp
-                    <div class="box-body no-padding">
+                    <div class="card-body no-padding">
                         <table class="table table-hover">
                             <tr>
                                 <th>Nom</th>
@@ -1233,7 +1218,7 @@
                                                     <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
                                                     <input type="text" value="{{$docs->id}}" style="display:none;" name="id_doc">
                                                     <input type="text" class="form-control" name="file" value="{{$docs->path_doc}}" style="display:none;">
-                                                    <button type="submit" class="btn btn-sx btn-danger"><i class="fa fa-trash-o"></i></button>
+                                                    <button type="submit" class="btn btn-sx btn-danger"><i class="fa fa-trash"></i></button>
                                                 </form>
                                                 
                                             @endcan
@@ -1247,7 +1232,7 @@
                                                 <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
                                                 <input type="text" value="{{$docs->id}}" style="display:none;" name="id_doc">
                                                 <input type="text" class="form-control" name="file" value="{{$docs->path_doc}}" style="display:none;">
-                                                <button type="submit" class="btn btn-sx btn-danger"><i class="fa fa-trash-o"></i></button>
+                                                <button type="submit" class="btn btn-sx btn-danger"><i class="fa fa-trash"></i></button>
                                             </form>
                                             
                                         @endcan
@@ -1268,11 +1253,11 @@
                         </table>
                     </div>
                     @can("edit")
-                        <div class="box-body">
+                        <div class="card-body">
                             <form action="add_other_doc_prospect" method="post" enctype="multipart/form-data" class="col-sm-12">
                                     
                                 @csrf
-                                <div class="box-body ">
+                                <div class="card-body ">
                                     <div class="form-group col-sm-6">
                                         
                                         <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
@@ -1290,11 +1275,11 @@
                     @php    
                         $interlocuteurs =  $interlocuterController->InterlocuteurWithIdEntreprise($id_entreprise);
                     @endphp
-                    <div class="box-header with-border">
-                        <h3 class="box-title"><b>Interlocuteur(s)</b></h3>
+                    <div class="card-header with-border">
+                        <h3 class="card-title"><b>Interlocuteur(s)</b></h3>
                     </div>
 
-                    <table class="table table-hover box-body">        
+                    <table class="table table-hover card-body">        
                         <tr>
                             <th>Nom</th>
                             <th>Téléphone</th>
@@ -1418,24 +1403,21 @@
             </div>
             
             <div class="col-md-4">
-                <div class="box box-info table-responsive">
+                <div class="card card-warning table-responsive">
                    
-                    <div class="box-header with-border" style="text-align:center">
-                      
-                        <h3 class="box-title"><b>SUIVIS</b></h3>
+                    <div class="card-header  with-border" style="text-align:center">
+                        <h3> 
+                            @can("edit")
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addsuivi"><b><i class="fa fa-plus"></i></b></button>
+                            @endcan
+                            Suivi de prospects
+                        </h3>
                     </div>
                     @php
                         $suivis =  $suivicontroller->GetSuiviByIdEntreprise($id_entreprise);
                     @endphp
-                    <div class="box-header with-border">
-                        @can("edit")
-                            <div class="col-md-3">
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addsuivi"><b><i class="fa fa-plus"></i>SUIVI</b></button>
-                            </div>
-                        @endcan
-                    </div>
-
-                    <table class="table table-hover box-body">        
+    
+                    <table class="table table-hover card-body">        
                         <tr>
                             <th>Date-Heure</th>
                             <th>Action</th>
@@ -1596,19 +1578,19 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
+                        <h4 class="modal-title">   
+                            Ajouter un interlocuteur
+                        </h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title">Ajouter un interlocuteur </h4>
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                      
                     </div>
                  
                     <div class="modal-body">
                         <!-- form start -->
                         <form action="add_referant_in_fiche" method="post">  
                              @csrf
-                            <div class="box-header">
-                                <h3 class="box-title"><b>AJOUTER UN INTERLOCUTEUR </b></h3>
-                            </div> 
-
                             <div class="form-group">
                                 @php
                                     $nom = $entreprisecontroller->GetById($id_entreprise)
@@ -1682,8 +1664,8 @@
                                     }
                                 }
                             </script>
-                            <div class="modal-footer">
-                                <button type="button" class="btn  pull-left" data-dismiss="modal">Fermer</button>
+                            <div class="modal-footer justify-content-between">
+                                <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Fermer</button>
                                 <button type="submit" class="btn btn-primary">Ajouter</button>
                             </div>
                         </form>
@@ -1698,11 +1680,13 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
+                        <h4 class="modal-title">   
+                            Enregistrer une nouvelle action menée
+                        </h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title">Enregistrer une nouvelle action menée</h4>
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
-                 
                     <div class="modal-body">
                         <!-- form start -->
                         <form action="add_suivi" method="post">  
@@ -1757,8 +1741,8 @@
                             </div>  
                     
                           
-                            <div class="modal-footer">
-                                <button type="button" class="btn  pull-left" data-dismiss="modal">Fermer</button>
+                            <div class="modal-footer justify-content-between">
+                                <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Fermer</button>
                                 <button type="submit" class="btn btn-primary">Ajouter</button>
                             </div>
                         </form>
@@ -1767,6 +1751,8 @@
                 </div>
                 <!-- /.modal-content -->
             </div>
+            <!-- /.modal-dialog -->
+           
         </div> 
         
     </div>

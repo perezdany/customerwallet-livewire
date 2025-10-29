@@ -30,15 +30,15 @@
           <!-- left column -->
           <div class="col-md-6">
             <!-- general form elements -->
-            <div class="box box-aeneas">
-              <div class="box-header with-border">
-                <h3 class="box-title">AJOUTER UN UTILISATEUR</h3><br>(*) champ obligatoire
+            <div class="card card-aeneas">
+              <div class="card-header with-border">
+                <h3 class="card-title">AJOUTER UN UTILISATEUR</h3><br>(*) champ obligatoire
               </div>
             
               <!-- form start -->
               <form role="form" method="post" action="add_user">
                 @csrf
-                <div class="box-body">
+                <div class="card-body">
                   <div class="form-group">
                     <label>Département(*):</label>
                     <select class="form-control " name="departement" required>
@@ -83,18 +83,18 @@
                     <label>Fonction</label>
                     <input type="text"  class="form-control " name="poste" onkeyup='this.value=this.value.toUpperCase()' required/>
                   </div>
-                    <div class="box-header">
-                        <h3 class="box-title">Permissions</h3>
+                    <div class="card-header">
+                        <h3 class="card-title">Permissions</h3>
                     </div>
-                    <!-- checkbox -->
+                    <!-- checkcard -->
                   
-                      <div class="form-group box-body">
+                      <div class="form-group card-body">
                         @php
                           $permissions = Permission::all()
                         @endphp
                         @foreach($permissions as $permissions)
                           <label>
-                              <input type="checkbox" class="minimal" id="{{$permissions->libele}}" value="{{$permissions->id}}" name="{{$permissions->libele}}">
+                              <input type="checkcard" class="minimal" id="{{$permissions->libele}}" value="{{$permissions->id}}" name="{{$permissions->libele}}">
                             {{$permissions->libele}}
                           </label>
                           
@@ -152,19 +152,19 @@
                                     
                         </script> -->
 
-                         <div class="box-footer">
+                         <div class="card-footer">
                           <button type="submit" class="btn btn-primary" id="bt">VALIDER</button>
                         </div>
                     </div>    
 
                     
                 </div>
-                <!-- /.box-body -->
+                <!-- /.card-body -->
 
                
               </form>
             </div>
-            <!-- /.box -->
+            <!-- /.card -->
           </div>
           <!--/.col (left) -->
           <!-- right column -->

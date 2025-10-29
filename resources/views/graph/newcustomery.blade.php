@@ -23,11 +23,11 @@
         <!-- left column -->
         <div class="col-md-12">
 
-            <div class="box">
-                <div class="box-body">
-                    <div class="box-header with-border">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-header with-border">
                         <b>
-                        <h3 class="box-title"> 
+                        <h3 class="card-title"> 
                             @php
                                 echo 'Statistiques Nouveaux clients :'. date('Y'). '<br>';
                             @endphp
@@ -81,14 +81,18 @@
             </div>
            
         </div>
-       
-        <div class="col-md-5">
+      
+    </div>
+    <!-- Main row -->  
+
+    <div class="row">
+         
+        <div class="col-md-4">
              <!--ON VA ESSAYER D' AFFICHER LES POURCENTAGE DE CHAQUE ENTREPRISE-->
-            <div class="box">
-                <div class="box-body">
-                    <div class="box-header with-border">
-                        <b>
-                        <h3 class="box-title"> 
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-header with-border">
+                        <h3 class="card-title"> 
                           Nom des clients
                         </h3><br>
                         
@@ -129,30 +133,30 @@
             </div>
         </div>
         
-        <div class="col-md-5">
+        <div class="col-md-4">
             
-            <div class="box">
-                <div class="box-body">
-                    <div class="box-header with-border">
-                        <b><h3 class="box-title"> RECHERCHER</h3><br>
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-header with-border">
+                        <h3 class="card-title"> RECHERCHER</h3><br>
                     </div>
 
                     <!-- form start -->
                     <form role="form" action="search_yearly_customer" method="post">
                         @csrf
                         
-                        <div class="box-body">
+                        <div class="card-body">
                            
                             <div class="form-group">
                                     <label >Année:</label>
                                     <input type="date" class="form-control input-lg" name="year" required>
                             </div>
 
-                            <div class="box-footer">
+                            <div class="card-footer">
                                 <button type="submit" class="btn btn-primary">RECHERCHER</button>
                             </div>
                         </div>
-                        <!-- /.box-body -->
+                        <!-- /.card-body -->
 
                         
                     </form>
@@ -162,8 +166,6 @@
         </div>
       
     </div>
-    <!-- Main row -->  
-
 @endsection
      
     

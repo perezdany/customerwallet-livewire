@@ -41,22 +41,22 @@
       </div>
     <div class="row">
          @if(session('success'))
-            <div class="col-md-12 box-header">
+            <div class="col-md-12 card-header">
               <p class="bg-green" style="font-size:13px;">{{session('success')}}</p>
             </div>
           @endif
             @if(session('error'))
-            <div class="col-md-12 box-header">
+            <div class="col-md-12 card-header">
               <p class="bg-warning" style="font-size:13px;">{{session('error')}}</p>
             </div>
           @endif
           @if(isset($message_error))
-            <div class="col-md-12 box-header">
+            <div class="col-md-12 card-header">
               <p class="bg-warning" style="font-size:13px;">{{$message_error}}</p>
             </div>
           @endif
            @if(isset($message_success))
-            <div class="col-md-12 box-header">
+            <div class="col-md-12 card-header">
               <p class="bg-green" style="font-size:13px;">{{$message_success}}</p>
             </div>
           @endif
@@ -66,15 +66,15 @@
               //dd($contrats);
             @endphp
             <div class="col-md-12">
-              <div class="box">
+              <div class="card">
                   
-                  <div class="box-header">
-                    <h3 class="box-title">Bases de données des contrats</h3><br>
+                  <div class="card-header">
+                    <h3 class="card-title">Bases de données des contrats</h3><br>
                    
                     <form role="form" method="post" action="make_filter_contrat">
                       @csrf
                        <a href="contrat" style="color:blue"><u>Rétablir<i class="fa fa-refresh" aria-hidden="true"></i></u></a>&emsp;&emsp;&emsp;&emsp; <label>Filtrer par:</label>
-                      <div class="box-body">
+                      <div class="card-body">
                         <div class="row">
                         
                           <div class="col-md-2">
@@ -230,13 +230,13 @@
                         </div>
                         
                       </div>
-                      <!-- /.box-body -->
+                      <!-- /.card-body -->
                     </form>
                   
 
                   </div>
-                  <!-- /.box-header -->
-                  <div class="box-body">
+                  <!-- /.card-header -->
+                  <div class="card-body">
                   
                     <table id="example1" class="table table-bordered table-striped table-hover">
                     <thead>
@@ -676,22 +676,22 @@
                   
                     </table>
                   </div>
-                  <!-- /.box-body -->
+                  <!-- /.card-body -->
                 </div>
-                <!-- /.box -->
+                <!-- /.card -->
           </div>
           <!-- /.col -->
         @else
           <div class="col-md-12">
-              <div class="box">
+              <div class="card">
                   
-                  <div class="box-header">
-                    <h3 class="box-title">Bases de données des contrats</h3><br>
+                  <div class="card-header">
+                    <h3 class="card-title">Bases de données des contrats</h3><br>
                    
                     <form role="form" method="post" action="make_filter_contrat">
                       @csrf
                        <a href="contrat" style="color:blue"><u>Rétablir<i class="fa fa-refresh" aria-hidden="true"></i></u></a> &emsp;&emsp;&emsp;&emsp; <label>Filtrer par:</label>
-                      <div class="box-body">
+                      <div class="card-body">
                         <div class="row">
                         
                           <div class="col-md-2">
@@ -766,13 +766,13 @@
 
                       
                       </div>
-                      <!-- /.box-body -->
+                      <!-- /.card-body -->
                     </form>
                   
 
                   </div>
-                  <!-- /.box-header -->
-                  <div class="box-body">
+                  <!-- /.card-header -->
+                  <div class="card-body">
                     <table id="example1" class="table table-bordered table-striped table-hover">
                     <thead>
                     <tr>
@@ -1086,9 +1086,9 @@
                   
                     </table>
                   </div>
-                  <!-- /.box-body -->
+                  <!-- /.card-body -->
                 </div>
-                <!-- /.box -->
+                <!-- /.card -->
           </div>
           <!-- /.col -->
         @endif

@@ -12,7 +12,6 @@ $entreprisecontroller = new EntrepriseController();
 
 $all =  $interlocuteurcontroller-> GetAll();
 
-  //dd($all);
 @endphp
 
 @section('content')

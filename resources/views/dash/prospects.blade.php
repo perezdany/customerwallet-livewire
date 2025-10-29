@@ -38,12 +38,12 @@
       
             
             <div class="col-xs-12">
-              <div class="box table-responsive">
-                <div class="box-header">
-                  <h3 class="box-title">Tableaux des prospects</h3>
+              <div class="card table-responsive">
+                <div class="card-header">
+                  <h3 class="card-title">Tableaux des prospects</h3>
                 </div>
-                <!-- /.box-header -->
-                <div class="box-body">
+                <!-- /.card-header -->
+                <div class="card-body">
                   <table id="example1" class="table table-bordered table-striped table-hover">
                   <thead>
                   <tr>
@@ -100,7 +100,7 @@
                                 <!-- form start -->
                                 <form role="form" method="post" action="edit_prospect">
                                   <div class="modal-body">
-                                      <div class="box-body"  style="text-align:center;">
+                                      <div class="card-body"  style="text-align:center;">
                                           @csrf
                                           <input type="text" name="id_entreprise" value="{{$all->id}}" style="display:none;">
                                   
@@ -266,10 +266,10 @@
                                 </div>
                                   <!-- form start -->
                                   <div class="modal-body">
-                                      <div class="box-body" >
+                                      <div class="card-body" >
                                         @csrf
                                        
-                                        <div class="box-body" style="text-align: center;">
+                                        <div class="card-body" style="text-align: center;">
                                         
                                           <div class="form-group">
                                               <h4><label>Nom & prénom(s)/Dénomination:</label></h4>
@@ -329,7 +329,7 @@
                                          
                                         </div>
                                       </div>  
-                                        <!-- /.box-body -->
+                                        <!-- /.card-body -->
                                       
                                         <div class="modal-footer">
                                           <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Fermer</button>
@@ -349,9 +349,9 @@
                   
                   </table>
                 </div>
-                <!-- /.box-body -->
+                <!-- /.card-body -->
               </div>
-              <!-- /.box -->
+              <!-- /.card -->
             </div>
             <!-- /.col -->
               

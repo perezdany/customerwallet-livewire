@@ -47,15 +47,10 @@ class Entreprises extends Component
         
         if($champ == $this->orderField)
         {
-        
-            //$this->reset('orderDirection');
             $this->orderDirection =  $this->orderDirection = 'DESC' ? 'ASC' : 'DESC';
-            
         }
         else
         {
-            //dd('ici');
-
             $this->orderField = $champ;
             $this->orderDirection =  $this->orderDirection = 'DESC' ? 'ASC' : 'DESC';
             //dump($this->orderDirection);
@@ -204,8 +199,6 @@ class Entreprises extends Component
         $this->dispatchBrowserEvent("closeEditModalParticulier");
        
     }
-
-   
 
     public function Detail(Entreprise $entreprise)
     {

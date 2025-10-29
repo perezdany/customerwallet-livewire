@@ -14,7 +14,7 @@
 @section('content')
     <div class="row">
      @if(session('success'))
-            <div class="col-md-12 box-header" style="font-size:13px;">
+            <div class="col-md-12 card-header" style="font-size:13px;">
               <p class="bg-success" >{{session('success')}}</p>
             </div>
           @endif
@@ -24,9 +24,9 @@
         <!--/.col (left) -->
         <!-- right column -->
         <div class="col-md-6">
-            <div class="box box-aeneas">
-                <div class="box-header with-border">
-                    <b><h3 class="box-title">PROFILE UTILISATEUR </h3><br>
+            <div class="card card-aeneas">
+                <div class="card-header with-border">
+                    <b><h3 class="card-title">PROFILE UTILISATEUR </h3><br>
                     (*)champ obligatoire</b>
                 </div>
                 @php
@@ -39,7 +39,7 @@
                     <form role="form" action="edit_user" method="post">
                         @csrf
                         <input type="text" value="{{$user->id}}" name="id_user" style="display:none;">
-                        <div class="box-body">
+                        <div class="card-body">
                             <div class="form-group">
                                 <label>Email</label>
                                 <input type="email" class="form-control input-lg" name="email" value="{{$user->login}}">
@@ -89,9 +89,9 @@
                             </div>
                             
                         </div>
-                        <!-- /.box-body -->
+                        <!-- /.card-body -->
 
-                        <div class="box-footer">
+                        <div class="card-footer">
                         <button type="submit" class="btn btn-primary">MODIFIER</button>
                         </div>
                     </form>
@@ -99,7 +99,7 @@
                     <form role="form" action="edit_password" method="post">
                         @csrf
                         <input type="text" value="{{$user->id}}" name="id" style="display:none;">
-                        <div class="box-body">
+                        <div class="card-body">
                             <div class="form-group">
                                 <label>Mot de passe</label>
                                 <input type="password" maxlength="12" class="form-control  input-lg" required name="password" id="pwd1">
@@ -114,9 +114,9 @@
                          
                                         
                         </div>
-                        <!-- /.box-body -->
+                        <!-- /.card-body -->
 
-                        <div class="box-footer">
+                        <div class="card-footer">
                             <button type="submit" class="btn btn-primary" id="bt" >MODIFIER</button>
                         </div>
                            <script type="text/javascript">

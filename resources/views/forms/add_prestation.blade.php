@@ -44,12 +44,12 @@
    
     <div class="row">
          @if(session('success'))
-            <div class="col-md-12 box-header" style="font-size:13px;">
+            <div class="col-md-12 card-header" style="font-size:13px;">
               <p class="bg-success" >{{session('success')}}</p>
             </div>
         @endif
         @if(session('error'))
-            <div class="col-md-12 box-header" style="font-size:13px;">
+            <div class="col-md-12 card-header" style="font-size:13px;">
               <p class="bg-danger" >{{session('error')}}</p>
             </div>
         @endif
@@ -60,15 +60,15 @@
 
             <div class="col-md-6">
                 <!-- general form elements -->
-                <div class="box box-aeneas">
-                    <div class="box-header with-border">
-                    <h3 class="box-title"> <b>ENREGISTRER UNE PRESTATION</b></h3><br><b>(*) champ obligatoire</b>
+                <div class="card card-aeneas">
+                    <div class="card-header with-border">
+                    <h3 class="card-title"> <b>ENREGISTRER UNE PRESTATION</b></h3><br><b>(*) champ obligatoire</b>
                     </div>
                     
                     <!-- form start -->
                     <form role="form" method="post" action="add_prestation">
                         @csrf
-                        <div class="box-body">
+                        <div class="card-body">
                             <div class="form-group">
                                 <label>Service (*)</label>
                                 <select class="form-control input-lg select2" multiple="multiple" name="service[]"
@@ -137,14 +137,14 @@
                             </div>
                         
                         </div>
-                        <!-- /.box-body -->
+                        <!-- /.card-body -->
 
-                        <div class="box-footer">
+                        <div class="card-footer">
                         <button type="submit" class="btn btn-primary">VALIDER</button>
                         </div>
                     </form>
                 </div>
-                <!-- /.box -->
+                <!-- /.card -->
             </div>
 
             <div class="col-md-3"></div>

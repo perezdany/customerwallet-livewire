@@ -4,13 +4,13 @@
 
     use App\Http\Controllers\ControllerController;
 
-     use App\Http\Controllers\ContratController;
+    use App\Http\Controllers\ContratController;
 
-     use App\Http\Controllers\EntrepriseController;
+    use App\Http\Controllers\EntrepriseController;
 
-     use App\Http\Controllers\TypePrestationController;
+    use App\Http\Controllers\TypePrestationController;
 
-     use App\Http\Controllers\InterlocuteurController;
+    use App\Http\Controllers\InterlocuteurController;
 
     use App\Http\Controllers\FactureController;
 
@@ -90,7 +90,6 @@
             }
         }
 
-
         //CODE POUR METTRE LES DATES DES CLIENTS DEPUIS DANS LA TABLE ENTREPRISE
         $entreprises = Entreprise::all();
         foreach($entreprises as $entreprise)
@@ -148,7 +147,7 @@
 
             }
         }
-*/
+        */
     @endphp
 
     @php

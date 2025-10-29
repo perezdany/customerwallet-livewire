@@ -34,12 +34,12 @@
         
             <!-- left column -->
             <div class="col-md-12">
-                  <div class="box">
-                    <div class="box-header">
-                        <h3 class="box-title">Prospections</h3>
+                  <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Prospections</h3>
                     </div>
-                    <!-- /.box-header -->
-                    <div class="box-body">
+                    <!-- /.card-header -->
+                    <div class="card-body">
                     <table id="example1" class="table table-bordered table-striped table-hover">
                     <thead>
                             <tr>
@@ -121,9 +121,9 @@
                            
                     </table>
                     </div>
-                    <!-- /.box-body -->
+                    <!-- /.card-body -->
                 </div>
-                <!-- /.box -->
+                <!-- /.card -->
             </div>
             
             

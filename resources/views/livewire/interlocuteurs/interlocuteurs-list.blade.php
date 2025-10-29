@@ -5,15 +5,14 @@
     </button>
 
 
-    <div class="box">
-        <div class="box-header">
-            <h3 class="box-title">Interlocuteurs</h3>
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Interlocuteurs</h3>
             <br>    
-            <a href="interlocuteurs" style="color:blue"><u>Rétablir<i class="fa fa-refresh" aria-hidden="true"></i></u></a> &emsp;&emsp;&emsp;&emsp; <label>Filtrer par:</label>
-            <div class="box-body">
+            <a href="interlocuteurs" style="color:blue"><u>Rétablir <i class="fa fa-undo"></i></i></u></a> &emsp;&emsp;&emsp;&emsp; <label>Filtrer par:</label>
+            <div class="card-body">
                 <div class="row">
-                
-                    <div class="col-xs-3">
+                    <div class="col-sm-3">
                         <select class="form-control" wire:model.change="entreprise">
                             <option value="">Entreprises</option>
                             @php
@@ -27,7 +26,7 @@
                             
                         </select>   
                     </div>    
-                    <div class="col-xs-3">
+                    <div class="col-sm-3">
                         <select class="form-control" wire:model.change="fonction">
                             <option value="">Fonctions</option>
                             @php
@@ -43,11 +42,10 @@
                     </div>    
                 </div>
             </div>
-            <!-- /.box-body -->
+            <!-- /.card-body -->
 
-            <div class="box-tools">
-               
-                <br><div class="input-group input-group-sm" style="width: 300px;">
+            <div class="card-tools">
+                    <div class="input-group input-group-sm" style="width: 300px;">
                     <input type="text" id="search" wire:model.debounce.250ms="search" class="form-control pull-right" placeholder="Rechercher">
 
                     <div class="input-group-btn">
@@ -56,19 +54,19 @@
                 </div>
             </div>
         </div>    
-        <!-- /.box-header -->
-        <div class="box-body table-responsive">
+        <!-- /.card-header -->
+        <div class="card-body table-responsive">
             <table class="table table-bordered table-striped table-hover">
                 <thead>
                
                 <tr>
-                    <th wire:click="setOrderField('nom')"><i class="fa fa-sort-amount-desc" aria-hidden="true"></i>Nom & Prénom(s)</th>
-                    <th wire:click="setOrderField('tel')"><i class="fa fa-sort-amount-desc" aria-hidden="true"></i>Téléphone</th>
-                    <th wire:click="setOrderField('email')"><i class="fa fa-sort-amount-desc" aria-hidden="true"></i>Email</th>
-                    <th wire:click="setOrderField('fonction')"><i class="fa fa-sort-amount-desc" aria-hidden="true"></i>Fonction</th>
-                    <th wire:click="setOrderField('nom_entreprise')"><i class="fa fa-sort-amount-desc" aria-hidden="true"></i>Entreprise</th>
+                    <th wire:click="setOrderField('nom')"><i class="fas fa-sort" aria-hidden="true"></i>Nom & Prénom(s)</th>
+                    <th wire:click="setOrderField('tel')"><i class="fas fa-sort" aria-hidden="true"></i>Téléphone</th>
+                    <th wire:click="setOrderField('email')"><i class="fas fa-sort" aria-hidden="true"></i>Email</th>
+                    <th wire:click="setOrderField('fonction')"><i class="fas fa-sort" aria-hidden="true"></i>Fonction</th>
+                    <th wire:click="setOrderField('nom_entreprise')"><i class="fas fa-sort" aria-hidden="true"></i>Entreprise</th>
                 
-                    <th wire:click="setOrderField('nom_prenoms')"><i class="fa fa-sort-amount-desc" aria-hidden="true"></i>Ajouté par</th>
+                    <th wire:click="setOrderField('nom_prenoms')"><i class="fas fa-sort" aria-hidden="true"></i>Ajouté par</th>
                         
                     <th>Action</th>
                 </tr>
@@ -76,34 +74,29 @@
                 <tbody>
                     @forelse($interlocuteurs as $interlocuteur)
                         <tr>
-                            
                             <td>{{$interlocuteur->titre}} {{$interlocuteur->nom}}</td>
                             <td>{{$interlocuteur->tel}}</td>
                             <td>{{$interlocuteur->email}}</td>
                             <td>{{$interlocuteur->intitule}}</td>
-                            <td>
-                               {{$interlocuteur->nom_entreprise}}
-                            </td>
-                            <td>
-                               {{$interlocuteur->nom_prenoms}}
-                            </td>
+                            <td>{{$interlocuteur->nom_entreprise}}</td>
+                            <td>{{$interlocuteur->nom_prenoms}}</td>
                             <td>
                                 <div class="col-xs-6 no-padding">
                                     @can("delete")
-                                        
                                         <!--SUPPRESSION AVEC POPUP-->
-                                        
-                                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="@php echo "#".$interlocuteur->id.""; @endphp">
+                                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="@php echo "#delete".$interlocuteur->id.""; @endphp">
                                         <i class="fa fa-trash"></i>
                                         </button>
-                                        <div class="modal modal-danger fade" id="@php echo "".$interlocuteur->id.""; @endphp">
+                                        <div class="modal modal-danger fade" id="@php echo "delete".$interlocuteur->id.""; @endphp">
                                             <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span></button>
-                                                <h4 class="modal-title">Supprimer </h4>
+                                                    <h4 class="modal-title">Supprimer</h4>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
                                                 </div>
+                                                
                                                 <form action="delete_interlocuteur" method="post">
                                                 <div class="modal-body">
                                                     <p>Voulez-vous supprimer {{$interlocuteur->nom}}?</p>
@@ -111,9 +104,9 @@
                                                     <input type="text" value="{{$interlocuteur->id}}" style="display:none;" name="id_interlocuteur">
                                                 </div>
                                                 
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Fermer</button>
-                                                    <button type="submit" class="btn btn-outline">Supprimer</button>
+                                                <div class="modal-footer justify-content-beetwen">
+                                                    <button type="button" class="btn btn-primary pull-left" data-dismiss="modal">Fermer</button>
+                                                    <button type="submit" class="btn btn-danger">Supprimer</button>
                                                 </div>
                                                 </form>
                                             </div>
@@ -122,7 +115,6 @@
                                             <!-- /.modal-dialog -->
                                         </div>
                                         <!-- /.modal -->
-                                    
                                     @endcan
                                 </div>
 
@@ -134,7 +126,6 @@
                                         </form>-->
                                     @endcan
                                 </div>
-                                
                             </td>
                         </tr>
                     @empty
@@ -150,8 +141,8 @@
                 
             </table>
         </div>
-        <!-- /.box-body -->
-        <div clas="box-footer clearfix">
+        <!-- /.card-body -->
+        <div clas="card-footer clearfix">
             <ul class="pagination pagination-sm no-margin pull-right">
             
                 {{$interlocuteurs->links()}}
@@ -160,7 +151,7 @@
                 
         </div>
     </div>
-    <!-- /.box -->
+    <!-- /.card -->
    
 
 </div>

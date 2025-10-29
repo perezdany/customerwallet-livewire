@@ -270,8 +270,9 @@ class Factures extends Component
             }
             else
             {
-                $factureQuery->where("reglee",  $this->etat)->where("annulee", 0);
-            
+                $factureQuery->where("reglee",  $this->etat)
+                ->where("annulee", 0);
+                
             }
             
            

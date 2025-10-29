@@ -23,11 +23,11 @@
                     <li>Pour rechercher une année, <b>Selectionnez l'année en question et un mois et un jours quelquonque de cette année</b><br></li>
                 </ul>
             </p>
-            <div class="box">
-                <div class="box-body">
-                    <div class="box-header with-border">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-header with-border">
                         <b>
-                        <h3 class="box-title"> 
+                        <h3 class="card-title"> 
                             @php
                                 echo 'Chiffre d\'affaire au mois de ';
                                 setlocale(LC_TIME, ['fr', 'fra', 'fr_FR']);
@@ -164,11 +164,11 @@
         </div>
         <div class="col-md-5">
              <!--ON VA ESSAYER D' AFFICHER LES POURCENTAGE DE CHAQUE ENTREPRISE-->
-            <div class="box">
-                <div class="box-body">
-                    <div class="box-header with-border">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-header with-border">
                         <b>
-                        <h3 class="box-title"> 
+                        <h3 class="card-title"> 
                             @php
                                 echo 'Pourcentage (%) par client du mois de ';
                                 setlocale(LC_TIME, ['fr', 'fra', 'fr_FR']);
@@ -211,11 +211,11 @@
         </div>
         <div class="col-md-5">
             
-            <div class="box">
-                <div class="box-body">
-                    <div class="box-header with-border">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-header with-border">
                         <b>
-                        <h3 class="box-title"> 
+                        <h3 class="card-title"> 
                             @php
                                 echo 'Graphe des prestations du mois de ';
                                 setlocale(LC_TIME, ['fr', 'fra', 'fr_FR']);
@@ -266,28 +266,28 @@
         </div>
         <div class="col-md-2">
              <!--ON VA ESSAYER D' AFFICHER LES POURCENTAGE DE CHAQUE ENTREPRISE-->
-            <div class="box">
-                <div class="box-body">
-                    <div class="box-header with-border">
-                        <b><h3 class="box-title"> RECHERCHER UN MOIS</h3><br>
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-header with-border">
+                        <b><h3 class="card-title"> RECHERCHER UN MOIS</h3><br>
                     </div>
 
                     <!-- form start -->
                     <form role="form" action="search_monthly_chart" method="post">
                         @csrf
                         
-                        <div class="box-body">
+                        <div class="card-body">
                            
                             <div class="form-group">
                                     <label >Mois:</label>
                                     <input type="date" class="form-control input-lg" name="month" required>
                             </div>
 
-                            <div class="box-footer">
+                            <div class="card-footer">
                                 <button type="submit" class="btn btn-primary">RECHERCHER</button>
                             </div>
                         </div>
-                        <!-- /.box-body -->
+                        <!-- /.card-body -->
 
                         
                     </form>

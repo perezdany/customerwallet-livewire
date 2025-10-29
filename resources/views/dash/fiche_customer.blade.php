@@ -48,23 +48,20 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
+                        <h4 class="modal-title">   
+                           Ajouter un interlocuteur
+                        </h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title">Ajouter un interlocuteur </h4>
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
-                    
                     <div class="modal-body">
-                        <!-- form start -->
+                       <!-- form start -->
                         <form action="add_referant_in_fiche_customer" method="post">  
-                            @csrf
-                        
-                            <!-- /.box-body -->
-                            <div class="box-body">
-                            @csrf
-                                <div class="box-header">
-                                    <h3 class="box-title"><b>AJOUTER UN INTERLOCUTEUR </b></h3>
-                                </div> 
-
+                            <!-- /.card-body -->
+                            <div class="card-body">
+                                @csrf
+                         
                                 <div class="form-group">
                                     @php
                                         $nom = $entreprisecontroller->GetById($id_entreprise)
@@ -91,67 +88,63 @@
                                     
                                 </div>
                                 <div class="form-group">
-                                        <label>Nom & Prénom(s)</label>
-                                        <input type="text" maxlength="100" required id="grise2" class="form-control  " name="nom" onkeyup="this.value=this.value.toUpperCase()">
+                                    <label>Nom & Prénom(s)</label>
+                                    <input type="text" maxlength="100" required id="grise2" class="form-control  " name="nom" onkeyup="this.value=this.value.toUpperCase()">
                                 </div>
 
                                 <div class="form-group">
-                                        <label>Email</label>
-                                        <input type="email" id="grise5" maxlength="30" class="form-control " name="email" >
+                                    <label>Email</label>
+                                    <input type="email" id="grise5" maxlength="30" class="form-control " name="email" >
                                 </div>
 
                                 <div class="form-group">
-                                        <label>Téléphone (*)</label>
-                                        <input type="text" required id="grise3" maxlength="30"   class="form-control " name="tel" placeholder="(+225)0214578931" >
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label>Fonction (Choisir "Autre" si inexistant)</label>
-                                            <select class="form-control"  onchange="newFonction();" name="fonction" id="grise4" required>
-                                            @php
-                                                $f = DB::table('professions')->orderBy('id', 'asc')->get();
-                                            @endphp
-                                            @foreach($f as $f)
-                                                <option value="{{$f->id}}">{{$f->intitule}}</option>
-                                            @endforeach
-                                            <option value="autre">Autre</option>
-                                        </select>
-                                    </div>
-
-                                    <div class="form-group">
-                                            <label>Fonction:(*)</label>
-                                            <input type="text" disabled="disabled" required id="newf" maxlength="60"   class="form-control " name="new_fonction" onkeyup="this.value=this.value.toUpperCase()" >
-                                    </div>  
+                                    <label>Téléphone (*)</label>
+                                    <input type="text" required id="grise3" maxlength="30"   class="form-control " name="tel" placeholder="(+225)0214578931" >
                                 </div>
-                                    <script>
-                                        function newFonction()
+
+                                <div class="form-group">
+                                    <label>Fonction (Choisir "Autre" si inexistant)</label>
+                                        <select class="form-control"  onchange="newFonction();" name="fonction" id="grise4" required>
+                                        @php
+                                            $f = DB::table('professions')->orderBy('id', 'asc')->get();
+                                        @endphp
+                                        @foreach($f as $f)
+                                            <option value="{{$f->id}}">{{$f->intitule}}</option>
+                                        @endforeach
+                                        <option value="autre">Autre</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Fonction:(*)</label>
+                                    <input type="text" disabled="disabled" required id="newf" maxlength="60"   class="form-control " name="new_fonction" onkeyup="this.value=this.value.toUpperCase()" >
+                                </div>  
+                              
+                                <script>
+                                    function newFonction()
+                                    {
+                                        
+                                        var f = document.getElementById("grise4").value;
+                                        //alert(f);
+                                        if(f == 'autre')
                                         {
-                                            
-                                            var f = document.getElementById("grise4").value;
-                                            //alert(f);
-                                            if(f == 'autre')
-                                            {
-                                                document.getElementById("newf").removeAttribute("disabled");
-                                            }
-                                            else{
-                                                document.getElementById("newf").setAttribute("disabled", "disabled");
-                                            }
+                                            document.getElementById("newf").removeAttribute("disabled");
                                         }
-                                    </script>
+                                        else{
+                                            document.getElementById("newf").setAttribute("disabled", "disabled");
+                                        }
+                                    }
+                                </script>
 
-                            
-
-                            <div class="modal-footer">
-                                <button type="button" class="btn  pull-left" data-dismiss="modal">Fermer</button>
-                                <button type="submit" class="btn btn-primary">Ajouter</button>
+                                <div class="modal-footer justify-content-between">
+                                    <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Fermer</button>
+                                    <button type="submit" class="btn btn-primary">Ajouter</button>
+                                </div>
                             </div>
                         </form>
-                                        
-                    
                     </div>
-                                
+                    
                 </div>
-                <!-- /.modal-content -->
             </div>
         </div> 
         <!-- /.modal-dialog -->
@@ -161,15 +154,17 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
+                        <h4 class="modal-title">   
+                           Enregistrer une nouvelle action menée
+                        </h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title">Enregistrer une nouvelle action menée</h4>
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
-                 
                     <div class="modal-body">
                         <!-- form start -->
                         <form action="add_suivi_customer" method="post">  
-                             @csrf
+                            @csrf
                            
                             <div class="form-group">
                               
@@ -220,8 +215,8 @@
                             </div>  
                     
                           
-                            <div class="modal-footer">
-                                <button type="button" class="btn  pull-left" data-dismiss="modal">Fermer</button>
+                            <div class="modal-footer justify-content-between">
+                                <button type="button" class="btn btn-danger  pull-left" data-dismiss="modal">Fermer</button>
                                 <button type="submit" class="btn btn-primary">Ajouter</button>
                             </div>
                         </form>
@@ -229,11 +224,12 @@
                     
                 </div>
                 <!-- /.modal-content -->
+                
             </div>
         </div> 
 
         <div class="col-md-2"></div>
-        <div class="col-md-8">
+        <div class="col-md-8 row">
 
             <div class="col-md-3">
                 <a href="fiche"><button class="btn btn-default" > <b>RETOUR</b></button></a>
@@ -283,23 +279,23 @@
             <!-- left column -->
             <div class="col-md-8">
                 <!-- Horizontal Form -->
-                <div class="box box-info">
+                <div class="card card-info">
                   
-                    <div class="box-header with-border" style="text-align:center">
+                    <div class="card-header with-border" style="text-align:center">
                     @php
                         $nom = $entreprisecontroller->GetById($id_entreprise)
                     @endphp
                     @foreach($nom as $nom)
-                        <h3 class="box-title"><b>{{$nom->nom_entreprise}}</b>
+                        <h3 class="card-title"><b>{{$nom->nom_entreprise}}</b>
                              @if($nom->etat == 0)
                                     <span class="bg-red">INACTIF</span>
                                 @else
                                 @endif
                         </h3>
                         </div>
-                        <!-- /.box-header -->
-                         <div class="box-body">
-                            <div class="form-group">
+                        <!-- /.card-header -->
+                         <div class="card-body">
+                            <div class="form-group row">
                                  <label class="col-sm-6 control-label"> <b>CLIENT DEPUIS LE :</b></label>
                             
                                 <div class="col-sm-6">
@@ -307,7 +303,7 @@
                                 </div><br><br>
                                 
                             </div>
-                            <div class="form-group">
+                            <div class="form-group row">
                                 <label class="col-sm-6 control-label"> <b>ADRESSE GEROGRAPHIQUE DE L'ENTREPRISE :</b></label>
                             
                                 <div class="col-sm-6">
@@ -315,7 +311,7 @@
                                 </div><br><br>
                                 
                             </div>
-                            <div class="form-group">
+                            <div class="form-group row">
                                 <label class="col-sm-6 control-label"><b>AJOUTE PAR :</b></label>
                             
                                 <div class="col-sm-6">
@@ -327,24 +323,22 @@
                         </div>
 
                     @endforeach
-                    ICI
-
-                    <div class="box-header" style="text-align:center">
-                        <h3 class="box-title"><b>ORDRE D'AFFICHAGE DES INFORMATIONS:</b>
+                    <div class="card-header" style="text-align:center">
+                        <h3 class="card-title"><b>ORDRE D'AFFICHAGE DES INFORMATIONS:</b>
                         Contrats--Fichier du contrat--Facture proforma--Les prestations du contrat--Prospections--
                         Compte rendu de visite--Autre documents--Prospections--Propositions de la prospection
                         --Autre documents de la prospections--Nouvelles prospections--Nouveaux documents--Interlocuteurs</h3>
                     </div>
                     @if($count_contrat == 0)
-                        <div class="box-header" style="text-align:center">
-                            <h3 class="box-title"><b>Pas de Contrat</b></h3>
+                        <div class="card-header" style="text-align:center">
+                            <h3 class="card-title"><b>Pas de Contrat</b></h3>
                             <hr>
                         </div> 
                     @endif
                     @foreach($contrats as $contrats)
                         <!--Contrats-->
                         <div class="no-padding">
-                            <table class="table table-hover box-body">
+                            <table class="table table-hover card-body">
                             
                                 <tr>
                                     <th>Référence du contrat</th>
@@ -396,11 +390,11 @@
 
                         <!--LES FICHIERS ET LES FACTURES DANS LA TABLE CONTRAT-->
                            
-                            <div class="box-header with-border">
-                                <h3 class="box-title"><b>FICHIER DE CONTRAT</b></h3>
+                            <div class="card-header with-border">
+                                <h3 class="card-title"><b>FICHIER DE CONTRAT</b></h3>
                             </div>
                             <div class="no-padding">
-                                <table class="table table-hover box-body">
+                                <table class="table table-hover card-body">
                                 
                                     <tr>
                                         <th>Nom</th>
@@ -429,7 +423,7 @@
                                             <form action="view_contrat" method="post" enctype="multipart/form-data">
 
                                                 @csrf
-                                                <div class="box-body">
+                                                <div class="card-body">
                                                     <div class="form-group col-sm-6">
                                                         <input type="text" value={{$contrats->id}} style="display:none;" name="id_contrat">
                                                         
@@ -452,11 +446,11 @@
                             </div>
                              <hr>
 
-                            <div class="box-header with-border">
-                                <h3 class="box-title"><b>FACTURE PROFORMA :</b></h3>
+                            <div class="card-header with-border">
+                                <h3 class="card-title"><b>FACTURE PROFORMA :</b></h3>
                             </div>
                             <div class="no-padding">
-                                <table class="table table-hover box-body">
+                                <table class="table table-hover card-body">
                                 
                                     <tr>
                                         <th>Nom</th>
@@ -485,7 +479,7 @@
                                             <form action="view_contrat_proforma" method="post" enctype="multipart/form-data">
 
                                                 @csrf
-                                                <div class="box-body">
+                                                <div class="card-body">
                                                     <div class="form-group col-sm-6">
                                                         <input type="text" value="{{$contrats->id}}" style="display:none;" name="id_contrat">
                                                        
@@ -506,8 +500,8 @@
                                 </table>
                             </div>
 
-                         <div class="box-header with-border">
-                        <h3 class="box-title"><b>PRESTATIONS DU CONTRAT {{$contrats->titre_contrat}}</b></h3>
+                         <div class="card-header with-border">
+                        <h3 class="card-title"><b>PRESTATIONS DU CONTRAT {{$contrats->titre_contrat}}</b></h3>
                     </div> 
                     <div class="no-padding">
                          @php
@@ -520,9 +514,9 @@
 
                           
                         @endphp
-                            <!-- /.box-header -->
-                        <div class="box-body table-responsive">
-                            <table  class="table box-body">
+                            <!-- /.card-header -->
+                        <div class="card-body table-responsive">
+                            <table  class="table card-body">
                             
                                 <tr>
                                 <th>Service </th>
@@ -530,7 +524,7 @@
                                 </tr>
                            
                                 <tbody>
-                                     @foreach($se as $se_get)
+                                    @foreach($se as $se_get)
                                         <tr>
                                         
                                             <td>{{$se_get->libele_service}}</td>
@@ -538,7 +532,7 @@
                                                 @can("delete")	
                                                     <form action="delete_service_fiche_customer" method="post" >
                                                         @csrf
-                                                        <div class="box-body">
+                                                        <div class="card-body">
                                                             <div class="form-group">
                                                                 <input type="text" value="{{$contrats->id}}" style="display:none;" name="id_prospection">
                                                                 <input type="text" value="{{$se_get->id}}" style="display:none;" name="id_service">
@@ -559,203 +553,22 @@
                                 
                             </table>
                         </div>
-                            <!-- /.box-body -->
+                            <!-- /.card-body -->
                  
                     </div>
                     <hr><hr>
                     @endforeach
                     
-                     <div class="box-header" >
-                            <h3 class="box-title"><b>PROSPECTIONS</b></h3>
+                     <div class="card-header" >
+                            <h3 class="card-title"><b>PROSPECTIONS</b></h3>
                     </div> 
                     @if($count_prospection == 0)
-                        <div class="box-header" style="text-align:center">
-                            <h3 class="box-title"><b>Pas de Prospection réalisée</b></h3>
+                        <div class="card-header" style="text-align:center">
+                            <h3 class="card-title"><b>Pas de Prospection réalisée</b></h3>
                         </div> 
-                        <hr>
-                    @endif
-                    @foreach($prospections as $prospections)
-                    
-                        <!-- form start  INFO SUR LA PROPESCTION DANS LA TABLE-->
-                        <div class="form-horizontal">
-                         
-                        </div>
-                       
-                        <div class="box-header">
-                            <h3 class="box-title"><b>Service(s) proposé(s)</b></h3>
-                        </div>
-                        
-                        <div class="form-group ">
-                            <div class="box-body">
-                                @php
-                                    //On va écrire un code pour detecter tous les services offerts
-                                    $se = DB::table('prospection_services')
-                                    ->join('prospections', 'prospection_services.prospection_id', '=', 'prospections.id')
-                                    ->join('services', 'prospection_services.service_id', '=', 'services.id') 
-                                    ->where('prospection_id', $prospections->id)    
-                                    ->get(['services.libele_service', 'prospection_services.*']);
-                                @endphp
-
-                                <div class="form-group no-padding">
-                                    <table class="table table-hover box-body">
-                                    
-                                        <tr>
-                                    
-                                            <th>Nom</th>
-                                            
-                                            <th style="width: 40px">Ajouté le :</th>
-                                            
-                                        </tr>
-                                        <!--LES FICHIERS ET LES FACTURES-->
-                                        
-                                        @foreach($se as $se_get)
-                                            <tr>
-                                                <td>  <span class="text"><b>{{$se_get->libele_service}}</b></span></td>
-                                            
-                                                <td>
-                                                        @php 
-                        
-                                                        echo "<b>".date('d/m/Y',strtotime($se_get->created_at))."</b>" ;
-                                                
-                                                    @endphp
-                                                </td>
-                                             
-                                            </tr>
-                                        
-                                        @endforeach
-                                    
-                                    </table>
-                                </div>
-
-                            
-                                
-                                
-                                </ul>
-                            </div>
-                        </div>
-
-                     
-                        <hr>
-
-                         <!--LES FICHIERS ET LES FACTURES DANS LA TABLE PROSPECTION-->
-
-                        <div class="box-header with-border">
-                            <h3 class="box-title"><b>FACTURE PROFORMA</b></h3>
-                        </div>
-                           
+                        <!---FACTURES -->
                         <div class="no-padding">
-                            <table class="table table-hover box-body">
-                               
-                                <tr>
-                                    <th>Nom</th>
-                                    <th>Ajouté le :</th>
-                                    <th>Mod/Supp</th>
-                                    <th style="width: 40px">Aperçu</th>
-                                </tr>
-                                <!--LES FICHIERS ET LES FACTURES-->
-                                 <tr>
-                                    @if($prospections->facture_path == null)
-                                    
-                                    @else
-                                        <td>
-                                            @php
-                                                $pieces = explode("/", $prospections->facture_path);
-                                                echo $pieces[2];
-                                            @endphp
-                                        </td>
-                                        <td>
-                                            @php 
-                                                echo "<b>".date('d/m/Y',strtotime($prospections->created_at))."</b> " ;
-                                            @endphp
-                                        </td>
-                                        <td>
-                                            <form action="edit_prospect_form" method="post">
-                                                @csrf
-                                                <input type="text" value={{$prospections->id}} style="display:none;" name="id_prospection">
-                                                <button type="submit" class="btn btn-success"><i class="fa fa-edit">Aller a la page prospections pour modifier</i></button>
-                                            </form>
-                                        </td>
-                                        <td>
-                                            
-                                            <form action="download_facture_proforma_cust" method="post" enctype="multipart/form-data" target="blank">
-
-                                                @csrf
-                                                <div class="box-body">
-                                                    <div class="form-group col-sm-6">
-                                                        <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
-                                                        <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
-                                                        <input type="text" class="form-control" name="file" value="{{$prospections->facture_path}}"  style="display:none;">
-                                                        <button type="submit" class="btn btn-warning"><i class="fa fa-download"></i></button>
-                                                    </div>
-
-                                                </div>
-                                            
-                                            </form>
-
-                                        </td>
-                                    @endif
-                                    
-                                </tr>
-                            
-                            </table>
-                        </div>
-
-                        <!--LES AUTRES PROFORMA-->
-                        <div class="no-padding">
-                            <table class="table table-hover box-body">
-                                @php
-                                    $select = DB::table('docfactures')
-                                        ->where('id_prospection', $prospections->id)
-                                        ->get();
-                                @endphp
-                                                      
-                                @foreach($select as $select)
-                                    <tr>
-                                        <td>  <span class="text">{{$select->libele}}</span> </td>
-                                        <td>
-                                            @php 
-                                                echo "<b>".date('d/m/Y',strtotime($prospections->created_at))."</b>" ;
-                                            @endphp
-                                        </td>
-                                        <td>
-                                            
-                                            <form action="delete_facture_proforma_cust" method="post" enctype="multipart/form-data" target="blank">
-
-                                                @csrf
-                                                <div class="box-body">
-                                                    <div class="form-group col-sm-6">
-                                                        <input type="text" value="{{$select->id}}" style="display:none;" name="id_prospection">
-                                                        <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
-                                                        <input type="text" class="form-control" name="file" value="{{$select->path_doc}}"  style="display:none;">
-                                                        <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i></button>
-                                                    </div>
-
-                                                </div>
-                                            
-                                            </form>
-
-                                        </td>
-                                        <td>
-                                            
-                                            <form action="download_facture_proforma_cust" method="post" enctype="multipart/form-data" target="blank">
-
-                                                @csrf
-                                                <div class="box-body">
-                                                    <div class="form-group col-sm-6">
-                                                        <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
-                                                        <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
-                                                        <input type="text" class="form-control" name="file" value="{{$select->path_doc}}"  style="display:none;">
-                                                        <button type="submit" class="btn btn-warning"><i class="fa fa-download"></i></button>
-                                                    </div>
-
-                                                </div>
-                                            
-                                            </form>
-
-                                        </td>
-                                    </tr>
-                                @endforeach
-                                
+                            <table class="table table-hover card-body">
                                 @php
                                     $select = DB::table('docfactures')
                                         ->where('id_entreprise', $id_entreprise)
@@ -770,228 +583,32 @@
                                                 echo "<b>".date('d/m/Y',strtotime($select->created_at))."</b>" ;
                                             @endphp
                                         </td>
-                                        @if(auth()->user()->id != $prospections->id_utilisateur)
-                                            @can("procuration")
-                                                @can("delete")
-                                                    <td>
-                                                        <form action="delete_prof_in_fiche_client" method="post" >
-                                                            @csrf
-                                                            <div class="box-body">
-                                                                <div class="form-group col-sm-6">
-                                                                <input type="text" value="{{$select->id}}" style="display:none;" name="id_doc">
-                                                                    <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
-                                                                    <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
-                                                                    <input type="text" class="form-control" name="file" value="{{$select->path_doc}}"  style="display:none;">
-                                                                    <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i></button>
-                                                                </div>
-
-                                                            </div>
-                                                        </form>
-                                                    </td>
-                                                @endcan
-                                            
-                                            @endcan
-                                        @else
-                                            @can("delete")
-                                                <td>
-                                                    <form action="delete_prof_in_fiche_client" method="post" >
-                                                        @csrf
-                                                        <div class="box-body">
-                                                            <div class="form-group col-sm-6">
-                                                            <input type="text" value="{{$select->id}}" style="display:none;" name="id_doc">
-                                                                <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
-                                                                <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
-                                                                <input type="text" class="form-control" name="file" value="{{$select->path_doc}}"  style="display:none;">
-                                                                <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i></button>
-                                                            </div>
-
+                                        @can("delete")
+                                            <td>
+                                                <form action="delete_prof_in_fiche_client" method="post" >
+                                                    @csrf
+                                                    <div class="card-body">
+                                                        <div class="form-group col-sm-6">
+                                                        <input type="text" value="{{$select->id}}" style="display:none;" name="id_doc">
+                                                         
+                                                            <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
+                                                            <input type="text" class="form-control" name="file" value="{{$select->path_doc}}"  style="display:none;">
+                                                            <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i></button>
                                                         </div>
-                                                    </form>
-                                                </td>
-                                            @endcan
-                                        @endif
+
+                                                    </div>
+                                                </form>
+                                            </td>
+                                        @endcan
                                     
                                         <td>
                                             <form action="download_facture_proforma" method="post" enctype="multipart/form-data" target="blank">
 
                                                 @csrf
-                                                <div class="box-body">
+                                                <div class="card-body">
                                                     <div class="form-group col-sm-6">
-                                                        <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
-                                                        <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
-                                                        <input type="text" class="form-control" name="file" value="{{$select->path_doc}}"  style="display:none;">
-                                                        <button type="submit" class="btn btn-warning"><i class="fa fa-download"></i></button>
-                                                    </div>
-
-                                                </div>
-                                            
-                                            </form>
-
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            
-                            </table>
-                        </div>
-                        @if(auth()->user()->id != $prospections->id_utilisateur)
-                            @can("procuration")
-                                @can("edit")
-                                    <!--SI ON VEUT AJOUETR UN AUTRE DOCUMENT de FACTURE PROFORMA -->
-                                    <div class="box-body">
-                                        <form action="add_new_doc_proforma_client" method="post" enctype="multipart/form-data" class="col-sm-12">
-
-                                            @csrf
-                                            <div class="box-body ">
-                                                <div class="form-group col-sm-6">
-                                                    <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
-                                                    <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
-                                                    <label class="control-label">Ajouter une facture :</label>
-                                                    <input type="file" class="form-control" name="new_doc_proforma" required>
-                                                    <button type="submit" class="btn btn-primary"><i class="fa fa-upload"></i></button>
-                                                </div>
-
-                                            </div>
-                                            
-                                        </form>
-                                    </div>
-                                @endcan
-                                    
-                            @endcan
-                        @else
-                            @can("edit")
-                            <!--SI ON VEUT AJOUETR UN AUTRE DOCUMENT de FACTURE PROFORMA -->
-                                <div class="box-body">
-                                    <form action="add_new_doc_proforma_client" method="post" enctype="multipart/form-data" class="col-sm-12">
-
-                                        @csrf
-                                        <div class="box-body ">
-                                            <div class="form-group col-sm-6">
-                                                <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
-                                                <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
-                                                <label class="control-label">Ajouter une facture :</label>
-                                                <input type="file" class="form-control" name="new_doc_proforma" required>
-                                                <button type="submit" class="btn btn-primary"><i class="fa fa-upload"></i></button>
-                                            </div>
-
-                                        </div>
-                                        
-                                    </form>
-                                </div>
-                            @endcan
-                        @endif
-
-
-                        <!--LES CR DE VISITE DANS LA TABLE PROPSECTION-->
-                        <div class="box-header with-border">
-                            <h3 class="box-title"><b>COMPTE RENDU DE VISITE</b></h3>
-                        </div>
-                         
-                        <div class="form-group no-padding">
-                            <table class="table table-hover box-body">
-                               
-                                <tr>
-                            
-                                    <th>Nom</th>
-                                    <th>Ajouté le</th>
-                                    <th>Supprimer</th>
-                                    <th style="width: 40px">Aperçu</th>
-                                </tr>
-                               
-                                <tr>
-                                    @if($prospections->path_cr == null)
-                                        
-                                    @else
-                                    
-                                        <td>  
-                                            <span class="text">
-                                                @php
-                                                    $pieces = explode("/", $prospections->path_cr);
-                                                    echo $pieces[1];
-                                                @endphp
-                                            </span> 
-                                        </td>
-                                        <td>
-                                            @php 
-                                                echo "<b>".date('d/m/Y',strtotime($prospections->created_at))."</b>" ;
-                                            @endphp
-                                        </td>
-                                        <td>
-                                            <form action="edit_prospect_form" method="post">
-                                                @csrf
-                                                <input type="text" value={{$prospections->id}} style="display:none;" name="id_prospection">
-                                                <button type="submit" class="btn btn-success"><i class="fa fa-edit">Aller a la page prospections pour modifier</i></button>
-                                            </form>
-                                        <td>
-                                        <td>    
-                                            <form action="download_prospect" method="post" enctype="multipart/form-data">
-    
-                                                @csrf
-                                                <div class="box-body">
-                                                    <div class="form-group col-sm-6">
-                                                        <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
-                                                        <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
-                                                        <input type="text" class="form-control" name="file" value="{{$prospections->path_cr}}" style="display:none;">
-                                                        <button type="submit" class="btn btn-warning"><i class="fa fa-download"></i></button>
-                                                    </div>
-    
-                                                </div>
-                                            
-                                            </form>
-    
-                                        </td>
-                                    @endif
-                                   
-                                </tr>
-                            
-                            </table>
-                        </div>
-
-                         <!--LES AUTRES CR DE VISITE-->
-                        <div class="no-padding">
-                            <table class="table table-hover box-body">
-                               @php
-                                    $select = DB::table('compterendus')
-                                                ->where('id_prospection', $prospections->id)
-                                                ->get();
-                               @endphp
-                               
-                                <!--LES FICHIERS ET LES FACTURES-->
-                                @foreach($select as $select)
-                                    <tr>
-                                        <td>  <span class="text">{{$select->libele}}</span> </td>
-                                         <td>
-                                            @php 
-                                                echo "<b>".date('d/m/Y',strtotime($select->created_at))."</b>" ;
-                                            @endphp
-                                        </td>
-                                        <td>
-                                            
-                                            <form action="delete_doc_cr_cust" method="post" enctype="multipart/form-data" target="blank">
-
-                                                @csrf
-                                                <div class="box-body">
-                                                    <div class="form-group col-sm-6">
-                                                        <input type="text" value="{{$select->id}}" style="display:none;" name="id_doc">
-                                                        <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
                                                         
-                                                        <input type="text" class="form-control" name="file" value="{{$select->path_doc}}"  style="display:none;">
-                                                        <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i></button>
-                                                    </div>
-
-                                                </div>
-                                            
-                                            </form>
-
-                                        </td>
-                                        <td>
-                                            
-                                            <form action="download_facture_proforma_cust" method="post" enctype="multipart/form-data" target="blank">
-
-                                                @csrf
-                                                <div class="box-body">
-                                                    <div class="form-group col-sm-6">
-                                                        <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
-                                                         
+                                                        <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
                                                         <input type="text" class="form-control" name="file" value="{{$select->path_doc}}"  style="display:none;">
                                                         <button type="submit" class="btn btn-warning"><i class="fa fa-download"></i></button>
                                                     </div>
@@ -1003,6 +620,35 @@
                                         </td>
                                     </tr>
                                 @endforeach
+                            
+                            </table>
+                        </div>
+                        @can("edit")
+                            <!--SI ON VEUT AJOUETR UN AUTRE DOCUMENT de FACTURE PROFORMA -->
+                            <div class="card-body">
+                                <form action="add_new_doc_proforma_client" method="post" enctype="multipart/form-data" class="col-sm-12">
+
+                                    @csrf
+                                    <div class="card-body ">
+                                        <div class="form-group col-sm-6">
+                                            
+                                            <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
+                                            <label class="control-label">Ajouter une facture :</label>
+                                            <input type="file" class="form-control" name="new_doc_proforma" required>
+                                            <button type="submit" class="btn btn-primary"><i class="fa fa-upload"></i></button>
+                                        </div>
+
+                                    </div>
+                                    
+                                </form>
+                            </div>
+                        @endcan
+
+                        <hr>
+                        <!-- CR DE VISITE -->
+                        <div class="no-padding">
+                            <table class="table table-hover card-body">
+                                
                                 @php
                                     //dd($id_entreprise);
                                     $autre = DB::table('compterendus')
@@ -1023,7 +669,7 @@
                                             <form action="delete_doc_cr_cust" method="post" enctype="multipart/form-data" target="blank">
 
                                                 @csrf
-                                                <div class="box-body">
+                                                <div class="card-body">
                                                     <div class="form-group col-sm-6">
                                                         <input type="text" value="{{$autre->id}}" style="display:none;" name="id_doc">
                                                          <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
@@ -1041,7 +687,7 @@
                                             <form action="download_facture_proforma_cust" method="post" enctype="multipart/form-data" target="blank">
 
                                                 @csrf
-                                                <div class="box-body">
+                                                <div class="card-body">
                                                     <div class="form-group col-sm-6">
                                                         <input type="text" value="{{$autre->id}}" style="display:none;" name="id_prospection">
                                                         
@@ -1060,17 +706,520 @@
                             
                             </table>
                         </div>
+                        @can("edit")
+                            <div class="card-body">
+                                <form action="add_new_doc_cr_c" method="post" enctype="multipart/form-data" class="col-sm-12">
+                                    @csrf
+                                    <div class="card-body ">
+                                        <div class="form-group col-sm-6">
+                                          
+                                            <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
+                                            <label class="control-label">Ajouter un CR de visite :</label>
+                                            <input type="file" class="form-control" name="new_doc_cr" required>
+                                            <button type="submit" class="btn btn-primary"><i class="fa fa-upload"></i></button>
+                                        </div>
 
+                                    </div>
+                                    
+                                </form>
+                            </div>
 
-                          <!--SI ON VEUT AJOUETR UN AUTRE DOCUMENT -->
+                        @endcan
+
+                        <hr>
+                    @else
+                        @foreach($prospections as $prospections)
+                    
+                            <!-- form start  INFO SUR LA PROPESCTION DANS LA TABLE-->
+                            <div class="form-horizontal">
+                             
+                            </div>
+                           
+                            <div class="card-header">
+                                <h3 class="card-title"><b>Service(s) proposé(s)</b></h3>
+                            </div>
+                            
+                            <div class="form-group ">
+                                <div class="card-body">
+                                    @php
+                                        //On va écrire un code pour detecter tous les services offerts
+                                        $se = DB::table('prospection_services')
+                                        ->join('prospections', 'prospection_services.prospection_id', '=', 'prospections.id')
+                                        ->join('services', 'prospection_services.service_id', '=', 'services.id') 
+                                        ->where('prospection_id', $prospections->id)    
+                                        ->get(['services.libele_service', 'prospection_services.*']);
+                                    @endphp
+
+                                    <div class="form-group no-padding">
+                                        <table class="table table-hover card-body">
+                                        
+                                            <tr>
+                                        
+                                                <th>Nom</th>
+                                                
+                                                <th style="width: 40px">Ajouté le :</th>
+                                                
+                                            </tr>
+                                            <!--LES FICHIERS ET LES FACTURES-->
+                                            
+                                            @foreach($se as $se_get)
+                                                <tr>
+                                                    <td>  <span class="text"><b>{{$se_get->libele_service}}</b></span></td>
+                                                
+                                                    <td>
+                                                            @php 
+                            
+                                                            echo "<b>".date('d/m/Y',strtotime($se_get->created_at))."</b>" ;
+                                                    
+                                                        @endphp
+                                                    </td>
+                                                 
+                                                </tr>
+                                            
+                                            @endforeach
+                                        
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                         
+                            <hr>
+
+                             <!--LES FICHIERS ET LES FACTURES DANS LA TABLE PROSPECTION-->
+
+                            <div class="card-header with-border">
+                                <h3 class="card-title"><b>FACTURE PROFORMA</b></h3>
+                            </div>
+                               
+                            <div class="no-padding">
+                                <table class="table table-hover card-body">
+                                   
+                                    <tr>
+                                        <th>Nom</th>
+                                        <th>Ajouté le :</th>
+                                        <th>Mod/Supp</th>
+                                        <th style="width: 40px">Aperçu</th>
+                                    </tr>
+                                    <!--LES FICHIERS ET LES FACTURES-->
+                                    <tr>
+                                        @if($prospections->facture_path == null)
+                                        
+                                        @else
+                                            <td>
+                                                @php
+                                                    $pieces = explode("/", $prospections->facture_path);
+                                                    echo $pieces[2];
+                                                @endphp
+                                            </td>
+                                            <td>
+                                                @php 
+                                                    echo "<b>".date('d/m/Y',strtotime($prospections->created_at))."</b> " ;
+                                                @endphp
+                                            </td>
+                                            <td>
+                                                <form action="edit_prospect_form" method="post">
+                                                    @csrf
+                                                    <input type="text" value={{$prospections->id}} style="display:none;" name="id_prospection">
+                                                    <button type="submit" class="btn btn-success"><i class="fa fa-edit">Aller a la page prospections pour modifier</i></button>
+                                                </form>
+                                            </td>
+                                            <td>
+                                                
+                                                <form action="download_facture_proforma_cust" method="post" enctype="multipart/form-data" target="blank">
+
+                                                    @csrf
+                                                    <div class="card-body">
+                                                        <div class="form-group col-sm-6">
+                                                            <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
+                                                            <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
+                                                            <input type="text" class="form-control" name="file" value="{{$prospections->facture_path}}"  style="display:none;">
+                                                            <button type="submit" class="btn btn-warning"><i class="fa fa-download"></i></button>
+                                                        </div>
+
+                                                    </div>
+                                                
+                                                </form>
+
+                                            </td>
+                                        @endif
+                                        
+                                    </tr>
+                                
+                                </table>
+                            </div>
+
+                            <!--LES AUTRES PROFORMA-->
+                            <div class="no-padding">
+                                <table class="table table-hover card-body">
+                                    @php
+                                        $select = DB::table('docfactures')
+                                            ->where('id_prospection', $prospections->id)
+                                            ->get();
+                                    @endphp
+                                                          
+                                    @foreach($select as $select)
+                                        <tr>
+                                            <td>  <span class="text">{{$select->libele}}</span> </td>
+                                            <td>
+                                                @php 
+                                                    echo "<b>".date('d/m/Y',strtotime($prospections->created_at))."</b>" ;
+                                                @endphp
+                                            </td>
+                                            <td>
+                                                
+                                                <form action="delete_facture_proforma_cust" method="post" enctype="multipart/form-data" target="blank">
+
+                                                    @csrf
+                                                    <div class="card-body">
+                                                        <div class="form-group col-sm-6">
+                                                            <input type="text" value="{{$select->id}}" style="display:none;" name="id_prospection">
+                                                            <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
+                                                            <input type="text" class="form-control" name="file" value="{{$select->path_doc}}"  style="display:none;">
+                                                            <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                                                        </div>
+
+                                                    </div>
+                                                
+                                                </form>
+
+                                            </td>
+                                            <td>
+                                                
+                                                <form action="download_facture_proforma_cust" method="post" enctype="multipart/form-data" target="blank">
+
+                                                    @csrf
+                                                    <div class="card-body">
+                                                        <div class="form-group col-sm-6">
+                                                            <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
+                                                            <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
+                                                            <input type="text" class="form-control" name="file" value="{{$select->path_doc}}"  style="display:none;">
+                                                            <button type="submit" class="btn btn-warning"><i class="fa fa-download"></i></button>
+                                                        </div>
+
+                                                    </div>
+                                                
+                                                </form>
+
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                    
+                                    @php
+                                        $select = DB::table('docfactures')
+                                            ->where('id_entreprise', $id_entreprise)
+                                            ->get();
+                                    @endphp
+                                
+                                    @foreach($select as $select)
+                                        <tr>
+                                            <td>  <span class="text">{{$select->libele}}</span> </td>
+                                            <td>
+                                                @php 
+                                                    echo "<b>".date('d/m/Y',strtotime($select->created_at))."</b>" ;
+                                                @endphp
+                                            </td>
+                                            @if(auth()->user()->id != $prospections->id_utilisateur)
+                                                @can("procuration")
+                                                    @can("delete")
+                                                        <td>
+                                                            <form action="delete_prof_in_fiche_client" method="post" >
+                                                                @csrf
+                                                                <div class="card-body">
+                                                                    <div class="form-group col-sm-6">
+                                                                    <input type="text" value="{{$select->id}}" style="display:none;" name="id_doc">
+                                                                        <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
+                                                                        <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
+                                                                        <input type="text" class="form-control" name="file" value="{{$select->path_doc}}"  style="display:none;">
+                                                                        <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                                                                    </div>
+
+                                                                </div>
+                                                            </form>
+                                                        </td>
+                                                    @endcan
+                                                
+                                                @endcan
+                                            @else
+                                                @can("delete")
+                                                    <td>
+                                                        <form action="delete_prof_in_fiche_client" method="post" >
+                                                            @csrf
+                                                            <div class="card-body">
+                                                                <div class="form-group col-sm-6">
+                                                                <input type="text" value="{{$select->id}}" style="display:none;" name="id_doc">
+                                                                    <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
+                                                                    <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
+                                                                    <input type="text" class="form-control" name="file" value="{{$select->path_doc}}"  style="display:none;">
+                                                                    <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                                                                </div>
+
+                                                            </div>
+                                                        </form>
+                                                    </td>
+                                                @endcan
+                                            @endif
+                                        
+                                            <td>
+                                                <form action="download_facture_proforma" method="post" enctype="multipart/form-data" target="blank">
+
+                                                    @csrf
+                                                    <div class="card-body">
+                                                        <div class="form-group col-sm-6">
+                                                            <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
+                                                            <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
+                                                            <input type="text" class="form-control" name="file" value="{{$select->path_doc}}"  style="display:none;">
+                                                            <button type="submit" class="btn btn-warning"><i class="fa fa-download"></i></button>
+                                                        </div>
+
+                                                    </div>
+                                                
+                                                </form>
+
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                
+                                </table>
+                            </div>
                             @if(auth()->user()->id != $prospections->id_utilisateur)
                                 @can("procuration")
                                     @can("edit")
-                                        <div class="box-body">
+                                        <!--SI ON VEUT AJOUETR UN AUTRE DOCUMENT de FACTURE PROFORMA -->
+                                        <div class="card-body">
+                                            <form action="add_new_doc_proforma_client" method="post" enctype="multipart/form-data" class="col-sm-12">
+
+                                                @csrf
+                                                <div class="card-body ">
+                                                    <div class="form-group col-sm-6">
+                                                        <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
+                                                        <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
+                                                        <label class="control-label">Ajouter une facture :</label>
+                                                        <input type="file" class="form-control" name="new_doc_proforma" required>
+                                                        <button type="submit" class="btn btn-primary"><i class="fa fa-upload"></i></button>
+                                                    </div>
+
+                                                </div>
+                                                
+                                            </form>
+                                        </div>
+                                    @endcan
+                                        
+                                @endcan
+                            @else
+                                @can("edit")
+                                <!--SI ON VEUT AJOUETR UN AUTRE DOCUMENT de FACTURE PROFORMA -->
+                                    <div class="card-body">
+                                        <form action="add_new_doc_proforma_client" method="post" enctype="multipart/form-data" class="col-sm-12">
+
+                                            @csrf
+                                            <div class="card-body ">
+                                                <div class="form-group col-sm-6">
+                                                    <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
+                                                    <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
+                                                    <label class="control-label">Ajouter une facture :</label>
+                                                    <input type="file" class="form-control" name="new_doc_proforma" required>
+                                                    <button type="submit" class="btn btn-primary"><i class="fa fa-upload"></i></button>
+                                                </div>
+
+                                            </div>
+                                            
+                                        </form>
+                                    </div>
+                                @endcan
+                            @endif
+
+
+                            <!--LES CR DE VISITE DANS LA TABLE PROPSECTION-->
+                            <div class="card-header with-border">
+                                <h3 class="card-title"><b>COMPTE RENDU DE VISITE</b></h3>
+                            </div>
+                             
+                            <div class="form-group no-padding">
+                                <table class="table table-hover card-body">
+                                   
+                                    <tr>
+                                
+                                        <th>Nom</th>
+                                        <th>Ajouté le</th>
+                                        <th>Supprimer</th>
+                                        <th style="width: 40px">Aperçu</th>
+                                    </tr>
+                                   
+                                    <tr>
+                                        @if($prospections->path_cr == null)
+                                            
+                                        @else
+                                        
+                                            <td>  
+                                                <span class="text">
+                                                    @php
+                                                        $pieces = explode("/", $prospections->path_cr);
+                                                        echo $pieces[1];
+                                                    @endphp
+                                                </span> 
+                                            </td>
+                                            <td>
+                                                @php 
+                                                    echo "<b>".date('d/m/Y',strtotime($prospections->created_at))."</b>" ;
+                                                @endphp
+                                            </td>
+                                            <td>
+                                                <form action="edit_prospect_form" method="post">
+                                                    @csrf
+                                                    <input type="text" value={{$prospections->id}} style="display:none;" name="id_prospection">
+                                                    <button type="submit" class="btn btn-success"><i class="fa fa-edit">Aller a la page prospections pour modifier</i></button>
+                                                </form>
+                                            <td>
+                                            <td>    
+                                                <form action="download_prospect" method="post" enctype="multipart/form-data">
+        
+                                                    @csrf
+                                                    <div class="card-body">
+                                                        <div class="form-group col-sm-6">
+                                                            <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
+                                                            <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
+                                                            <input type="text" class="form-control" name="file" value="{{$prospections->path_cr}}" style="display:none;">
+                                                            <button type="submit" class="btn btn-warning"><i class="fa fa-download"></i></button>
+                                                        </div>
+        
+                                                    </div>
+                                                
+                                                </form>
+        
+                                            </td>
+                                        @endif
+                                       
+                                    </tr>
+                                
+                                </table>
+                            </div>
+
+                             <!--LES AUTRES CR DE VISITE-->
+                            <div class="no-padding">
+                                <table class="table table-hover card-body">
+                                    @php
+                                        $select = DB::table('compterendus')
+                                                    ->where('id_prospection', $prospections->id)
+                                                    ->get();
+                                    @endphp
+                                   
+                                    <!--LES FICHIERS ET LES FACTURES-->
+                                    @foreach($select as $select)
+                                        <tr>
+                                            <td>  <span class="text">{{$select->libele}}</span> </td>
+                                             <td>
+                                                @php 
+                                                    echo "<b>".date('d/m/Y',strtotime($select->created_at))."</b>" ;
+                                                @endphp
+                                            </td>
+                                            <td>
+                                                
+                                                <form action="delete_doc_cr_cust" method="post" enctype="multipart/form-data" target="blank">
+
+                                                    @csrf
+                                                    <div class="card-body">
+                                                        <div class="form-group col-sm-6">
+                                                            <input type="text" value="{{$select->id}}" style="display:none;" name="id_doc">
+                                                            <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
+                                                            
+                                                            <input type="text" class="form-control" name="file" value="{{$select->path_doc}}"  style="display:none;">
+                                                            <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                                                        </div>
+
+                                                    </div>
+                                                
+                                                </form>
+
+                                            </td>
+                                            <td>
+                                                
+                                                <form action="download_facture_proforma_cust" method="post" enctype="multipart/form-data" target="blank">
+
+                                                    @csrf
+                                                    <div class="card-body">
+                                                        <div class="form-group col-sm-6">
+                                                            <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
+                                                             
+                                                            <input type="text" class="form-control" name="file" value="{{$select->path_doc}}"  style="display:none;">
+                                                            <button type="submit" class="btn btn-warning"><i class="fa fa-download"></i></button>
+                                                        </div>
+
+                                                    </div>
+                                                
+                                                </form>
+
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                    @php
+                                        //dd($id_entreprise);
+                                        $autre = DB::table('compterendus')
+                                                    ->where('id_entreprise', $id_entreprise)
+                                                    ->get();
+                                        //dd($autre);
+                                    @endphp
+                                    @foreach($autre as $autre)
+                                        <tr>
+                                            <td>  <span class="text">{{$autre->libele}}</span> </td>
+                                             <td>
+                                                @php 
+                                                    echo "<b>".date('d/m/Y',strtotime($autre->created_at))."</b>" ;
+                                                @endphp
+                                            </td>
+                                            <td>
+                                                
+                                                <form action="delete_doc_cr_cust" method="post" enctype="multipart/form-data" target="blank">
+
+                                                    @csrf
+                                                    <div class="card-body">
+                                                        <div class="form-group col-sm-6">
+                                                            <input type="text" value="{{$autre->id}}" style="display:none;" name="id_doc">
+                                                             <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
+                                                            <input type="text" class="form-control" name="file" value="{{$autre->path_doc}}"  style="display:none;">
+                                                            <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                                                        </div>
+
+                                                    </div>
+                                                
+                                                </form>
+
+                                            </td>
+                                            <td>
+                                                
+                                                <form action="download_facture_proforma_cust" method="post" enctype="multipart/form-data" target="blank">
+
+                                                    @csrf
+                                                    <div class="card-body">
+                                                        <div class="form-group col-sm-6">
+                                                            <input type="text" value="{{$autre->id}}" style="display:none;" name="id_prospection">
+                                                            
+                                                            <input type="text" class="form-control" name="file" value="{{$autre->path_doc}}"  style="display:none;">
+                                                            <button type="submit" class="btn btn-warning"><i class="fa fa-download"></i></button>
+                                                        </div>
+
+                                                    </div>
+                                                
+                                                </form>
+
+                                            </td>
+
+                                        </tr>
+                                    @endforeach
+                                
+                                </table>
+                            </div>
+
+
+                            <!--SI ON VEUT AJOUETR UN AUTRE DOCUMENT -->
+                            @if(auth()->user()->id != $prospections->id_utilisateur)
+                                @can("procuration")
+                                    @can("edit")
+                                        <div class="card-body">
                                             <form action="add_new_doc_cr_c" method="post" enctype="multipart/form-data" class="col-sm-12">
 
                                                 @csrf
-                                                <div class="box-body ">
+                                                <div class="card-body ">
                                                     <div class="form-group col-sm-6">
                                                         <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
                                                         <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
@@ -1088,11 +1237,11 @@
                                 @endcan
                             @else
                                 @can("edit")
-                                    <div class="box-body">
+                                    <div class="card-body">
                                         <form action="add_new_doc_cr_c" method="post" enctype="multipart/form-data" class="col-sm-12">
 
                                             @csrf
-                                            <div class="box-body ">
+                                            <div class="card-body ">
                                                 <div class="form-group col-sm-6">
                                                     <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
                                                     <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
@@ -1107,144 +1256,159 @@
                                     </div>
                                 @endcan
                             @endif
-                           
+                               
 
-                        @php
-                            $docs = $documentController->GetDocByProspection($prospections->id);  
-                        @endphp
+                            @php
+                                $docs = $documentController->GetDocByProspection($prospections->id);  
+                            @endphp
 
-                        <!--AUTRE DOCS-->
-                    
-                        <div class="box-header with-border">
-                            <h3 class="box-title"><b>AUTRE DOCUMENTS (facture supplémentaires & autres)</b></h3>
-                        </div>
-                        <div class="box-body no-padding">
-                            <table class="table table-hover">
-                                <tr>
-                            
-                                    <th>Nom</th>
-                                    
-                                    <th style="width: 40px">Aperçu</th>
-                                </tr>
-                                @foreach($docs as $docs)
-                                    <!--LES FICHIERS ET LES FACTURES-->
-                                <tr>
-                                    <td>  <span class="text">{{$docs->libele}}</span> </td>
-                                   
-                                    <td>
-                                        
-                                        <form action="download_docs_customer" method="post" enctype="multipart/form-data" class="col-sm-6">
-
-                                            @csrf
-                                            <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
-                                            <input type="text" value="{{$docs->id}}" style="display:none;" name="id_doc">
-                                            <input type="text" class="form-control" name="file" value="{{$docs->path_doc}}" style="display:none;">
-                                            <button type="submit" class="btn btn-warning"><i class="fa fa-download"></i></button>
-                                        </form>
-                                    </td>
-                                </tr>
-                                
-                                @endforeach
-                            </table>
-                        </div>
-                        <hr>
-                       
-                        @php
-                            $propal = $propalcontroller->GetByIdEntreprise($prospections->id);  
-                        @endphp
-                        <!--LES PROPOSITIONS -->
-
-                        <!--PROPOSITION-->
+                            <!--AUTRE DOCS-->
                         
-                        <div class="box-header with-border">
-                            <h3 class="box-title"><b>PROPOSITIONS DE LA PROSPECTION</b></h3>
-                        </div>
-                        <div class="box-body no-padding">
-                            <table class="table table-hover">
-                                <tr>
-                            
-                                    <th>Nom</th>
-                                    <th>Ajouté le :</th>
-                                    <th>Actualisation :</th>
-                                    <th>Supprimer</th>
-                                    <th style="width: 40px">Aperçu</th>
-                                </tr>
-                                @foreach($propal as $propal)
-                                    <!--LES FICHIERS ET LES FACTURES-->
-                                <tr>
-                                    <td>  <span class="text">{{$propal->libele}}</span> </td>
-                                    <td>
-                                        @php 
-                                            echo "<b>".date('d/m/Y',strtotime($propal->created_at))."</b>" ;
-                                        @endphp
-                                    </td>
-                                    <td>
-                                       <button type="button" class="btn btn-primary" 
-                                       data-toggle="modal" data-target="#actu{{$propal->id}}"><b><i class="fa fa-plus"></i></b></button>
-                                        <div class="modal modal-default fade" id="actu{{$propal->id}}">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span></button>
-                                                        <h4 class="modal-title">{{$propal->libele}}</h4>
-                                                    </div>
-                                                
-                                                    <div class="modal-body">
-                                                        <!-- form start -->
-                                                        <form action="actual_propal" method="post">  
-                                                            @csrf
-                                                            <input type="text" value="{{$propal->id}}" name="id_propal" style="display:none;">
-                                                            <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
-                                                            <div class="form-group">   
-                                                                <label>Rejeté?</label>
-                                                                <select class="form-control " name="rejete">
-                                                                    @if($propal->rejete == "0")
-                                                                        <option value="0">NON</option>
-                                                                        <option value="1">OUI</option>
-                                                                    @else
-                                                                        <option value="1">OUI</option>
-                                                                        <option value="0">NON</option>
-                                                                    @endif
-                                                                </select>
-                                                                
-                                                            </div>        
+                            <div class="card-header with-border">
+                                <h3 class="card-title"><b>AUTRE DOCUMENTS (facture supplémentaires & autres)</b></h3>
+                            </div>
+                            <div class="card-body no-padding">
+                                <table class="table table-hover">
+                                    <tr>
+                                
+                                        <th>Nom</th>
+                                        
+                                        <th style="width: 40px">Aperçu</th>
+                                    </tr>
+                                    @foreach($docs as $docs)
+                                        <!--LES FICHIERS ET LES FACTURES-->
+                                    <tr>
+                                        <td>  <span class="text">{{$docs->libele}}</span> </td>
+                                       
+                                        <td>
+                                            
+                                            <form action="download_docs_customer" method="post" enctype="multipart/form-data" class="col-sm-6">
 
-                                                            <div class="form-group">
-                                                                <label>Motif :</label>
-                                                                <p>{{$propal->motif}}</p>
-                                                                <textarea name="motif" class="form-control"></textarea>
-                                                            </div>
-                                                           
-                                                            <script>
-                                                                function newFonction()
-                                                                {
-                                                                    
-                                                                    var f = document.getElementById("grise4").value;
-                                                                    //alert(f);
-                                                                    if(f == 'autre')
-                                                                    {
-                                                                        document.getElementById("newf").removeAttribute("disabled");
-                                                                    }
-                                                                    else{
-                                                                        document.getElementById("newf").setAttribute("disabled", "disabled");
-                                                                    }
-                                                                }
-                                                            </script>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn  pull-left" data-dismiss="modal">Fermer</button>
-                                                                <button type="submit" class="btn btn-primary">Actualiser</button>
-                                                            </div>
-                                                        </form>
-                                                    </div>
+                                                @csrf
+                                                <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
+                                                <input type="text" value="{{$docs->id}}" style="display:none;" name="id_doc">
+                                                <input type="text" class="form-control" name="file" value="{{$docs->path_doc}}" style="display:none;">
+                                                <button type="submit" class="btn btn-warning"><i class="fa fa-download"></i></button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    
+                                    @endforeach
+                                </table>
+                            </div>
+                            <hr>
+                           
+                            @php
+                                $propal = $propalcontroller->GetByIdEntreprise($prospections->id);  
+                            @endphp
+                            <!--LES PROPOSITIONS -->
+
+                            <!--PROPOSITION-->
+                            
+                            <div class="card-header with-border">
+                                <h3 class="card-title"><b>PROPOSITIONS DE LA PROSPECTION</b></h3>
+                            </div>
+                            <div class="card-body no-padding">
+                                <table class="table table-hover">
+                                    <tr>
+                                
+                                        <th>Nom</th>
+                                        <th>Ajouté le :</th>
+                                        <th>Actualisation :</th>
+                                        <th>Supprimer</th>
+                                        <th style="width: 40px">Aperçu</th>
+                                    </tr>
+                                    @foreach($propal as $propal)
+                                        <!--LES FICHIERS ET LES FACTURES-->
+                                    <tr>
+                                        <td>  <span class="text">{{$propal->libele}}</span> </td>
+                                        <td>
+                                            @php 
+                                                echo "<b>".date('d/m/Y',strtotime($propal->created_at))."</b>" ;
+                                            @endphp
+                                        </td>
+                                        <td>
+                                           <button type="button" class="btn btn-primary" 
+                                           data-toggle="modal" data-target="#actu{{$propal->id}}"><b><i class="fa fa-plus"></i></b></button>
+                                            <div class="modal modal-default fade" id="actu{{$propal->id}}">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span></button>
+                                                            <h4 class="modal-title">{{$propal->libele}}</h4>
+                                                        </div>
                                                     
+                                                        <div class="modal-body">
+                                                            <!-- form start -->
+                                                            <form action="actual_propal" method="post">  
+                                                                @csrf
+                                                                <input type="text" value="{{$propal->id}}" name="id_propal" style="display:none;">
+                                                                <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
+                                                                <div class="form-group">   
+                                                                    <label>Rejeté?</label>
+                                                                    <select class="form-control " name="rejete">
+                                                                        @if($propal->rejete == "0")
+                                                                            <option value="0">NON</option>
+                                                                            <option value="1">OUI</option>
+                                                                        @else
+                                                                            <option value="1">OUI</option>
+                                                                            <option value="0">NON</option>
+                                                                        @endif
+                                                                    </select>
+                                                                    
+                                                                </div>        
+
+                                                                <div class="form-group">
+                                                                    <label>Motif :</label>
+                                                                    <p>{{$propal->motif}}</p>
+                                                                    <textarea name="motif" class="form-control"></textarea>
+                                                                </div>
+                                                               
+                                                                <script>
+                                                                    function newFonction()
+                                                                    {
+                                                                        
+                                                                        var f = document.getElementById("grise4").value;
+                                                                        //alert(f);
+                                                                        if(f == 'autre')
+                                                                        {
+                                                                            document.getElementById("newf").removeAttribute("disabled");
+                                                                        }
+                                                                        else{
+                                                                            document.getElementById("newf").setAttribute("disabled", "disabled");
+                                                                        }
+                                                                    }
+                                                                </script>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn  pull-left" data-dismiss="modal">Fermer</button>
+                                                                    <button type="submit" class="btn btn-primary">Actualiser</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                        
+                                                    </div>
+                                                    <!-- /.modal-content -->
                                                 </div>
-                                                <!-- /.modal-content -->
-                                            </div>
-                                        </div> 
-                                    </td>
-                                    @if(auth()->user()->id != $prospections->id_utilisateur)
-                                        @can("procuration")
+                                            </div> 
+                                        </td>
+                                        @if(auth()->user()->id != $prospections->id_utilisateur)
+                                            @can("procuration")
+                                                @can("delete")
+                                                    <td>
+                                                        <form action="delete_doc_propal_customer" method="post" enctype="multipart/form-data">
+
+                                                            @csrf
+                                                            <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
+                                                            <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
+                                                            <input type="text" value="{{$propal->id}}" style="display:none;" name="id_doc">
+                                                            <input type="text" class="form-control" name="file" value="{{$propal->path_doc}}" style="display:none;">
+                                                            <button type="submit" class="btn btn-sx btn-danger"><i class="fa fa-trash-o"></i></button>
+                                                        </form>
+                                                    </td>
+                                                @endcan
+                                            @endcan
+                                        @else
                                             @can("delete")
                                                 <td>
                                                     <form action="delete_doc_propal_customer" method="post" enctype="multipart/form-data">
@@ -1258,63 +1422,49 @@
                                                     </form>
                                                 </td>
                                             @endcan
-                                        @endcan
-                                    @else
-                                        @can("delete")
-                                            <td>
-                                                <form action="delete_doc_propal_customer" method="post" enctype="multipart/form-data">
-
-                                                    @csrf
-                                                    <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
-                                                    <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
-                                                    <input type="text" value="{{$propal->id}}" style="display:none;" name="id_doc">
-                                                    <input type="text" class="form-control" name="file" value="{{$propal->path_doc}}" style="display:none;">
-                                                    <button type="submit" class="btn btn-sx btn-danger"><i class="fa fa-trash-o"></i></button>
-                                                </form>
-                                            </td>
-                                        @endcan
-                                    @endif
-                                    
-                                    <td>
+                                        @endif
                                         
-                                        <form action="download_docs_propal_cust" method="post" enctype="multipart/form-data" class="col-sm-6">
+                                        <td>
+                                            
+                                            <form action="download_docs_propal_cust" method="post" enctype="multipart/form-data" class="col-sm-6">
 
-                                            @csrf
-                                            <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
-                                            <input type="text" value="{{$propal->id}}" style="display:none;" name="id_doc">
-                                            <input type="text" class="form-control" name="file" value="{{$propal->path_doc}}" style="display:none;">
-                                            <button type="submit" class="btn btn-warning"><i class="fa fa-download"></i></button>
-                                        </form>
-                                    </td>
-                                </tr>
-                                
-                                @endforeach
-                            </table>
-                        </div>
-                        <hr>
-                    
-                        @can("edit")	
-                            <div class="box-body">
-                                <form action="add_doc_proposition_customer" method="post" enctype="multipart/form-data" class="col-sm-12">
-
-                                    @csrf
-                                    <div class="box-body ">
-                                        <div class="form-group col-sm-6">
-                                            <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
-                                            <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
-                                            <label class="control-label">Ajouter une proposition :</label>
-                                            <input type="file" class="form-control" name="new_doc" required>
-                                            <button type="submit" class="btn btn-primary"><i class="fa fa-upload"></i></button>
-                                        </div>
-
-                                    </div>
+                                                @csrf
+                                                <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
+                                                <input type="text" value="{{$propal->id}}" style="display:none;" name="id_doc">
+                                                <input type="text" class="form-control" name="file" value="{{$propal->path_doc}}" style="display:none;">
+                                                <button type="submit" class="btn btn-warning"><i class="fa fa-download"></i></button>
+                                            </form>
+                                        </td>
+                                    </tr>
                                     
-                                </form>
+                                    @endforeach
+                                </table>
                             </div>
-                        @endcan
-                            
-                       
-                    @endforeach
+                            <hr>
+                        
+                            @can("edit")    
+                                <div class="card-body">
+                                    <form action="add_doc_proposition_customer" method="post" enctype="multipart/form-data" class="col-sm-12">
+
+                                        @csrf
+                                        <div class="card-body ">
+                                            <div class="form-group col-sm-6">
+                                                <input type="text" value="{{$prospections->id}}" style="display:none;" name="id_prospection">
+                                                <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
+                                                <label class="control-label">Ajouter une proposition :</label>
+                                                <input type="file" class="form-control" name="new_doc" required>
+                                                <button type="submit" class="btn btn-primary"><i class="fa fa-upload"></i></button>
+                                            </div>
+
+                                        </div>
+                                        
+                                    </form>
+                                </div>
+                            @endcan
+                                
+                           
+                        @endforeach
+                    @endif
                     <hr>
 
                     <!--LES PROPOSITIONS -->
@@ -1322,10 +1472,10 @@
                         $propal = $propalcontroller->GetByEntreprise($id_entreprise);  
                     @endphp
             
-                    <div class="box-header with-border">
-                        <h3 class="box-title"><b>NOUVELLES PROPOSITIONS</b></h3>
+                    <div class="card-header with-border">
+                        <h3 class="card-title"><b>NOUVELLES PROPOSITIONS</b></h3>
                     </div>
-                    <div class="box-body no-padding">
+                    <div class="card-body no-padding">
                         <table class="table table-hover">
                             <tr>
                         
@@ -1460,11 +1610,11 @@
                     <hr>
 
                     @can("edit")	
-                        <div class="box-body">
+                        <div class="card-body">
                             <form action="add_doc_proposition_customer" method="post" enctype="multipart/form-data" class="col-sm-12">
 
                                 @csrf
-                                <div class="box-body ">
+                                <div class="card-body ">
                                     <div class="form-group col-sm-6">
                                         
                                         <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
@@ -1480,15 +1630,15 @@
                     @endcan
  
                     <hr>
-                    <div class="box-header with-border">
-                        <h3 class="box-title"><b>NOUVEAUX DOCUMENTS</b></h3>
+                    <div class="card-header with-border">
+                        <h3 class="card-title"><b>NOUVEAUX DOCUMENTS</b></h3>
                     </div>
                     @php
                         $docs = $documentController->GetDocByEntreprise($id_entreprise);  
                         //dd($docs);
                     @endphp
 
-                    <div class="box-body no-padding">
+                    <div class="card-body no-padding">
                         <table class="table table-hover">
                             <tr>
                                 <th>Nom</th>
@@ -1556,14 +1706,13 @@
                             @endforeach
                         </table>
                     </div>
-       
                     <hr>
                     @can("edit")
-                        <div class="box-body">
+                        <div class="card-body">
                             <form action="add_other_doc" method="post" enctype="multipart/form-data" class="col-sm-12">
 
                                 @csrf
-                                <div class="box-body ">
+                                <div class="card-body ">
                                     <div class="form-group col-sm-6">
                                         
                                         <input type="text" value="{{$id_entreprise}}" style="display:none;" name="id_entreprise">
@@ -1581,20 +1730,18 @@
                     @php 
                         $interlocuteurs =  $interlocuterController->InterlocuteurWithIdEntreprise($id_entreprise);
                     @endphp
-                    <div class="box-header with-border">
-                        <h3 class="box-title"><b>Interlocuteur(s)</b></h3>
+                    <div class="card-header with-border">
+                        <h3 class="card-title"><b>Interlocuteur(s)</b></h3>
                     </div>
 
-                    <table class="table table-hover box-body">
+                    <table class="table table-hover card-body">
                                     
                         <tr>
-                    
                             <th>Nom</th>
                             <th>Téléphone</th>
                              <th>Email</th>
                               <th>Fonction</th>
                             <th>Action</th>
-                            
                         </tr>
                         <!--LES FICHIERS ET LES FACTURES-->
                         
@@ -1667,29 +1814,26 @@
                    
                 </div>
                 <hr>
-                <!-- /.box -->
+                <!-- /.card -->
 
             </div>
             <!-- right column -->
             <div class="col-md-4">
-                <div class="box box-info table-responsive">
+                <div class="card card-warning table-responsive">
                    
-                    <div class="box-header with-border" style="text-align:center">
-                      
-                        <h3 class="box-title"><b>SUIVIS</b></h3>
+                    <div class="card-header with-border">
+                    
+                        @can("edit")
+                            <button type="button" class="btn btn-primary" data-toggle="modal"
+                             data-target="#addsuivi"><b><i class="fa fa-plus"></i></b></button>
+                        @endcan
+                        <b>SUIVIS</b>
                     </div>
                     @php
                         $suivis =  $suivicontroller->GetSuiviByIdEntreprise($id_entreprise);
                     @endphp
-                    <div class="box-header with-border">
-                        @can("edit")
-                            <div class="col-md-3">
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addsuivi"><b><i class="fa fa-plus"></i>SUIVI</b></button>
-                            </div>
-                        @endcan
-                    </div>
-
-                    <table class="table table-hover box-body">        
+                    
+                    <table class="table table-hover card-body">        
                         <tr>
                             <th>Date-Heure</th>
                             <th>Action</th>

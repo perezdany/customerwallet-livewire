@@ -32,13 +32,13 @@
     <!--AFFICHAGE DES FACTURESE-->
     <div class="row">
         @if(session('success'))
-            <div class="col-md-12 box-header">
+            <div class="col-md-12 card-header">
               <p class="bg-success" style="font-size:13px;">{{session('success')}}</p>
             </div>
           @endif
 
             @if(session('error'))
-            <div class="col-md-12 box-header" style="font-size:13px;">
+            <div class="col-md-12 card-header" style="font-size:13px;">
               <p class="bg-danger" >{{session('error')}}</p>
             </div>
         @endif
@@ -54,14 +54,14 @@
         <div class="col-md-6">
               @if(isset($id_edit))
                  <!-- general form elements MODIFICATION D'UNE FACTURE-->
-                <div class="box box-aeneas">
-                    <div class="box-header with-border">
-                        <h3 class="box-title"> <b>MODIFIER UNE FACTURE</b></h3><br><b>(*) champ obligatoire</b>
+                <div class="card card-aeneas">
+                    <div class="card-header with-border">
+                        <h3 class="card-title"> <b>MODIFIER UNE FACTURE</b></h3><br><b>(*) champ obligatoire</b>
 
-                        <div class="box-tools pull-right">
-                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                        <div class="card-tools pull-right">
+                            <button type="button" class="btn btn-card-tool" data-widget="collapse"><i class="fa fa-minus"></i>
                             </button>
-                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                            <button type="button" class="btn btn-card-tool" data-widget="remove"><i class="fa fa-times"></i></button>
                         </div>
                     </div>
                     @php
@@ -72,7 +72,7 @@
                         <!-- form start -->
                         <form role="form" method="post" action="edit_facture" enctype="multipart/form-data">
                             @csrf
-                            <div class="box-body">
+                            <div class="card-body">
                                 <input type="text" value="{{$id_entreprise}}" name="id_entreprise" style="display:none;">
                                 <input type="text" value="{{$etat}}" name="etat" style="display:none;">
                                 <input type="text" value="{{$facture_edit->id}}" name="id_facture" style="display:none;">
@@ -115,28 +115,28 @@
                         
                             
                             </div>
-                            <!-- /.box-body -->
+                            <!-- /.card-body -->
 
-                            <div class="box-footer">
+                            <div class="card-footer">
                             <button type="submit" class="btn btn-primary">VALIDER</button>
                             </div>
                         </form>
                     @endforeach
                  
                 </div>
-                <!-- /.box -->
+                <!-- /.card -->
             @else
            
                 <!-- general form elements -->
-                <div class="box box-aeneas">
-                    <div class="box-header with-border">
-                    <h3 class="box-title"> <b>ENREGISTRER UNE FACTURE</b></h3><br><b>(*) champ obligatoire</b>
+                <div class="card card-aeneas">
+                    <div class="card-header with-border">
+                    <h3 class="card-title"> <b>ENREGISTRER UNE FACTURE</b></h3><br><b>(*) champ obligatoire</b>
                     </div>
                     
                     <!-- form start -->
                     <form role="form" method="post" action="add_facture" enctype="multipart/form-data">
                         @csrf
-                        <div class="box-body">
+                        <div class="card-body">
                             <div class="form-group">
                                 <label>Numéro de la facture (*)</label>
                                 <input type="text" name="numero_facture" required value="{{old('numero_facture')}}" class="form-control " maxlength="30" onkeyup="this.value=this.value.toUpperCase()">
@@ -180,14 +180,14 @@
                             </div>
                         
                         </div>
-                        <!-- /.box-body -->
+                        <!-- /.card-body -->
 
-                        <div class="box-footer">
+                        <div class="card-footer">
                         <button type="submit" class="btn btn-primary">VALIDER</button>
                         </div>
                     </form>
                 </div>
-                <!-- /.box -->
+                <!-- /.card -->
             @endif
 
         </div>

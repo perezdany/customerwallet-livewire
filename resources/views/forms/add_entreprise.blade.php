@@ -25,20 +25,23 @@
 @section('content')
       <div class="row">
           @if(session('success'))
-            <div class="col-md-12 box-header">
+            <div class="col-md-12 card-header">
               <p class="bg-success" style="font-size:13px;">{{session('success')}}</p>
             </div>
           @endif
         
             <div class="col-md-6">
                 <!-- general form elements -->
-                <div class="box box-aeneas">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">AJOUTER UNE ENTREPRISE</h3><br>
-                        <div class="box-tools pull-right">
-                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                <div class="card card-aeneas">
+                    <div class="card-header with-border">
+                        <h3 class="card-title">AJOUTER UNE ENTREPRISE</h3><br>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
                             </button>
-                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                            <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                <i class="fas fa-times"></i>
+                            </button>
                         </div>
                         
                     </div>
@@ -46,7 +49,7 @@
                     <!-- form start -->
                     <form role="form" method="post" action="add_entreprise">
                         @csrf
-                        <div class="box-body">
+                        <div class="card-body">
                             <div class="form-group">
                             
                                 <select class="form-control " name="particulier" id="particulier" onchange="EnableFields();" style="display:none;">
@@ -182,28 +185,31 @@
                                     }
                                 }
                             </script>
-                            <div class="box-footer">
+                            <div class="card-footer">
                                 <button type="submit" class="btn btn-primary">VALIDER</button>
                             </div>
                         </div>
-                        <!-- /.box-body -->
+                        <!-- /.card-body -->
                     </form>
                 
                 
                 </div>
-                <!-- /.box -->
+                <!-- /.card -->
 
             </div>
 
             <div class="col-md-6">
                   <!-- general form elements -->
-                <div class="box box-aeneas">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">AJOUTER UN(E)PARTICULIER(E)</h3><br>
-                        <div class="box-tools pull-right">
-                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                <div class="card card-aeneas">
+                    <div class="card-header with-border">
+                        <h3 class="card-title">AJOUTER UN(E)PARTICULIER(E)</h3><br>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
                             </button>
-                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                            <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                <i class="fas fa-times"></i>
+                            </button>
                         </div>
                         
                     </div>
@@ -211,7 +217,7 @@
                     <!-- form start -->
                     <form role="form" method="post" action="add_entreprise">
                         @csrf
-                        <div class="box-body">
+                        <div class="card-body">
                             <div class="form-group">
                                 <select class="form-control " name="particulier" id="particulier" onchange="EnableFields();" style="display:none;">
                                     <option value="1">OUI</option>
@@ -317,16 +323,16 @@
                                     }
                                 }
                             </script>
-                            <div class="box-footer">
+                            <div class="card-footer">
                                 <button type="submit" class="btn btn-primary">VALIDER</button>
                             </div>
                         </div>
-                        <!-- /.box-body -->
+                        <!-- /.card-body -->
                     </form>
                 
                 
                 </div>
-                <!-- /.box -->
+                <!-- /.card -->
             </div>
       </div>
       <!-- /.row -->

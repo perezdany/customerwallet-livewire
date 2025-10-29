@@ -22,16 +22,16 @@
 @section('content')
      <div class="row">
         
-            <div class="col-xs-12">
-              <div class="box">
-                <div class="box-header">
-                  <h3 class="box-title">Utilisateurs</h3>
-                  <div class="box-tools">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title"><b>Base des utilisateurs</b></h3>
+                  <div class="card-tools">
                     <a href="form_add_user" class="mr-4 d-block"><button class="btn btn-primary"> <b><i class="fa fa-plus"></i> UTILISATEUR</b></button></a><br>
                   </div> 
                 </div>
-                <!-- /.box-header -->
-                <div class="box-body">
+                <!-- /.card-header -->
+                <div class="card-body">
                   <table id="example1" class="table table-bordered table-striped table-hover">
                   <thead>
                     <tr>
@@ -40,7 +40,7 @@
                       <th>Département</th>
                       <th>Poste</th>
                       <th>Activer/Désactiver</th>
-                      <th>Supprimer</th>
+                      <th>Action</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -91,9 +91,9 @@
                   </tfoot>
                   </table>
                 </div>
-                <!-- /.box-body -->
+                <!-- /.card-body -->
               </div>
-              <!-- /.box -->
+              <!-- /.card -->
             </div>
             <!-- /.col -->
         </div>

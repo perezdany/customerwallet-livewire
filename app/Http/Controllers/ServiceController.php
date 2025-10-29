@@ -87,9 +87,19 @@ class ServiceController extends Controller
 
     public function DeleteService(Request $request)
     {
-        $deleted = DB::table('services')->where('id', '=', $request->id_service)->delete();
-
-        return redirect('services')->with('success', 'Elément supprimé');
+        $verif =  DB::table('prestation_services')->where('service_id', '=', $request->id_service)->count();
+        //dd($verif);
+        if($verif != 0)
+        {
+            //dd('oui oui');
+            return redirect('services')->with('error', 'Ce service ne peut être supprimé, un contrat lui est associé');
+        }
+        else
+        {
+            //dd('i');
+            $deleted = DB::table('services')->where('id', '=', $request->id_service)->delete();
+            return redirect('services')->with('success', 'Elément supprimé');
+        }
     }
 
     public function DeleteServiceInContrat(Request $request)

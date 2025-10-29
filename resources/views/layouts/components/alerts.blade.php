@@ -1,23 +1,23 @@
 
 @can("manager")
-   <div class="row">
+    <div class="row">
         <div class="col-md-8">
-         
-        <!-- TABLE: LATEST ORDERS LES FACTURES QUI N'ONT PAS ETE REGLEES ET LADATE EST DEPASS2E @php echo date('d/m/Y',strtotime($my_own->date_reglement)) @endphp -->
-        @if($count_non_reglee != 0)
-            
-                <div class="box box-info">
-                    <div class="box-header with-border">
-                    <h3 class="box-title">Attention! Ces factures ne sont pas réglées </h3>
+            @if($count_non_reglee != 0)
+            <div class="card">
+                <div class="card-header border-transparent">
+                    <h3 class="card-title">Attention! Ces factures ne sont pas réglées</h3>
 
-                    <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                        </button>
-                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                    <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove">
+                        <i class="fas fa-times"></i>
+                    </button>
                     </div>
-                    </div>
-                    <!-- /.box-header -->
-                    <div class="box-body">
+                </div>
+              <!-- /.card-header -->
+                <div class="card-body p-0">
                     <div class="table-responsive">
                         <table class="table no-margin">
                         <thead>
@@ -26,7 +26,7 @@
                                 <th>Client</th>
                                 <th>Date de règlement</th>
                                 <th>Montant</th>
-                               
+                            
                                 @can("manager")<th>Afficher les paiements</th>@endcan
                                 @can("comptable")<th>Afficher les paiements</th>@endcan
                                 @can("admin")<th>Afficher les paiements</th>@endcan
@@ -110,18 +110,16 @@
                             
                         </table>
                     </div>
-                    <!-- /.table-responsive -->
-                    </div>
-                    <!-- /.box-body -->
-
-                    <div class="box-footer clearfix">
-        
-                       <a href="no_reglee" class="btn btn-sm btn-primary btn-flat pull-right">Voir tout</a>
-                    </div>
-                </div>
-                <!-- /.box -->
-        @endif
-        
+                <!-- /.table-responsive -->
+               </div>
+              <!-- /.card-body -->
+              <div class="card-footer clearfix">
+                 <a href="no_reglee" class="btn btn-sm btn-primary btn-flat pull-right">Voir tout</a>
+              </div>
+              <!-- /.card-footer -->
+            </div>
+            @endif
+        <!-- TABLE: LATEST ORDERS LES FACTURES QUI N'ONT PAS ETE REGLEES ET LADATE EST DEPASS2E @php echo date('d/m/Y',strtotime($my_own->date_reglement)) @endphp -->        
         </div>
     </div>
 @endcan
@@ -129,21 +127,23 @@
 @can("admin")
     <div class="row">
         <div class="col-md-8">
-        <!-- TABLE: LATEST ORDERS LES FACTURES QUI N'ONT PAS ETE REGLEES ET LADATE EST DEPASS2E-->
-        @if($count_non_reglee != 0)
-            
-                <div class="box box-info">
-                    <div class="box-header with-border">
-                    <h3 class="box-title">Attention! Ces factures ne sont pas réglées</h3>
+            <!-- TABLE: LATEST ORDERS LES FACTURES QUI N'ONT PAS ETE REGLEES ET LADATE EST DEPASS2E-->
+            @if($count_non_reglee != 0)
+            <div class="card">
+                <div class="card-header border-transparent">
+                    <h3 class="card-title">Attention! Ces factures ne sont pas réglées</h3>
 
-                    <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                        </button>
-                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                    <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove">
+                        <i class="fas fa-times"></i>
+                    </button>
                     </div>
-                    </div>
-                    <!-- /.box-header -->
-                    <div class="box-body">
+                </div>
+              <!-- /.card-header -->
+                <div class="card-body p-0">
                     <div class="table-responsive">
                         <table class="table no-margin">
                         <thead>
@@ -152,7 +152,7 @@
                                 <th>Client</th>
                                 <th>Date de règlement</th>
                                 <th>Montant</th>
-                               
+                            
                                 @can("manager")<th>Afficher les paiements</th>@endcan
                                 @can("comptable")<th>Afficher les paiements</th>@endcan
                                 @can("admin")<th>Afficher les paiements</th>@endcan
@@ -236,17 +236,19 @@
                             
                         </table>
                     </div>
-                    <!-- /.table-responsive -->
-                    </div>
-                    <!-- /.box-body -->
-
-                    <div class="box-footer clearfix">
+                <!-- /.table-responsive -->
+               </div>
+              <!-- /.card-body -->
+              <div class="card-footer clearfix">
+                 <a href="no_reglee" class="btn btn-sm btn-primary btn-flat pull-right">Voir tout</a>
+              </div>
+              <!-- /.card-footer -->
+            </div>
+            @endif
         
-                      <a href="no_reglee" class="btn btn-sm btn-primary btn-flat pull-right">Voir tout</a>
-                    </div>
-                </div>
-                <!-- /.box -->
-        @endif
+            
+        <!-- TABLE: LATEST ORDERS LES FACTURES QUI N'ONT PAS ETE REGLEES ET LADATE EST DEPASS2E @php echo date('d/m/Y',strtotime($my_own->date_reglement)) @endphp -->
+        
         
         </div>
     </div>
@@ -256,123 +258,123 @@
     <div class="row">
         <div class="col-md-8">
         <!-- TABLE: LATEST ORDERS LES FACTURES QUI N'ONT PAS ETE REGLEES ET LADATE EST DEPASS2E-->
-        @if($count_non_reglee != 0)
-            
-                <div class="box box-info">
-                    <div class="box-header with-border">
-                    <h3 class="box-title">Attention! Ces factures ne sont pas réglées </h3>
+            @if($count_non_reglee != 0)
+                <div class="card">
+                    <div class="card-header border-transparent">
+                        <h3 class="card-title">Attention! Ces factures ne sont pas réglées</h3>
 
-                    <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                        <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
                         </button>
-                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                        <button type="button" class="btn btn-tool" data-card-widget="remove">
+                            <i class="fas fa-times"></i>
+                        </button>
+                        </div>
                     </div>
-                    </div>
-                    <!-- /.box-header -->
-                    <div class="box-body">
-                    <div class="table-responsive">
-                        <table class="table no-margin">
-                        <thead>
-                            <tr>
-                                <th>Facture N°</th>
-                                <th>Client</th>
-                                <th>Date de règlement</th>
-                                <th>Montant</th>
-                               
-                                @can("manager")<th>Afficher les paiements</th>@endcan
-                                @can("comptable")<th>Afficher les paiements</th>@endcan
-                                @can("admin")<th>Afficher les paiements</th>@endcan
-                                <th>Contrat</th>
-                                <th>Etat facture</th>
-                                @can("comptable")<th>Action</th>@endcan
-                            </tr>
-                            </thead>
-                            <tbody>
+                <!-- /.card-header -->
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table no-margin">
+                            <thead>
+                                <tr>
+                                    <th>Facture N°</th>
+                                    <th>Client</th>
+                                    <th>Date de règlement</th>
+                                    <th>Montant</th>
                                 
-                                @foreach($my_own as $my_own)
-                                    <tr>
-                                        <td>{{$my_own->numero_facture}}</td>
-                                        <td>{{$my_own->nom_entreprise}}</td>
-                                        <td>{{$my_own->date_reglement}}</td>
-                                        <td>
-                                            @php
-                                                echo  number_format($my_own->montant_facture, 2, ".", " ")." XOF";
-                                            @endphp
-                                        </td>
-                                        @can("manager")
-                                            <td>
-                                                <form action="paiement_by_facture" method="post">
-                                                        @csrf
-                                                        <input type="text" value={{$my_own->id}} style="display:none;" name="id_facture">
-                                                        <button type="submit" class="btn btn-success"><i class="fa fa-money"></i>AFFICHER</button>
-                                                </form>
-                                            </td>
-                                        @endcan
-                                        @can("comptable")
-                                            <td>
-                                                <form action="paiement_by_facture" method="post">
-                                                        @csrf
-                                                        <input type="text" value={{$my_own->id}} style="display:none;" name="id_facture">
-                                                        <button type="submit" class="btn btn-success"><i class="fa fa-money"></i>AFFICHER</button>
-                                                </form>
-                                            </td>
-                                        @endcan
-                                        @can("admin")
-                                            <td>
-                                                <form action="paiement_by_facture" method="post">
-                                                        @csrf
-                                                        <input type="text" value={{$my_own->id}} style="display:none;" name="id_facture">
-                                                        <button type="submit" class="btn btn-success"><i class="fa fa-money"></i>AFFICHER</button>
-                                                </form>
-                                            </td>
-                                        @endcan
-                                
-                                        <td>{{$my_own->titre_contrat}}</td>
-                                            <td>
-                                            @if($my_own->reglee == 0)
-                                                <p class="bg-warning">
-                                                <b>Facture non réglée</b>
-                                                </p>
-                                            @endif
-                                            @if($my_own->reglee == 1)
-                                                <p class="bg-success">
-                                                <b>Facture réglée</b>
-                                                </p>
-                                            @endif
-                                            
-                                        </td>
+                                    @can("manager")<th>Afficher les paiements</th>@endcan
+                                    @can("comptable")<th>Afficher les paiements</th>@endcan
+                                    @can("admin")<th>Afficher les paiements</th>@endcan
+                                    <th>Contrat</th>
+                                    <th>Etat facture</th>
+                                    @can("comptable")<th>Action</th>@endcan
+                                </tr>
+                                </thead>
+                                <tbody>
                                     
-                                        @can("comptable")
+                                    @foreach($my_own as $my_own)
+                                        <tr>
+                                            <td>{{$my_own->numero_facture}}</td>
+                                            <td>{{$my_own->nom_entreprise}}</td>
+                                            <td>{{$my_own->date_reglement}}</td>
                                             <td>
-                                            
-                                                    
-                                                <form action="paiement_form" method="post">
-                                                    @csrf
-                                                    <input type="text" value={{$my_own->id}} style="display:none;" name="id_facture">
-                                                    <button type="submit" class="btn btn-success"><i class="fa fa-money"></i></button>
-                                                </form>
-
+                                                @php
+                                                    echo  number_format($my_own->montant_facture, 2, ".", " ")." XOF";
+                                                @endphp
+                                            </td>
+                                            @can("manager")
+                                                <td>
+                                                    <form action="paiement_by_facture" method="post">
+                                                            @csrf
+                                                            <input type="text" value={{$my_own->id}} style="display:none;" name="id_facture">
+                                                            <button type="submit" class="btn btn-success"><i class="fa fa-money"></i>AFFICHER</button>
+                                                    </form>
+                                                </td>
+                                            @endcan
+                                            @can("comptable")
+                                                <td>
+                                                    <form action="paiement_by_facture" method="post">
+                                                            @csrf
+                                                            <input type="text" value={{$my_own->id}} style="display:none;" name="id_facture">
+                                                            <button type="submit" class="btn btn-success"><i class="fa fa-money"></i>AFFICHER</button>
+                                                    </form>
+                                                </td>
+                                            @endcan
+                                            @can("admin")
+                                                <td>
+                                                    <form action="paiement_by_facture" method="post">
+                                                            @csrf
+                                                            <input type="text" value={{$my_own->id}} style="display:none;" name="id_facture">
+                                                            <button type="submit" class="btn btn-success"><i class="fa fa-money"></i>AFFICHER</button>
+                                                    </form>
+                                                </td>
+                                            @endcan
+                                    
+                                            <td>{{$my_own->titre_contrat}}</td>
+                                                <td>
+                                                @if($my_own->reglee == 0)
+                                                    <p class="bg-warning">
+                                                    <b>Facture non réglée</b>
+                                                    </p>
+                                                @endif
+                                                @if($my_own->reglee == 1)
+                                                    <p class="bg-success">
+                                                    <b>Facture réglée</b>
+                                                    </p>
+                                                @endif
                                                 
                                             </td>
-                                        @endcan
-                                    
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                            
-                        </table>
-                    </div>
-                    <!-- /.table-responsive -->
-                    </div>
-                    <!-- /.box-body -->
+                                        
+                                            @can("comptable")
+                                                <td>
+                                                
+                                                        
+                                                    <form action="paiement_form" method="post">
+                                                        @csrf
+                                                        <input type="text" value={{$my_own->id}} style="display:none;" name="id_facture">
+                                                        <button type="submit" class="btn btn-success"><i class="fa fa-money"></i></button>
+                                                    </form>
 
-                    <div class="box-footer clearfix">
-        
-                        <a href="no_reglee" class="btn btn-sm btn-primary btn-flat pull-right">Voir tout</a>
-                    </div>
+                                                    
+                                                </td>
+                                            @endcan
+                                        
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                                
+                            </table>
+                        </div>
+                    <!-- /.table-responsive -->
                 </div>
-                <!-- /.box -->
-        @endif
+                <!-- /.card-body -->
+                <div class="card-footer clearfix">
+                    <a href="no_reglee" class="btn btn-sm btn-primary btn-flat pull-right">Voir tout</a>
+                </div>
+                <!-- /.card-footer -->
+                </div>
+            @endif
         
         </div>
     </div>

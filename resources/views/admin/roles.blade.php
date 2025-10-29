@@ -16,24 +16,24 @@
       
          @if(session('success'))
          
-            <div class="col-md-12 box-header">
+            <div class="col-md-12 card-header">
               <p class="bg-success" style="font-size:13px;">{{session('success')}}</p>
             </div>
           @endif
         
-        <div class="col-md-6">
-          <div class="box">
-               <div class="box-header">
-                    <h3 class="box-title">Autorisations des utilisateus</h3>
+        <div class="col-md-8">
+          <div class="card">
+               <div class="card-header">
+                    <h3 class="card-title">Les différents rôles des utilisateus</h3>
 
-                    <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                    <div class="card-tools pull-right">
+                        <button type="button" class="btn btn-card-tool" data-widget="collapse"><i class="fa fa-minus"></i>
                         </button>
-                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                        <button type="button" class="btn btn-card-tool" data-widget="remove"><i class="fa fa-times"></i></button>
                     </div>
                 </div>    
-                <!-- /.box-header -->
-                <div class="box-body">
+                <!-- /.card-header -->
+                <div class="card-body">
                     <table id="example1" class="table table-bordered table-striped table-hover">
                         <thead>
                         <tr>
@@ -70,23 +70,23 @@
                         </tfoot>
                     </table>
                 </div>
-                <!-- /.box-body -->
+                <!-- /.card-body -->
                 
           </div>
-          <!-- /.box -->
+          <!-- /.card -->
         </div>
         <!-- /.col -->
 
-        <div class="col-md-6">
-           <div class="box box-aeneas">
-              <div class="box-header with-border">
-                <h3 class="box-title">AJOUTER UN ROLE</h3><br>(*) champ obligatoire
+        <div class="col-md-4">
+           <div class="card card-aeneas">
+              <div class="card-header with-border">
+                <h3 class="card-title">AJOUTER UN ROLE</h3><br>(*) champ obligatoire
               </div>
             
               <!-- form start -->
               <form role="form" method="post" action="add_role">
                 @csrf
-                <div class="box-body">
+                <div class="card-body">
 
                   <div class="form-group">
                       <label>Le titre</label>
@@ -100,9 +100,9 @@
                   </div>  
 
                 </div>
-                <!-- /.box-body -->
+                <!-- /.card-body -->
 
-                <div class="box-footer">
+                <div class="card-footer">
                   <button type="submit" class="btn btn-primary">VALIDER</button>
                 </div>
               </form>
@@ -113,14 +113,14 @@
     <div class="row">
          <div class="col-md-6">
             @if(isset($id_edit))
-              <div class="box box-aeneas">
-                <div class="box-header with-border">
-                  <h3 class="box-title">MODIFIER UN ROLE</h3><br>(*) champ obligatoire
+              <div class="card card-aeneas">
+                <div class="card-header with-border">
+                  <h3 class="card-title">MODIFIER UN ROLE</h3><br>(*) champ obligatoire
 
-                   <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                   <div class="card-tools pull-right">
+                        <button type="button" class="btn btn-card-tool" data-widget="collapse"><i class="fa fa-minus"></i>
                         </button>
-                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                        <button type="button" class="btn btn-card-tool" data-widget="remove"><i class="fa fa-times"></i></button>
                     </div>
                 </div>
                 @php
@@ -131,7 +131,7 @@
                 <!-- form start -->
                 <form role="form" method="post" action="edit_role">
                   @csrf
-                  <div class="box-body">
+                  <div class="card-body">
                     
                     @foreach($retrive as $retrive)
                         <input type="text" value="{{$retrive->id}}" style="display:none;" name="id_role">
@@ -149,9 +149,9 @@
                     
 
                   </div>
-                  <!-- /.box-body -->
+                  <!-- /.card-body -->
 
-                  <div class="box-footer">
+                  <div class="card-footer">
                     <button type="submit" class="btn btn-primary">VALIDER</button>
                   </div>
                 </form>

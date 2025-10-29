@@ -20,9 +20,9 @@
         <!--/.col (left) -->
         <!-- right column -->
         <div class="col-md-6">
-            <div class="box box-aeneas">
-                <div class="box-header with-border">
-                    <b><h3 class="box-title">MODIFICATION </h3><br></b>
+            <div class="card">
+                <div class="card-header with-border">
+                    <b><h3 class="card-title">MODIFICATION DES INFOS PERSONNELLES </h3><br></b>
                 </div>
                 @php
                    
@@ -34,7 +34,7 @@
                     <form role="form" action="edit_user" method="post">
                         @csrf
                         <input type="text" value="{{$user->id}}" name="id_user" style="display:none;">
-                        <div class="box-body">
+                        <div class="card-body">
                             <div class="form-group">
                                 <label>Email</label>
                                 <input type="email" class="form-control " name="email" value="{{$user->login}}">
@@ -82,9 +82,9 @@
                             </div>
                            
                         </div>
-                        <!-- /.box-body -->
+                        <!-- /.card-body -->
 
-                        <div class="box-footer">
+                        <div class="card-footer">
                         <button type="submit" class="btn btn-primary">VALIDER</button>
                         </div>
                     </form>
@@ -95,69 +95,89 @@
         </div>
         <!--/.col (right) -->
          <div class="col-md-6">
-            <div class="box box-aeneas">
+            <div class="card card-aeneas">
                 @foreach($retrive as $user)
                      <!-- form start -->
-                    <div class="box-header with-border">
-                            <b><h3 class="box-title">Réinitialiser le mot de passe</h3><br></b>
+                    <div class="card-header with-border">
+                            <b><h3 class="card-title">Réinitialiser le mot de passe</h3><br></b>
                     </div>
                     <form role="form" action="reset_password" method="post">
                         @csrf
                         <input type="text" value="{{$user->id}}" name="id_user" style="display:none;">
-                         <div class="box-body">
+                         <div class="card-body">
                             Mot de passe par défaut(123456)
                         </div>
-                        <div class="box-footer">
+                        <div class="card-footer">
                         <button type="submit" class="btn btn-primary">REINITIALISER LE MOT DE PASSE</button>
                         </div>
                     </form><hr>
-                        <div class="box-header">
-                            <h3 class="box-title">Permissions</h3>
+                        <div class="card-header">
+                            <h3 class="card-title">Permissions</h3>
                         </div>
                     <form role="form" action="update_permissions" method="post">
                         @csrf
                         <input type="text" value="{{$user->id}}" name="id_user" style="display:none;">
-                        <div class="box-body">
+                        <div class="card-body">
                             <div class="form-group">
                                 @php
                                     $permissions = Permission::all()
                                    
                                 @endphp
+                                <!--<div class="form-group">
+                                    <div class="form-check">
+                                   
+                                    </div>
+                                    <div class="form-check">
+                                   
+                                    </div>
+                                    
+                                </div>-->
+                                <div class="form-group">
+                                
                                 @foreach($permissions as $permissions)
                                 <label>
                                     @php
                                         $per= DB::table('permission_utilisateur')->where('utilisateur_id', $user->id)->where('permission_id', $permissions->id)->count();
                                     @endphp
                                     @if($per != 0)
-                                        <input type="checkbox" class="minimal" id="{{$permissions->libele}}" value="{{$permissions->id}}" name="{{$permissions->libele}}" checked>
+                                        <div class="form-check">
+                                        <input class="form-check-input" name="{{$permissions->libele}}" value="{{$permissions->id}}" checked type="checkbox">
+                                        <label class="form-check-label">{{$permissions->libele}}</label>
+                                        <!--<input type="checkcard" class="minimal"  name="" checked>-->
+                                        </div>
                                     @else
-                                        <input type="checkbox" class="minimal" id="{{$permissions->libele}}" value="{{$permissions->id}}" name="{{$permissions->libele}}">
+                                        <div class="form-check">
+                                        <input class="form-check-input" name="{{$permissions->libele}}" value="{{$permissions->id}}" type="checkbox">
+                                        <label class="form-check-label">{{$permissions->libele}}</label>
+                                        <!--<input type="checkcard" class="minimal"  {{$permissions->libele}}  name="">-->
+                                        </div>
                                     @endif
                                    
-                                    {{$permissions->libele}}
+                                   
                                 </label>
                                 
                                 @endforeach
+                                </div>
                             
                                 
                             </div>
                      
                         </div>
-                        <!-- /.box-body -->
+                        <!-- /.card-body -->
 
-                        <div class="box-footer">
+                        <div class="card-footer">
                             <button type="submit" class="btn btn-primary" id="bt" >METTRE A JOUR LES PERMISSIONS</button>
                         </div>
                      
                     </form><hr>
 
-                     <div class="box-header">
-                        <h3 class="box-title">Modifier le mot de passe</h3>
+                     <div class="card-header">
+                        <h3 class="card-title">Modifier le mot de passe</h3>
                     </div>
                     <form role="form" action="edit_password" method="post">
                         @csrf
                         <input type="text" value="{{$user->id}}" name="id_user" style="display:none;">
-                        <div class="box-body">
+                        <div class="card-body">
                             <div class="form-group">
                                 <label>Mot de passe</label>
                                 <input type="password" class="form-control  " required name="password" id="pwd1">
@@ -172,9 +192,9 @@
                          
                                         
                         </div>
-                        <!-- /.box-body -->
+                        <!-- /.card-body -->
 
-                        <div class="box-footer">
+                        <div class="card-footer">
                             <button type="submit" class="btn btn-primary" id="bt" >MODIFIER LE MOT DE PASSE</button>
                         </div>
                         <script type="text/javascript">

@@ -50,10 +50,10 @@
         <div class="row">
              <div class="col-md-2"></div>
             <div class="col-md-8">
-                <div class="box box-aeneas">
+                <div class="card card-aeneas">
                       
-                    <div class="box-header with-border">
-                        <h3 class="box-title"><b>ENREGISTRER UNE PROSPECTION</b> </h3><br>
+                    <div class="card-header with-border">
+                        <h3 class="card-title"><b>ENREGISTRER UNE PROSPECTION</b> </h3><br>
                         <b>(*)champ obligatoire</b>
                     </div>
                 
@@ -61,7 +61,8 @@
                     <form role="form" action="add_prospection" method="post" enctype="multipart/form-data">
                         
                         @csrf
-                        <div class="box-body">
+                        <div class="card-body row">
+
                             <div class="col-md-6">
                             
                                 <div class="form-group">
@@ -101,8 +102,8 @@
                                     <input type="number" max="31" min="1" class="form-control " name="duree" required>
                                 </div>-->
                                     <!--CALCULER LA DATE DE FIN DE LA PROSPECTION ET AJOUTER-->
-                                <div class="box-header">
-                                    <b><h3 class="box-title">L'ENTREPRISE</h3></b>
+                                <div class="card-header">
+                                    <b><h3 class="card-title">L'ENTREPRISE</h3></b>
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputFile">Choisissez l'entreprise si existant ou sélectionnez Autre:</label>
@@ -226,8 +227,8 @@
                             <div class="col-md-6">
                                 <!--DEUXIEMEN PARTIE DU FORMULAIRE-->
                             
-                                    <div class="box-header">
-                                        <b><h3 class="box-title">INFORMATIONS DE L'INTERLOCUTEUR </h3></b>
+                                    <div class="card-header">
+                                        <b><h3 class="card-title">INFORMATIONS DE L'INTERLOCUTEUR </h3></b>
                                     </div>
                             
                                     <div class="form-group">
@@ -349,11 +350,11 @@
                             </div>
                             <!-- /.row-->
                         </div>
-                        <!-- /.box-body -->
+                        <!-- /.card-body -->
 
                         
                     
-                        <div class="box-footer">
+                        <div class="card-footer">
                             <button type="submit" class="btn btn-primary">VALIDER</button>
                         </div>
                     

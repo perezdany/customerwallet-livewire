@@ -33,11 +33,11 @@
             <form action="add_referant_in_fiche_customer" method="post">  
                 @csrf
             
-                <!-- /.box-body -->
-                <div class="box-body">
+                <!-- /.card-body -->
+                <div class="card-body">
                 @csrf
-                    <div class="box-header">
-                        <h3 class="box-title"><b>AJOUTER UN INTERLOCUTEUR </b></h3>
+                    <div class="card-header">
+                        <h3 class="card-title"><b>AJOUTER UN INTERLOCUTEUR </b></h3>
                     </div> 
 
                     <div class="form-group">
@@ -143,12 +143,12 @@
   <div class="row">
     
         <div class="col-md-6">
-          <div class="box">
-            <div class="box-header">
-              <h3 class="box-title">Les Cibles</h3>
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Les Cibles</h3>
             </div>
-            <!-- /.box-header -->
-              <div class="box-body table-responsive">
+            <!-- /.card-header -->
+              <div class="card-body table-responsive">
               <table id="example1" class="table table-bordered table-striped table-hover">
               <thead>
               <tr>
@@ -193,7 +193,7 @@
                                 <h4 class="modal-title">Details de {{$all->nom_entreprise}} </h4>
                               </div>
                               <div class="modal-body">
-                                <div class="box-body">
+                                <div class="card-body">
                                   @foreach($edit as $edit)
                                     <div class="form-group">
                                         <h4><label>Nom:</label></h4>
@@ -314,9 +314,9 @@
               
               </table>
             </div>
-            <!-- /.box-body -->
+            <!-- /.card-body -->
           </div>
-          <!-- /.box -->
+          <!-- /.card -->
         </div>
         <!-- /.col --> 
 
@@ -325,19 +325,19 @@
           <!-- Afficher les interlocuteurs de l'entreprise sélectionnée -->
           @if(isset($interloc))
               
-            <div class="box">
-                <div class="box-header with-border">
-                <h3 class="box-title">INTERLOCUTEURS</h3><br>
+            <div class="card">
+                <div class="card-header with-border">
+                <h3 class="card-title">INTERLOCUTEURS</h3><br>
 
-                  <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                  <div class="card-tools pull-right">
+                        <button type="button" class="btn btn-card-tool" data-widget="collapse"><i class="fa fa-minus"></i>
                         </button>
-                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                        <button type="button" class="btn btn-card-tool" data-widget="remove"><i class="fa fa-times"></i></button>
                     </div>
             </div>
             
-                  <!-- /.box-header -->
-            <div class="box-body table-responsive">
+                  <!-- /.card-header -->
+            <div class="card-body table-responsive">
                 <table id="example1" class="table table-bordered table-striped table-hover">
                     <thead>
                       <tr>
@@ -411,7 +411,7 @@
                     
                 </table>
             </div>
-            <!-- /.box-body -->
+            <!-- /.card-body -->
               
           @endif
 
@@ -423,24 +423,24 @@
                   
               @endphp
               @foreach($edit as $edit)
-                  <div class="box box-aeneas">
-                      <div class="box-header with-border">
-                        <h3 class="box-title">MODIFIER UNE CIBLE</h3><br>
+                  <div class="card card-aeneas">
+                      <div class="card-header with-border">
+                        <h3 class="card-title">MODIFIER UNE CIBLE</h3><br>
 
-                        <div class="box-tools pull-right">
-                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                        <div class="card-tools pull-right">
+                            <button type="button" class="btn btn-card-tool" data-widget="collapse"><i class="fa fa-minus"></i>
                             </button>
-                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                            <button type="button" class="btn btn-card-tool" data-widget="remove"><i class="fa fa-times"></i></button>
                         </div>
                       </div>
                   
                       <!-- form start -->
                       <form role="form" method="post" action="edit_entreprise_cible">
-                        <div class="box-body">
+                        <div class="card-body">
                           @csrf
                           <input type="text" name="id_entreprise" value="{{$edit->id}}" style="display:none;">
                           
-                          <div class="box-body">
+                          <div class="card-body">
                           
                             <div class="form-group">
                                 <label>Nom :</label>
@@ -550,11 +550,11 @@
                               </div>
                             @endif
 
-                              <div class="box-footer">
+                              <div class="card-footer">
                                   <button type="submit" class="btn btn-primary">VALIDER</button>
                               </div>
                           </div>
-                        </div>  <!-- /.box-body -->
+                        </div>  <!-- /.card-body -->
                         
                       </form>
                   </div>
@@ -569,23 +569,23 @@
                 $edit =  $ciblecontroller->GetById($display_entreprise);  
               @endphp
               @foreach($edit as $edit)
-                  <div class="box box-aeneas">
-                      <div class="box-header with-border">
-                        <h3 class="box-title">INFO</h3><br>
+                  <div class="card card-aeneas">
+                      <div class="card-header with-border">
+                        <h3 class="card-title">INFO</h3><br>
 
-                        <div class="box-tools pull-right">
-                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                        <div class="card-tools pull-right">
+                            <button type="button" class="btn btn-card-tool" data-widget="collapse"><i class="fa fa-minus"></i>
                             </button>
-                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                            <button type="button" class="btn btn-card-tool" data-widget="remove"><i class="fa fa-times"></i></button>
                         </div>
                       </div>
                   
                       <!-- form start -->
                       <form role="form" >
-                        <div class="box-body" >
+                        <div class="card-body" >
                           @csrf
                           <input type="text" name="id_entreprise" value="{{$edit->id}}" style="display:none;">
-                          <div class="box-body" style="text-align: center;">
+                          <div class="card-body" style="text-align: center;">
                           
                             <div class="form-group">
                                 <h4><label>Raison sociale:</label></h4>
@@ -627,7 +627,7 @@
 
                               
                           </div>
-                        </div>  <!-- /.box-body -->
+                        </div>  <!-- /.card-body -->
                         
                       </form>
                   </div>
@@ -642,7 +642,7 @@
   <div class="row">
       <!-- right column -->
      
-        <!-- /.box -->
+        <!-- /.card -->
     
   </div>
   <!--/.col (right) -->

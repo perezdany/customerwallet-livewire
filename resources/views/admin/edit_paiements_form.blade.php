@@ -21,12 +21,12 @@
 @section('content')
     <div class="row">
         @if(session('success'))
-            <div class="col-md-12 box-header" style="font-size:13px;">
+            <div class="col-md-12 card-header" style="font-size:13px;">
               <p class="bg-success" >{{session('success')}}</p>
             </div>
         @endif
          @if(session('error'))
-            <div class="col-md-12 box-header" style="font-size:13px;">
+            <div class="col-md-12 card-header" style="font-size:13px;">
               <p class="bg-danger" >{{session('error')}}</p>
             </div>
         @endif
@@ -36,12 +36,12 @@
     <!-- Main row -->  
     <div class="row">
         @if(session('success'))
-            <div class="col-md-12 box-header" style="font-size:13px;">
+            <div class="col-md-12 card-header" style="font-size:13px;">
               <p class="bg-success" >{{session('success')}}</p>
             </div>
         @endif
          @if(session('error'))
-            <div class="col-md-12 box-header" style="font-size:13px;">
+            <div class="col-md-12 card-header" style="font-size:13px;">
               <p class="bg-danger" >{{session('error')}}</p>
             </div>
         @endif
@@ -51,9 +51,9 @@
         <!-- right column -->
         <div class="col-md-6">
             @if(isset($id_edit))
-                    <div class="box box-aeneas">
-                    <div class="box-header with-border">
-                        <b><h3 class="box-title">Paiements </h3><br>
+                    <div class="card card-aeneas">
+                    <div class="card-header with-border">
+                        <b><h3 class="card-title">Paiements </h3><br>
                         (*)champ obligatoire</b>
                     </div>
                     @php
@@ -69,7 +69,7 @@
                             <input type="text" value="{{$retrive->montant}}" name="montant" style="display:none;">
                             <input type="text" value="{{$retrive->id_contrat}}" name="id_contrat" style="display:none;">
                         
-                            <div class="box-body">
+                            <div class="card-body">
 
                                 <div class="form-group">
                                     <label>CONTRAT DU :</label>
@@ -107,9 +107,9 @@
                                
                                 
                             </div>
-                            <!-- /.box-body -->
+                            <!-- /.card-body -->
 
-                            <div class="box-footer">
+                            <div class="card-footer">
                             <button type="submit" class="btn btn-primary">VALIDER</button>
                             </div>
                         </form>

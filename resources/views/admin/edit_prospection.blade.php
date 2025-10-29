@@ -33,9 +33,9 @@
 @endphp
 
 @section('content')
-    <div class="row">
+
      @if(session('success'))
-            <div class="col-md-12 box-header" style="font-size:13px;">
+            <div class="col-md-12 card-header" style="font-size:13px;">
               <p class="bg-success" >{{session('success')}}</p>
             </div>
     @endif
@@ -48,9 +48,9 @@
         <!--/.col (left) -->
         <!-- right column -->
         <div class="col-md-8">
-            <div class="box box-aeneas">
-                <div class="box-header with-border">
-                    <h3 class="box-title"><b> MODIFIER UNE PROSPECTION </b></h3><br>
+            <div class="card card-aeneas">
+                <div class="card-header with-border">
+                    <h3 class="card-title"><b> MODIFIER UNE PROSPECTION </b></h3><br>
                     <b>(*)champ obligatoire</b>
                 </div>
                 @php
@@ -62,8 +62,8 @@
                         @csrf
                         <input type="text" value="{{$retrive->id}}" name="id_prospection" style="display:none;">
                         <input type="text" value="{{$retrive->interlocuteur}}" name="id_interlocuteur" style="display:none;">
-                        <div class="box-body">
-                            <div class="col-md-6">
+                        <div class="card-body">
+                            <div class="col-md-12">
                                 <div class="form-group">
                                     <label>Service Proposé (*)</label>
                                     <select class="form-control  select2" data-placeholder ="Dérouler pour voir les service" multiple="multiple" name="service_propose[]" >
@@ -101,8 +101,8 @@
                                     <input type="number" max="365" min="1" class="form-control " name="duree" value="{{$retrive->duree_jours}}">
                                 </div>
                                     <!--CALCULER LA DATE DE FIN DE LA PROSPECTION ET AJOUTER-->
-                                <div class="box-header">
-                                    <h3 class="box-title"><b> L'ENTREPRISE </b></h3>
+                                <div class="card-header">
+                                    <h3 class="card-title"><b> L'ENTREPRISE </b></h3>
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputFile">Choisissez l'entreprise si existant ou sélectionnez Autre:</label>
@@ -128,8 +128,8 @@
                         
                             <!-- 
                                 <div class="col-md-6">           
-                                    <div class="box-header">
-                                    <h3 class="box-title"> <b> INFORMATIONS DE L'INTERLOCUTEUR </b></h3>
+                                    <div class="card-header">
+                                    <h3 class="card-title"> <b> INFORMATIONS DE L'INTERLOCUTEUR </b></h3>
                                     </div>
                                 
                                         <div class="form-group">
@@ -202,9 +202,9 @@
                         </div>
 
 
-                        <!-- /.box-body -->
+                        <!-- /.card-body -->
 
-                        <div class="box-footer">
+                        <div class="card-footer">
                             <button type="submit" class="btn btn-primary">VALIDER</button>
                         </div>
                     </form>

@@ -32,10 +32,8 @@ class Interlocuteurs extends Component
        
         if($champ == $this->orderField)
         {
-            
             if($this->orderDirection = 'ASC')
             {
-                
                 $this->orderDirection =  $this->orderDirection = 'DESC';
                 //dump($champ." ".$this->orderDirection);
             }
@@ -44,7 +42,6 @@ class Interlocuteurs extends Component
         }
         else
         {
-            //dd('ici');
             $this->orderField = $champ;
             $this->orderDirection =  $this->orderDirection = 'DESC' ? 'ASC' : 'DESC';
             //$this->reset('orderDirection');

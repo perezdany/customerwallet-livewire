@@ -13,7 +13,7 @@
 @endphp
 
 @section('content')
-    <div class="row">
+      <div class="row">
          <p class="bg-primary">
                 <ul>
                     <li>Pour rechercher un mois, <b>Selectionnez le mois en question et un jour quelquonque de ce mois</b><br></li>
@@ -23,11 +23,11 @@
         <!-- left column -->
         <div class="col-md-12">
 
-            <div class="box">
-                <div class="box-body">
-                    <div class="box-header with-border">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-header with-border">
                         <b>
-                        <h3 class="box-title"> 
+                        <h3 class="card-title"> 
                             @php
                                  echo 'Chiffre d\'affaire au mois de ';
                                 setlocale(LC_TIME, ['fr', 'fra', 'fr_FR']);
@@ -155,13 +155,15 @@
             </div>
            
         </div>
-        <div class="col-md-5">
+    </div>
+    <div class="row">
+        <div class="col-md-4">
              <!--ON VA ESSAYER D' AFFICHER LES POURCENTAGE DE CHAQUE ENTREPRISE-->
-            <div class="box">
-                <div class="box-body">
-                    <div class="box-header with-border">
-                        <b>
-                        <h3 class="box-title"> 
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-header with-border">
+                       
+                        <h3 class="card-title"> 
                             @php
                                 echo 'Pourcentage (%) par entreprise du mois de ';
                                 setlocale(LC_TIME, ['fr', 'fra', 'fr_FR']);
@@ -202,13 +204,12 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-5">
+        <div class="col-md-4">
             
-            <div class="box">
-                <div class="box-body">
-                    <div class="box-header with-border">
-                        <b>
-                        <h3 class="box-title"> 
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-header with-border">
+                        <h3 class="card-title"> 
                             @php
                                 echo 'Pourcentage (%) par client du mois de ';
                                 setlocale(LC_TIME, ['fr', 'fra', 'fr_FR']);
@@ -223,8 +224,7 @@
                     <script>
                 
                         const ctx3 = document.getElementById('servpercentchart').getContext('2d');
-        
-
+    
                         const piechart2 = new Chart(ctx3, {
                             type : "pie",
                             data : {
@@ -257,30 +257,30 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-4">
              <!--ON VA ESSAYER D' AFFICHER LES POURCENTAGE DE CHAQUE ENTREPRISE-->
-            <div class="box">
-                <div class="box-body">
-                    <div class="box-header with-border">
-                        <b><h3 class="box-title"> RECHERCHER UN MOIS</h3><br>
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-header with-border">
+                        <b><h3 class="card-title"> RECHERCHER UN MOIS</h3><br>
                     </div>
 
                     <!-- form start -->
                     <form role="form" action="search_monthly_chart" method="post">
                         @csrf
                         
-                        <div class="box-body">
+                        <div class="card-body">
                            
                             <div class="form-group">
                                     <label >Mois:</label>
                                     <input type="date" class="form-control input-lg" name="month">
                             </div>
 
-                            <div class="box-footer">
+                            <div class="card-footer">
                                 <button type="submit" class="btn btn-primary">RECHERCHER</button>
                             </div>
                         </div>
-                        <!-- /.box-body -->
+                        <!-- /.card-body -->
 
                         
                     </form>

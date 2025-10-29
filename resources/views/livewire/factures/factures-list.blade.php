@@ -1,25 +1,28 @@
 
-    <!--FAIRE ALLERTE POUR AFFICHER LES FACTURES DONT LA DATE EST ECHUE ET AFFICHER EN HAUT ENSUITE METTRE LE TOTAL DES FACTURES NON PAYEES EN BAS -->
-    @php
-        $total = 0;
-        $date_aujourdhui = date('Y-m-d');
-       
-       
-    @endphp
+<!--FAIRE ALLERTE POUR AFFICHER LES FACTURES DONT LA DATE EST ECHUE ET AFFICHER EN HAUT ENSUITE METTRE LE TOTAL DES FACTURES NON PAYEES EN BAS -->
+@php
+    $total = 0;
+    $date_aujourdhui = date('Y-m-d');
+    
+    
+@endphp
 @if(isset($id_entreprise))
 
     @if($id_entreprise != "")
        
-        <div class="col-xs-12">
-                 <div class="box">
-                <div class="box-header">
+        <div class="col-sm-12">
+           
+                 <div class="card">
+                <div class="card-header">
                   
                     <a href="facture" style="color:blue"><u>Rétablir<i class="fa fa-refresh" aria-hidden="true"></i></u></a>&emsp;&emsp;&emsp;&emsp;
                     
                 </div>
-                <!-- /.box-header -->
-                <div class="box-body table-responsive">
+                <!-- /.card-header -->
+                <div class="card-body table-responsive">
+                  
                     <table id="example1" class="table table-bordered table-striped ">
+                  
                         <thead>
                         <tr>
                             <th>Client</th>
@@ -57,9 +60,11 @@
                                         $diff_in_days = floor(($date_aujourdhui - strtotime($facture->date_reglement)) / (60 * 60 * 24));//on obtient ca en jour
                                         //dd($diff_in_days);
                                     @endphp
+                                    ci
                                     @if($diff_in_days >= 60)
                                     
                                         <tr class="bg-red">
+                                            
                                             <td class="bg-red">{{$facture->nom_entreprise}}</td>
                                             <td class="bg-red">{{$facture->numero_facture}}</td>
                                             
@@ -75,7 +80,7 @@
                                                 <form action="paiement_by_facture" method="post">
                                                         @csrf
                                                         <input type="text" value={{$facture->id}} style="display:none;" name="id_facture">
-                                                        <button type="submit" class="btn btn-success"><i class="fa fa-money"></i>AFFICHER</button>
+                                                        <button type="submit" class="btn btn-success"><i class="fas fa-money-bill"></i>AFFICHER</button>
                                                 </form>
                                             </td>
                                             
@@ -99,7 +104,7 @@
                                                         <form action="paiement_form" method="post">
                                                             @csrf
                                                             <input type="text" value={{$facture->id}} style="display:none;" name="id_facture">
-                                                            <button type="submit" class="btn btn-success"><i class="fa fa-money"></i></button>
+                                                            <button type="submit" class="btn btn-success"><i class="fas fa-money-bill"></i></button>
                                                         </form>
                                                         @endif
                                                     @else
@@ -114,10 +119,11 @@
                                         
                                         </tr>
                                     @else
+                                    f
                                         @if($diff_in_days == 30)
                                         
                                             <tr class="bg-warning">
-                                            <td class="bg-red">{{$facture->nom_entreprise}}</td>
+                                            <td class="bg-warning">{{$facture->nom_entreprise}}</td>
                                                 <td class="bg-warning">{{$facture->numero_facture}}</td>
                                                 <td class="bg-warning">@php echo date('d/m/Y',strtotime($facture->date_emission)) @endphp</td>
                                         
@@ -131,7 +137,7 @@
                                                     <form action="paiement_by_facture" method="post" target="blank">
                                                             @csrf
                                                             <input type="text" value={{$facture->id}} style="display:none;" name="id_facture">
-                                                            <button type="submit" class="btn btn-success"><i class="fa fa-money"></i>AFFICHER</button>
+                                                            <button type="submit" class="btn btn-success"><i class="fas fa-money-bill"></i>AFFICHER</button>
                                                     </form>
                                                 </td>
                                             
@@ -154,7 +160,7 @@
                                                             <form action="paiement_form" method="post" target="blank">
                                                                 @csrf
                                                                 <input type="text" value={{$facture->id}} style="display:none;" name="id_facture">
-                                                                <button type="submit" class="btn btn-success"><i class="fa fa-money"></i></button>
+                                                                <button type="submit" class="btn btn-success"><i class="fas fa-money-bill"></i></button>
                                                             </form>
                                                             @endif
                                                         @else
@@ -185,7 +191,7 @@
                                                     <form action="paiement_by_facture" method="post">
                                                             @csrf
                                                             <input type="text" value={{$facture->id}} style="display:none;" name="id_facture">
-                                                            <button type="submit" class="btn btn-success"><i class="fa fa-money"></i>AFFICHER</button>
+                                                            <button type="submit" class="btn btn-success"><i class="fas fa-money-bill"></i>AFFICHER</button>
                                                     </form>
                                                 </td>
                                             
@@ -208,7 +214,7 @@
                                                             <form action="paiement_form" method="post">
                                                                 @csrf
                                                                 <input type="text" value={{$facture->id}} style="display:none;" name="id_facture">
-                                                                <button type="submit" class="btn btn-success"><i class="fa fa-money"></i></button>
+                                                                <button type="submit" class="btn btn-success"><i class="fas fa-money-bill"></i></button>
                                                             </form>
                                                             @endif
                                                         @else
@@ -242,7 +248,7 @@
                                             <form action="paiement_by_facture" method="post">
                                                     @csrf
                                                     <input type="text" value={{$facture->id}} style="display:none;" name="id_facture">
-                                                    <button type="submit" class="btn btn-success"><i class="fa fa-money"></i>AFFICHER</button>
+                                                    <button type="submit" class="btn btn-success"><i class="fas fa-money-bill"></i>AFFICHER</button>
                                             </form>
                                         </td>
                                         
@@ -266,7 +272,7 @@
                                                     <form action="paiement_form" method="post">
                                                         @csrf
                                                         <input type="text" value={{$facture->id}} style="display:none;" name="id_facture">
-                                                        <button type="submit" class="btn btn-success"><i class="fa fa-money"></i></button>
+                                                        <button type="submit" class="btn btn-success"><i class="fas fa-money-bill"></i></button>
                                                     </form>
                                                     @endif
                                                 @else
@@ -295,44 +301,39 @@
                         
                     </table>
                 </div>
-                <!-- /.box-body -->
+                <!-- /.card-body -->
                 
-                <div class="box-footer">
+                <div class="card-footer">
                     @php
                         //echo '<h3>TOTAL DES FACTURES ECHUES:'.$total." XOF</h3>";
                     @endphp
                 </div>
             </div>
             
-            <!-- /.box -->
+            <!-- /.card -->
         
         </div>
     @else
-        <div class="col-xs-12">
-                    
-            <div class="box">
-                <div class="box-header">
-                    <h3 class="box-title">Listes des factures<!--/<a href="cfactures" target="blank" style="color:blue">Liste des facutres par clients</a>--></h3>
+        <div class="col-md-12">
+             <a href="form_add_facture" class="mr-4 d-block"><button class="btn btn-primary"> <b><i class="fa fa-plus"></i> FACTURE</b></button></a> 
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Listes des factures<!--/<a href="cfactures" target="blank" style="color:blue">Liste des facutres par clients</a>--></h3>
                     <br><br>
-                    <a href="facture" style="color:blue"><u>Rétablir<i class="fa fa-refresh" aria-hidden="true"></i></u></a>&emsp;&emsp;&emsp;&emsp;<label>Filtrer par:</label>
-                
+                    <a href="facture" style="color:blue"><u>Rétablir <i class="fa fa-undo"></i></u></a>&emsp;&emsp;&emsp;&emsp;<label>Filtrer par:</label>
                     <div class="row">
-                    
-                        <div class="col-xs-3">
-                    
-                            <select class="form-control" wire:model.change="etat">
-                            
+                        <div class="col-sm-3">
+                            <select class="input-group input-group-sm" wire:model.change="etat">
                                 <option value="">Etat</option>
                                 <option value="1">Réglée</option>
                                 <option value="0">non-reglée</option>
                                 <option value="2">Annulée</option>
-                            </select>
-                                                        
+                            </select>                  
                         </div>
 
-                        <div class="col-xs-3">
+                        <div class="col-sm-3">
                     
-                            <select class="form-control" wire:model.change="id_contrat" id="id_contrat">
+                            <select class="input-group input-group-sm" wire:model.change="id_contrat" id="id_contrat">
                                 @php
                                     $contrats_liste = $contratcontroller->RetriveAll();
                                     
@@ -345,8 +346,8 @@
                                                         
                         </div>
 
-                        <div class="col-xs-3">
-                            <select class="form-control"  wire:model.debounce.250ms="entreprise" id="entreprise">
+                        <div class="col-sm-3">
+                            <select class="input-group input-group-sm"  wire:model.debounce.250ms="entreprise" id="entreprise">
                                 <option value="">Entreprises</option>
                                 @php
                                     $get =  $entreprisecontroller->GetAll();
@@ -354,29 +355,16 @@
                                 
                                 @foreach($get as $entreprise)
                                     <option value={{$entreprise->id}}>{{$entreprise->nom_entreprise}}</option>
-                                    
                                 @endforeach
                                 
                             </select>   
-                        </div>
-
-                    </div>
-
-                    <div class="box-tools">
-                        <a href="form_add_facture" class="mr-4 d-block"><button class="btn btn-primary"> <b><i class="fa fa-plus"></i> FACTURE</b></button></a><br>
-                        <br><div class="input-group input-group-sm" style="width: 300px;">
-                            <input type="text" id="search" wire:model.debounce.250ms="search" class="form-control pull-right" placeholder="Rechercher">
-
-                            <div class="input-group-btn">
-                                <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
-                            </div>
                         </div>
                     </div>
 
                     <label>Afficher par date:</label>
                     <div class="row">
-                        <div class="col-xs-3 form-group">
-                            <div class="col-xs-3">
+                        <div class="row col-sm-3">
+                            <div class="col-sm-3">
                                 <select class="" id="compare" wire:model.debounce.250ms="compare">
                                     <option value="">Choisir</option>
                                     <option value="<"><</option> 
@@ -384,7 +372,7 @@
                                     <option value="=">=</option>                              
                                 </select>   
                             </div>
-                                <div class="col-xs-3">
+                            <div class="col-sm-3">
                                 <select class="" id="anne_depuis" wire:model.debounce.250ms="annee">
                                     <option value="">Choisir</option>
                                     @php
@@ -394,25 +382,32 @@
                                             echo'<option value='.$annee.'>'.$annee.'</option>';
                                         }
                                     @endphp
-                                    
                                 </select>   
                             </div>
-                        </div>    
+                        </div>
                     </div>
-                
+
+                    <div class="card-tools">
+                        <div class="input-group input-group-sm" style="width: 300px;">
+                            <input type="text" id="search" wire:model.debounce.250ms="search" class="form-control pull-right" placeholder="Rechercher">
+                            <div class="input-group-btn">
+                                <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <!-- /.box-header -->
-                <div class="box-body table-responsive">
+                <!-- /.card-header -->
+                <div class="card-body table-responsive p-0"">
                 
                     <table class="table table-bordered table-striped ">
                         <thead>
                         <tr>
-                            <th wire:click="setOrderField('numero_facture')"><i class="fa fa-sort-amount-desc" aria-hidden="true"></i> N° </th>
-                            <th wire:click="setOrderField('date_emission')"><i class="fa fa-sort-amount-desc" aria-hidden="true"></i>Emise le:</th>
-                            <th wire:click="setOrderField('date_reglement')"><i class="fa fa-sort-amount-desc" aria-hidden="true"></i>Date de règlement</th>
-                            <th wire:click="setOrderField('titre_contrat')"><i class="fa fa-sort-amount-desc" aria-hidden="true"></i>Contrat</th>
-                            <th wire:click="setOrderField('nom_entreprise')"><i class="fa fa-sort-amount-desc" aria-hidden="true"></i>Client</th>
-                            <th wire:click="setOrderField('montant_facture')"><i class="fa fa-sort-amount-desc" aria-hidden="true"></i>Montant</th>
+                            <th wire:click="setOrderField('numero_facture')"><i class="fas fa-sort" aria-hidden="true"></i> N° </th>
+                            <th wire:click="setOrderField('date_emission')"><i class="fas fa-sort" aria-hidden="true"></i>Emise le:</th>
+                            <th wire:click="setOrderField('date_reglement')"><i class="fas fa-sort" aria-hidden="true"></i>Date de règlement</th>
+                            <th wire:click="setOrderField('titre_contrat')"><i class="fas fa-sort" aria-hidden="true"></i>Contrat</th>
+                            <th wire:click="setOrderField('nom_entreprise)"><i class="fas fa-sort" aria-hidden="true"></i>Client</th>
+                            <th wire:click="setOrderField('montant_facture')"><i class="fas fa-sort" aria-hidden="true"></i>Montant</th>
                             <th>Montant Reglé</th>
                             <th>Paiements</th>
                             <th>Fichier</th>
@@ -431,19 +426,17 @@
                             @forelse($factures as $facture)
                                 @if($facture->reglee == 0 AND $facture->annulee == 0)
                                     @php
-                                        
                                         $total_non_reglee = $total_non_reglee + $facture->montant_facture;
                                         //LES FACTURE ECHUE DEPUIS UN MOMENT
                                         $diff_in_days = floor(($date_aujourdhui - strtotime($facture->date_reglement)) / (60 * 60 * 24));//on obtient ca en jour
-                                        //dump($total);
-                                        
                                     @endphp
                                     <!--VOIR SI Y A DES PAIEMENTS EXISTANTS DE LA FACTURE, NE PLUS METTRE EN ROUGE-->
                                     @php
                                         $paies = DB::table('paiements')->where('id_facture', $facture->id)->count();
+                                      
                                     @endphp
-                                    @if($paies != 0)
                                     
+                                    @if($paies != 0)<!--SI Y A DES PAIEMENTS EXISTANTS-->
                                         <tr class="bg-success">
                                             <td class="bg-success">{{$facture->numero_facture}}</td>
                                             <td class="bg-success">@php echo date('d/m/Y',strtotime($facture->date_emission)) @endphp</td>
@@ -474,17 +467,14 @@
                                             </td>
                                             <td class="bg-success">
                                                 <form action="paiement_by_facture" method="post">
-                                                        @csrf
-                                                        <input type="text" value={{$facture->id}} style="display:none;" name="id_facture">
-                                                        <button type="submit" class="btn btn-success"><i class="fa fa-eye"></i></button>
+                                                    @csrf
+                                                    <input type="text" value={{$facture->id}} style="display:none;" name="id_facture">
+                                                    <button type="submit" class="btn btn-success"><i class="fa fa-eye"></i></button>
                                                 </form>
-                                            </td>
-                                                                   
+                                            </td>               
                                             <td class="bg-success">
-                                            
                                                 <form action="download_file_facture" method="post" enctype="multipart/form-data" target="blank">
                                                     @csrf
-                                                    
                                                     <input type="text" value={{$facture->id}} style="display:none;" name="id_facture">
                                                     <input type="text" class="form-control" name="file" value="{{$facture->file_path}}" style="display:none;">
                                                     <button type="submit" class="btn btn-warning"><i class="fa fa-download"></i></button>
@@ -505,40 +495,35 @@
                                                 @endcan
                                                 <div class="modal modal-default fade" id="@php echo "add".$facture->id.""; @endphp">
                                                     <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span></button>
-                                                        <h4 class="modal-title">Fichiers de la facture {{$facture->numero_facture}}</h4>
-                                                        </div>
-                                                        <!-- form start -->
-                                                        <form role="form" method="post" action="upload_file_facture" enctype="multipart/form-data">
-                                                            <div class="modal-body">
-                                                                <div class="box-body">
-                                                                    @csrf
-                                                                    <input type="text" name="id_facture" value="{{$facture->id}}" style="display:none;">
-                                                                
-                                                                    
-                                                                        <div class="form-group">
-                                                                            <label>Fichier de la facture(PDF)</label>
-                                                                            <input type="file" class="form-control" name="file" >
-                                                                        </div>
-                                                                    <div class="modal-footer">
-                                                    
-                                                                        <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Fermer</button>
-                                                                    
-                                                                        <button type="submit" class="btn btn-success">Valider la modification</button>
-                                                                        
-                                                                    </div> 
-                                                                
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h4 class="modal-title">   
+                                                                    Fichiers de la facture {{$facture->numero_facture}}
+                                                                </h4>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <!-- form start -->
+                                                            <form role="form" method="post" action="upload_file_facture" enctype="multipart/form-data">
+                                                                <div class="modal-body">
+                                                                    <div class="card-body">
+                                                                        @csrf
+                                                                        <input type="text" name="id_facture" value="{{$facture->id}}" style="display:none;">
+                                                                            <div class="form-group">
+                                                                                <label>Fichier de la facture(PDF)</label>
+                                                                                <input type="file" class="form-control" name="file" >
+                                                                            </div>
+                                                                        <div class="modal-footer">
+                                                                            <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Fermer</button>
+                                                                            <button type="submit" class="btn btn-success">Valider la modification</button>
+                                                                        </div> 
+                                                                    </div>
                                                                     
                                                                 </div>
-                                                                
-                                                            </div>
-                                                        
-                                                        </form>
-                                                    </div>
-                                                    <!-- /.modal-content -->
+                                                            </form>
+                                                        </div>
+                                                        <!-- /.modal-content -->
                                                     </div>
                                                     <!-- /.modal-dialog -->
                                                 </div>
@@ -552,7 +537,7 @@
                                                         <form action="paiement_form" method="post">
                                                             @csrf
                                                             <input type="text" value={{$facture->id}} style="display:none;" name="id_facture">
-                                                            <button type="submit" class="btn btn-success"><i class="fa fa-money"></i></button>
+                                                            <button type="submit" class="btn btn-info"><i class="fas fa-money-bill"></i></button>
                                                         </form>
                                                     @endif
                                                 
@@ -562,7 +547,8 @@
                                                     </button>
                                                     @endcan
                                                 @endcan   
-                                                
+
+                                               
                                                 @can("admin")
                                                 <button type="button" class="btn btn-primary" wire:click="EditFacture('{{$facture->id}}')">
                                                 <i class="fa fa-edit"></i>
@@ -579,11 +565,11 @@
                                                         </button>
                                                     @endcan
                                                 @endcan
-                            
+                                              
                                             </td>
                                         </tr>
-                                        
                                     @else
+
                                         @if($diff_in_days >= 60)
                                         
                                             <tr class="bg-red">
@@ -617,9 +603,9 @@
                                                 </td>
                                                 <td class="bg-red">
                                                     <form action="paiement_by_facture" method="post">
-                                                            @csrf
-                                                            <input type="text" value={{$facture->id}} style="display:none;" name="id_facture">
-                                                            <button type="submit" class="btn btn-success"><i class="fa fa-eye"></i></button>
+                                                        @csrf
+                                                        <input type="text" value={{$facture->id}} style="display:none;" name="id_facture">
+                                                        <button type="submit" class="btn btn-success"><i class="fa fa-eye"></i></button>
                                                     </form>
                                                 </td>
                                                 
@@ -635,6 +621,7 @@
                                                     </form>
                                                 </td>
                                                 <td class="bg-red">
+                                                  
                                                     @can("admin")
                                                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="@php echo "#add".$facture->id.""; @endphp">
                                                     <i class="fa fa-upload"></i>
@@ -651,23 +638,25 @@
                                                         <div class="modal-dialog">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
-                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                <span aria-hidden="true">&times;</span></button>
-                                                            <h4 class="modal-title">Fichiers de la facture {{$facture->numero_facture}}</h4>
+                                                                <h4 class="modal-title">   
+                                                                Fichiers de la facture {{$facture->numero_facture}}
+                                                                </h4>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
                                                             </div>
+                                                           
                                                             <!-- form start -->
                                                             <form role="form" method="post" action="upload_file_facture" enctype="multipart/form-data">
                                                                 <div class="modal-body">
-                                                                    <div class="box-body">
+                                                                    <div class="card-body">
                                                                         @csrf
                                                                         <input type="text" name="id_facture" value="{{$facture->id}}" style="display:none;">
-                                                                    
-                                                                        
                                                                             <div class="form-group">
                                                                                 <label>Fichier de la facture(PDF)</label>
                                                                                 <input type="file" class="form-control" name="file" >
                                                                             </div>
-                                                                        <div class="modal-footer">
+                                                                        <div class="modal-footer justify-content-between">
                                                         
                                                                             <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Fermer</button>
                                                                         
@@ -696,7 +685,7 @@
                                                             <form action="paiement_form" method="post">
                                                                 @csrf
                                                                 <input type="text" value={{$facture->id}} style="display:none;" name="id_facture">
-                                                                <button type="submit" class="btn btn-success"><i class="fa fa-money"></i></button>
+                                                                <button type="submit" class="btn btn-info"><i class="fas fa-money-bill"></i></button>
                                                             </form>
                                                         @endif
                                                     
@@ -705,8 +694,8 @@
                                                         <i class="fa fa-edit"></i>
                                                         </button>
                                                         @endcan
-                                                    @endcan   
-                                                    
+                                                    @endcan
+
                                                     @can("admin")
                                                     <button type="button" class="btn btn-primary" wire:click="EditFacture('{{$facture->id}}')">
                                                     <i class="fa fa-edit"></i>
@@ -788,23 +777,25 @@
                                                             <div class="modal-dialog">
                                                                 <div class="modal-content">
                                                                     <div class="modal-header">
-                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                        <span aria-hidden="true">&times;</span></button>
-                                                                    <h4 class="modal-title">Fichiers de la facture {{$facture->numero_facture}}</h4>
+                                                                        <h4 class="modal-title">   
+                                                                        Fichiers de la facture {{$facture->numero_facture}}
+                                                                        </h4>
+                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                            <span aria-hidden="true">&times;</span>
+                                                                        </button>
                                                                     </div>
                                                                     <!-- form start -->
                                                                     <form role="form" method="post" action="upload_file_facture" enctype="multipart/form-data">
                                                                         <div class="modal-body">
-                                                                            <div class="box-body">
+                                                                            <div class="card-body">
                                                                                 @csrf
                                                                                 <input type="text" name="id_facture" value="{{$facture->id}}" style="display:none;">
-                                                                            
-                                                                                
+                                                                                                      
                                                                                     <div class="form-group">
                                                                                         <label>Fichier de la facture(PDF)</label>
                                                                                         <input type="file" class="form-control" name="file" >
                                                                                     </div>
-                                                                                <div class="modal-footer">
+                                                                                <div class="modal-footer justify-content-between">
                                                                 
                                                                                     <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Fermer</button>
                                                                                 
@@ -834,7 +825,7 @@
                                                                 <form action="paiement_form" method="post">
                                                                     @csrf
                                                                     <input type="text" value={{$facture->id}} style="display:none;" name="id_facture">
-                                                                    <button type="submit" class="btn btn-success"><i class="fa fa-money"></i></button>
+                                                                    <button type="submit" class="btn btn-success"><i class="fas fa-money-bill"></i></button>
                                                                 </form>
                                                             @endif
                                                         @endcan
@@ -870,11 +861,12 @@
                                                             </button>
                                                             @endcan
                                                         @endcan
+                                                        
                                                     </td>
                                                 
                                                 </tr>
                                             @else
-                                                    <tr class="bg-warning">
+                                                <tr class="bg-warning">
                                                     <td class="bg-warning">{{$facture->numero_facture}}</td>
                                                     
                                                     <td class="bg-warning">@php echo date('d/m/Y',strtotime($facture->date_emission)) @endphp</td>
@@ -931,40 +923,42 @@
                                                         @endcan
                                                         <div class="modal modal-default fade" id="@php echo "add".$facture->id.""; @endphp">
                                                             <div class="modal-dialog">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                    <span aria-hidden="true">&times;</span></button>
-                                                                <h4 class="modal-title">Fichiers de la facture {{$facture->numero_facture}}</h4>
-                                                                </div>
-                                                                <!-- form start -->
-                                                                <form role="form" method="post" action="upload_file_facture" enctype="multipart/form-data">
-                                                                    <div class="modal-body">
-                                                                        <div class="box-body">
-                                                                            @csrf
-                                                                            <input type="text" name="id_facture" value="{{$facture->id}}" style="display:none;">
-                                                                        
-                                                                            
-                                                                                <div class="form-group">
-                                                                                    <label>Fichier de la facture(PDF)</label>
-                                                                                    <input type="file" class="form-control" name="file" >
-                                                                                </div>
-                                                                            <div class="modal-footer">
-                                                            
-                                                                                <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Fermer</button>
-                                                                            
-                                                                                <button type="submit" class="btn btn-success">Valider la modification</button>
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h4 class="modal-title">   
+                                                                            Fichiers de la facture {{$facture->numero_facture}}
+                                                                        </h4>
+                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                            <span aria-hidden="true">&times;</span>
+                                                                        </button>
+                                                                    </div>
+                                    
+                                                                    <form role="form" method="post" action="upload_file_facture" enctype="multipart/form-data">
+                                                                        <div class="modal-body">
+                                                                            <div class="card-body">
+                                                                                @csrf
+                                                                                <input type="text" name="id_facture" value="{{$facture->id}}" style="display:none;">
+                                                                                                      
+                                                                                    <div class="form-group">
+                                                                                        <label>Fichier de la facture(PDF)</label>
+                                                                                        <input type="file" class="form-control" name="file" >
+                                                                                    </div>
+                                                                                <div class="modal-footer justify-content-between">
+                                                                
+                                                                                    <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Fermer</button>
                                                                                 
-                                                                            </div> 
-                                                                        
+                                                                                    <button type="submit" class="btn btn-success">Valider la modification</button>
+                                                                                    
+                                                                                </div> 
+                                                                            
+                                                                                
+                                                                            </div>
                                                                             
                                                                         </div>
-                                                                        
-                                                                    </div>
-                                                                
-                                                                </form>
-                                                            </div>
-                                                            <!-- /.modal-content -->
+                                                                    
+                                                                    </form>
+                                                                </div>
+                                                                <!-- /.modal-content -->
                                                             </div>
                                                             <!-- /.modal-dialog -->
                                                         </div>
@@ -978,7 +972,7 @@
                                                                 <form action="paiement_form" method="post">
                                                                     @csrf
                                                                     <input type="text" value={{$facture->id}} style="display:none;" name="id_facture">
-                                                                    <button type="submit" class="btn btn-success"><i class="fa fa-money"></i></button>
+                                                                    <button type="submit" class="btn btn-info"><i class="fas fa-money-bill"></i></button>
                                                                 </form>
                                                             @endif
                                                         @endcan
@@ -1023,18 +1017,14 @@
 
                                     @endif                         
                                 @else
-                                
                                     <tr>
                                         <td >{{$facture->numero_facture}}</td>
-                                        
                                         <td>@php echo date('d/m/Y',strtotime($facture->date_emission)) @endphp</td>
                                         @if($facture->date_reglement != NULL)
                                             <td>@php echo date('d/m/Y',strtotime($facture->date_reglement)) @endphp</td>
                                         @else
                                             <td></td>
-                                    
                                         @endif
-                                                
                                         <td>{{$facture->titre_contrat}}</td>
                                         <td>{{$facture->nom_entreprise}}</td>
                                         <td>
@@ -1055,13 +1045,9 @@
                                                     <button type="submit" class="btn btn-success"><i class="fa fa-eye"></i></button>
                                             </form>
                                         </td>
-                                        
-                                        
                                         <td>
-                                        
                                             <form action="download_file_facture" method="post" enctype="multipart/form-data" target="blank">
                                                 @csrf
-                                                
                                                 <input type="text" value={{$facture->id}} style="display:none;" name="id_facture">
                                                 <input type="text" class="form-control" name="file" value="{{$facture->file_path}}" style="display:none;">
                                                 <button type="submit" class="btn btn-warning"><i class="fa fa-download"></i></button>
@@ -1075,40 +1061,42 @@
                                             @endcan
                                             <div class="modal modal-default fade" id="@php echo "add".$facture->id.""; @endphp">
                                                 <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span></button>
-                                                    <h4 class="modal-title">Fichiers de la facture {{$facture->numero_facture}}</h4>
-                                                    </div>
-                                                    <!-- form start -->
-                                                    <form role="form" method="post" action="upload_file_facture" enctype="multipart/form-data">
-                                                        <div class="modal-body">
-                                                            <div class="box-body">
-                                                                @csrf
-                                                                <input type="text" name="id_facture" value="{{$facture->id}}" style="display:none;">
-                                                            
-                                                                
-                                                                    <div class="form-group">
-                                                                        <label>Fichier de la facture(PDF)</label>
-                                                                        <input type="file" class="form-control" name="file" >
-                                                                    </div>
-                                                                <div class="modal-footer">
-                                                
-                                                                    <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Fermer</button>
-                                                                
-                                                                    <button type="submit" class="btn btn-success">Valider la modification</button>
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h4 class="modal-title">   
+                                                            Fichiers de la facture {{$facture->numero_facture}}
+                                                            </h4>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <!-- form start -->
+                                                        <form role="form" method="post" action="upload_file_facture" enctype="multipart/form-data">
+                                                            <div class="modal-body">
+                                                                <div class="card-body">
+                                                                    @csrf
+                                                                    <input type="text" name="id_facture" value="{{$facture->id}}" style="display:none;">
+                                                                                            
+                                                                        <div class="form-group">
+                                                                            <label>Fichier de la facture(PDF)</label>
+                                                                            <input type="file" class="form-control" name="file" >
+                                                                        </div>
+                                                                    <div class="modal-footer justify-content-between">
+                                                    
+                                                                        <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Fermer</button>
                                                                     
-                                                                </div> 
-                                                            
+                                                                        <button type="submit" class="btn btn-success">Valider la modification</button>
+                                                                        
+                                                                    </div> 
+                                                                
+                                                                    
+                                                                </div>
                                                                 
                                                             </div>
-                                                            
-                                                        </div>
-                                                    
-                                                    </form>
-                                                </div>
-                                                <!-- /.modal-content -->
+                                                        
+                                                        </form>
+                                                    </div>  
+                                                    <!-- /.modal-content -->
                                                 </div>
                                                 <!-- /.modal-dialog -->
                                             </div>
@@ -1116,13 +1104,12 @@
                                                 
                                         </td>
                                         <td>
-
                                             @can("comptable")
                                                 @if($facture->annulee == 0)
                                                     <form action="paiement_form" method="post">
                                                         @csrf
                                                         <input type="text" value={{$facture->id}} style="display:none;" name="id_facture">
-                                                        <button type="submit" class="btn btn-success"><i class="fa fa-money"></i></button>
+                                                        <button type="submit" class="btn btn-info"><i class="fas fa-money-bill"></i></button>
                                                     </form>
                                                 @endif
                                             @endcan
@@ -1147,7 +1134,7 @@
                                             @endcan
                                         </td>
                                         
-                                        <td >
+                                        <td>
                                             @can("comptable")
                                                 @can("delete")
                                                 <button type="button" class="btn btn-danger"  wire:click="confirmDelete(' {{ $facture->numero_facture }} '
@@ -1157,16 +1144,12 @@
                                                 @endcan
                                             @endcan
                                         </td>
-
-                                    
                                     </tr>
                                 @endif
                             
                             @empty
-                                
                                 <tr colspan="9">
                                     <div class="alert alert-info alert-dismissible">
-                                        
                                         <h4><i class="icon fa fa-ban"></i> Oups!</h4>
                                         Aucune donnée trouvée
                                     </div>
@@ -1177,8 +1160,8 @@
                         
                     </table>
                 </div>
-                <!-- /.box-body -->
-                <div clas="box-footer clearfix">
+                <!-- /.card-body -->
+                <div clas="card-footer clearfix">
                       <ul class="pagination pagination-sm no-margin pull-right">
                         @if(isset($factures))
                             {{$factures->links()}}
@@ -1186,7 +1169,7 @@
  
                      </ul>
                 </div>
-                <div class="box-footer"> 
+                <div class="card-footer"> 
                     @php
                         if(isset($total_by_entreprise) AND $total_by_entreprise != 0)
                         {
@@ -1214,7 +1197,7 @@
                 </div>
             </div>
             
-            <!-- /.box -->
+            <!-- /.card -->
 
         </div>
     @endif

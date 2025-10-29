@@ -27,13 +27,13 @@
    
         <div class="col-md-6">
           <!-- general form elements -->
-            <div class="box box-aeneas">
-              <div class="box-header with-border">
-                <h3 class="box-title">AJOUTER UNE ENTREPRISE CIBLE</h3><br>
-                  <div class="box-tools pull-right">
-                      <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+            <div class="card card-aeneas">
+              <div class="card-header with-border">
+                <h3 class="card-title">AJOUTER UNE ENTREPRISE CIBLE</h3><br>
+                  <div class="card-tools pull-right">
+                      <button type="button" class="btn btn-card-tool" data-widget="collapse"><i class="fa fa-minus"></i>
                       </button>
-                      <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                      <button type="button" class="btn btn-card-tool" data-widget="remove"><i class="fa fa-times"></i></button>
                   </div>
                 
               </div>
@@ -41,7 +41,7 @@
               <!-- form start -->
               <form role="form" method="post" action="add_entreprise_cible">
                 @csrf
-                <div class="box-body">
+                <div class="card-body">
                     <div class="form-group">  
                       <select class="form-control " name="particulier" id="particulier" onchange="EnableFields();" style="display:none;">
                             <option value="0">NON</option>
@@ -151,16 +151,16 @@
                           }
                       }
                     </script>
-                    <div class="box-footer">
+                    <div class="card-footer">
                         <button type="submit" class="btn btn-primary">ENREGISTRER</button>
                     </div>
                 </div>
-                <!-- /.box-body -->
+                <!-- /.card-body -->
               </form>
               
              
             </div>
-            <!-- /.box -->
+            <!-- /.card -->
         </div>
         <!--/.col (left) -->
         
@@ -168,13 +168,13 @@
         <!-- right column -->
         <div class="col-md-6">
            <!-- general form elements -->
-            <div class="box box-aeneas">
-              <div class="box-header with-border">
-                <h3 class="box-title">AJOUTER UN(E) PARTICULIER(E)</h3><br>
-                  <div class="box-tools pull-right">
-                      <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+            <div class="card card-aeneas">
+              <div class="card-header with-border">
+                <h3 class="card-title">AJOUTER UN(E) PARTICULIER(E)</h3><br>
+                  <div class="card-tools pull-right">
+                      <button type="button" class="btn btn-card-tool" data-widget="collapse"><i class="fa fa-minus"></i>
                       </button>
-                      <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                      <button type="button" class="btn btn-card-tool" data-widget="remove"><i class="fa fa-times"></i></button>
                   </div>
                 
               </div>
@@ -182,7 +182,7 @@
               <!-- form start -->
               <form role="form" method="post" action="add_entreprise_cible">
                 @csrf
-                <div class="box-body">
+                <div class="card-body">
                     <div class="form-group">
                         <select class="form-control " name="particulier" id="particulier" onchange="EnableFields();" style="display:none;">
                           <option value="1">OUI</option>
@@ -255,18 +255,18 @@
                           }
                       }
                     </script>
-                    <div class="box-footer">
+                    <div class="card-footer">
                         <button type="submit" class="btn btn-primary">ENREGISTRER</button>
                     </div>
                 </div>
-                <!-- /.box-body -->
+                <!-- /.card-body -->
               </form>
               
              
             </div>
-            <!-- /.box -->
+            <!-- /.card -->
         </div>
-          <!-- /.box -->
+          <!-- /.card -->
 		  
     </div>
     <!--/.col (right) -->

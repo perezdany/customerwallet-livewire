@@ -26,9 +26,9 @@
           <!-- left column -->
           <div class="col-md-6">
             <!-- general form elements -->
-            <div class="box box-aeneas">
-              <div class="box-header with-border">
-                <h3 class="box-title">MODIFIER UN SUIVI</h3><br>(*) champ obligatoire
+            <div class="card card-aeneas">
+              <div class="card-header with-border">
+                <h3 class="card-title">MODIFIER UN SUIVI</h3><br>(*) champ obligatoire
               </div>
 
                 @foreach($suivi as $suivi)
@@ -36,7 +36,7 @@
                     <form role="form" method="post" action="edit_suivi">
                         @csrf
                         <input type="text" name="id_suivi" style="display:none" value="{{$suivi->id}}">
-                        <div class="box-body">
+                        <div class="card-body">
 
                             <div class="form-group">
                                 <label>Le titre du SUIVI</label>
@@ -63,16 +63,16 @@
                             </div>
 
                         </div>
-                        <!-- /.box-body -->
+                        <!-- /.card-body -->
 
-                        <div class="box-footer">
+                        <div class="card-footer">
                         <button type="submit" class="btn btn-primary">VALIDER</button>
                         </div>
                     </form>
                 @endforeach
               
             </div>
-            <!-- /.box -->
+            <!-- /.card -->
           </div>
           <!--/.col (left) -->
           <!-- right column -->

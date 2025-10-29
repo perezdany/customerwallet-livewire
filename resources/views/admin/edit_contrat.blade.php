@@ -21,7 +21,7 @@
 @section('content')
      <div class="row">
          @if(session('success'))
-            <div class="col-md-12 box-header">
+            <div class="col-md-12 card-header">
               <p class="bg-success" style="font-size:13px;">{{session('success')}}</p>
             </div>
           @endif
@@ -33,9 +33,9 @@
           <!-- left column -->
           <div class="col-md-6">
             <!-- general form elements -->
-            <div class="box box-aeneas">
-              <div class="box-header with-border">
-                <h3 class="box-title">MODIFIER LE CONTRAT</h3><br>(*) champ obligatoire
+            <div class="card card-aeneas">
+              <div class="card-header with-border">
+                <h3 class="card-title">MODIFIER LE CONTRAT</h3><br>(*) champ obligatoire
               </div>
                  @php
                     $contrat = $contratcontroller->GetById($id);
@@ -52,7 +52,7 @@
                          <input type="text" value="{{$etat}}" style="display:none" name="etat_contrat">
                          <input type="text" value="{{$id_entreprise}}" style="display:none" name="entreprise_filter">
                          <input type="text" value="{{$service}}" style="display:none" name="service">
-                        <div class="box-body">
+                        <div class="card-body">
                             <div class="form-group">
                                 <label>Entreprise:</label>
                                 <select class="form-control input-lg" name="entreprise">
@@ -200,16 +200,16 @@
 
 
                         </div>
-                        <!-- /.box-body -->
+                        <!-- /.card-body -->
 
-                        <div class="box-footer">
+                        <div class="card-footer">
                         <button type="submit" class="btn btn-primary">MODIFIER</button>
                         </div>
                     </form>
                 @endforeach
              
             </div>
-            <!-- /.box -->
+            <!-- /.card -->
           </div>
           <!--/.col (left) -->
           <!-- right column -->

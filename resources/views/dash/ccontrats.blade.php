@@ -29,19 +29,19 @@
       </div>
       <div class="row">
          @if(session('success'))
-            <div class="col-md-12 box-header">
+            <div class="col-md-12 card-header">
               <p class="bg-success" style="font-size:13px;">{{session('success')}}</p>
             </div>
           @endif
         
             <div class="col-md-12">
-              <div class="box">
+              <div class="card">
                
-                <div class="box-header">
-                  <h3 class="box-title">Tableaux des clients</h3>
+                <div class="card-header">
+                  <h3 class="card-title">Tableaux des clients</h3>
                 </div>
-                <!-- /.box-header -->
-                <div class="box-body">
+                <!-- /.card-header -->
+                <div class="card-body">
                   <table id="example1" class="table table-bordered table-striped table-hover">
                   <thead>
                   <tr>
@@ -80,9 +80,9 @@
                   
                   </table>
                 </div>
-                <!-- /.box-body -->
+                <!-- /.card-body -->
               </div>
-              <!-- /.box -->
+              <!-- /.card -->
             </div>
             <!-- /.col -->
         </div>

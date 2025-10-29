@@ -2,46 +2,47 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title">Détails </h4>
+                <h4 class="modal-title">Détails</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
-
+           
             <div class="modal-body">
                 <div class="box-body form-group" style="text-align:center;"> 
                     
-                    <h4><label>Dénomination:</label></h4>
+                    <label>Dénomination:</label>
                     <input class="form-control" wire:model="entrepriseDetail.nom_entreprise" disabled/>
 
-                    <h4><label>Adresse :</label></h4>
+                    <label>Adresse :</label>
                     <input class="form-control" wire:model="entrepriseDetail.adresse" disabled/>
                     <p>  </p>
-                    <h4><label >Téléphone fixe:</label></h4>
+                    <label >Téléphone fixe:</label>
                     <input class="form-control" wire:model="entrepriseDetail.telephone" disabled/>
-                     <h4><label >Téléphone mobile:</label></h4>
+                     <label >Téléphone mobile:</label>
                     <input class="form-control" wire:model="entrepriseDetail.mobile" disabled/>
-                    <h4><label >Email:</label></h4>
+                    <label >Email:</label>
                     <input class="form-control" wire:model="entrepriseDetail.adresse_email" disabled/>
                    
-                    <h4><label >Chiffre d'affaire (FCFA):</label></h4>
+                    <label >Chiffre d'affaire (FCFA):</label>
                     <input class="form-control" wire:model="entrepriseDetail.chiffre_affaire" disabled/>
                    
-                    <h4><label >Dirigeant:</label></h4>
+                    <label >Dirigeant:</label>
                     <input class="form-control" wire:model="entrepriseDetail.dirigeant" disabled/>
                    
-                    <h4><label >Nombre d'employés:</label></h4>
+                    <label >Nombre d'employés:</label>
                     <input class="form-control" wire:model="entrepriseDetail.nb_employes" disabled/>
                    
-                    <h4><label >Activités:</label></h4>
-                     <input class="form-control" wire:model="entrepriseDetail.activite" disabled/>
+                    <label >Activités:</label>
+                    <input class="form-control" wire:model="entrepriseDetail.activite" disabled/>
 
-                     <h4><label >Site web:</label></h4>
-                     <input class="form-control" wire:model="entrepriseDetail.site_web" disabled/>
+                    <label >Site web:</label>
+                    <input class="form-control" wire:model="entrepriseDetail.site_web" disabled/>
 
-                     <h4><label >Date de création:</label></h4>
-                     <input class="form-control" wire:model="entrepriseDetail.date_creation" disabled/>
+                    <label >Date de création:</label>
+                    <input class="form-control" wire:model="entrepriseDetail.date_creation" disabled/>
                   
-                    <h4><label>Pays :</label></h4>
+                    <label>Pays :</label>
        
                     <select class="form-control" id="id_pays" wire:model="entrepriseDetail.id_pays" disabled>
                         

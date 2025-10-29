@@ -156,7 +156,7 @@ Route::middleware(['auth:web'])->group(function(){
 
 
     //DECONNEXION
-    Route::post('logout', [AuthController::class, 'logoutUser']);
+    Route::get('logout', [AuthController::class, 'logoutUser']);
 
     //PROFIL UTILISATEUR
     Route::post('profile', [UserController::class, 'GoProfil']);
