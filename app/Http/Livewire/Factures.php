@@ -35,6 +35,8 @@ class Factures extends Component
     public $annulee = "";
     public $annee = "";
     public $compare ="";
+    public $debut;
+    public $fin;
     public $orderField = 'created_at';
     public $orderDirection = 'DESC';
 
@@ -314,9 +316,14 @@ class Factures extends Component
             }
             
         }
-        
 
-        //dump($factureQuery);
+        if($this->debut != "" AND $this->fin != "")
+        {
+            
+           $factureQuery->where("date_emission", '>=', $this->debut)->where("date_emission", '<=', $this->fin);
+            
+        }
+
         return view('livewire.factures.index', ['factures' => $factureQuery->orderBy($this->orderField, $this->orderDirection)->paginate(8) ])
         ->extends('layouts.base')
         ->section('content');

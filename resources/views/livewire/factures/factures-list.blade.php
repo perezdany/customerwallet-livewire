@@ -359,9 +359,9 @@
                                 
                             </select>   
                         </div>
-                    </div>
+                    </div><br>
 
-                    <label>Afficher par date:</label>
+                    <label>Afficher par année ou date:</label>
                     <div class="row">
                         <div class="row col-sm-3">
                             <div class="col-sm-3">
@@ -385,6 +385,14 @@
                                 </select>   
                             </div>
                         </div>
+
+                        <div class="col-sm-3">
+                            <b>Du</b>
+                            <input type="date" wire:model.debounce.250ms="debut">
+                            <b>Au</b>
+                            <input type="date" wire:model.debounce.250ms="fin">
+                        </div>
+                        
                     </div>
 
                     <div class="card-tools">
@@ -396,6 +404,7 @@
                         </div>
                     </div>
                 </div>
+
                 <!-- /.card-header -->
                 <div class="card-body table-responsive p-0"">
                 
@@ -695,7 +704,7 @@
                                                         </button>
                                                         @endcan
                                                     @endcan
-
+                                                   
                                                     @can("admin")
                                                     <button type="button" class="btn btn-primary" wire:click="EditFacture('{{$facture->id}}')">
                                                     <i class="fa fa-edit"></i>
@@ -1113,7 +1122,6 @@
                                                     </form>
                                                 @endif
                                             @endcan
-                                            
                                             <div class="popup" id="popup">
                                                 
                                                 <div class="popup-contenu"><b>Cliquez et le formulaire s'affiche en dessous</b><br/>
