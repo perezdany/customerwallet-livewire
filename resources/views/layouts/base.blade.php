@@ -100,7 +100,7 @@
     <section class="content">
         <!--Les messages d'erreur-->
           @if(session('success'))
-          <div class="col-md-12 box-header">
+          <div class="col-md-12 card-header">
               <p class="bg-green" style="font-size:13px;">{{session('success')}}</p>
           </div>
           @endif

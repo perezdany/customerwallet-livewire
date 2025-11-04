@@ -87,11 +87,11 @@
             Swal.fire({
                     icon: "error",
                     title: "Oops...",
-                    background: "#ff3362" ,
+                    background: "#e63c63ff" ,
                     color: "#fff",
                     position: "top",
                     text: event.detail.message,
-                
+                    timer:6000,
                     });
                 })
         })

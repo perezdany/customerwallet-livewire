@@ -92,15 +92,11 @@
                                     
                                         @can("comptable")
                                             <td>
-                                            
-                                                    
                                                 <form action="paiement_form" method="post">
                                                     @csrf
                                                     <input type="text" value={{$my_own->id}} style="display:none;" name="id_facture">
-                                                    <button type="submit" class="btn btn-success"><i class="fa fa-money"></i></button>
+                                                    <button type="submit" class="btn btn-success"><i class="fas fa-money-bill-alt"></i></button>
                                                 </form>
-
-                                                
                                             </td>
                                         @endcan
                                     
@@ -217,16 +213,12 @@
                                         </td>
                                     
                                         @can("comptable")
-                                            <td>
-                                            
-                                                    
+                                            <td>  
                                                 <form action="paiement_form" method="post">
                                                     @csrf
                                                     <input type="text" value={{$my_own->id}} style="display:none;" name="id_facture">
-                                                    <button type="submit" class="btn btn-success"><i class="fa fa-money"></i></button>
-                                                </form>
-
-                                                
+                                                    <button type="submit" class="btn btn-success"><i class="fas fa-money-bill-alt"></i></button>
+                                                </form>                                           
                                             </td>
                                         @endcan
                                     
@@ -348,15 +340,11 @@
                                         
                                             @can("comptable")
                                                 <td>
-                                                
-                                                        
                                                     <form action="paiement_form" method="post">
                                                         @csrf
                                                         <input type="text" value={{$my_own->id}} style="display:none;" name="id_facture">
-                                                        <button type="submit" class="btn btn-success"><i class="fa fa-money"></i></button>
+                                                        <button type="submit" class="btn btn-success"><i class="fas fa-money-bill-alt"></i></button>
                                                     </form>
-
-                                                    
                                                 </td>
                                             @endcan
                                         

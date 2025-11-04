@@ -87,8 +87,21 @@ class Factures extends Component
 
     public function deleteFacture($id)
     {
-        Facture::destroy($id);
-        $this->dispatchBrowserEvent('showSuccessMessage', ["message" => "Elément supprimé avec succès !"]);
+        //VOIR SI Y A DES PAIEMENTS QUI EXCISTENT ET LUI SIGNIFIER DE SUPPRIMER 
+        $p = DB::table('paiements')->where('id_facture', $id)->count();
+        if($p != 0)
+        {
+            //dd('la');
+            $this->dispatchBrowserEvent('showErrorMessage', ["message" => "Vous devez supprimer d'abord 
+            le/les paiements associés à cette facture"]);
+        }
+        else
+        {
+            //dd('ici');
+            Facture::destroy($id);
+            $this->dispatchBrowserEvent('showSuccessMessage', ["message" => "Elément supprimé avec succès !"]);
+        }
+
     }
 
     public function EditFacture(Facture $facture)
@@ -136,78 +149,6 @@ class Factures extends Component
             'id_contrat' => $this->editFacture['id_contrat'],
             'annulee' => $this->editFacture['annulee']
         ]);
-
-        
-       /* $fichier = $this->editFacture['file_path'];
-        //dd($this->editFacture);
-
-        if($fichier != null)
-        {
-            
-            //VERFIFIER LE FORMAT 
-            $extension = pathinfo($fichier->getClientOriginalName(), PATHINFO_EXTENSION);
-            
-            //dd($extension);
-            if($extension != "pdf")
-            {
-                $this->dispatchBrowserEvent('showErrorMessage', ["message" => "Le format de fichier doit être PDF"]);
-               
-            }
-
-            //VERIFIER SI L'ENREGISTREMENT A UN CHEMIN D'ACCES ENREGISTRE
-            $get_path = Facture::where('id', $this->editFacture['id'])->get();
-            foreach($get_path as $get_path)
-            {
-                if($get_path->file_path == null)
-                {
-                    //enregistrement de fichier dans la base
-                    $file_name = $fichier->getClientOriginalName();
-                
-                    $path = $this->editContrat['file_path']->storeAs('factures',  $file_name);    
-                            
-                 
-
-                    $affected = DB::table('factures')
-                    ->where('id', $this->editFacture['id'])
-                    ->update([
-                        'file_path'=> $path,
-                        
-                    ]);
-
-                    
-                }
-                else
-                {
-                    $get_path = Facture::where('id', $this->editFacture['id'])->get();
-                    //SUPPRESSION DE L'ANCIEN FICHIER
-                    //dd($get_path->path);
-                    foreach($get_path as $get_path)
-                    {
-                        Storage::delete($get_path->file_path);
-                    }
-                   
-                    $file_name = $fichier->getClientOriginalName();
-                       
-                    $path = $this->editContrat['file_path']->storeAs('factures',  $file_name);    
-                            
-               
-
-                    $affected = DB::table('factures')
-                    ->where('id', $this->editFacture['id'])
-                    ->update([
-                        'file_path'=> $path,
-                        
-                    ]);
-
-                    
-                }
-            }
-            
-        }
-        else
-        {
-            //dd($fichier);
-        }*/
 
         $this->dispatchBrowserEvent('showSuccessMessage', ["message" => "Modification effectuée avec succès"]);
 

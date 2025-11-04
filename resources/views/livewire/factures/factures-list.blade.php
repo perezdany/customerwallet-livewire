@@ -60,7 +60,7 @@
                                         $diff_in_days = floor(($date_aujourdhui - strtotime($facture->date_reglement)) / (60 * 60 * 24));//on obtient ca en jour
                                         //dd($diff_in_days);
                                     @endphp
-                                    ci
+                               
                                     @if($diff_in_days >= 60)
                                     
                                         <tr class="bg-red">
@@ -1027,7 +1027,7 @@
                                     @endif                         
                                 @else
                                     <tr>
-                                        <td >{{$facture->numero_facture}}</td>
+                                        <td>{{$facture->numero_facture}}</td>
                                         <td>@php echo date('d/m/Y',strtotime($facture->date_emission)) @endphp</td>
                                         @if($facture->date_reglement != NULL)
                                             <td>@php echo date('d/m/Y',strtotime($facture->date_reglement)) @endphp</td>
