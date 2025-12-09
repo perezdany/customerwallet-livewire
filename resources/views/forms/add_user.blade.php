@@ -30,7 +30,7 @@
           <!-- left column -->
           <div class="col-md-6">
             <!-- general form elements -->
-            <div class="card card-aeneas">
+            <div class="card card-primary">
               <div class="card-header with-border">
                 <h3 class="card-title">AJOUTER UN UTILISATEUR</h3><br>(*) champ obligatoire
               </div>
@@ -43,13 +43,13 @@
                     <label>Département(*):</label>
                     <select class="form-control " name="departement" required>
                       @php
-                            $get = $departementcontroller->GetAll();
-                        @endphp
+                        $get = $departementcontroller->GetAll();
+                      @endphp
                         
-                        @foreach($get as $departement)
-                            <option value={{$departement->id}}>{{$departement->libele_departement}}</option>
-                            
-                        @endforeach
+                      @foreach($get as $departement)
+                        <option value={{$departement->id}}>{{$departement->libele_departement}}</option>
+                          
+                      @endforeach
                     </select>
                       
                   </div>  
@@ -58,13 +58,13 @@
                     <label>Rôle(*):</label>
                     <select class="form-control " name="role" required>
                       @php
-                            $role = $rolecontroller->GetAll();
-                        @endphp
-                        <option value="">Aucun</option>
-                        @foreach($role as $role)
-                            <option value={{$role->id}}>{{$role->intitule}}</option>
-                            
-                        @endforeach
+                        $role = $rolecontroller->GetAll();
+                      @endphp
+                      <option value="">Aucun</option>
+                      @foreach($role as $role)
+                          <option value={{$role->id}}>{{$role->intitule}}</option>
+                          
+                      @endforeach
                         
                     </select>
                       
@@ -83,29 +83,30 @@
                     <label>Fonction</label>
                     <input type="text"  class="form-control " name="poste" onkeyup='this.value=this.value.toUpperCase()' required/>
                   </div>
-                    <div class="card-header">
-                        <h3 class="card-title">Permissions</h3>
-                    </div>
-                    <!-- checkcard -->
-                  
-                      <div class="form-group card-body">
-                        @php
-                          $permissions = Permission::all()
-                        @endphp
-                        @foreach($permissions as $permissions)
-                          <label>
-                              <input type="checkcard" class="minimal" id="{{$permissions->libele}}" value="{{$permissions->id}}" name="{{$permissions->libele}}">
-                            {{$permissions->libele}}
-                          </label>
-                          
-                        @endforeach
-                      
-                        
-                      </div>
-                  
-
+                  <div class="card-header">
+                      <h3 class="card-title">Permissions</h3>
+                  </div>
+                  <!-- checkcard -->
+                
+                  <div class="form-group">
+               
+                    @php
+                      $permissions = Permission::all()
+                    @endphp
+                    @foreach($permissions as $permissions)
                     
-
+                      <div class="form-check">
+                          <input class="form-check-input" name="{{$permissions->libele}}" 
+                            id="{{$permissions->libele}}"
+                            value="{{$permissions->id}}" type="checkbox">
+                          <label class="form-check-label"><b> {{$permissions->libele}}</b></label>
+                          <!--<input type="checkcard" class="minimal"  name="" checked>-->
+                      </div>
+                      <!--<input type="checkcard" class="minimal" id="" value="" name="">-->
+                    @endforeach
+                    
+                  </div>
+                
                    <!--<div class="form-group">
                         <label>Mot de passe</label>
                             <input type="password" class="form-control  " required name="password" id="pwd1">
@@ -152,16 +153,14 @@
                                     
                         </script> -->
 
-                         <div class="card-footer">
+                        <div class="card-footer">
                           <button type="submit" class="btn btn-primary" id="bt">VALIDER</button>
                         </div>
-                    </div>    
+                    <!--</div>    -->
 
                     
                 </div>
                 <!-- /.card-body -->
-
-               
               </form>
             </div>
             <!-- /.card -->

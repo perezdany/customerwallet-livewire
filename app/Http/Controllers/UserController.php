@@ -183,7 +183,7 @@ class UserController extends Controller
 
     public function AddUser(Request $request)
     {
-        
+        dd($request->all());
         $user_password = Hash::make("123456");
         if(Utilisateur::where('login', $request->login)->count() == 0)
         {
@@ -207,6 +207,11 @@ class UserController extends Controller
             if(isset($request->Ecriture))//SI IL A COCHE LA CASE DE LA PERMISSION SUPPRIMER
             {
                 $Insert->permissions()->attach($request->Ecriture);
+            }
+
+            if(isset($request->Procuration))//SI IL A COCHE LA CASE DE LA PERMISSION SUPPRIMER
+            {
+                $Insert->permissions()->attach($request->Procuration);
             }
     
             
