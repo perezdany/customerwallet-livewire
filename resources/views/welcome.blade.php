@@ -61,7 +61,7 @@
                 }
                 else
                 {
-                    if($contrats->reconduction == 1 AND $contrats->etat == 1)//Reconduit et en cours
+                    if($contrats->etat == 1)//Reconduit et en cours
                     {
                         //ON A LES DUREES DANS LA TABLE DONC ON SE SERT DE CA POUR LA MISE A JOURS
                         //DES QUE LE CONTRAT EST RECONDUIT IL EST EN COURS
@@ -84,9 +84,29 @@
                             'etat' => 1
                         ]);
                     }
-                   
+                    else
+                    {
+
+                    }
+                    
                 }
                 
+            }
+            else
+            {
+                if($contrats->etat == 1)
+                {
+                    
+                  /*  //ON MET LE CONTRAT A TERMINÉ
+                    $affected = DB::table('contrats')
+                    ->where('id', $contrats->id)
+                    ->update([
+                
+                        'etat' => 0
+                    ]);
+                    //dump($affected);*/
+                }
+                   
             }
         }
 

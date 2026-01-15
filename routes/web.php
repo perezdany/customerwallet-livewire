@@ -525,8 +525,6 @@ Route::middleware(['auth:web'])->group(function(){
     //SUPPRIMER DANS LA FICHE CLIENT
     Route::post('delete_interlocuteur_from_fichec', [InterlocuteurController::class, 'DeleteInterlocuteurFicheCustomer']);
 
-
-
     //AJOUTER UN INTRELOCUTEURS
     Route::post('add_referant', [InterlocuteurController::class, 'AddInterlocuteur']);
     Route::post('add_referant_cible', [InterlocuteurController::class, 'AddInterlocuteurCible']);
@@ -568,6 +566,11 @@ Route::middleware(['auth:web'])->group(function(){
     //RECHERCHER UN MOIS
     Route::post('search_monthly_customer', [Calculator::class, 'SearchNewCustomerInMonth']);
 
+    //CHIFFRE D'AFFAIRE PAR MOIS
+    Route::get('par_client', [Calculator::class, 'ChartByServCustEarn']);
+
+    //RECHERCHER UNE ANNEE POUR AFFICHER PAR CLIENT
+    Route::post('search_oth_year_by_client', [Calculator::class, 'SearchChartByServCustEarn']);
 
 
     //LES TYPES DE PRESTATIONS

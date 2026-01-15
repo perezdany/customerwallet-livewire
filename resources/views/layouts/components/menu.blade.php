@@ -29,221 +29,304 @@
               </a>
             </li>
             @can("admin")
-              <li class="nav-item"><a href="entreprises" class="nav-link"><i class="nav-icon far fa-circle"></i>
+              <li class="nav-item">
+            
+                <a href="#" class="nav-link">
+                  <i class="nav-icon fas fa-edit"></i>
                   <p>
-                    <i class="fa fa-circle-o"></i>Entreprises
+                    Gestion
+                    <i class="right fas fa-angle-left"></i>
                   </p>
                 </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item"><a href="entreprises" class="nav-link"><i class="nav-icon far fa-circle"></i>
+                      <p>
+                        <i class="fa fa-circle-o"></i>Entreprises
+                      </p>
+                    </a>
+                  </li>
+                  <li class="nav-item"><a href="interlocuteurs" class="nav-link"><i class="nav-icon far fa-circle"></i>
+                      <p>
+                        <i class="fa fa-circle-o"></i>Interlocuteurs
+                      </p>
+                    </a>
+                  </li>
+                  <li class="nav-item"><a href="contrat" class="nav-link"><i class="nav-icon far fa-circle"></i>
+                      <p>
+                        <i class="fa fa-circle-o"></i>Contrats
+                      </p>
+                    </a>
+                  </li>
+                  <li class="nav-item"><a href="facture" class="nav-link"><i class="nav-icon far fa-circle"></i>
+                      <p>
+                        <i class="fa fa-circle-o"></i>Factures
+                      </p>
+                    </a>
+                  </li>
+                  <li class="nav-item"><a href="prospection" class="nav-link"><i class="nav-icon far fa-circle"></i>
+                      <p>
+                        <i class="fa fa-circle-o"></i>Prospections
+                      </p>
+                    </a>
+                  </li>
+                  <li class="nav-item"><a href="fiche" class="nav-link"><i class="nav-icon far fa-circle"></i>
+                      <p>
+                        <i class="fa fa-circle-o"></i>Fiche de suivi clients
+                      </p>
+                    </a>
+                  </li>
+                </ul>
               </li>
-              <li class="nav-item"><a href="interlocuteurs" class="nav-link"><i class="nav-icon far fa-circle"></i>
-                  <p>
-                    <i class="fa fa-circle-o"></i>Interlocuteurs
-                  </p>
-                </a>
-              </li>
-              <li class="nav-item"><a href="contrat" class="nav-link"><i class="nav-icon far fa-circle"></i>
-                  <p>
-                    <i class="fa fa-circle-o"></i>Contrats
-                  </p>
-                </a>
-              </li>
-              <li class="nav-item"><a href="facture" class="nav-link"><i class="nav-icon far fa-circle"></i>
-                  <p>
-                    <i class="fa fa-circle-o"></i>Factures
-                  </p>
-                </a>
-              </li>
-              <li class="nav-item"><a href="prospection" class="nav-link"><i class="nav-icon far fa-circle"></i>
-                  <p>
-                    <i class="fa fa-circle-o"></i>Prospections
-                  </p>
-                </a>
-              </li>
-              <li class="nav-item"><a href="fiche" class="nav-link"><i class="nav-icon far fa-circle"></i>
-                  <p>
-                    <i class="fa fa-circle-o"></i>Fiche de suivi clients
-                  </p>
-                </a>
-              </li>
-         
+
             @endcan
 
             @can("manager")
-              <li class="nav-item"><a href="entreprises" class="nav-link"><i class="nav-icon far fa-circle"></i>
+              <li class="nav-item">
+            
+                <a href="#" class="nav-link">
+                  <i class="nav-icon fas fa-edit"></i>
                   <p>
-                    <i class="fa fa-circle-o"></i>Entreprises
+                    Gestion
+                    <i class="right fas fa-angle-left"></i>
                   </p>
                 </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item"><a href="entreprises" class="nav-link"><i class="nav-icon far fa-circle"></i>
+                      <p>
+                        <i class="fa fa-circle-o"></i>Entreprises
+                      </p>
+                    </a>
+                  </li>
+                  <li class="nav-item"><a href="interlocuteurs" class="nav-link"><i class="nav-icon far fa-circle"></i>
+                      <p>
+                        <i class="fa fa-circle-o"></i>Interlocuteurs
+                      </p>
+                    </a>
+                  </li>
+                  <li class="nav-item"><a href="contrat" class="nav-link"><i class="nav-icon far fa-circle"></i>
+                      <p>
+                        <i class="fa fa-circle-o"></i>Contrats
+                      </p>
+                    </a>
+                  </li>
+                  <li class="nav-item"><a href="facture" class="nav-link"><i class="nav-icon far fa-circle"></i>
+                      <p>
+                        <i class="fa fa-circle-o"></i>Factures
+                      </p>
+                    </a>
+                  </li>
+                  <li class="nav-item"><a href="prospection" class="nav-link"><i class="nav-icon far fa-circle"></i>
+                      <p>
+                        <i class="fa fa-circle-o"></i>Prospections
+                      </p>
+                    </a>
+                  </li>
+                  <li class="nav-item"><a href="fiche" class="nav-link"><i class="nav-icon far fa-circle"></i>
+                      <p>
+                        <i class="fa fa-circle-o"></i>Fiche de suivi clients
+                      </p>
+                    </a>
+                  </li>
+                </ul>
               </li>
-              <li class="nav-item"><a href="interlocuteurs" class="nav-link"><i class="nav-icon far fa-circle"></i>
-                  <p>
-                    <i class="fa fa-circle-o"></i>Interlocuteurs
-                  </p>
-                </a>
-              </li>
-              <li class="nav-item"><a href="contrat" class="nav-link"><i class="nav-icon far fa-circle"></i>
-                  <p>
-                    <i class="fa fa-circle-o"></i>Contrats
-                  </p>
-                </a>
-              </li>
-              <li class="nav-item"><a href="facture" class="nav-link"><i class="nav-icon far fa-circle"></i>
-                  <p>
-                    <i class="fa fa-circle-o"></i>Factures
-                  </p>
-                </a>
-              </li>
-              <li class="nav-item"><a href="prospection" class="nav-link"><i class="nav-icon far fa-circle"></i>
-                  <p>
-                    <i class="fa fa-circle-o"></i>Prospections
-                  </p>
-                </a>
-              </li>
-              <li class="nav-item"><a href="fiche" class="nav-link"><i class="nav-icon far fa-circle"></i>
-                  <p>
-                    <i class="fa fa-circle-o"></i>Fiche de suivi clients
-                  </p>
-                </a>
-              </li>
-         
             @endcan
 
             @can("commercial")
-              <li class="nav-item"><a href="entreprises" class="nav-link"><i class="nav-icon far fa-circle"></i>
+              <li class="nav-item">
+            
+                <a href="#" class="nav-link">
+                  <i class="nav-icon fas fa-edit"></i>
                   <p>
-                    <i class="fa fa-circle-o"></i>Entreprises
+                    Gestion
+                    <i class="right fas fa-angle-left"></i>
                   </p>
                 </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item"><a href="entreprises" class="nav-link"><i class="nav-icon far fa-circle"></i>
+                      <p>
+                        <i class="fa fa-circle-o"></i>Entreprises
+                      </p>
+                    </a>
+                  </li>
+                  <li class="nav-item"><a href="interlocuteurs" class="nav-link"><i class="nav-icon far fa-circle"></i>
+                      <p>
+                        <i class="fa fa-circle-o"></i>Interlocuteurs
+                      </p>
+                    </a>
+                  </li>
+                  <li class="nav-item"><a href="fiche" class="nav-link"><i class="nav-icon far fa-circle"></i>
+                      <p>
+                        <i class="fa fa-circle-o"></i>Fiche de suivi clients
+                      </p>
+                    </a>
+                  </li>
+                  <li class="nav-item"><a href="prospection" class="nav-link"><i class="nav-icon far fa-circle"></i>
+                      <p>
+                        <i class="fa fa-circle-o"></i>Prospections
+                      </p>
+                    </a>
+                  </li>
+                </ul>
               </li>
-              <li class="nav-item"><a href="interlocuteurs" class="nav-link"><i class="nav-icon far fa-circle"></i>
-                  <p>
-                    <i class="fa fa-circle-o"></i>Interlocuteurs
-                  </p>
-                </a>
-              </li>
-              <li class="nav-item"><a href="fiche" class="nav-link"><i class="nav-icon far fa-circle"></i>
-                  <p>
-                    <i class="fa fa-circle-o"></i>Fiche de suivi clients
-                  </p>
-                </a>
-              </li>
-              <li class="nav-item"><a href="prospection" class="nav-link"><i class="nav-icon far fa-circle"></i>
-                  <p>
-                    <i class="fa fa-circle-o"></i>Prospections
-                  </p>
-                </a>
-              </li>
+             
               
             @endcan
 
             @can("manager-commercial")
-              <li class="nav-item"><a href="entreprises" class="nav-link"><i class="nav-icon far fa-circle"></i>
+              <li class="nav-item">
+            
+                <a href="#" class="nav-link">
+                  <i class="nav-icon fas fa-edit"></i>
                   <p>
-                    <i class="fa fa-circle-o"></i>Entreprises
+                    Gestion
+                    <i class="right fas fa-angle-left"></i>
                   </p>
                 </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item"><a href="entreprises" class="nav-link"><i class="nav-icon far fa-circle"></i>
+                      <p>
+                        <i class="fa fa-circle-o"></i>Entreprises
+                      </p>
+                    </a>
+                  </li>
+                  <li class="nav-item"><a href="interlocuteurs" class="nav-link"><i class="nav-icon far fa-circle"></i>
+                      <p>
+                        <i class="fa fa-circle-o"></i>Interlocuteurs
+                      </p>
+                    </a>
+                  </li>
+                  <li class="nav-item"><a href="fiche" class="nav-link"><i class="nav-icon far fa-circle"></i>
+                      <p>
+                        <i class="fa fa-circle-o"></i>Fiche de suivi clients
+                      </p>
+                    </a>
+                  </li>
+                  <li class="nav-item"><a href="prospection" class="nav-link"><i class="nav-icon far fa-circle"></i>
+                      <p>
+                        <i class="fa fa-circle-o"></i>Prospections
+                      </p>
+                    </a>
+                  </li>
+                  <li class="nav-item"><a href="facture" class="nav-link"><i class="nav-icon far fa-circle"></i>
+                      <p>
+                        <i class="fa fa-circle-o"></i>Factures
+                      </p>
+                    </a>
+                  </li>
+                </ul>
               </li>
-              <li class="nav-item"><a href="interlocuteurs" class="nav-link"><i class="nav-icon far fa-circle"></i>
-                  <p>
-                    <i class="fa fa-circle-o"></i>Interlocuteurs
-                  </p>
-                </a>
-              </li>
-              <li class="nav-item"><a href="fiche" class="nav-link"><i class="nav-icon far fa-circle"></i>
-                  <p>
-                    <i class="fa fa-circle-o"></i>Fiche de suivi clients
-                  </p>
-                </a>
-              </li>
-              <li class="nav-item"><a href="prospection" class="nav-link"><i class="nav-icon far fa-circle"></i>
-                  <p>
-                    <i class="fa fa-circle-o"></i>Prospections
-                  </p>
-                </a>
-              </li>
-              <li class="nav-item"><a href="facture" class="nav-link"><i class="nav-icon far fa-circle"></i>
-                  <p>
-                    <i class="fa fa-circle-o"></i>Factures
-                  </p>
-                </a>
-              </li>
-               
+
             @endcan
 
             @can("comptable")
-              <li class="nav-item"><a href="entreprises" class="nav-link"><i class="nav-icon far fa-circle"></i>
+              <li class="nav-item">
+            
+                <a href="#" class="nav-link">
+                  <i class="nav-icon fas fa-edit"></i>
                   <p>
-                    <i class="fa fa-circle-o"></i>Entreprises
+                    Gestion
+                    <i class="right fas fa-angle-left"></i>
                   </p>
                 </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item"><a href="entreprises" class="nav-link"><i class="nav-icon far fa-circle"></i>
+                      <p>
+                        <i class="fa fa-circle-o"></i>Entreprises
+                      </p>
+                    </a>
+                  </li>
+                  <li class="nav-item"><a href="interlocuteurs" class="nav-link"><i class="nav-icon far fa-circle"></i>
+                      <p>
+                        <i class="fa fa-circle-o"></i>Interlocuteurs
+                      </p>
+                    </a>
+                  </li>
+                  <li class="nav-item"><a href="contrat" class="nav-link"><i class="nav-icon far fa-circle"></i>
+                      <p>
+                        <i class="fa fa-circle-o"></i>Contrats
+                      </p>
+                    </a>
+                  </li>
+                  <li class="nav-item"><a href="facture" class="nav-link"><i class="nav-icon far fa-circle"></i>
+                      <p>
+                        <i class="fa fa-circle-o"></i>Factures
+                      </p>
+                    </a>
+                  </li>
+                </ul>
               </li>
-              <li class="nav-item"><a href="interlocuteurs" class="nav-link"><i class="nav-icon far fa-circle"></i>
-                  <p>
-                    <i class="fa fa-circle-o"></i>Interlocuteurs
-                  </p>
-                </a>
-              </li>
-              <li class="nav-item"><a href="contrat" class="nav-link"><i class="nav-icon far fa-circle"></i>
-                  <p>
-                    <i class="fa fa-circle-o"></i>Contrats
-                  </p>
-                </a>
-              </li>
-              <li class="nav-item"><a href="facture" class="nav-link"><i class="nav-icon far fa-circle"></i>
-                  <p>
-                    <i class="fa fa-circle-o"></i>Factures
-                  </p>
-                </a>
-              </li>
-        
+             
             @endcan
 
             @can("employe")
-              <li class="nav-item"><a href="entreprises" class="nav-link"><i class="nav-icon far fa-circle"></i>
+              <li class="nav-item">
+            
+                <a href="#" class="nav-link">
+                  <i class="nav-icon fas fa-edit"></i>
                   <p>
-                    <i class="fa fa-circle-o"></i>Entreprises
+                    Gestion
+                    <i class="right fas fa-angle-left"></i>
                   </p>
                 </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item"><a href="entreprises" class="nav-link"><i class="nav-icon far fa-circle"></i>
+                      <p>
+                        <i class="fa fa-circle-o"></i>Entreprises
+                      </p>
+                    </a>
+                  </li>
+                  <li class="nav-item"><a href="interlocuteurs" class="nav-link"><i class="nav-icon far fa-circle"></i>
+                      <p>
+                        <i class="fa fa-circle-o"></i>Interlocuteurs
+                      </p>
+                    </a>
+                  </li>
+                  <li class="nav-item"><a href="fiche" class="nav-link"><i class="nav-icon far fa-circle"></i>
+                      <p>
+                        <i class="fa fa-circle-o"></i>Fiche de suivi clients
+                      </p>
+                    </a>
+                  </li>
+                </ul>
               </li>
-              <li class="nav-item"><a href="interlocuteurs" class="nav-link"><i class="nav-icon far fa-circle"></i>
-                  <p>
-                    <i class="fa fa-circle-o"></i>Interlocuteurs
-                  </p>
-                </a>
-              </li>
-              <li class="nav-item"><a href="fiche" class="nav-link"><i class="nav-icon far fa-circle"></i>
-                  <p>
-                    <i class="fa fa-circle-o"></i>Fiche de suivi clients
-                  </p>
-                </a>
-              </li>
+             
             @endcan   
 
             
             @can("standard")
-              <li class="nav-item"><a href="entreprises" class="nav-link"><i class="nav-icon far fa-circle"></i>
+              <li class="nav-item">
+            
+                <a href="#" class="nav-link">
+                  <i class="nav-icon fas fa-edit"></i>
                   <p>
-                    <i class="fa fa-circle-o"></i>Entreprises
+                    Gestion
+                    <i class="right fas fa-angle-left"></i>
                   </p>
                 </a>
-              </li>
-              <li class="nav-item"><a href="interlocuteurs" class="nav-link"><i class="nav-icon far fa-circle"></i>
-                  <p>
-                    <i class="fa fa-circle-o"></i>Interlocuteurs
-                  </p>
-                </a>
-              </li>
-              <li class="nav-item"><a href="fiche" class="nav-link"><i class="nav-icon far fa-circle"></i>
-                  <p>
-                    <i class="fa fa-circle-o"></i>Fiche de suivi clients
-                  </p>
-                </a>
+                <ul class="nav nav-treeview">
+                      <li class="nav-item"><a href="entreprises" class="nav-link"><i class="nav-icon far fa-circle"></i>
+                      <p>
+                        <i class="fa fa-circle-o"></i>Entreprises
+                      </p>
+                    </a>
+                  </li>
+                  <li class="nav-item"><a href="interlocuteurs" class="nav-link"><i class="nav-icon far fa-circle"></i>
+                      <p>
+                        <i class="fa fa-circle-o"></i>Interlocuteurs
+                      </p>
+                    </a>
+                  </li>
+                  <li class="nav-item"><a href="fiche" class="nav-link"><i class="nav-icon far fa-circle"></i>
+                      <p>
+                        <i class="fa fa-circle-o"></i>Fiche de suivi clients
+                      </p>
+                    </a>
+                  </li>
+                </ul>
               </li>
              
             @endcan  
-         
-          
-          
+
           @can("admin").
             <li class="nav-item">
             
@@ -335,6 +418,13 @@
                     <p>Nouveaux Clients(Mensuel)</p>
                   </a>
                 </li>
+
+                <li class="nav-item">
+                  <a href="par_client" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Chiffre d'affaire par client</p>
+                  </a>
+                </li>
               
               </ul>
             </li>
@@ -374,6 +464,13 @@
                   <a href="newcustomerm" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Nouveaux Clients(Mensuel)</p>
+                  </a>
+                </li>
+
+                 <li class="nav-item">
+                  <a href="par_client" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Chiffre d'affaire par client</p>
                   </a>
                 </li>
               
@@ -416,7 +513,13 @@
                     <p>Nouveaux Clients(Mensuel)</p>
                   </a>
                 </li>
-              
+
+                 <li class="nav-item">
+                  <a href="par_client" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Chiffre d'affaire par client</p>
+                  </a>
+                </li>
               </ul>
             </li>
           @endcan
@@ -452,6 +555,13 @@
                   <a href="newcustomerm" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Nouveaux Clients(Mensuel)</p>
+                  </a>
+                </li>
+
+                 <li class="nav-item">
+                  <a href="par_client" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Chiffre d'affaire par client</p>
                   </a>
                 </li>
               </ul>

@@ -1206,9 +1206,167 @@ class Calculator extends Controller
         
        return view('graph/search_yearly', compact('data', 'mois_francais', 'percent', 'company', 'data_serv', 'serv', 'year', 'colors', 'total_annuel'));
     }
+
+    public function ChartByServCustEarn()
+    {
+        //ON VEUT DES STATS DE CHIFFRE D'AFFAIRE PAR SERVICE ET PAR CLIENT DANS L'ANNEE
+        $first_date = date('Y')."-01-01";
+        $last_date = date('Y')."-12-31";
+
+        //RECUPER LA SOMME PAR SERVICE ET METTRE DANS UN TABLEAU
+        $entreprises = [];//POur prendre les entreprises
+        $montant_clients = []; //Tableau qui va récupérer les sommes par clients;
+        //array_push($data, $total); 
+        $total = 0;
+
+        //TOUTES LES ENTREPRISES 
+        $clients = Entreprise::all();
+        //PARCOURIR LA REQUETE ET FAIRE LA SOMME
+          
+        foreach($clients as $client)
+        {
+            //TOUS LES CONTRATS EN COURS DE CETTE ENTREPRISE
+            /*$contrats = DB::table('contrats')
+            ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')
+            ->where('contrats.id_entreprise', $client->id)
+            ->where('contrats.etat', 1)
+            ->get(['entreprises.nom_entreprise', 'contrats.id']);
+            foreach($contrats as $contrat)
+            {
+               
+                
+            }*/
+             //COMPTER POUR VOIR SI Y A UNE OCCURENCE
+                $count_contrat = DB::table('factures')
+                ->join('contrats', 'factures.id_contrat', '=', 'contrats.id')
+                ->join('entreprises', 'entreprises.id', '=', 'contrats.id_entreprise')
+                ->where('factures.annulee', 0)
+                ->where('factures.date_emission', '>=', $first_date)
+                ->where('factures.date_emission', '<=', $last_date)
+                //->where('factures.id_contrat', $contrat->id)
+                ->where('entreprises.id', $client->id)
+                //->where('contrats.etat', 1)
+                ->count();
+                if($count_contrat != 0)//Yen a
+                {
+                    if(array_search($client->nom_entreprise, $entreprises) == false)//SI c'est deja dans le tableau
+                    {
+                        array_push($entreprises, $client->nom_entreprise);
+                    }   
+                }
+            
+                //PRENDRE TOUTES LES FACTURES DE CETTE ANNEE DE CE CONTRAT
+                $factures = DB::table('factures')
+                ->join('contrats', 'factures.id_contrat', '=', 'contrats.id')
+                ->join('entreprises', 'entreprises.id', '=', 'contrats.id_entreprise')
+                ->where('factures.annulee', 0)
+                ->where('factures.date_emission', '>=', $first_date)
+                ->where('factures.date_emission', '<=', $last_date)
+                //->where('factures.id_contrat', $contrat->id)
+                ->where('entreprises.id', $client->id)
+                ->get(['factures.montant_facture', 'factures.id_contrat',]);
+
+                foreach($factures as $facture)
+                {
+                    $total = $total + $facture->montant_facture;
+                }
+            //dump($total);
+            //METTRE LE TOTAL POUR L'ENTREPRISE DANS LE TABLEAU EN QUESTION
+            if($total != 0)
+            {
+                array_push($montant_clients, $total);
+            }
+            $total = 0;
+        }
+        //dd($montant_clients);
+        return view('graph/earn_by_service', compact('entreprises', 'montant_clients', ));
+    }
+
+    public function SearchChartByServCustEarn(Request $request)
+    {
+        //l'année en cours
+        $year_get = date_parse($request->year);
+
+        $year = $year_get['year'];
+        //dd($year);
+        //REQUETE POUR RECUPERER LA RECETTE ANNUELLE
+       
+
+        //ON VEUT DES STATS DE CHIFFRE D'AFFAIRE PAR SERVICE ET PAR CLIENT DANS L'ANNEE
+        $first_date = $year."-01-01";
+        $last_date = $year."-12-31";
+
+        //RECUPER LA SOMME PAR SERVICE ET METTRE DANS UN TABLEAU
+        $entreprises = [];//POur prendre les entreprises
+        $montant_clients = []; //Tableau qui va récupérer les sommes par clients;
+        //array_push($data, $total); 
+        $total = 0;
+
+        //TOUTES LES ENTREPRISES 
+        $clients = Entreprise::all();
+        //PARCOURIR LA REQUETE ET FAIRE LA SOMME
+          
+        foreach($clients as $client)
+        {
+            //TOUS LES CONTRATS EN COURS DE CETTE ENTREPRISE
+            /*$contrats = DB::table('contrats')
+            ->join('entreprises', 'contrats.id_entreprise', '=', 'entreprises.id')
+            ->where('contrats.id_entreprise', $client->id)
+            ->where('contrats.etat', 1)
+            ->get(['entreprises.nom_entreprise', 'contrats.id']);
+            foreach($contrats as $contrat)
+            {
+               
+                
+            }*/
+             //COMPTER POUR VOIR SI Y A UNE OCCURENCE
+                $count_contrat = DB::table('factures')
+                ->join('contrats', 'factures.id_contrat', '=', 'contrats.id')
+                ->join('entreprises', 'entreprises.id', '=', 'contrats.id_entreprise')
+                ->where('factures.annulee', 0)
+                ->where('factures.date_emission', '>=', $first_date)
+                ->where('factures.date_emission', '<=', $last_date)
+                //->where('factures.id_contrat', $contrat->id)
+                ->where('entreprises.id', $client->id)
+                //->where('contrats.etat', 1)
+                ->count();
+                if($count_contrat != 0)//Yen a
+                {
+                    if(array_search($client->nom_entreprise, $entreprises) == false)//SI c'est deja dans le tableau
+                    {
+                        array_push($entreprises, $client->nom_entreprise);
+                    }   
+                }
+            
+                //PRENDRE TOUTES LES FACTURES DE CETTE ANNEE DE CE CONTRAT
+                $factures = DB::table('factures')
+                ->join('contrats', 'factures.id_contrat', '=', 'contrats.id')
+                ->join('entreprises', 'entreprises.id', '=', 'contrats.id_entreprise')
+                ->where('factures.annulee', 0)
+                ->where('factures.date_emission', '>=', $first_date)
+                ->where('factures.date_emission', '<=', $last_date)
+                //->where('factures.id_contrat', $contrat->id)
+                ->where('entreprises.id', $client->id)
+                ->get(['factures.montant_facture', 'factures.id_contrat',]);
+
+                foreach($factures as $facture)
+                {
+                    $total = $total + $facture->montant_facture;
+                }
+            //dump($total);
+            //METTRE LE TOTAL POUR L'ENTREPRISE DANS LE TABLEAU EN QUESTION
+            if($total != 0)
+            {
+                array_push($montant_clients, $total);
+            }
+            $total = 0;
+        }
+        //dd($montant_clients);
+        return view('graph/earn_by_service', compact('entreprises', 'montant_clients', 'year'));
+    }
     
-    
-     public function NewCustomerInYear()
+
+    public function NewCustomerInYear()
     {
         //FAIRE UNE BOUCLE POUR TOUS LES MOIS DE L'ANNEE
 
@@ -1360,7 +1518,7 @@ class Calculator extends Controller
     }
     
     
-     public function NewCustomerInMonth()
+    public function NewCustomerInMonth()
     {
         //FAIRE UNE BOUCLE POUR TOUS LES MOIS DE L'ANNEE
 
